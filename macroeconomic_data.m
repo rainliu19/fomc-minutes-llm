@@ -19,57 +19,63 @@ if ~isfolder(outDir), mkdir(outDir); end
 % revised = true -> also pull full vintage history (ALFRED) so we can
 % reconstruct what was known on each meeting date.
 catalog = {
- % Inflation
- "PCEPILFE","Core PCE price index",true
- "PCEPI","Headline PCE price index",true
- "CPILFESL","Core CPI",true
- "CPIAUCSL","Headline CPI",true
- "MICH","UMich 1-yr inflation expectations",false
- "T5YIE","5-yr breakeven",false
- "T10YIE","10-yr breakeven",false
- % Output and spending
- "GDPC1","Real GDP",true
- "A191RL1Q225SBEA","Real GDP growth, annualized",true
- "PCEC96","Real personal consumption",true
- "RSAFS","Retail sales",true
- % Labor and wages
- "UNRATE","Unemployment rate",true
- "PAYEMS","Nonfarm payrolls",true
- "JTSJOL","JOLTS job openings",true
- "ICSA","Initial jobless claims",false
- "CES0500000003","Avg hourly earnings, private",true
- "ECIWAG","Employment Cost Index, wages",true
- % Sentiment
- "UMCSENT","UMich consumer sentiment",false
- "GACDFSA066MSFRBPHI","Philly Fed manufacturing index",false
- "GACDISA066MSFRBNY","Empire State manufacturing index",false
- % Policy and yields
- "FEDFUNDS","Effective fed funds rate",false
- "DFEDTARU","Target range upper",false
- "DFEDTARL","Target range lower",false
- "WALCL","Fed balance sheet",false
- "DGS2","2-yr Treasury yield",false
- "DGS10","10-yr Treasury yield",false
- "T10Y2Y","10y-2y spread",false
- "T10Y3M","10y-3m spread",false
- "DFII10","10-yr real yield",false
- % Credit / financial conditions
- "BAMLH0A0HYM2","High-yield OAS",false
- "BAA10Y","Baa-10yr spread",false
- "NFCI","Chicago Fed NFCI",false
- "VIXCLS","VIX",false
- % Taylor-rule inputs
- "GDPPOT","CBO potential GDP",true
- "NROU","CBO natural rate of unemployment",true
- % Debt
- "GFDEBTN","Federal debt, total",true
- "GFDEGDQ188S","Federal debt / GDP",true
- % Market / other
- "SP500","S&P 500 (FRED, ~10 yrs only)",false
- "DTWEXBGS","Broad dollar index",false
- "DCOILWTICO","WTI crude",false
- "USREC","NBER recession indicator",false
-};
+    % Inflation
+    "PCEPILFE","Core PCE price index",true
+    "PCEPI","Headline PCE price index",true
+    "CPILFESL","Core CPI",true
+    "CPIAUCSL","Headline CPI",true
+    "MICH","UMich 1-yr inflation expectations",false
+    "T5YIE","5-yr breakeven",false
+    "T10YIE","10-yr breakeven",false
+    "T5YIFR","5y5y forward inflation expectation",false
+    % Output and spending
+    "GDPC1","Real GDP",true
+    "A191RL1Q225SBEA","Real GDP growth, annualized",true
+    "PCEC96","Real personal consumption",true
+    "RSAFS","Retail sales",true
+    % Labor and wages
+    "UNRATE","Unemployment rate",true
+    "PAYEMS","Nonfarm payrolls",true
+    "JTSJOL","JOLTS job openings",true
+    "ICSA","Initial jobless claims",false
+    "CES0500000003","Avg hourly earnings, private",true
+    "ECIWAG","Employment Cost Index, wages",true
+    % Sentiment
+    "UMCSENT","UMich consumer sentiment",false
+    "GACDFSA066MSFRBPHI","Philly Fed manufacturing index",false
+    "GACDISA066MSFRBNY","Empire State manufacturing index",false
+    % Policy and yields
+    "FEDFUNDS","Effective fed funds rate",false
+    "DFEDTAR","Fed funds target (single, until Dec 2008)",false
+    "DFEDTARU","Target range upper",false
+    "DFEDTARL","Target range lower",false
+    "WALCL","Fed balance sheet",false
+    "DGS3MO","3-mo Treasury yield",false
+    "DGS2","2-yr Treasury yield",false
+    "DGS10","10-yr Treasury yield",false
+    "T10Y2Y","10y-2y spread",false
+    "T10Y3M","10y-3m spread",false
+    "DFII10","10-yr real yield",false
+    "THREEFYTP10","10-yr term premium (Kim-Wright)",false
+    % Credit / financial conditions
+    "BAMLH0A0HYM2","High-yield OAS",false
+    "BAA10Y","Baa-10yr spread",false
+    "NFCI","Chicago Fed NFCI",false
+    "VIXCLS","VIX",false
+    % Borrowing costs
+    "MORTGAGE30US","30-yr fixed mortgage rate",false
+    % Taylor-rule inputs
+    "GDPPOT","CBO potential GDP",true
+    "NROU","CBO natural rate of unemployment",true
+    % Debt
+    "GFDEBTN","Federal debt, total",true
+    "GFDEGDQ188S","Federal debt / GDP",true
+    % Market / other
+    "SP500","S&P 500 (FRED, ~10 yrs only)",false
+    "DTWEXBGS","Broad dollar index",false
+    "DCOILWTICO","WTI crude",false
+    "USREC","NBER recession indicator",false
+    };
 ids = string(catalog(:,1));  labels = string(catalog(:,2));
 revised = cell2mat(catalog(:,3));
 
@@ -80,7 +86,7 @@ for k = 1:numel(ids)
         S.(ids(k)) = getFredSeries(ids(k), apiKey, startDate);
         fprintf("OK   %-20s %6d obs\n", ids(k), height(S.(ids(k))));
     catch ME
-        warning("FAIL %s: %s", ids(k), ME.message);
+        warning("FAIL %s: %s", ids(k), strrep(ME.message, apiKey, "<key hidden>"));
     end
     pause(0.6);   % stay under FRED's rate limit (~120 requests/min)
 end
@@ -93,7 +99,7 @@ for k = find(revised)'
         V.(ids(k)) = getFredVintages(ids(k), apiKey, startDate);
         fprintf("VINT %-20s %8d rows\n", ids(k), height(V.(ids(k))));
     catch ME
-        warning("FAIL vintages %s: %s", ids(k), ME.message);
+        warning("FAIL vintages %s: %s", ids(k), strrep(ME.message, apiKey, "<key hidden>"));
     end
     pause(0.6);
 end
@@ -197,7 +203,7 @@ function T = getTreasuryDebt()
         parts{end+1} = table(datetime(string({d.record_date})',"InputFormat","yyyy-MM-dd"), ...
                              str2double(string({d.tot_pub_debt_out_amt})'), ...
                              'VariableNames', {'date','totalPublicDebt'}); %#ok<AGROW>
-        if page >= r.meta.("total-pages"), break; end
+        if page >= r.meta.total_pages, break; end
         page = page + 1;
     end
     T = vertcat(parts{:});
