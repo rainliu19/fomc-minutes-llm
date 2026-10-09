@@ -13,7 +13,7 @@ apiKey    = getenv("FRED_API_KEY");
 assert(~isempty(apiKey), "Set FRED_API_KEY first (see header).");
 startDate = "1990-01-01";
 outDir    = "data";
-if ~exist(outDir,"dir"), mkdir(outDir); end
+if ~isfolder(outDir), mkdir(outDir); end
 
 %% 1. Series catalog  {FRED id, label, revised?}
 % revised = true -> also pull full vintage history (ALFRED) so we can
