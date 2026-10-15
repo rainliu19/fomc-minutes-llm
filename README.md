@@ -16,17 +16,24 @@ fomc-minutes-llm/
 ├── macroeconomic_data.m      # FRED series, FRED vintages, Treasury debt, meeting alignment
 ├── market_data_extra.m       # S&P 500 (Yahoo Finance) and Shiller data
 ├── export_csvs.m             # Combines everything into CSVs
+├── fetch_fomc_minutes.m      # FOMC minutes: download, clean, split into sections
 └── data/
     ├── macro_market_wide.csv
     ├── fred_vintages_long.csv
     ├── series_dictionary.csv
-    ├── fomc_meeting_dates.csv    # you create this (see Setup)
-    └── raw/                      # downloaded or manually saved source files
+    ├── fomc_meeting_dates.csv    # written by fetch_fomc_minutes.m
+    ├── raw/                      # downloaded or manually saved source files
+    └── minutes/                  # written by fetch_fomc_minutes.m
+        ├── fomc_minutes.mat      # one row per meeting, all columns
+        ├── fomc_minutes.csv      # same table without the Text column
+        ├── txt/                  # full minutes, one .txt per meeting
+        └── pdf/                  # official PDFs (local only, not in git)
 ```
 
 ## Requirements
 
 - MATLAB R2019b or later. No extra toolboxes are needed (the scripts use `webread` and `readcell`).
+- `fetch_fomc_minutes.m` needs MATLAB R2022a or later. It uses the Text Analytics Toolbox if installed and falls back to plain MATLAB otherwise.
 - A free [FRED API key](https://fred.stlouisfed.org/docs/api/api_key.html).
 - An internet connection.
 
@@ -38,7 +45,7 @@ fomc-minutes-llm/
    ```
    This lasts for the current MATLAB session. To set it automatically at every launch, put the same line in a `startup.m` file (not included in this repo; keep your key out of version control).
 
-2. **FOMC meeting dates** (only needed for the meeting-aligned dataset in step 5 of `macroeconomic_data.m`). Create `data/fomc_meeting_dates.csv` with one column named `Date`, formatted `yyyy-mm-dd`, one row per FOMC meeting. Use the last day of each meeting.
+2. **FOMC meeting dates** (only needed for the meeting-aligned dataset in step 5 of `macroeconomic_data.m`). `data/fomc_meeting_dates.csv` is written by `fetch_fomc_minutes.m`: a `Date` column (last day of each meeting, `yyyy-mm-dd`) and a `ReleaseDate` column (when the minutes were published), one row per scheduled meeting since 2008. It does not include unscheduled meetings or conference calls.
 
 3. **Yahoo and Shiller fallbacks** (only if the automatic downloads fail, see below).
 
@@ -132,7 +139,72 @@ These are also recorded in the `notes` column of `series_dictionary.csv`.
 
 ## FOMC minutes and LLM analysis
 
-[Describe this part of the project once it is in the repo: where the minutes come from (e.g. federalreserve.gov), which LLM(s) and prompts are used, what is extracted (rate decision, forward guidance, sentiment, topics), and how results connect to the meeting-aligned macro data.]
+### FOMC minutes data
+
+`fetch_fomc_minutes.m` downloads the minutes of every scheduled FOMC meeting from 2008 onward from [federalreserve.gov](https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm) (the FOMC calendar page for recent years, the yearly historical pages for earlier ones). It currently covers 150 meetings, January 2008 to September 2026. Run it from the repository root (about 3 to 5 minutes, one request per second); re-running picks up newly released minutes.
+
+What it does:
+
+1. Reads each meeting's date, release date, and HTML and PDF links from the calendar pages.
+2. Downloads the HTML version of each set of minutes and extracts the text (Text Analytics Toolbox `htmlTree` / `extractHTMLText`, or a plain-MATLAB fallback). It removes the site navigation and footer and the footnote reference numbers, and decodes older pages that use Windows-1252 encoding.
+3. Splits each document into its standard sections using the section headings.
+4. Writes the outputs listed below. The PDFs are downloaded as an archive copy only; the text comes from the HTML pages.
+
+Outputs:
+
+| File | Contents |
+|------|----------|
+| `data/minutes/fomc_minutes.mat` | Table `fomcMinutes`, one row per meeting, all columns below |
+| `data/minutes/fomc_minutes.csv` | Same table without `Text` (dates as `yyyy-mm-dd`, all text fields quoted) |
+| `data/minutes/txt/fomcminutes<MeetingDate>.txt` | Full cleaned minutes for one meeting (identical to `Text`) |
+| `data/minutes/pdf/` | Official PDFs. Ignored by git; the script re-downloads any that are missing. |
+| `data/fomc_meeting_dates.csv` | `Date` and `ReleaseDate` for each meeting (see Setup) |
+
+Columns:
+
+| Column | Contents |
+|--------|----------|
+| `MeetingDate` | Last day of the meeting. Files are named by this date. |
+| `ReleaseDate` | Date the minutes were published, usually 3 weeks after the meeting. |
+| `URL` | Source page on federalreserve.gov |
+| `Text` | Full minutes, including headings, attendance and footnotes (`.mat` only) |
+| `Body` | The seven substantive sections below joined together. Use this for text analysis. |
+| `FinancialMarkets` | Developments in Financial Markets and Open Market Operations |
+| `StaffEconomy` | Staff Review of the Economic Situation |
+| `StaffFinancial` | Staff Review of the Financial Situation |
+| `StaffOutlook` | Staff Economic Outlook |
+| `ParticipantsViews` | Participants' Views on Current Conditions and the Economic Outlook |
+| `PolicyAction` | Committee Policy Action(s): the decision, statement and vote |
+| `SpecialTopics` | One-off discussions (balance sheet, framework review, repo facility, ...). Empty at many meetings. |
+| `Administrative` | Organizational matters, officer elections, rule changes, notation votes |
+| `Attendance` | Meeting header, attendance list and signature |
+| `Footnotes` | Footnote text |
+
+**Use `ReleaseDate`, not `MeetingDate`, to line the minutes up with market data.** The minutes are public only from 2:00 p.m. ET on the release date, about three weeks after the meeting. Aligning on the meeting date gives the text a three-week head start it never had (look-ahead bias).
+
+Limits of the older minutes:
+
+- **2008:** the minutes have no section headings. Sections are split on each section's standard opening sentence (e.g. "The information reviewed at the March meeting...").
+- **2008 to mid-2009:** the staff's economic and financial reviews were one section. The combined text is in `StaffEconomy`, and `StaffFinancial` is empty for 10 meetings.
+- **2008:** text before the first section (the attendance list and, in January, the organizational matters) is in `Attendance`, as are the footnotes of four meetings (January, April and June 2008, August 2010). None of this is part of `Body`.
+
+Loading the data:
+
+```matlab
+load("data/minutes/fomc_minutes.mat")            % table fomcMinutes
+docs = tokenizedDocument(fomcMinutes.Body);       % Text Analytics Toolbox
+```
+
+```python
+import pandas as pd
+
+minutes = pd.read_csv("data/minutes/fomc_minutes.csv",
+                      parse_dates=["MeetingDate", "ReleaseDate"], keep_default_na=False)
+```
+
+### LLM analysis
+
+[Describe the LLM part once it is in the repo: which LLM(s) and prompts are used, what is extracted (rate decision, forward guidance, sentiment, topics), and how results connect to the meeting-aligned macro data.]
 
 ## Usage example
 
