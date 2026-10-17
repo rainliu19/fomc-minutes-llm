@@ -1,17 +1,14 @@
 %% FOMC project: macro data acquisition and meeting alignment
-% Requires: MATLAB R2019b+ (no extra toolboxes; uses webread).
-% Setup:
+% Requires MATLAB R2019b+ (no toolboxes; uses webread). Setup:
 %   1. Get a free FRED API key: https://fred.stlouisfed.org/docs/api/api_key.html
-%   2. In MATLAB:  setenv("FRED_API_KEY","your_key_here")
-%   3. Create data/fomc_meeting_dates.csv with one column named "Date"
-%      (yyyy-mm-dd, one row per FOMC meeting; use the last day of the meeting).
-% Sections can be run one at a time (Ctrl+Enter). To make this a Live Script:
-% open it and use Save As -> .mlx.
+%   2. In MATLAB: setenv("FRED_API_KEY","your_key_here")
+%   3. Create data/fomc_meeting_dates.csv with a "Date" column (yyyy-mm-dd, last day of each meeting).
+% Run one section at a time (Ctrl+Enter). Save As .mlx for a Live Script.
 
 clear; clc;
-% These scripts read and write data/ relative to the repository root. If MATLAB's current folder
-% is pipeline/ (for example after "Change Folder" in the Editor), step up one level.
+% Paths are relative to the repository root: step up if the current folder is pipeline/.
 if endsWith(pwd, "pipeline"), cd(".."); end
+% Read the API key from the environment (never stored in a file) and set the output folder
 apiKey    = getenv("FRED_API_KEY");
 assert(~isempty(apiKey), "Set FRED_API_KEY first (see header).");
 startDate = "1990-01-01";
@@ -19,8 +16,7 @@ outDir    = "data";
 if ~isfolder(outDir), mkdir(outDir); end
 
 %% 1. Series catalog  {FRED id, label, revised?}
-% revised = true -> also pull full vintage history (ALFRED) so we can
-% reconstruct what was known on each meeting date.
+% revised = true: also pull the vintage history (ALFRED) to reconstruct what was known on each date.
 catalog = {
     % Inflation
     "PCEPILFE","Core PCE price index",true
@@ -79,10 +75,12 @@ catalog = {
     "DCOILWTICO","WTI crude",false
     "USREC","NBER recession indicator",false
     };
+% Split the catalog into parallel lists of ids, labels and revised flags
 ids = string(catalog(:,1));  labels = string(catalog(:,2));
 revised = cell2mat(catalog(:,3));
 
 %% 2. Pull current-vintage series (latest revised values)
+% One request per series; a failure for one series does not stop the rest
 S = struct();
 for k = 1:numel(ids)
     try
@@ -96,6 +94,7 @@ end
 save(fullfile(outDir,"fred_current.mat"), "S", "catalog");
 
 %% 3. Pull full vintage history (ALFRED) for revised series
+% Only the revised series: every vintage, so we can rebuild what was known on any date
 V = struct();
 for k = find(revised)'
     try
@@ -120,11 +119,13 @@ end
 % on the same API; same paging pattern as getTreasuryDebt below.
 
 %% 5. Build meeting-aligned dataset (as-of join, no look-ahead)
+% Dates the info set ends: the day before each meeting
 meet = readtable(fullfile(outDir,"fomc_meeting_dates.csv"));
 meet.Date = datetime(meet.Date);
 meet = sortrows(meet,"Date");
 asOf = meet.Date - days(1);          % info set = everything known the day before
 
+% For each series and meeting, take the value known on that day (no look-ahead)
 A = table(meet.Date, 'VariableNames', {'MeetingDate'});
 for k = 1:numel(ids)
     id = ids(k);
@@ -150,6 +151,7 @@ disp(head(A(:,1:6)));
 
 %% ---------- Local functions ----------
 function tt = getFredSeries(id, apiKey, startDate)
+    % Ask FRED for one series; "." in FRED means missing and becomes NaN
     url  = "https://api.stlouisfed.org/fred/series/observations";
     opts = weboptions("Timeout",60);
     r = webread(url, "series_id",id, "api_key",apiKey, "file_type","json", ...
@@ -164,6 +166,7 @@ function T = getFredVintages(id, apiKey, startDate)
     % All vintages: each row = (obs date, value, window in which it was the published value)
     url  = "https://api.stlouisfed.org/fred/series/observations";
     opts = weboptions("Timeout",120);
+    % Page through the results until FRED returns fewer rows than the page size
     lim = 100000; offset = 0; parts = {};
     while true
         r = webread(url, "series_id",id, "api_key",apiKey, "file_type","json", ...
@@ -186,6 +189,7 @@ end
 
 function [val, obsDate] = asOfValue(T, asOf)
     % Value of the most recent observation as it was published on date asOf
+    % Rows whose publication window contains asOf; then take the latest observation
     m = T.rtStart <= asOf & T.rtEnd >= asOf & ~isnan(T.value);
     if ~any(m), val = NaN; obsDate = NaT; return; end
     sub = T(m,:);
@@ -194,6 +198,7 @@ function [val, obsDate] = asOfValue(T, asOf)
 end
 
 function T = getTreasuryDebt()
+    % Page through Treasury debt-to-the-penny, one row per day
     base = "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/debt_to_penny";
     opts = weboptions("Timeout",60);
     page = 1; parts = {};
