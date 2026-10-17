@@ -1,0 +1,11 @@
+# Local model for the FOMC agent: Qwen3 4B Instruct with an 8K context window.
+#
+# Instruct variant: plain qwen3:4b always "thinks" first (3 to 5 minutes per call on an 8 GB Mac)
+# and the add-on cannot turn that off.
+# num_ctx: Ollama's default window is much smaller and silently cuts off long prompts, and the
+# add-on cannot set it (see docs/MATLAB_GAPS.md).
+#
+# Build:  ollama pull qwen3:4b-instruct && ollama create fomc-qwen3 -f models/qwen3/Modelfile
+# Run:    OLLAMA_FLASH_ATTENTION=1 OLLAMA_KV_CACHE_TYPE=q8_0 ollama serve   (less memory; uv run app.py does this)
+FROM qwen3:4b-instruct
+PARAMETER num_ctx 8192

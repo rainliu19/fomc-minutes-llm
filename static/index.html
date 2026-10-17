@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FOMC Minutes Analyst</title>
+<style>
+  /* Colors and type taken from federalreserve.gov's own stylesheets: navy #163855, blue #3a6c9c,
+     gold #cf8b40, Georgia for headings, Helvetica Neue for text. No logos or seals are used. */
+  :root {
+    --bg: #f5f5f5; --card: #ffffff; --text: #222222; --muted: #5f6b76; --line: #d9dde1;
+    --navy: #163855; --blue: #3a6c9c; --gold: #cf8b40; --user: #e6eef6; --ok: #3c763d; --bad: #a94442;
+    --code: #f0f2f4; --head-text: #ffffff; --side: #ebeef1;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e1721; --card: #15212e; --text: #e8ecf0; --muted: #9aa8b5; --line: #263646;
+      --navy: #0b2236; --blue: #7fb0dc; --gold: #e0a35a; --user: #1c3248; --ok: #7fc47c; --bad: #e68b88;
+      --code: #0e1721; --head-text: #ffffff; --side: #111c28;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body { margin: 0; background: var(--bg); color: var(--text); display: flex; flex-direction: column;
+         font: 15px/1.55 "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  h1, h2 { font-family: Georgia, "Palatino Linotype", Palatino, "Times New Roman", serif; }
+  .top { background: var(--navy); color: var(--head-text); border-bottom: 4px solid var(--gold); }
+  .top { flex: none; }
+  .top .in { padding: 14px 20px 12px; }
+  h1 { font-size: 24px; font-weight: normal; margin: 0 0 4px; letter-spacing: .2px; }
+  .blurb { margin: 0; max-width: 760px; color: #d6e0ea; font-size: 14.5px; }
+  .layout { display: flex; flex: 1; min-height: 0; }
+  aside { width: 270px; flex: none; overflow-y: auto; background: var(--side); border-right: 1px solid var(--line); padding: 12px;
+          display: flex; flex-direction: column; gap: 10px; }
+  main { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 12px 20px 0; max-width: 900px; }
+  #scroll { flex: 1; overflow-y: auto; min-height: 0; padding: 4px 4px 12px 0; }
+  #composer { flex: none; padding: 8px 0 10px; background: var(--bg); }
+  #menu { display: none; margin: 0 0 10px; }
+  #chats { display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
+  .chat { display: flex; align-items: center; gap: 4px; padding: 7px 8px; border-radius: 4px; cursor: pointer;
+          border-left: 3px solid transparent; }
+  .chat:hover { background: var(--card); }
+  .chat.active { background: var(--card); border-left-color: var(--gold); }
+  .chat .t { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 14px; }
+  .chat .t-in { flex: 1; min-width: 0; padding: 2px 6px; font-size: 14px; }
+  .chat button { display: none; border: none; background: none; color: var(--muted); padding: 2px 5px; font-size: 12px; }
+  .chat:hover button, .chat.active button { display: inline; }
+  .chat button:hover { color: var(--blue); }
+  .empty { color: var(--muted); font-size: 13px; padding: 4px 8px; }
+  .controls { flex: none; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin: 0 0 14px;
+              padding: 10px 12px; background: var(--card); border: 1px solid var(--line); border-radius: 4px; }
+  .field { display: flex; align-items: center; gap: 8px; }
+  label, .lab { font-size: 13px; color: var(--muted); }
+  input, select, textarea, button { font: inherit; color: var(--text); background: var(--card);
+         border: 1px solid var(--line); border-radius: 4px; padding: 6px 10px; }
+  button { cursor: pointer; }
+  button.primary { background: var(--navy); border-color: var(--navy); color: #fff; padding: 8px 18px; }
+  button.primary:hover { background: var(--blue); border-color: var(--blue); }
+  button:disabled, select:disabled, input:disabled { opacity: .55; cursor: not-allowed; }
+  .seg { display: inline-flex; }
+  .seg button { border-radius: 0; margin-left: -1px; padding: 5px 14px; }
+  .seg button:first-child { border-radius: 4px 0 0 4px; margin-left: 0; }
+  .seg button:last-child { border-radius: 0 4px 4px 0; }
+  .seg button.on { background: var(--navy); border-color: var(--navy); color: #fff; }
+  #efforthint { font-size: 12px; color: var(--muted); }
+  .starters { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+  .starters h2 { font-size: 15px; font-weight: normal; color: var(--muted); margin: 0; }
+  .starters button { text-align: left; border-left: 4px solid var(--gold); background: var(--card); padding: 10px 14px; }
+  .starters button:hover { border-color: var(--blue); border-left-color: var(--gold); }
+  #log { display: flex; flex-direction: column; gap: 12px; margin-bottom: 12px; }
+  .msg { padding: 12px 16px; border-radius: 4px; border: 1px solid var(--line); background: var(--card); }
+  .msg.user { background: var(--user); align-self: flex-end; max-width: 85%; white-space: pre-wrap; }
+  .msg.assistant { border-left: 4px solid var(--navy); }
+  .msg p { margin: 0 0 8px; } .msg p:last-child { margin-bottom: 0; }
+  .msg ul { margin: 0 0 8px; padding-left: 20px; }
+  details { margin-top: 10px; font-size: 13px; }
+  summary { cursor: pointer; color: var(--blue); }
+  pre { background: var(--code); border-radius: 4px; padding: 8px 10px; overflow-x: auto; font-size: 12px;
+        white-space: pre-wrap; word-break: break-word; margin: 6px 0 0; }
+  .badge { display: inline-block; padding: 1px 8px; border-radius: 99px; font-size: 12px; border: 1px solid; }
+  .badge.ok { color: var(--ok); } .badge.bad { color: var(--bad); }
+  .meta { color: var(--muted); font-size: 12px; margin-top: 8px; }
+  #activity { margin: 0 0 12px; padding: 8px 12px; background: var(--card); border: 1px solid var(--line);
+              border-left: 4px solid var(--gold); border-radius: 4px; }
+  form { display: flex; gap: 8px; align-items: flex-end; }
+  textarea { flex: 1; resize: vertical; min-height: 44px; }
+  .note { color: var(--muted); font-size: 11.5px; margin: 6px 0 0; }
+  blockquote { margin: 6px 0 0; padding: 6px 10px; border-left: 3px solid var(--gold); color: var(--text);
+               font-size: 13px; background: var(--code); border-radius: 0 4px 4px 0; }
+  code { font-size: 12px; }
+  .cite { margin-top: 8px; }
+  .step { padding: 5px 0; border-top: 1px solid var(--line); }
+  .step:first-child { border-top: none; }
+  .fn { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 13px; color: var(--text); font-weight: 600; }
+  .kind { display: inline-block; margin-left: 6px; padding: 0 7px; border: 1px solid var(--line); border-radius: 99px;
+          font-size: 11px; color: var(--muted); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: normal; }
+  .kind.skill { color: var(--gold); border-color: var(--gold); }
+  .ms { margin-left: 6px; font-size: 12px; color: var(--muted); font-weight: normal; }
+  .plain { color: var(--text); font-size: 13px; }
+  details.tool > summary { list-style: none; }
+  details.tool > summary::-webkit-details-marker { display: none; }
+  .src { color: var(--muted); font-size: 12px; }
+  sup.ref { color: var(--blue); font-size: 11px; cursor: help; margin-left: 1px; }
+  sup.ref.bad { color: var(--bad); }
+  .warn { margin-top: 8px; padding: 6px 10px; border: 1px solid var(--bad); color: var(--bad); border-radius: 4px; font-size: 13px; }
+  [hidden] { display: none !important; }
+  @media (max-width: 760px) {
+    .layout { flex-direction: column; }
+    aside { max-height: 40vh; }
+    aside { width: auto; border-right: none; border-bottom: 1px solid var(--line); }
+    aside.closed { display: none; }
+    #menu { display: inline-block; }
+    main { padding: 12px 16px; }
+  }
+</style>
+</head>
+<body>
+<div class="top"><div class="in">
+  <h1>FOMC Minutes Analyst</h1>
+  <p class="blurb">Ask plain-English questions about Federal Open Market Committee minutes and the economy around
+  them. Answers use only what was public on the date you choose, and every claim links to the exact
+  paragraph it came from. Built for analysts checking what the Committee decided and why.</p>
+</div></div>
+
+<div class="layout">
+<aside id="side">
+  <button class="primary" id="new" type="button">+ New chat</button>
+  <div id="chats"></div>
+</aside>
+
+<main>
+  <button id="menu" type="button">Chats</button>
+  <div class="controls">
+    <div class="field"><label for="asof">As of date</label><input type="date" id="asof"></div>
+    <div class="field"><label for="model">Model</label><select id="model"></select></div>
+    <div class="field">
+      <span class="lab">Effort</span>
+      <span class="seg" id="effort">
+        <button type="button" data-v="low" class="on">Low</button><button type="button" data-v="medium">Medium</button><button type="button" data-v="high">High</button>
+      </span>
+      <span id="efforthint"></span>
+    </div>
+  </div>
+
+  <div id="scroll">
+    <div class="starters" id="starters">
+      <h2>Not sure where to start? Try one:</h2>
+      <button type="button">What did the Committee decide at its latest meeting, and was the vote unanimous?</button>
+      <button type="button">How did participants describe the labor market?</button>
+      <button type="button">How has the Committee's view of inflation changed over the past three years?</button>
+    </div>
+
+    <div id="log"></div>
+    <details id="activity" hidden open>
+      <summary id="actsum">Working...</summary>
+      <div id="actlines"></div>
+    </details>
+  </div>
+
+  <div id="composer">
+    <form id="form">
+      <textarea id="input" placeholder="Ask about the FOMC minutes and the economy..." rows="2"></textarea>
+      <button class="primary" id="send" type="submit">Send</button>
+    </form>
+    <p class="note">Uses a small model that runs on this computer, so nothing leaves it. Check important claims
+    against the cited paragraphs. Independent project, not affiliated with or endorsed by the Federal Reserve.</p>
+  </div>
+</main>
+</div>
+
+<script>
+// Shortcut for finding a page element by id
+const $ = (id) => document.getElementById(id);
+// The open chat's id (null until the first message), the chosen effort, and how long each effort takes
+let sessionId = null;
+let effort = "low";
+const EFFORT_HINT = {low: "short answer, about 15 s", medium: "more passages and detail, about 30 s",
+                     high: "checked structured analysis, about 1 min"};
+
+// Make text safe to put in the page (so text from the model cannot add HTML)
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+// ---- Making the model's wording easy to read (display only; the saved answer is unchanged) ----
+const ID_RE = "\\d{4}-\\d{2}-\\d{2}\\/[A-Za-z]+\\/\\d+";
+const SECTION = {participantsViews: "Participants' views", staffOutlook: "Staff outlook",
+  staffEconomy: "Staff review of the economy", staffFinancial: "Staff review of financial conditions",
+  financialMarkets: "Financial markets", policyAction: "Policy action", specialTopics: "Special topic"};
+let SERIES = {};   // data series code -> plain name, loaded from the server (for example PCEPILFE -> Core PCE price index)
+const MONTHS = ["Jan.", "Feb.", "March", "April", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."];
+
+// 2026-09-16 -> Sept. 16, 2026
+function niceDate(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  return m ? `${MONTHS[+m[2] - 1]} ${+m[3]}, ${m[1]}` : iso;
+}
+
+// Number each cited paragraph in the order the answer first mentions it (extras follow)
+function citeNumbers(answer, cites) {
+  const nums = {};
+  const add = (id) => { if (!(id in nums)) nums[id] = Object.keys(nums).length + 1; };
+  for (const m of String(answer).matchAll(new RegExp(ID_RE, "g"))) add(m[0]);
+  for (const c of (cites || [])) add(c.id);
+  return nums;
+}
+
+// "Policy action, Sept. 16, 2026 meeting, paragraph 1"
+function sourceLabel(c) {
+  return `${SECTION[c.section] || c.section}, ${niceDate(c.meetingDate)} meeting, paragraph ${c.paragraph}`;
+}
+
+// "3-3/4" -> "3.75", "1/4" -> "0.25"; anything else is left as written
+function toDecimal(tok) {
+  let m = /^(\d+)-(\d+)\/(\d+)$/.exec(tok);
+  if (m) return String(Number((+m[1] + m[2] / m[3]).toFixed(3)));
+  m = /^(\d+)\/(\d+)$/.exec(tok);
+  return m ? String(Number((m[1] / m[2]).toFixed(3))) : tok;
+}
+
+// Rates in plain numbers: "3-3/4 to 4 percent" -> "3.75% to 4%", "0 to 1/4 percent" -> "0% to 0.25%",
+// "a 1/4 percentage point move" -> "a 0.25 percentage point move"
+function niceRates(t) {
+  const num = "\\d[\\d\\-\\/\\.]*?";
+  t = t.replace(new RegExp(`(${num}) (to|and|or) (${num}) percent\\b`, "g"),
+    (_, a, w, b) => `${toDecimal(a)}% ${w} ${toDecimal(b)}%`);
+  t = t.replace(new RegExp(`(${num}) percent\\b`, "g"), (_, a) => `${toDecimal(a)}%`);
+  return t.replace(new RegExp(`(${num}) percentage point`, "g"), (_, a) => `${toDecimal(a)} percentage point`);
+}
+
+// One line of the answer: cited ids become numbered markers, dates and rates are tidied
+function nicen(line, nums, cites) {
+  const byId = Object.fromEntries((cites || []).map(c => [c.id, c]));
+  const mark = (id) => `<sup class="ref" title="${esc(byId[id] ? sourceLabel(byId[id]) : id)}">[${nums[id] || "?"}]</sup>`;
+  // "In [2025-10-29/specialTopics/3]," reads better as "In the Oct. 29, 2025 minutes [1],"
+  line = line.replace(new RegExp(`\\b(In|At|From|Per|According to)\\s+[\\[(](${ID_RE})[\\])]`, "g"),
+    (_, w, id) => `${w} the ${niceDate(id.slice(0, 10))} minutes${mark(id)}`);
+  // [id] or [id1, id2] -> [1] or [1][2]; then any bare id
+  line = line.replace(new RegExp(`\\s*[\\[(]([^\\])]*${ID_RE}[^\\])]*)[\\])]`, "g"),
+    (_, inner) => (inner.match(new RegExp(ID_RE, "g")) || []).map(mark).join(""));
+  line = line.replace(new RegExp(ID_RE, "g"), mark);
+  // A shortened id (staffOutlook/2) that could not be matched to a paragraph: say so instead of showing jargon
+  const secs = Object.keys(SECTION).join("|");
+  line = line.replace(new RegExp(`\\s*[\\[(]?(?<![\\w/\\-])(?:${secs})\\/\\d+(?![\\w/])[\\])]?`, "g"),
+    () => `<sup class="ref bad" title="The model gave a reference that could not be matched to a paragraph in the minutes">[unverified]</sup>`);
+  // Data series codes become their plain names
+  line = line.replace(/\b[A-Z][A-Z0-9_]{2,}\b/g, (m) => SERIES[m] ? esc(SERIES[m]) : m);
+  line = line.replace(/\b(\d{4}-\d{2}-\d{2})\b/g, (m) => niceDate(m));
+  return niceRates(line);
+}
+
+// Minimal Markdown: paragraphs, bullet lists and **bold**.
+function render(text, nums, cites) {
+  // Go line by line: bullet lines become list items, other non-empty lines become paragraphs
+  const out = []; let list = false;
+  for (const raw of String(text).split("\n")) {
+    const line = nicen(esc(raw), nums || {}, cites).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
+    const bullet = /^\s*[-*]\s+(.*)/.exec(line);
+    if (bullet) { if (!list) { out.push("<ul>"); list = true; } out.push("<li>" + bullet[1] + "</li>"); continue; }
+    if (list) { out.push("</ul>"); list = false; }
+    if (line.trim()) out.push("<p>" + line + "</p>");
+  }
+  if (list) out.push("</ul>");
+  return out.join("");
+}
+
+// Add a message to the chat log and scroll to it
+function add(cls, html) {
+  const d = document.createElement("div");
+  d.className = "msg " + cls; d.innerHTML = html;
+  $("log").appendChild(d); d.scrollIntoView({block: "end"});
+  return d;
+}
+
+// One plain-English sentence for a tool call, shown under the function name
+function plainCall(name, a) {
+  a = a || {};
+  const date = (iso) => niceDate(a[iso] || "");
+  switch (name) {
+    case "getDecision": return `Looked up the decision and vote for the ${date("meetingDate")} meeting`;
+    case "searchMinutes": return `Searched the minutes for "${a.query || ""}"`;
+    case "readMinutes": return `Read the ${(SECTION[a.section] || a.section || "").toLowerCase()} section of the ${date("meetingDate")} minutes`;
+    case "listMeetings": return "Listed the meetings whose minutes have been released";
+    case "getSeries": return `Pulled ${String(a.seriesIds || "data series").replace(/,\s*/g, ", ")} as known on the as-of date`;
+    case "describeSeries": return `Checked what ${a.seriesId || "a data series"} measures and when it is published`;
+    case "getSnapshot": return "Loaded the key economic data as known on the as-of date";
+    case "scoreConsumerImpact": return "Asked for the consumer-impact score (not built yet)";
+    case "prefetchData": return `Looked up the latest figures for ${String(a.series || "the data").split(",").map(x => SERIES[x.trim()] || x.trim()).join(", ")} before asking the model`;
+    case "prefetchPassages": return "Found the best-matching passages in the minutes before asking the model";
+    case "prefetchNotice": return "Checked that these minutes are not public yet";
+    default: return "Ran this step";
+  }
+}
+
+// Two lines: the function name (with a tag and its time), then the plain-English sentence
+function stepHtml(name, kind, ms, plain, ok) {
+  const tag = kind ? `<span class="kind${kind === "skill" ? " skill" : ""}">${esc(kind)}</span>` : "";
+  const fn = name ? `<span class="fn">${esc(name)}</span>${tag}<span class="ms">${ms != null ? ms + " ms" : ""}${ok === false ? " (error)" : ""}</span><br>` : "";
+  return `${fn}<span class="plain">${esc(plain)}</span>`;
+}
+
+// Tool calls are model-chosen; prefetch steps are looked up by the harness before the model starts
+const kindOf = (name) => name.startsWith("prefetch") ? "automatic lookup" : "tool";
+
+// A collapsible list of the tool calls the agent made; click one to see its arguments and result
+function toolsHtml(calls) {
+  if (!calls || !calls.length) return "";
+  const items = calls.map(c => `<details class="tool step"><summary>${stepHtml(c.name, kindOf(c.name), c.ms, plainCall(c.name, c.args), c.ok)}</summary>` +
+    `<pre>${esc(JSON.stringify(c.args))}\n\n${esc(c.result)}</pre></details>`).join("");
+  return `<details><summary>Tools used (${calls.length})</summary>${items}</details>`;
+}
+
+// The structured analysis: badge, any failures, the cited quotes, and the raw fields
+function structuredHtml(s) {
+  if (!s || !Object.keys(s).length) return "";
+  const ok = s.groundingOk === true;
+  const fails = s.groundingFailures ? `<pre>${esc([].concat(s.groundingFailures).join("\n"))}</pre>` : "";
+  const evidence = (ok && s.evidence ? [].concat(s.evidence) : []).map(e =>
+    `<div class="cite"><b>${esc(e.claim)}</b><br><span class="src">${esc(sourceLabel(e))}</span>` +
+    `<blockquote>${esc(e.quote)}</blockquote></div>`).join("");
+  const {evidence: _drop, ...rest} = s;
+  return `<details open><summary>Structured analysis <span class="badge ${ok ? "ok" : "bad"}">` +
+    `${ok ? "citations verified" : "checks failed: do not rely on this"}</span></summary>` +
+    `${fails}${evidence}<details><summary>Raw data</summary><pre>${esc(JSON.stringify(ok ? rest : s, null, 2))}</pre></details></details>`;
+}
+
+// Paragraphs the answer cites, with their exact text. Verified = the id is real, the minutes were
+// public on the anchor date, and a tool returned it in this session.
+function citationsHtml(cites, nums) {
+  if (!cites || !cites.length) return "";
+  const rows = [...cites].sort((a, b) => nums[a.id] - nums[b.id]);
+  const items = rows.map(c => `<div class="cite"><b>[${nums[c.id]}]</b> ${esc(sourceLabel(c))} ` +
+    `<span class="badge ${c.ok ? "ok" : "bad"}">${c.ok ? "verified" : "not verified: " + esc(c.reason)}</span>` +
+    (c.ok ? `<blockquote>${esc(c.text)}</blockquote>` : "") + `</div>`).join("");
+  return `<details open><summary>Sources (${cites.length})</summary>${items}</details>`;
+}
+
+// The HTML for one live progress step, or null for events that are not shown
+function describe(e) {
+  if (e.type === "tool_call") return stepHtml(e.name, kindOf(e.name), e.ms, plainCall(e.name, e.args), e.ok);
+  if (e.type === "prefetch" && e.kind === "data") return stepHtml("prefetchData", "automatic lookup", null, plainCall("prefetchData", {series: e.series}));
+  if (e.type === "prefetch" && e.kind === "passages") return stepHtml("prefetchPassages", "automatic lookup", null, plainCall("prefetchPassages"));
+  if (e.type === "model_response") return stepHtml("", "", null, e.nToolCalls ? `Model step ${e.round}: chose ${e.nToolCalls} tool call(s)` : `Model step ${e.round}: writing the answer`);
+  if (e.type === "nudge") return stepHtml("", "", null, "Reminded the model to read the minutes first");
+  if (e.type === "grounding_check") return stepHtml("checkGrounding", "check", null, `Checked quotes and figures (attempt ${e.attempt})`);
+  return null;
+}
+
+// Every 2 seconds while the agent works: fetch new progress events and list every step in the activity box
+async function poll(sid, state) {
+  try {
+    const r = await (await fetch(`/progress?session_id=${sid}&after=${state.after}`)).json();
+    state.after = r.next;
+    for (const e of r.events) { const t = describe(e); if (t) state.lines.push(t); }
+    const secs = Math.round((Date.now() - state.t0) / 1000);
+    $("actsum").textContent = `Working... ${secs}s (${state.lines.length} steps)`;
+    $("actlines").innerHTML = state.lines.map(h => `<div class="step">${h}</div>`).join("");
+  } catch (_) {}
+}
+
+// One finished answer: text, warning, sources, structured analysis, tools used, and its footer
+function assistantHtml(r) {
+  const nums = citeNumbers(r.answer, r.citations);
+  return render(r.answer, nums, r.citations) + (r.warning ? `<div class="warn">${esc(r.warning)}</div>` : "") +
+    citationsHtml(r.citations, nums) + structuredHtml(r.structured) + toolsHtml(r.tool_calls) +
+    `<div class="meta">As of ${esc(niceDate(r.anchor))} - ${Math.round(r.seconds)} s</div>`;
+}
+
+// While a chat has messages its date and model are fixed (they were chosen when it started)
+function lockSettings(locked) {
+  $("asof").disabled = locked; $("model").disabled = locked;
+  $("starters").hidden = locked;
+}
+
+// Highlight the chosen effort button and show how long it takes
+function setEffort(v) {
+  effort = v;
+  document.querySelectorAll("#effort button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
+  $("efforthint").textContent = EFFORT_HINT[v];
+}
+
+// Start an empty chat
+function newChat() {
+  sessionId = null; $("log").innerHTML = ""; lockSettings(false); renderChats(); $("input").focus();
+  $("side").classList.add("closed");
+}
+
+// ---- Saved chats (the sidebar) ----
+let chatList = [];
+
+// Redraw the sidebar: each chat can be opened, renamed or deleted
+function renderChats() {
+  const box = $("chats"); box.innerHTML = "";
+  if (!chatList.length) { box.innerHTML = '<div class="empty">No saved chats yet.</div>'; return; }
+  for (const c of chatList) {
+    const row = document.createElement("div");
+    row.className = "chat" + (c.id === sessionId ? " active" : "");
+    row.innerHTML = `<span class="t" title="${esc(c.title)}">${esc(c.title)}</span>` +
+      `<button data-a="rename" title="Rename">Rename</button><button data-a="delete" title="Delete">Delete</button>`;
+    row.addEventListener("click", (ev) => {
+      const a = ev.target.dataset && ev.target.dataset.a;
+      if (a === "rename") startRename(row, c);
+      else if (a === "delete") confirmDelete(ev.target, c);
+      else if (!ev.target.matches("input")) openChat(c.id);
+    });
+    box.appendChild(row);
+  }
+}
+
+async function loadChats() {
+  try { chatList = await (await fetch("/chats")).json(); } catch (_) { chatList = []; }
+  renderChats();
+}
+
+// Replace the title with a text box; Enter saves, Escape cancels
+function startRename(row, c) {
+  const t = row.querySelector(".t");
+  const inp = document.createElement("input");
+  inp.className = "t-in"; inp.value = c.title;
+  t.replaceWith(inp); inp.focus(); inp.select();
+  const finish = async (save) => {
+    if (save && inp.value.trim() && inp.value.trim() !== c.title) {
+      await fetch(`/chats/${c.id}/rename?title=${encodeURIComponent(inp.value.trim())}`, {method: "POST"});
+    }
+    loadChats();
+  };
+  inp.addEventListener("keydown", (e) => { if (e.key === "Enter") finish(true); if (e.key === "Escape") finish(false); });
+  inp.addEventListener("blur", () => finish(true));
+}
+
+// Delete needs a second click, so one slip does not lose a chat
+function confirmDelete(btn, c) {
+  if (btn.dataset.sure) {
+    fetch(`/chats/${c.id}`, {method: "DELETE"}).then(() => { if (c.id === sessionId) newChat(); loadChats(); });
+    return;
+  }
+  btn.dataset.sure = "1"; btn.textContent = "Sure?";
+  setTimeout(() => { btn.dataset.sure = ""; btn.textContent = "Delete"; }, 3000);
+}
+
+// Show a saved chat and carry on from it (the server rebuilds the agent's memory from it)
+async function openChat(id) {
+  const chat = await (await fetch(`/chats/${id}`)).json();
+  if (!chat.messages) return;
+  sessionId = id; $("log").innerHTML = "";
+  for (const m of chat.messages) {
+    if (m.role === "user") add("user", esc(m.text)); else add("assistant", assistantHtml(m));
+  }
+  $("asof").value = chat.as_of; $("model").value = chat.model; setEffort(chat.effort || "low");
+  lockSettings(true); renderChats(); $("side").classList.add("closed");
+}
+
+// Sending a question: show it, start polling for progress, wait for the answer, then show it
+$("form").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  const message = $("input").value.trim();
+  if (!message) return;
+  if (!sessionId) sessionId = crypto.randomUUID();
+  lockSettings(true);
+  $("activity").hidden = false; $("actsum").textContent = "Working..."; $("actlines").innerHTML = "";
+  add("user", esc(message)); $("input").value = "";
+  $("send").disabled = true;
+  // Start counting trace lines after the ones already there (a continued chat has older ones)
+  const start = await (await fetch(`/progress?session_id=${sessionId}&after=1000000000`)).json();
+  const state = {after: start.next, lines: [], t0: Date.now()};
+  const timer = setInterval(() => poll(sessionId, state), 2000);
+  try {
+    const res = await fetch("/chat", {method: "POST", headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({message, session_id: sessionId, as_of: $("asof").value, effort, model: $("model").value})});
+    const r = await res.json();
+    sessionId = r.session_id;
+    add("assistant", assistantHtml(r));
+    loadChats();
+  } catch (e) {
+    add("assistant", "<p>Could not reach the server: " + esc(e) + "</p>");
+  } finally {
+    clearInterval(timer); $("activity").hidden = true; $("send").disabled = false; $("input").focus();
+  }
+});
+
+// The three example questions fill the box and send it
+document.querySelectorAll("#starters button").forEach(b => b.addEventListener("click", () => {
+  $("input").value = b.textContent; $("form").requestSubmit();
+}));
+
+// Enter sends; Shift+Enter makes a new line
+$("input").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("form").requestSubmit(); }
+});
+
+document.querySelectorAll("#effort button").forEach(b => b.addEventListener("click", () => setEffort(b.dataset.v)));
+$("new").addEventListener("click", newChat);
+$("menu").addEventListener("click", () => $("side").classList.toggle("closed"));
+
+// On page load: ask the server for the date range and the models, and load the saved chats
+(async () => {
+  setEffort("low");
+  try {
+    const info = await (await fetch("/info")).json();
+    SERIES = Object.fromEntries((info.series || []).map(x => [x.id, x.label]));
+    $("asof").value = info.latestAnchor; $("asof").min = info.firstMeeting; $("asof").max = info.latestAnchor;
+    $("model").innerHTML = info.models.map(m => `<option value="${esc(m.id)}">${esc(m.label)}</option>`).join("");
+  } catch (e) { /* the date and model boxes simply stay empty */ }
+  $("side").classList.add("closed");
+  await loadChats();
+})();
+</script>
+</body>
+</html>

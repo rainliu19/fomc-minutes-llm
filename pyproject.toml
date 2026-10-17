@@ -1,0 +1,12 @@
+# Web shell for the FOMC agent. The agent is MATLAB (src/+fomc); Python only serves the page and
+# starts MATLAB and Ollama. uv.lock is generated from this file.
+[project]
+name = "fomc-agent-web"
+version = "0.1.0"
+description = "Local web chat for the FOMC minutes agent: MATLAB agent, Ollama model"
+requires-python = ">=3.12,<3.15"          # the MATLAB Engine supports Python 3.10 to 3.14
+dependencies = [
+    "fastapi>=0.115",                     # web framework
+    "uvicorn>=0.30",                      # server for the app
+    "matlabengine>=26.2,<26.3",           # MATLAB Engine for Python (matches R2026b)
+]
