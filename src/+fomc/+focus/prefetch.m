@@ -1,0 +1,145 @@
+function [text, recs] = prefetch(ctx, question, isAnalysis)
+%PREFETCH Lookups the harness does before the model starts: the minutes, and the data.
+%   [text, recs] = fomc.focus.prefetch(ctx, question, isAnalysis)
+%   The minutes part is below; the data part is fomc.focus.dataPrefetch (figures for series
+%   the question is about). Both are added to the question, in that order.
+
+[text, recs] = minutesPrefetch(ctx, question, isAnalysis);
+[dataText, dataRecs] = fomc.focus.dataPrefetch(ctx, question);
+if dataText ~= ""
+    if text == ""
+        text = dataText;
+    else
+        text = text + newline + dataText;
+    end
+    recs = [recs, dataRecs];
+end
+end
+
+function [text, recs] = minutesPrefetch(ctx, question, isAnalysis)
+%MINUTESPREFETCH The minutes lookups.
+%   [text, recs] = fomc.focus.prefetch(ctx, question, isAnalysis)
+%
+%   A small model sometimes skips a tool or invents a result, so for minutes questions:
+%     decision or vote   the named (or latest) meeting's decision card, or a plain "not
+%                        public on the anchor date" if its minutes are not released
+%     other              the best matching paragraphs (fomc.retrieve.rank)
+%   text is added to the question; recs are tool-call records for the trace and the
+%   citation check. Data-only questions get nothing.
+
+% Nothing to do unless prefetch is on and the question is about the minutes
+text = "";
+recs = struct("name", {}, "args", {}, "result", {}, "ok", {}, "ms", {});
+if ~ctx.cfg.prefetch || ~(fomc.focus.aboutMinutes(question) || isAnalysis)
+    return
+end
+
+% Does the question ask about a decision or vote?
+q = lower(string(question));
+M = ctx.D.meetings;
+decisionIntent = isAnalysis || ~isempty(regexp(q, ...
+    "(?<![a-z])(decid\w*|decision|vote\w*|dissent\w*|rais\w*|hike\w*|cut|cuts|lower\w*|hold|held|unchanged)(?![a-z])", "once"));
+
+% Yes: find which meeting it means
+if decisionIntent
+    [target, found, why] = pickMeeting(q, M, ctx);
+    % That meeting's minutes are not public yet: tell the model to say so
+    if found == "unreleased"
+        latest = latestReleased(M, ctx);
+        text = "[" + why + " are not public on the anchor date, so there is no decision to report for it. " + ...
+            "The latest minutes available are for the meeting that ended " + fomc.util.fmtDate(latest) + ". Say this plainly.]";
+        recs(end+1) = struct("name", "prefetchNotice", "args", struct(), "result", text, "ok", true, "ms", 0);
+        return
+    % Found: fetch its decision card through the normal tool path (guardrails and trace apply)
+    elseif found == "yes"
+        [json, rec] = fomc.tools.dispatch(ctx, "getDecision", struct("meetingDate", char(fomc.util.fmtDate(target))));
+        recs(end+1) = rec;
+        if rec.ok
+            text = cardText(jsondecode(json));
+            fomc.trace.logEvent(ctx, "prefetch", struct("kind", "decision", "meeting", fomc.util.fmtDate(target)));
+            return
+        end
+    end
+end
+
+% Otherwise: the best matching paragraphs
+% Build the lookup record that is traced and used to verify citations
+t0 = tic;
+hits = fomc.retrieve.rank(question, ctx, ctx.cfg.prefetchHits);
+if ~isempty(hits)
+    lines = strings(numel(hits), 1);
+    for i = 1:numel(hits)
+        lines(i) = sprintf("%d. [%s] %s", i, hits(i).id, hits(i).snippet);
+    end
+    text = "[Passages found by code in the minutes (cite their ids; call searchMinutes or readMinutes for more):" + ...
+        newline + strjoin(lines, newline) + "]";
+    recs(end+1) = struct("name", "prefetchPassages", "args", struct("query", string(question)), ...
+        "result", string(jsonencode(struct("hits", {num2cell(hits)}))), "ok", true, "ms", round(toc(t0) * 1000));
+    fomc.trace.logEvent(ctx, "prefetch", struct("kind", "passages", "ids", [hits.id]));
+end
+end
+
+function [target, found, why] = pickMeeting(q, M, ctx)
+% Which meeting does the question mean? found: "yes", "unreleased" or "none".
+target = NaT; found = "none"; why = "";
+% Look for a month and year ("March 2020") or an ISO date in the question
+mon = regexp(q, "(?<![a-z])(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\.?\s*,?\s*(20\d\d)", "tokens", "once");
+iso = regexp(q, "20\d\d-\d\d-\d\d", "match", "once");
+% An exact date was given
+if strlength(string(iso)) > 0          % a string input returns "" (not empty) when nothing matches
+    d = fomc.util.parseDate(iso);
+    k = find(M.MeetingDate == d, 1);
+    if ~isempty(k)
+        target = M.MeetingDate(k);
+        found = ternary(M.ReleaseDate(k) <= ctx.asOf, "yes", "unreleased");
+        why = "The minutes of the meeting that ended " + fomc.util.fmtDate(d);
+    end
+% A month and year was given: find the meeting in that month
+elseif ~isempty(mon)
+    months = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
+    m = find(months == extractBefore(string(mon{1}) + "   ", 4), 1);
+    y = str2double(mon{2});
+    k = find(month(M.MeetingDate) == m & year(M.MeetingDate) == y, 1);
+    if ~isempty(k)
+        target = M.MeetingDate(k);
+        found = ternary(M.ReleaseDate(k) <= ctx.asOf, "yes", "unreleased");
+        why = "The minutes of the " + datestr(M.MeetingDate(k), "mmmm yyyy") + " meeting"; %#ok<DATST>
+    end
+% No date, or "latest": the most recent released meeting
+elseif ~isempty(regexp(q, "(latest|last|most recent|current|newest|recent)", "once")) || isempty(regexp(q, "20\d\d", "once"))
+    target = latestReleased(M, ctx);
+    found = "yes";
+end
+end
+
+function d = latestReleased(M, ctx)
+d = max(M.MeetingDate(M.ReleaseDate <= ctx.asOf));
+end
+
+function v = ternary(cond, a, b)
+if cond, v = a; else, v = b; end
+end
+
+function t = cardText(r)
+% The decision card as a few short lines for the model.
+% Turn the decision result into a few short lines
+action = r.action;
+if isfield(r, "targetRange")
+    action = action + " (target range " + r.targetRange + ", copy it exactly as written)";
+end
+lines = "[Decision card for the meeting that ended " + r.meetingDate + ", read from the minutes by code (cite the ids):";
+lines(end+1) = "- Action: " + action;
+if isfield(r, "decision")
+    lines(end+1) = "- Decision sentence: " + r.decision.text + " [" + r.decision.id + "]";
+end
+if isfield(r, "vote")
+    unan = "";
+    if r.vote.unanimous, unan = " (unanimous)"; end
+    lines(end+1) = "- Vote: " + r.vote.nFor + " for, " + r.vote.nAgainst + " against" + unan + ". For: " + ...
+        r.vote.for + ". Against: " + r.vote.against + " [" + r.vote.id + "]";
+end
+if isfield(r, "dissent")
+    lines(end+1) = "- Dissent: " + r.dissent.text + " [" + r.dissent.id + "]";
+end
+t = strjoin(lines, newline) + "]";
+end
