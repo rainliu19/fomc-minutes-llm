@@ -1,0 +1,53 @@
+series_id,rule,param,note
+PCEPILFE,vintage,0,ALFRED vintages (rtStart is the date the value became known)
+PCEPI,vintage,0,ALFRED vintages
+CPILFESL,vintage,0,ALFRED vintages
+CPIAUCSL,vintage,0,ALFRED vintages
+GDPC1,vintage,0,ALFRED vintages
+A191RL1Q225SBEA,vintage,0,ALFRED vintages (first vintage 2014-09-26)
+PCEC96,vintage,0,ALFRED vintages
+RSAFS,vintage,0,ALFRED vintages
+UNRATE,vintage,0,ALFRED vintages
+PAYEMS,vintage,0,ALFRED vintages
+JTSJOL,vintage,0,ALFRED vintages (first vintage 2010-08-11)
+CES0500000003,vintage,0,ALFRED vintages (first vintage 2011-03-04)
+ECIWAG,vintage,0,ALFRED vintages
+GDPPOT,vintage,0,ALFRED vintages of CBO estimates; observations dated after asOf are projections and are dropped
+NROU,vintage,0,ALFRED vintages of CBO estimates (first vintage 2011-02-02); observations dated after asOf are dropped
+GFDEBTN,vintage,0,ALFRED vintages
+GFDEGDQ188S,vintage,0,ALFRED vintages (first vintage 2012-10-26)
+T5YIE,lagdays,1,Daily close known the next day
+T10YIE,lagdays,1,Daily close known the next day
+T5YIFR,lagdays,1,Daily close known the next day
+DFEDTAR,lagdays,1,Target announced at the meeting; one day of margin
+DFEDTARU,lagdays,1,Target announced at the meeting; one day of margin
+DFEDTARL,lagdays,1,Target announced at the meeting; one day of margin
+DGS3MO,lagdays,1,Daily close known the next day
+DGS2,lagdays,1,Daily close known the next day
+DGS10,lagdays,1,Daily close known the next day
+T10Y2Y,lagdays,1,Daily close known the next day
+T10Y3M,lagdays,1,Daily close known the next day
+DFII10,lagdays,1,Daily close known the next day
+BAMLH0A0HYM2,lagdays,1,Daily close known the next day
+BAA10Y,lagdays,1,Daily close known the next day
+VIXCLS,lagdays,1,Daily close known the next day
+SP500,lagdays,1,Daily close known the next day
+GSPC,lagdays,1,Daily close known the next day
+TREASURY_DEBT_TOTAL,lagdays,1,Daily figure known the next business day
+THREEFYTP10,lagdays,7,Kim-Wright model estimate; about a week behind; history is re-estimated so past values may have changed
+DTWEXBGS,lagdays,7,Assumed one week lag (H.10 weekly release); not checked against release calendar
+DCOILWTICO,lagdays,7,Assumed one week lag; not checked against release calendar
+WALCL,lagdays,2,Wednesday level published Thursday; one day of margin
+NFCI,lagdays,5,Week-ending Friday published the following Wednesday; history is re-estimated so past values may have changed
+MORTGAGE30US,lagdays,1,Thursday survey published the same day; one day of margin
+ICSA,lagdays,5,Week-ending Saturday published the following Thursday; seasonal factors are revised so past values may have changed
+UMCSENT,monthend,0,Assumed known at the end of the observation month (final value)
+MICH,monthend,0,Assumed known at the end of the observation month (final value)
+GACDFSA066MSFRBPHI,monthend,0,Assumed known at the end of the observation month
+GACDISA066MSFRBNY,monthend,0,Assumed known at the end of the observation month
+FEDFUNDS,monthend,1,Monthly average known the day after the month ends; prefer DFEDTARU and DFEDTARL
+SHILLER_PRICE,monthend,1,Monthly average known after the month ends
+SHILLER_CAPE,monthend,1,Monthly average known after the month ends
+SHILLER_DIVIDEND,monthend,120,Assumed four month publication lag; not checked
+SHILLER_EARNINGS,monthend,120,Assumed four month publication lag; not checked
+USREC,exclude,0,NBER announces turning points 6 to 20 months late so any as-of value would look ahead
