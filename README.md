@@ -13,10 +13,11 @@ This repo currently contains a MATLAB pipeline that:
 
 ```
 fomc-minutes-llm/
-├── macroeconomic_data.m      # FRED series, FRED vintages, Treasury debt, meeting alignment
-├── market_data_extra.m       # S&P 500 (Yahoo Finance) and Shiller data
-├── export_csvs.m             # Combines everything into CSVs
-├── fetch_fomc_minutes.m      # FOMC minutes: download, clean, split into sections
+├── pipeline/                 # data collection scripts (run from the repository root)
+│   ├── macroeconomic_data.m  # FRED series, FRED vintages, Treasury debt, meeting alignment
+│   ├── market_data_extra.m   # S&P 500 (Yahoo Finance) and Shiller data
+│   ├── export_csvs.m         # Combines everything into CSVs
+│   └── fetch_fomc_minutes.m  # FOMC minutes: download, clean, split into sections
 └── data/
     ├── macro_market_wide.csv
     ├── fred_vintages_long.csv
@@ -33,7 +34,7 @@ fomc-minutes-llm/
 ## Requirements
 
 - MATLAB R2019b or later. No extra toolboxes are needed (the scripts use `webread` and `readcell`).
-- `fetch_fomc_minutes.m` needs MATLAB R2022a or later. It uses the Text Analytics Toolbox if installed and falls back to plain MATLAB otherwise.
+- `pipeline/fetch_fomc_minutes.m` needs MATLAB R2022a or later. It uses the Text Analytics Toolbox if installed and falls back to plain MATLAB otherwise.
 - A free [FRED API key](https://fred.stlouisfed.org/docs/api/api_key.html).
 - An internet connection.
 
@@ -45,32 +46,32 @@ fomc-minutes-llm/
    ```
    This lasts for the current MATLAB session. To set it automatically at every launch, put the same line in a `startup.m` file (not included in this repo; keep your key out of version control).
 
-2. **FOMC meeting dates** (only needed for the meeting-aligned dataset in step 5 of `macroeconomic_data.m`). `data/fomc_meeting_dates.csv` is written by `fetch_fomc_minutes.m`: a `Date` column (last day of each meeting, `yyyy-mm-dd`) and a `ReleaseDate` column (when the minutes were published), one row per scheduled meeting since 2008. It does not include unscheduled meetings or conference calls.
+2. **FOMC meeting dates** (only needed for the meeting-aligned dataset in step 5 of `pipeline/macroeconomic_data.m`). `data/fomc_meeting_dates.csv` is written by `pipeline/fetch_fomc_minutes.m`: a `Date` column (last day of each meeting, `yyyy-mm-dd`) and a `ReleaseDate` column (when the minutes were published), one row per scheduled meeting since 2008. It does not include unscheduled meetings or conference calls.
 
 3. **Yahoo and Shiller fallbacks** (only if the automatic downloads fail, see below).
 
 ## Running the pipeline
 
-Each script is split into sections. Run one section at a time (Ctrl+Enter), in this order:
+Each script is split into sections. Run one section at a time (Ctrl+Enter), in this order. Keep MATLAB's current folder at the repository root: the scripts read and write `data/` relative to it (if the current folder is `pipeline/`, they step up one level themselves).
 
 | Step | Script / section | What it does | Writes (in `data/`) |
 |------|------------------|--------------|---------------------|
-| 1 | `macroeconomic_data.m`, section 1 | Defines the series catalog (46 FRED series, flagged as revised or not) | none |
+| 1 | `pipeline/macroeconomic_data.m`, section 1 | Defines the series catalog (46 FRED series, flagged as revised or not) | none |
 | 2 | section 2 | Pulls current-vintage values for every FRED series | `fred_current.mat` |
 | 3 | section 3 | Pulls full vintage history (ALFRED) for the 17 revised series | `fred_vintages.mat` |
 | 4 | section 4 | Pulls total public debt from the Treasury FiscalData API (no key needed) | `debt_to_the_penny.csv` |
-| 5 | `market_data_extra.m` | Pulls S&P 500 daily closes and Shiller monthly data | `gspc_daily.csv`, `shiller_monthly.csv` |
-| 6 | `export_csvs.m` | Combines everything into the output CSVs | see Output files |
-| 7 (optional) | `macroeconomic_data.m`, section 5 | Builds the meeting-aligned dataset | `fomc_aligned_macro.csv`, `fomc_aligned_macro.mat` |
+| 5 | `pipeline/market_data_extra.m` | Pulls S&P 500 daily closes and Shiller monthly data | `gspc_daily.csv`, `shiller_monthly.csv` |
+| 6 | `pipeline/export_csvs.m` | Combines everything into the output CSVs | see Output files |
+| 7 (optional) | `pipeline/macroeconomic_data.m`, section 5 | Builds the meeting-aligned dataset | `fomc_aligned_macro.csv`, `fomc_aligned_macro.mat` |
 
-`export_csvs.m` needs the outputs of steps 2 to 5 and stops with an error if any are missing. Section 5 of `macroeconomic_data.m` is not required for the export.
+`pipeline/export_csvs.m` needs the outputs of steps 2 to 5 and stops with an error if any are missing. Section 5 of `pipeline/macroeconomic_data.m` is not required for the export.
 
 ### Notes on the data pulls
 
 - **FRED** requests are paced (0.6 s between calls) to stay under the rate limit. Failed series are reported as warnings with the API key masked.
 - **S&P 500 (Yahoo Finance)** uses Yahoo's unofficial chart API. If it fails, download the `^GSPC` history as CSV from finance.yahoo.com and save it as `data/raw/GSPC_yahoo_manual.csv` (needs columns `Date` and `Close`).
 - **Shiller** has no API. The script finds the current `ie_data.xls` link on [shillerdata.com](https://shillerdata.com/) and downloads it to `data/raw/`. If that fails, download the file by hand and save it as `data/raw/ie_data.xls`. If MATLAB cannot read `.xls` on your machine, convert it to `.xlsx` in Excel or Numbers and save it as `data/raw/ie_data.xlsx`.
-- **Frozen files.** `market_data_extra.m` reuses `gspc_daily.csv` and `shiller_monthly.csv` if they already exist. Set `refresh = true` at the top of the script to pull again.
+- **Frozen files.** `pipeline/market_data_extra.m` reuses `gspc_daily.csv` and `shiller_monthly.csv` if they already exist. Set `refresh = true` at the top of the script to pull again.
 - **Treasury.** If the API fails, check the field names against the [FiscalData API documentation](https://fiscaldata.treasury.gov/api-documentation/). The same API also has Treasury auction and issuance data (`auctions_query`), which could be added with the same paging pattern.
 
 ## Output files
@@ -83,7 +84,7 @@ Each script is split into sections. Run one section at a time (Ctrl+Enter), in t
 | `raw_series_long.csv` | Every series stacked: `date, series_id, value, source, frequency`. | [rows] |
 | `fomc_aligned_macro.csv` | One row per FOMC meeting with the latest known value of each series (optional, see below). | [rows] |
 
-> `export_csvs.m` also writes `raw_series_long.csv`. [Note here whether it is committed or only generated locally. GitHub rejects files over 100 MB, and the script prints each file's size so you can check.]
+> `pipeline/export_csvs.m` also writes `raw_series_long.csv`. [Note here whether it is committed or only generated locally. GitHub rejects files over 100 MB, and the script prints each file's size so you can check.]
 
 Series dictionary columns: `series_id`, `label`, `source`, `frequency`, `first_date`, `last_date`, `n_obs`, `revised`, `units`, `fred_title`, `seasonal_adjustment`, `pull_date`, `notes`. Units, FRED title, and seasonal adjustment are filled in only when `FRED_API_KEY` is set.
 
@@ -121,7 +122,7 @@ Sources: **FRED** (Federal Reserve Bank of St. Louis), **Yahoo Finance** (`^GSPC
 - **Future-dated rows are removed.** Anything dated after the pull date is cut (for example, CBO projections that run to 2036 for `GDPPOT` and `NROU`). The full projection history stays in the vintage file.
 - **Revisions are kept.** `fred_vintages_long.csv` stores each value with the real-time window in which it was current (vintages from 1990-01-01 onward).
 - **Frequency is inferred** from the median gap between observations.
-- **Validation.** `export_csvs.m` checks for duplicate `(date, series_id)` rows and for series with no data, then prints a summary of every series.
+- **Validation.** `pipeline/export_csvs.m` checks for duplicate `(date, series_id)` rows and for series with no data, then prints a summary of every series.
 
 ## Data caveats
 
@@ -141,7 +142,7 @@ These are also recorded in the `notes` column of `series_dictionary.csv`.
 
 ### FOMC minutes data
 
-`fetch_fomc_minutes.m` downloads the minutes of every scheduled FOMC meeting from 2008 onward from [federalreserve.gov](https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm) (the FOMC calendar page for recent years, the yearly historical pages for earlier ones). It currently covers 150 meetings, January 2008 to September 2026. Run it from the repository root (about 3 to 5 minutes, one request per second); re-running picks up newly released minutes.
+`pipeline/fetch_fomc_minutes.m` downloads the minutes of every scheduled FOMC meeting from 2008 onward from [federalreserve.gov](https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm) (the FOMC calendar page for recent years, the yearly historical pages for earlier ones). It currently covers 150 meetings, January 2008 to September 2026. Run it from the repository root (about 3 to 5 minutes, one request per second); re-running picks up newly released minutes.
 
 What it does:
 
