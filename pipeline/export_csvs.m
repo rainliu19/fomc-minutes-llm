@@ -1,18 +1,17 @@
 %% FOMC project: export all macro and market data to CSV
-% Reads what macroeconomic_data.m (sections 1 to 4) and market_data_extra.m saved
-% in data/, and writes four CSVs back to data/:
+% Reads what macroeconomic_data.m (sections 1 to 4) and market_data_extra.m saved in data/ and
+% writes four CSVs back to data/:
 %   raw_series_long.csv      every series stacked: date, series_id, value, source, frequency
-%   macro_market_wide.csv    one row per date, one column per series (blank where a series has no value that day)
-%   fred_vintages_long.csv   revision history for the revised series: date, series_id, value, rtStart, rtEnd
+%   macro_market_wide.csv    one row per date, one column per series (blank where no value)
+%   fred_vintages_long.csv   revision history of the revised series: date, series_id, value, rtStart, rtEnd
 %   series_dictionary.csv    one row per series: label, source, frequency, first/last date, units, notes
-% Nothing is filled forward, so no value appears before it was dated. Missing values are dropped
-% from the long file and show as NaN in the wide file. Run one section at a time.
-% FRED_API_KEY (from startup.m) is only used to look up units and titles. Without it those stay blank.
+% Nothing is filled forward. Missing values are dropped from the long file and NaN in the wide
+% file. Run one section at a time. FRED_API_KEY (from startup.m) only looks up units and titles.
 
 clear; clc;
-% These scripts read and write data/ relative to the repository root. If MATLAB's current folder
-% is pipeline/ (for example after "Change Folder" in the Editor), step up one level.
+% Paths are relative to the repository root: step up if the current folder is pipeline/.
 if endsWith(pwd, "pipeline"), cd(".."); end
+% Check that the files the earlier scripts save are all there
 outDir = "data";
 apiKey = getenv("FRED_API_KEY");
 need = ["fred_current.mat","fred_vintages.mat","debt_to_the_penny.csv","gspc_daily.csv","shiller_monthly.csv"];
@@ -21,10 +20,12 @@ for f = need
 end
 
 %% 1. Load every source into one list of series
+% FRED series first
 load(fullfile(outDir,"fred_current.mat"),"S","catalog");
 ids = string(catalog(:,1));  labels = string(catalog(:,2));  revised = cell2mat(catalog(:,3));
 pullFred = fileDate(fullfile(outDir,"fred_current.mat"));
 
+% Every source becomes one entry in the list L
 L = {};     % each entry: id, label, source, revised, pull, T (date, value)
 for k = 1:numel(ids)
     if isfield(S, ids(k))
@@ -34,6 +35,7 @@ for k = 1:numel(ids)
     end
 end
 
+% Then the S&P 500, Shiller's series and Treasury debt
 g = readDateCsv(fullfile(outDir,"gspc_daily.csv"));
 L{end+1} = mk("GSPC", "S&P 500 index (Yahoo ^GSPC)", "Yahoo Finance", false, ...
               fileDate(fullfile(outDir,"gspc_daily.csv")), g(:,["date","value"]));
@@ -53,6 +55,7 @@ L{end+1} = mk("TREASURY_DEBT_TOTAL", "Total public debt outstanding", "US Treasu
               fileDate(fullfile(outDir,"debt_to_the_penny.csv")), ...
               table(d.date, d.totalPublicDebt, 'VariableNames', {'date','value'}));
 
+% Pull each entry's facts into parallel columns (id, label, source, frequency, ...)
 n = numel(L);
 sid = strings(n,1); lab = strings(n,1); src = strings(n,1); rev = false(n,1);
 pull = strings(n,1); freq = strings(n,1);
@@ -63,6 +66,7 @@ end
 fprintf("Loaded %d series (%d FRED, %d other)\n", n, sum(src=="FRED"), sum(src~="FRED"));
 
 %% 2. Long file: every series stacked
+% Stack the series one under another
 parts = cell(n,1);
 for i = 1:n
     T = L{i}.T;  m = height(T);
@@ -75,6 +79,7 @@ writetable(raw, fullfile(outDir,"raw_series_long.csv"));
 fprintf("raw_series_long.csv      %8d rows\n", height(raw));
 
 %% 3. Wide file: one row per date, one column per series
+% Place each series into a column of a date-by-series grid (blank where there is no value)
 allDates = unique(raw.date);
 W = nan(numel(allDates), n);
 for i = 1:n
@@ -89,6 +94,7 @@ fprintf("macro_market_wide.csv    %8d rows x %d columns\n", height(wide), width(
 
 %% 4. Vintage file: revision history of the revised FRED series
 load(fullfile(outDir,"fred_vintages.mat"),"V");
+% Stack the revision history of the revised series
 vids = string(fieldnames(V));
 vparts = cell(numel(vids),1);
 for i = 1:numel(vids)
@@ -102,6 +108,7 @@ writetable(vint, fullfile(outDir,"fred_vintages_long.csv"));
 fprintf("fred_vintages_long.csv   %8d rows (%d series)\n", height(vint), numel(vids));
 
 %% 5. Series dictionary
+% Look up units and titles on FRED (needs the key); other sources have fixed units
 units = strings(n,1);  ftitle = strings(n,1);  sa = strings(n,1);
 for i = 1:n
     if src(i) == "FRED"
@@ -118,6 +125,7 @@ for i = 1:n
         units(i) = otherUnits(sid(i));
     end
 end
+% First date, last date, count and a plain-language note for each series
 firstD = strings(n,1);  lastD = strings(n,1);  nobs = zeros(n,1);  notes = strings(n,1);
 for i = 1:n
     dd = L{i}.T.date;  nobs(i) = numel(dd);
@@ -126,6 +134,7 @@ for i = 1:n
     end
     notes(i) = noteFor(sid(i));
 end
+% Write the dictionary
 dict = table(sid, lab, src, freq, firstD, lastD, nobs, rev, units, ftitle, sa, pull, notes, ...
     'VariableNames', {'series_id','label','source','frequency','first_date','last_date','n_obs', ...
                       'revised','units','fred_title','seasonal_adjustment','pull_date','notes'});
@@ -133,6 +142,7 @@ writetable(dict, fullfile(outDir,"series_dictionary.csv"));
 fprintf("series_dictionary.csv    %8d rows\n", height(dict));
 
 %% 6. Quick validation
+% Sanity checks: no duplicates, no empty series, files small enough for GitHub
 dup = height(raw) - height(unique(raw(:,["date","series_id"])));
 fprintf("\nDuplicate (date, series_id) rows: %d (should be 0)\n", dup);
 fprintf("Series with no data: %d (should be 0)\n", sum(nobs == 0));
@@ -148,6 +158,7 @@ end
 
 %% ---------- Local functions ----------
 function e = mk(id, label, source, revised, pull, T)
+    % Package one series: keep date and value, drop missing and future-dated rows
     T = T(:,["date","value"]);
     T = T(~isnan(T.value) & T.date <= datetime("today"),:);   % drop future-dated rows (CBO projections run to 2036)
     T = sortrows(T,"date");
@@ -163,11 +174,13 @@ function T = readDateCsv(file)
 end
 
 function s = fileDate(f)
+    % The file's last-modified date, used as the pull date
     d = dir(f);
     s = string(datetime(d(1).datenum,"ConvertFrom","datenum"),"yyyy-MM-dd");
 end
 
 function f = inferFreq(d)
+    % Guess the frequency from the typical gap between dates
     if numel(d) < 2, f = "unknown"; return; end
     m = median(days(diff(d)));
     if m <= 4,        f = "daily";
@@ -179,6 +192,7 @@ function f = inferFreq(d)
 end
 
 function mt = getFredMeta(id, apiKey)
+    % Ask FRED for a series' title, units and seasonal adjustment
     r = webread("https://api.stlouisfed.org/fred/series", "series_id",id, "api_key",apiKey, ...
                 "file_type","json", weboptions("Timeout",60));
     s = r.seriess;
@@ -188,6 +202,7 @@ function mt = getFredMeta(id, apiKey)
 end
 
 function u = otherUnits(id)
+    % Units for the non-FRED series
     if id == "GSPC",                         u = "Index level";
     elseif id == "SHILLER_GS10",             u = "Percent";
     elseif id == "SHILLER_CAPE",             u = "Ratio";
@@ -199,6 +214,7 @@ function u = otherUnits(id)
 end
 
 function n = noteFor(id)
+    % Caveats worth knowing when using each series
     n = "";
     if id == "SHILLER_PRICE"
         n = "Monthly average of daily closes, so not known until month end. Latest row is a partial month";

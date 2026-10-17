@@ -1,0 +1,4 @@
+[
+  {"id": "qwen3", "label": "Qwen3 4B (best quality)", "name": "fomc-qwen3"},
+  {"id": "small", "label": "Qwen2.5 1.5B (quick, less careful)", "name": "fomc-small"}
+]

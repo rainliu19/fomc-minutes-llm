@@ -1,2 +1,12 @@
-# FOMC minutes PDFs: archive copies, re-downloaded by fetch_fomc_minutes.m
+# Minutes PDFs: archive copies, re-downloaded by fetch_fomc_minutes.m
 data/minutes/pdf/
+
+# Agent traces (one JSONL file per run)
+logs/
+
+# Python environments and caches
+.venv/
+__pycache__/
+
+# macOS
+.DS_Store
