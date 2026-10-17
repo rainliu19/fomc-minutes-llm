@@ -40,6 +40,10 @@
 %   Review of the Economic and Financial Situation"); the combined text goes
 %   in the first of those columns and the other is left empty.
 
+% These scripts read and write data/ relative to the repository root. If MATLAB's current folder
+% is pipeline/ (for example after "Change Folder" in the Editor), step up one level.
+if endsWith(pwd, "pipeline"), cd(".."); end
+
 startYear = 2008;
 baseURL = "https://www.federalreserve.gov";
 calURL  = baseURL + "/monetarypolicy/fomccalendars.htm";

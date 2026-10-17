@@ -9,6 +9,9 @@
 % open it and use Save As -> .mlx.
 
 clear; clc;
+% These scripts read and write data/ relative to the repository root. If MATLAB's current folder
+% is pipeline/ (for example after "Change Folder" in the Editor), step up one level.
+if endsWith(pwd, "pipeline"), cd(".."); end
 apiKey    = getenv("FRED_API_KEY");
 assert(~isempty(apiKey), "Set FRED_API_KEY first (see header).");
 startDate = "1990-01-01";

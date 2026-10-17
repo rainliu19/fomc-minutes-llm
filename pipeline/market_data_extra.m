@@ -14,6 +14,9 @@
 %      Set refresh = true below to pull again.
 
 clear; clc;
+% These scripts read and write data/ relative to the repository root. If MATLAB's current folder
+% is pipeline/ (for example after "Change Folder" in the Editor), step up one level.
+if endsWith(pwd, "pipeline"), cd(".."); end
 startDate = datetime(1990,1,1);
 outDir    = "data";
 rawDir    = fullfile(outDir,"raw");

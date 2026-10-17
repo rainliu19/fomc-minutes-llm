@@ -10,6 +10,9 @@
 % FRED_API_KEY (from startup.m) is only used to look up units and titles. Without it those stay blank.
 
 clear; clc;
+% These scripts read and write data/ relative to the repository root. If MATLAB's current folder
+% is pipeline/ (for example after "Change Folder" in the Editor), step up one level.
+if endsWith(pwd, "pipeline"), cd(".."); end
 outDir = "data";
 apiKey = getenv("FRED_API_KEY");
 need = ["fred_current.mat","fred_vintages.mat","debt_to_the_penny.csv","gspc_daily.csv","shiller_monthly.csv"];
