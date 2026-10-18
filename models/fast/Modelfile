@@ -1,0 +1,6 @@
+# Local model for the FOMC agent: IBM Granite 3.3 2B (2.5B parameters, Apache 2.0) with an 8K context window.
+# num_ctx: Ollama's default window is much smaller and silently cuts off long prompts, and the
+# add-on cannot set it (see docs/MATLAB_GAPS.md).
+# Build:  ollama pull granite3.3:2b && ollama create fomc-fast -f models/fast/Modelfile
+FROM granite3.3:2b
+PARAMETER num_ctx 8192

@@ -49,5 +49,10 @@ The same 10 questions (`tests/bench_live.py`), 8 GB M1, after a restart:
 | Model | Checks passed | Median answer | Notes |
 |---|---|---|---|
 | Qwen3 4B (default) | 20 of 20 | 15 s | Cites paragraph ids. Swap about 3.2 GB while loaded. |
-| Qwen2.5 1.5B (quick) | 19 of 20 | 6 s | Rarely cites ids, so the page warns "unverified". Correct on the unreleased-meeting question, but worded differently than the check expects. Swap about 1.3 GB. |
+| Qwen2.5 1.5B (dropped) | 19 of 20 | 6 s | Rarely cites ids, so the page warns "unverified". Correct on the unreleased-meeting question, but worded differently than the check expects. Swap about 1.3 GB. |
 | Llama 3.2 3B (dropped) | 19 of 20 | 15 s | Never cited ids, made more tool calls, and answered the unreleased June 2022 question with May's decision. |
+| Qwen2.5 0.5B (dropped) | 12 to 14 of 20 (varies run to run) | 3 s | Often wrong: gave a made-up decision for a meeting whose minutes were not public yet, and its High-effort analysis failed its own checks. Not offered. |
+| Qwen2.5 3B (balanced) | 20 of 20 | 11 s | Often does not cite paragraph ids, so the page warns "unverified". Swap about 2.3 GB while loaded. |
+| IBM Granite 3.3 2B (compact) | 20 of 20 | 12 s | 2.5B parameters, Apache 2.0. Not faster than Qwen2.5 3B here (decodes quicker, reads the prompt slower). Often does not cite ids, and its High-effort analysis took 70 s and failed its own checks, so use it for chat. Swap about 2.7 GB. |
+
+The page offers Qwen3 4B (best quality), Qwen2.5 3B (balanced) and IBM Granite 3.3 2B (compact). Questions about a meeting whose minutes are not public yet are answered by the app itself in about 1 second, without asking the model, so no model can invent a decision for them.
