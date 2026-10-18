@@ -1,4 +1,5 @@
 [
-  {"id": "qwen3", "label": "Qwen3 4B (best quality)", "name": "fomc-qwen3"},
-  {"id": "small", "label": "Qwen2.5 1.5B (quick, less careful)", "name": "fomc-small"}
+  {"id": "qwen3", "label": "Best quality: Qwen3 4B", "name": "fomc-qwen3"},
+  {"id": "mid", "label": "Balanced: Qwen2.5 3B", "name": "fomc-mid"},
+  {"id": "fast", "label": "Compact: IBM Granite 3.3 2B", "name": "fomc-fast"}
 ]

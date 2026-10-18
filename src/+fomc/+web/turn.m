@@ -71,7 +71,7 @@ structured = plainStructured(structured);
 if format == "analysis" && isstruct(structured) && isfield(structured, "groundingOk") && structured.groundingOk
     % show the checked summary, not the draft
     answer = string(structured.summary) + newline + "Policy stance: " + string(structured.policyStance) + ".";
-elseif format == "analysis"
+elseif format == "analysis" && ~any(string({calls.name}) == "prefetchNotice")
     answer = "The analysis did not pass its checks, so it should not be relied on. The model's draft was:" + newline + answer;
 end
 

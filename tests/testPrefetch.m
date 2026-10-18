@@ -46,6 +46,43 @@ classdef testPrefetch < matlab.unittest.TestCase
             tc.verifyFalse(contains(text, "lower the target"), "the decision itself must not appear");
         end
 
+        function anUnreleasedMeetingIsAnsweredWithoutAskingTheModel(tc)
+            m = fomc.llm.Mock({struct("content", "The Committee cut rates to zero.")});    % a made-up decision
+            s = fomc.newSession(datetime(2020,3,1), tc.cfg, Llm=@m.call, Data=tc.D, TracePath=string(tempname)+".jsonl");
+            [s, answer, structured, calls] = fomc.runTurn(s, "What did the Committee decide in March 2020?");
+            tc.verifyEmpty(m.Seen, "the model must not be called");
+            tc.verifySubstring(answer, "not public as of 2020-03-01");
+            tc.verifySubstring(answer, "2020-01-29");
+            tc.verifyFalse(contains(answer, ["2020-04-08", "cut", "zero"]));
+            tc.verifyEmpty(structured);
+            tc.verifyEqual([calls.name], "prefetchNotice");
+            tc.verifyEqual(numel(s.history.Messages), 2);
+        end
+
+        function aFollowUpAfterTheDirectAnswerReachesTheModel(tc)
+            m = fomc.llm.Mock({struct("content", "Rates were held in January.")});
+            s = fomc.newSession(datetime(2020,3,1), tc.cfg, Llm=@m.call, Data=tc.D, TracePath=string(tempname)+".jsonl");
+            s = fomc.runTurn(s, "What did the Committee decide in March 2020?");
+            [~, answer] = fomc.runTurn(s, "And in January 2020?");
+            tc.verifyEqual(answer, "Rates were held in January.");
+            tc.verifyEqual(numel(m.Seen), 1);
+        end
+
+        function anAnalysisOfAnUnreleasedMeetingIsAlsoAnsweredDirectly(tc)
+            m = fomc.llm.Mock({struct("content", "READY")});
+            [answer, structured] = fomc.runAgent("Analyze it.", datetime(2020,3,1), Format="analysis", ...
+                MeetingDate=datetime(2020,3,18), Config=tc.cfg, Llm=@m.call, Data=tc.D, TracePath=string(tempname)+".jsonl");
+            tc.verifyEmpty(m.Seen);
+            tc.verifySubstring(answer, "not public as of");
+            tc.verifyEmpty(structured);
+        end
+
+        function theWebTurnShowsTheDirectAnswerWithoutAFailedAnalysisBanner(tc)
+            out = webTurn(tc, "ignored", "What did the Committee decide in March 2020?");
+            tc.verifySubstring(string(out.answer), "not public as of");
+            tc.verifyFalse(contains(string(out.answer), "did not pass its checks"));
+        end
+
         function anIsoDateForAnUnreleasedMeetingIsHandledTheSameWay(tc)
             [text, recs] = fomc.focus.prefetch(tc.ctx, "What was the vote at the 2020-03-18 meeting?", false);
             tc.verifyEqual([recs.name], "prefetchNotice");

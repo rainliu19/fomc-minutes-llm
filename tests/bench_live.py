@@ -8,6 +8,7 @@ code (decision, vote, copied figures). Prints seconds, model and tool calls, tok
 verified citations. Stops early on critical memory pressure. Uses the real model (about 4 minutes);
 the unit tests need no model.
 """
+import http.cookiejar
 import json
 import re
 import subprocess
@@ -24,9 +25,13 @@ MODEL = sys.argv[2] if len(sys.argv) > 2 else ""   # a model id; empty is the de
 
 
 # Helper: send JSON to the app and return its JSON reply
+# One browser: the cookie keeps every message of a session under the same owner
+OPENER = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(http.cookiejar.CookieJar()))
+
+
 def post(path, body, timeout=900):
     req = urllib.request.Request(BASE + path, json.dumps(body).encode(), {"Content-Type": "application/json"})
-    return json.load(urllib.request.urlopen(req, timeout=timeout))
+    return json.load(OPENER.open(req, timeout=timeout))
 
 
 # Helper: macOS memory pressure level (1 normal, 2 warning, 4 critical)
@@ -98,7 +103,8 @@ CASES = [
 def main():
     # Opening the page calls /info, which starts loading the model; then the user types
     # Opening the page starts loading the model; give it time, as a user typing would
-    urllib.request.urlopen(BASE + "/info?model=" + MODEL, timeout=60).read()
+    OPENER.open(BASE + "/", timeout=60).read()
+    OPENER.open(BASE + "/info?model=" + MODEL, timeout=60).read()
     time.sleep(25)
     results = []
     # Run each case: stop if memory is critical, ask the questions in one session, then check the last answer
