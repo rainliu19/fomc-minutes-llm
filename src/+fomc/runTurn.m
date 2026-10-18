@@ -37,6 +37,19 @@ if found ~= ""
         s.known = union(s.known, fomc.guard.idsIn(pre(k).result));
     end
 end
+% Minutes that are not public yet: answer directly. The model is not asked, so it cannot invent a decision.
+isNotice = ~isempty(pre) && any(string({pre.name}) == "prefetchNotice");
+if isNotice
+    answer = pre(find(string({pre.name}) == "prefetchNotice", 1)).result;
+    first = userMsg;
+    if isempty(s.history.Messages)
+        first = s.contextBlock + newline + newline + userMsg;
+    end
+    s.history = addUserMessage(s.history, first);
+    s.history = addResponseMessage(s.history, struct("role", "assistant", "content", answer));
+    fomc.trace.logEvent(ctx, "final_answer", struct("text", answer, "nToolCalls", numel(calls), "finished", true));
+    return
+end
 if nvp.Format == "analysis"
     % The analysis is written in a later call, so skip the free-text draft
     question = question + newline + "(Use the information above and the tools to gather evidence. " + ...

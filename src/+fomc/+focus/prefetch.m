@@ -48,7 +48,10 @@ if decisionIntent
         latest = latestReleased(M, ctx);
         text = "[" + why + " are not public on the anchor date, so there is no decision to report for it. " + ...
             "The latest minutes available are for the meeting that ended " + fomc.util.fmtDate(latest) + ". Say this plainly.]";
-        recs(end+1) = struct("name", "prefetchNotice", "args", struct(), "result", text, "ok", true, "ms", 0);
+        % The record holds the sentence the reader sees: the harness answers this case itself
+        reply = why + " are not public as of " + fomc.util.fmtDate(ctx.asOf) + ", so there is no decision to report for it. " + ...
+            "The latest minutes available are for the meeting that ended " + fomc.util.fmtDate(latest) + ".";
+        recs(end+1) = struct("name", "prefetchNotice", "args", struct(), "result", reply, "ok", true, "ms", 0);
         return
     % Found: fetch its decision card through the normal tool path (guardrails and trace apply)
     elseif found == "yes"
