@@ -1,0 +1,5 @@
+# Local model for the FOMC agent: Qwen2.5 1.5B with an 8K context window. The fast option; also compared on the Evaluation page.
+# num_ctx: Ollama's default window silently cuts off long prompts (see docs/MATLAB_GAPS.md).
+# Build:  ollama pull qwen2.5:1.5b && ollama create fomc-q25-15 -f models/q25-15/Modelfile
+FROM qwen2.5:1.5b
+PARAMETER num_ctx 8192

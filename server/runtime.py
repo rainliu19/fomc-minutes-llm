@@ -194,13 +194,21 @@ class Watchdog:
 # --- MODELS ---
 
 def load_models() -> list[dict]:
-    """The models the page offers, from models/models.json: id, label, name (the Ollama name)."""
+    """The models the page offers, from models/models.json: id, label, name (the Ollama name).
+
+    Entries with "offered": false are only for the evaluation (tests/bench_live.py); use load_all_models for those.
+    """
+    return [m for m in load_all_models() if m.get("offered", True)]
+
+
+def load_all_models() -> list[dict]:
+    """Every model in models/models.json, including the evaluation-only ones."""
     return json.loads((MODELS_DIR / "models.json").read_text(encoding="utf-8"))
 
 
 def model_entry(model_id: str | None) -> dict:
-    """The entry for an id; the first model in the list is the default."""
-    models = load_models()
+    """The entry for an id (evaluation-only models included); the first model in the list is the default."""
+    models = load_all_models()
     return next((m for m in models if m["id"] == model_id), models[0])
 
 

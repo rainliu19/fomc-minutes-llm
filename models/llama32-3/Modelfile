@@ -1,0 +1,5 @@
+# Evaluation-only model: Llama 3.2 3B, compared in the Evaluation page (not offered in the chat dropdown).
+# num_ctx: Ollama's default window silently cuts off long prompts (see docs/MATLAB_GAPS.md).
+# Build:  ollama pull llama3.2:3b && ollama create fomc-llama32-3 -f models/llama32-3/Modelfile
+FROM llama3.2:3b
+PARAMETER num_ctx 8192
