@@ -203,9 +203,9 @@ class ModelList(unittest.TestCase):
         self.assertEqual(len({m["id"] for m in self.models}), len(self.models))
         self.assertEqual(len({m["name"] for m in self.models}), len(self.models))
 
-    def test_the_first_model_is_the_default_and_at_most_three_are_offered(self):
+    def test_the_first_model_is_the_default_and_three_are_offered(self):
         self.assertEqual(self.models[0]["id"], "qwen3")
-        self.assertLessEqual(len([m for m in self.models if m.get("offered", True)]), 3)
+        self.assertEqual([m["id"] for m in self.models if m.get("offered", True)], ["qwen3", "fast", "q25-15"])
 
     def test_every_model_has_a_parameter_count_for_the_evaluation(self):
         for m in self.models:

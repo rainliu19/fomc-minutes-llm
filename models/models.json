@@ -1,10 +1,10 @@
 [
   {"id": "qwen3", "label": "Best quality: Qwen3 4B", "name": "fomc-qwen3", "params_b": 4.0},
-  {"id": "mid", "label": "Balanced: Qwen2.5 3B", "name": "fomc-mid", "params_b": 3.1},
-  {"id": "fast", "label": "Compact: IBM Granite 3.3 2B", "name": "fomc-fast", "params_b": 2.5},
+  {"id": "mid", "label": "Qwen2.5 3B", "name": "fomc-mid", "params_b": 3.1, "offered": false},
+  {"id": "fast", "label": "Balanced: IBM Granite 3.3 2B", "name": "fomc-fast", "params_b": 2.5},
   {"id": "q25-05", "label": "Qwen2.5 0.5B", "name": "fomc-q25-05", "params_b": 0.5, "offered": false},
   {"id": "q3-06", "label": "Qwen3 0.6B (thinking build)", "name": "fomc-q3-06", "params_b": 0.6, "offered": false},
-  {"id": "q25-15", "label": "Qwen2.5 1.5B", "name": "fomc-q25-15", "params_b": 1.5, "offered": false},
+  {"id": "q25-15", "label": "Fast: Qwen2.5 1.5B", "name": "fomc-q25-15", "params_b": 1.5},
   {"id": "q3-17", "label": "Qwen3 1.7B (thinking build)", "name": "fomc-q3-17", "params_b": 1.7, "offered": false},
   {"id": "llama32-3", "label": "Llama 3.2 3B", "name": "fomc-llama32-3", "params_b": 3.2, "offered": false}
 ]

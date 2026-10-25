@@ -1,4 +1,4 @@
-# Local model for the FOMC agent: Qwen2.5 3B with an 8K context window. A middle option between speed and care.
+# Local model for the FOMC agent: Qwen2.5 3B with an 8K context window. No longer offered in the chat dropdown (Granite 3.3 2B beat it on accuracy and memory); kept for the Evaluation page.
 # num_ctx: Ollama's default window is much smaller and silently cuts off long prompts, and the
 # add-on cannot set it (see docs/MATLAB_GAPS.md).
 # Build:  ollama pull qwen2.5:3b && ollama create fomc-mid -f models/mid/Modelfile
