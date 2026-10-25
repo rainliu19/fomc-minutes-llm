@@ -28,6 +28,10 @@
   .top { flex: none; }
   .top .in { padding: 14px 20px 12px; }
   h1 { font-size: 24px; font-weight: normal; margin: 0 0 4px; letter-spacing: .2px; }
+  .evalbtn { display: inline-block; padding: 7px 14px; border: 1px solid #2f6aa3; border-radius: 4px; background: #2f6aa3; color: #fff;
+             font-weight: 600; font-size: 14px; text-decoration: none; white-space: nowrap; }
+  .evalbtn:hover { background: #25598c; border-color: #25598c; }
+  .controls .col2 { justify-self: end; }
   .blurb { margin: 0; max-width: 760px; color: #d6e0ea; font-size: 14.5px; }
   .layout { display: flex; flex: 1; min-height: 0; }
   aside { width: 270px; flex: none; overflow-y: auto; background: var(--side); border-right: 1px solid var(--line); padding: 12px;
@@ -47,8 +51,9 @@
   .chat:hover button, .chat.active button { display: inline; }
   .chat button:hover { color: var(--blue); }
   .empty { color: var(--muted); font-size: 13px; padding: 4px 8px; }
-  .controls { flex: none; display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin: 0 0 14px;
+  .controls { flex: none; display: grid; grid-template-rows: auto auto; grid-auto-flow: column; justify-content: space-between; gap: 10px 16px; align-items: center; margin: 0 0 14px;
               padding: 10px 12px; background: var(--card); border: 1px solid var(--line); border-radius: 4px; }
+  @media (max-width: 640px) { .controls { grid-auto-flow: row; justify-content: stretch; } .controls .col2 { justify-self: start; } }
   .field { display: flex; align-items: center; gap: 8px; }
   label, .lab { font-size: 13px; color: var(--muted); }
   input, select, textarea, button { font: inherit; color: var(--text); background: var(--card);
@@ -132,7 +137,6 @@
   <button id="menu" type="button">Chats</button>
   <div class="controls">
     <div class="field"><label for="asof">As of date</label><input type="date" id="asof"></div>
-    <div class="field"><label for="model">Model (runs locally via Ollama)</label><select id="model"></select></div>
     <div class="field">
       <span class="lab">Effort</span>
       <span class="seg" id="effort">
@@ -140,6 +144,8 @@
       </span>
       <span id="efforthint"></span>
     </div>
+    <div class="field col2"><label for="model">Model (runs locally via Ollama)</label><select id="model"></select></div>
+    <a class="evalbtn col2" href="/evaluation" title="Accuracy, speed and memory of every local model, with our agent and as a baseline">Compare model accuracy and speed &rarr;</a>
   </div>
 
   <div id="scroll">

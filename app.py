@@ -116,6 +116,28 @@ def info(model: str = ""):
     return data
 
 
+@app.get("/evaluation")
+def evaluation_page():
+    return FileResponse(HERE / "static" / "evals.html")
+
+
+@app.get("/evals")
+def evals():
+    """Every model's saved evaluation (evals/<modelId>.json from tests/bench_live.py), smallest model first."""
+    runs = []
+    for path in sorted((HERE / "evals").glob("*.json")):
+        if path.name != "key.json":
+            runs.append(json.loads(path.read_text(encoding="utf-8")))
+    runs.sort(key=lambda r: r["summary"].get("params_b") or 0)
+    return runs
+
+
+@app.get("/evals/key")
+def evals_key():
+    """The 50 questions, so the Evaluation page can show each question's text."""
+    return json.loads((HERE / "evals" / "key.json").read_text(encoding="utf-8"))
+
+
 @app.post("/chat")
 def chat(request: ChatRequest, owner: str = Depends(owner_of)):
     session_id = clean_session_id(request.session_id)

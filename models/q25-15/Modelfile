@@ -1,0 +1,5 @@
+# Evaluation-only model: Qwen2.5 1.5B, compared in the Evaluation page (not offered in the chat dropdown).
+# num_ctx: Ollama's default window silently cuts off long prompts (see docs/MATLAB_GAPS.md).
+# Build:  ollama pull qwen2.5:1.5b && ollama create fomc-q25-15 -f models/q25-15/Modelfile
+FROM qwen2.5:1.5b
+PARAMETER num_ctx 8192
