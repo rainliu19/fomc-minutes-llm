@@ -5,7 +5,8 @@ function r = checkGrounding(structured, ctx, calls, knownIds)
 %
 %   evidence: each cited id must exist, belong to minutes public on the anchor date, and
 %   have been returned by a tool this session; the harness then supplies the exact quote.
-%   dataCited: each figure must match a tool result or the snapshot, within rounding.
+%   dataCited: each figure must match a tool result or the snapshot, within rounding. A
+%   getPolicyPath result counts for the rate target on any day it covers.
 %   Cannot catch: a real paragraph cited for a claim it does not support.
 
 failures = strings(0, 1);
@@ -119,7 +120,40 @@ for c = calls(:).'
         end
     end
 end
+% Then the rate target on every day a getPolicyPath call covered
+for c = calls(:).'
+    if c.name == "getPolicyPath" && c.ok
+        [s, d, v] = pathValues(ctx, c.result);
+        series = [series; s]; date = [date; d]; value = [value; v]; %#ok<AGROW>
+    end
+end
 known = struct("series", series, "date", date, "value", value);
+end
+
+function [series, date, value] = pathValues(ctx, result)
+% A rate path states the target on every day it covers (it only changes on the dates listed),
+% so the target counts as shown from the day before the earliest date it mentions to the day
+% after its end (a change from a meeting on its last day takes effect the next day).
+% DFEDTAR before the range began in December 2008, DFEDTARU and DFEDTARL after.
+series = strings(0, 1); date = strings(0, 1); value = zeros(0, 1);
+try
+    r = jsondecode(result);
+catch
+    return
+end
+from = datetime(r.span.startDate);
+for f = ["currentRun", "previousRun"]
+    if isfield(r, f)
+        from = min(from, datetime(r.(f).startDate));
+    end
+end
+[~, levels] = fomc.data.ratePath(ctx.D, ctx.asOf);
+L = levels(levels.date >= from - caldays(1) & levels.date <= datetime(r.span.endDate) + caldays(1), :);
+oneTarget = L.date < datetime(2008,12,16);
+R = L(~oneTarget, :);
+series = [repmat("DFEDTAR", sum(oneTarget), 1); repmat("DFEDTARU", height(R), 1); repmat("DFEDTARL", height(R), 1)];
+date = [fomc.util.fmtDate(L.date(oneTarget)); fomc.util.fmtDate(R.date); fomc.util.fmtDate(R.date)];
+value = [L.upper(oneTarget); R.upper; R.lower];
 end
 
 function v = fieldOr(s, name)

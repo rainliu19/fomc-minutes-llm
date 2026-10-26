@@ -34,6 +34,12 @@ t = openAIFunction("getDecision", ...
 t = addParameter(t, "meetingDate", "type", "string", "description", "Last day of the meeting, YYYY-MM-DD, from listMeetings.");
 specs{end+1} = {"getDecision", @fomc.tools.getDecision, t, true};
 
+t = openAIFunction("getPolicyPath", ...
+    "How the rate target moved over several meetings: changes, runs, holds, dissents. Latest 8 meetings (about a year) unless you pass dates.");
+t = addParameter(t, "startDate", "type", "string", "description", "YYYY-MM-DD.", RequiredParameter=false);
+t = addParameter(t, "endDate", "type", "string", "description", "YYYY-MM-DD.", RequiredParameter=false);
+specs{end+1} = {"getPolicyPath", @fomc.tools.getPolicyPath, t, true};
+
 t = openAIFunction("searchMinutes", ...
     "Find paragraphs in the minutes mentioning a word or phrase, newest first, each with an id. Matches words, not meaning, so try several wordings. Searches the focus window unless you pass dates.");
 t = addParameter(t, "query", "type", "string", "description", "A short phrase such as 'balance sheet runoff'. Use | for alternatives: 'tariff|trade policy'.");

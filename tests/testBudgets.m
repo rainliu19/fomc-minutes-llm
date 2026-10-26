@@ -22,7 +22,9 @@ classdef testBudgets < matlab.unittest.TestCase
     % Each test below is named for what it checks
     methods (Test)
         function theToolsOfferedToTheModelStaySmall(tc)
-            tc.verifyLessThanOrEqual(schemaChars(), 3600);
+            % Raised from 3600 for getPolicyPath (about 330 characters, most of it the date
+            % parameters); the first-turn prompt budget below still applies
+            tc.verifyLessThanOrEqual(schemaChars(), 3750);
         end
 
         function getSnapshotIsRunByTheHarnessNotOfferedToTheModel(tc)
