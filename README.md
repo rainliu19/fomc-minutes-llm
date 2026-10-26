@@ -39,6 +39,7 @@ Open http://localhost:8787. It starts Ollama and MATLAB, checks memory first, an
 | `server/` | Python helpers behind `app.py`: start Ollama and MATLAB, check memory, save chats, shut everything down. |
 | `static/` | The chat page (one HTML file): chat history on the left, model and effort pickers. |
 | `src/` | The agent, written in MATLAB (`src/+fomc`, below). |
+| `skills/` | Model-readable skill instructions, rubrics and output schemas. |
 | `pipeline/` | MATLAB scripts that download and clean the data (FRED, Yahoo, Shiller, Treasury, the minutes). Run them only to refresh data. |
 | `data/` | The collected data: CSVs, and one text file per set of minutes in `data/minutes/`. The agent reads these. |
 | `tests/` | Automated checks: MATLAB tests (`buildtool test`), Python tests, and `bench_live.py`, which times the real model. |
@@ -59,6 +60,7 @@ Open http://localhost:8787. It starts Ollama and MATLAB, checks memory first, an
 | `+retrieve/` | Finds the paragraphs that best match a question. |
 | `+guard/` | The checks: no future dates, real citations, correct figures. |
 | `+analysis/` | The structured analysis (the High effort level). |
+| `+skills/` | Loads skill instructions and runs the validated structured scoring workflow. |
 | `+llm/` | Talks to the local model (and a fake model for tests). |
 | `+history/` | Keeps the conversation short enough for the model. |
 | `+trace/` | Writes the log of everything the agent did. |

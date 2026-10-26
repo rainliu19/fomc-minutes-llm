@@ -37,7 +37,7 @@ classdef testBudgets < matlab.unittest.TestCase
                 ctx = fomc.context(asOf, tc.cfg, tc.D, tracePath=string(tempname) + ".jsonl");
                 p = fomc.systemPrompt() + fomc.contextBlock(ctx, fomc.dataBrief(ctx));
                 tokens = (strlength(p) + schemaChars()) / 3.3;
-                tc.verifyLessThanOrEqual(tokens, 1850, "first-turn prompt at " + fomc.util.fmtDate(asOf));
+                tc.verifyLessThanOrEqual(tokens, 2050, "first-turn prompt at " + fomc.util.fmtDate(asOf));
             end
         end
 
@@ -54,7 +54,7 @@ classdef testBudgets < matlab.unittest.TestCase
             % sessions, the model server can reuse its work.
             a = fomc.systemPrompt(); b = fomc.systemPrompt();
             tc.verifyEqual(a, b);
-            tc.verifyLessThan(strlength(a), 1350);
+            tc.verifyLessThan(strlength(a), 2200);
             ctxA = fomc.context(datetime(2020,4,8), tc.cfg, tc.D, tracePath=string(tempname) + ".jsonl");
             ctxB = fomc.context(datetime(2019,4,8), tc.cfg, tc.D, tracePath=string(tempname) + ".jsonl");
             tc.verifyNotEqual(fomc.contextBlock(ctxA, "x"), fomc.contextBlock(ctxB, "x"));

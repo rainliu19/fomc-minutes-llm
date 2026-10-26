@@ -56,12 +56,33 @@ Each question gets a default span of minutes: the last 3 years before the anchor
 | `getSeries` | History of up to 5 series as known at the anchor |
 | `describeSeries` | What a series is and when each value becomes public |
 | `scoreConsumerImpact` | Calls the rubric scorer (a stub) |
+| `readSkill` | Loads a skill's `SKILL.md` or one of its referenced files from `skills/` |
 
 `getSnapshot` is run by the harness, not offered to the model: it puts the key series in the first message.
 
 The harness also looks things up before the model starts, because a small model skips tools or wrongly says data is missing: the decision card or best passages for minutes questions (`fomc.focus.prefetch`), and the latest figures (with the values 3 and 12 months earlier) for any data topic in the question (`fomc.focus.dataPrefetch`, topics from `fomc.focus.dataTopics`, at most 6 series). Everything is read as known on the anchor date, and the answer is cleaned into plain words by `fomc.guard.plainEnglish`.
 
 Paragraph ids look like `2020-03-15/policyAction/12`. The model cites them in brackets; `fomc.guard.citations` turns each into the exact paragraph and marks it verified only if its minutes were public at the anchor and a tool returned that id this session.
+
+## Skill scoring
+
+Scoring requests in `fomc.runTurn` and the web chat are automatically routed to the `fomc-score` skill. The dedicated structured scoring entry point is also callable directly:
+
+```matlab
+s = fomc.newSession(fomc.latestAnchor(), fomc.config());
+out = fomc.skills.scoreMeeting(s, "2020-01-29"); % omit the date for the latest released meeting
+out.score       % the decoded score object
+out.ok          % true only if all score checks pass
+out.issues      % validation issues after the final attempt
+out.attempts    % one to three model attempts
+```
+
+Each result is checked against the skill schema, score ranges, exact minutes quotes, the coded rate decision, and dates later than the meeting's release. Validation failures are sent back to the model for up to three total attempts. If all attempts fail, `out.ok` is false and `out.failedDimensions` identifies the dimensions with reported issues; do not treat that score as validated. This entry point scores one meeting per call. In chat, a comparison such as
+`Compare 2020-01-29 with latest` scores the two distinct meetings independently.
+The comparison response has a `scores` array whose entries each match
+`skills/fomc-score/schema.json`, plus separate `validation` metadata for each
+meeting and aggregate validation status. If `latest` resolves to the same date
+as an explicitly supplied date, request another distinct meeting to compare.
 
 ## Analysis mode (High effort)
 

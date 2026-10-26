@@ -70,6 +70,13 @@ t = openAIFunction("scoreConsumerImpact", ...
 t = addParameter(t, "meetingDate", "type", "string", "description", "Last day of the meeting, YYYY-MM-DD.");
 specs{end+1} = {"scoreConsumerImpact", @fomc.tools.scoreConsumerImpact, t, true};
 
+t = openAIFunction("readSkill", ...
+    "Load instructions or a reference file for a skill. Call with name alone for SKILL.md; pass file for a referenced file, such as rubric/inflation.md.");
+t = addParameter(t, "name", "type", "string", "description", "Skill name, such as fomc-score.");
+t = addParameter(t, "file", "type", "string", "description", ...
+    "Optional relative path inside the skill, such as rubric/inflation.md.", RequiredParameter=false);
+specs{end+1} = {"readSkill", @fomc.tools.readSkill, t, true};
+
 t = openAIFunction("getSnapshot", "Latest known value of the core series (run by the harness).");
 t = addParameter(t, "group", "type", "string", "enum", groups.', "description", "Which group. Default all.", RequiredParameter=false);
 specs{end+1} = {"getSnapshot", @fomc.tools.getSnapshot, t, false};

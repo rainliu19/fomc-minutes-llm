@@ -26,6 +26,15 @@ calls = struct("name", {}, "args", {}, "result", {}, "ok", {}, "ms", {});
 fomc.trace.logEvent(ctx, "user_message", struct("text", userMsg, ...
     "focusStart", fomc.util.fmtDate(ctx.focus.start), "focusEnd", fomc.util.fmtDate(ctx.focus.end), ...
     "focusReason", ctx.focus.reason));
+
+% Skill-matched scoring requests use the dedicated structured scorer and validation loop.
+if fomc.focus.wantsScoring(userMsg)
+    [s, answer, structured] = scoreWithSkill(s, userMsg);
+    fomc.trace.logEvent(ctx, "final_answer", struct("text", answer, ...
+        "nToolCalls", 0, "finished", isstruct(structured) && isfield(structured, "ok") && structured.ok));
+    return
+end
+
 % Build the message the model will see: the question plus the focus note
 question = userMsg + newline + newline + fomc.focus.note(ctx);
 % Let the harness look up the decision card or best passages itself, so a small model cannot skip it
@@ -141,6 +150,77 @@ catch ME
 end
 % Record the outcome in the trace
 fomc.trace.logEvent(ctx, "final_answer", struct("text", answer, "nToolCalls", numel(calls), "finished", finished));
+end
+
+function [s, answer, output] = scoreWithSkill(s, userMsg)
+% Route one or more requested meeting dates to the validated score skill.
+text = char(userMsg);
+dateMatches = regexp(text, '\d{4}-\d{2}-\d{2}', 'match');
+dates = unique(string(dateMatches(:)), "stable");
+isComparison = any(contains(lower(userMsg), ["compare", "comparison", "versus", " vs "]));
+asksLatest = ~isempty(regexpi(text, '(?<![a-z])latest(?![a-z])', 'once'));
+if isComparison && asksLatest
+    dates = unique([dates(:); latestReleasedMeetingDate(s)], "stable");
+end
+if isComparison && numel(dates) < 2
+    answer = "To compare FOMC scores, include at least two distinct meeting dates (YYYY-MM-DD), or pair one date with 'latest'.";
+    output = struct("skill", "fomc-score", "ok", false, "issues", answer, ...
+        "failedDimensions", strings(0, 1), "attempts", 0);
+else
+    try
+        if numel(dates) <= 1
+            meetingDate = "";
+            if ~isempty(dates)
+                meetingDate = dates(1);
+            end
+            output = fomc.skills.scoreMeeting(s, meetingDate);
+            output.skill = "fomc-score";
+            answer = string(jsonencode(output.score));
+        else
+            scores = cell(numel(dates), 1);
+            validation = cell(numel(dates), 1);
+            allIssues = strings(0, 1);
+            failedDimensions = strings(0, 1);
+            attempts = 0;
+            ok = true;
+            for i = 1:numel(dates)
+                result = fomc.skills.scoreMeeting(s, dates(i));
+                scores{i} = result.score;
+                validation{i} = struct("meeting_date", string(result.score.meeting_date), ...
+                    "ok", result.ok, "issues", result.issues, ...
+                    "failedDimensions", result.failedDimensions, "attempts", result.attempts);
+                ok = ok && result.ok;
+                attempts = attempts + result.attempts;
+                allIssues = [allIssues; string(result.score.meeting_date) + ": " + result.issues(:)]; %#ok<AGROW>
+                failedDimensions = union(failedDimensions, result.failedDimensions, "stable");
+            end
+            output = struct("skill", "fomc-score", "scores", {scores}, "validation", {validation}, ...
+                "ok", ok, "issues", allIssues, "failedDimensions", failedDimensions, ...
+                "attempts", attempts);
+            answer = string(jsonencode(output));
+        end
+    catch ME
+        issue = "Scoring failed: " + fomc.trace.scrub(string(ME.message));
+        output = struct("skill", "fomc-score", "ok", false, "issues", issue, ...
+            "failedDimensions", strings(0, 1), "attempts", 0);
+        answer = string(jsonencode(output));
+        fomc.trace.logEvent(s.ctx, "skill_score_error", struct("message", issue));
+    end
+end
+
+s.history = addUserMessage(s.history, userMsg);
+s.history = addResponseMessage(s.history, struct("role", "assistant", "content", answer));
+end
+
+function meetingDate = latestReleasedMeetingDate(s)
+% Resolve "latest" using the same release-date rule as scoreMeeting.
+M = s.ctx.D.meetings;
+available = find(M.ReleaseDate <= s.ctx.asOf);
+if isempty(available)
+    error("fomc:skills:noReleasedMeetings", "No meeting minutes were released by the anchor date.");
+end
+[~, order] = sort(M.ReleaseDate(available), "descend");
+meetingDate = fomc.util.fmtDate(M.MeetingDate(available(order(1))));
 end
 
 function tcs = toolCallsOf(out)
