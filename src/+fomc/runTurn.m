@@ -28,8 +28,10 @@ fomc.trace.logEvent(ctx, "user_message", struct("text", userMsg, ...
     "focusReason", ctx.focus.reason));
 % Build the message the model will see: the question plus the focus note
 question = userMsg + newline + newline + fomc.focus.note(ctx);
-% Let the harness look up the decision card or best passages itself, so a small model cannot skip it
-[found, pre] = fomc.focus.prefetch(ctx, userMsg, nvp.Format == "analysis");
+% Let the harness look up the decision card or best passages itself, so a small model cannot skip it.
+% After a question about how rates moved, a follow-up that only changes the period gets the rate path too.
+followsRatePath = isfield(s, "lastUsedRatePath") && s.lastUsedRatePath;
+[found, pre] = fomc.focus.prefetch(ctx, userMsg, nvp.Format == "analysis", followsRatePath);
 if found ~= ""
     question = question + newline + found;
     for k = 1:numel(pre)
@@ -47,6 +49,7 @@ if isNotice
     end
     s.history = addUserMessage(s.history, first);
     s.history = addResponseMessage(s.history, struct("role", "assistant", "content", answer));
+    s.lastUsedRatePath = false;
     fomc.trace.logEvent(ctx, "final_answer", struct("text", answer, "nToolCalls", numel(calls), "finished", true));
     return
 end
@@ -125,6 +128,10 @@ try
     % Analysis mode: now write and check the structured analysis
     if finished && nvp.Format == "analysis"
         [s, structured] = fomc.analysis.structure(s, calls);
+    end
+    % Remember whether this answer used the rate path (looked up first or called by the model)
+    if finished
+        s.lastUsedRatePath = any(string({calls.name}) == "getPolicyPath" & [calls.ok]);
     end
     % Ran out of rounds: undo this turn so the session stays usable
     if ~finished

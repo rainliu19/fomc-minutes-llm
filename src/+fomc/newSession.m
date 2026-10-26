@@ -33,9 +33,11 @@ else
     llm = nvp.Llm;
 end
 
-% The session is a plain struct: pass it to runTurn and keep the one it returns
+% The session is a plain struct: pass it to runTurn and keep the one it returns. known: paragraph
+% ids returned by tools so far, for the citation check. lastUsedRatePath: the last answered
+% question used getPolicyPath, so a follow-up that only changes the period gets it too.
 s = struct("ctx", ctx, "history", messageHistory, "llm", llm, "systemPrompt", prompt, "contextBlock", block, ...
-    "known", strings(0, 1), "ownsLlm", isempty(nvp.Llm), "effort", "low");   % paragraph ids returned by tools so far, for the citation check
+    "known", strings(0, 1), "ownsLlm", isempty(nvp.Llm), "effort", "low", "lastUsedRatePath", false);
 % Record the start of the session in the trace
 fomc.trace.logEvent(ctx, "session_start", struct("model", cfg.model, "backend", cfg.backend, ...
     "briefChars", strlength(brief), "maxToolRounds", cfg.maxToolRounds));
