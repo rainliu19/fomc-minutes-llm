@@ -54,7 +54,7 @@ Open http://localhost:8787. It starts Ollama and MATLAB, checks memory first, an
 | Folder / file | What it is |
 |---|---|
 | `chat.m`, `runAgent.m`, `runTurn.m`, `effort.m` | Entry points, the main loop (ask the model, run its tools, repeat), and what Low, Medium and High effort change. |
-| `+tools/` | The tools the model can call: decisions, search, read minutes, data series. |
+| `+tools/` | The tools the model can call: decisions, the path of rates over several meetings, search, read minutes, data series. |
 | `+data/` | Loads the data, works out what was known on a given date, and reads each meeting's decision. |
 | `+focus/` | Picks which minutes a question is about and looks up the first facts before the model starts. |
 | `+retrieve/` | Finds the paragraphs that best match a question. |

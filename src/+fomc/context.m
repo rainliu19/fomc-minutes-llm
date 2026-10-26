@@ -24,5 +24,5 @@ else
 end
 ctx.verbose = cfg.verbose;
 % Default span of minutes for searches; NaT = no window.
-ctx.focus = struct("start", NaT, "end", NaT, "years", cfg.focusYears, "reason", "");
+ctx.focus = struct("start", NaT, "end", NaT, "years", cfg.focusYears, "reason", "", "fromQuestion", false);
 end

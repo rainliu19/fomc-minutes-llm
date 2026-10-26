@@ -43,13 +43,14 @@ Every session has an anchor date, `asOf`; nothing dated after it may reach the m
 
 ## Focus window
 
-Each question gets a default span of minutes: the last 3 years before the anchor, the 3 years ending in a year the question names, or the whole span if it names several. `searchMinutes` and `listMeetings` use it unless the model passes dates, and a note under the question lists the meetings in it. It is a relevance default, not a limit; the anchor rule always applies. See `cfg.focusYears` and `fomc.focus.window`.
+Each question gets a default span of minutes: the last 3 years before the anchor, the 3 years ending in a year the question names, or the whole span if it names several. `searchMinutes` and `listMeetings` use it unless the model passes dates, and a note under the question lists the meetings in it. It is a relevance default, not a limit; the anchor rule always applies. `fromQuestion` says whether it came from years the question named. See `cfg.focusYears` and `fomc.focus.window`.
 
 ## Tools
 
 | Tool | Purpose |
 |------|---------|
 | `getDecision` | What was decided at a meeting: raise, cut or hold, target range, vote counts, dissent. Read from the text by code (`fomc.data.decisionCards`) and checked against the actual rate changes for all 150 meetings. |
+| `getPolicyPath` | How the rate target moved over several meetings (the latest 8 by default, or `startDate`/`endDate`): current range, last change and whether it reversed direction, runs of increases or cuts, holds, net change, and which way dissenters wanted the rate to go. See below. |
 | `searchMinutes` | Phrase search over released paragraphs; each hit has an id |
 | `readMinutes` | Paragraphs of one section, a page at a time; each has an id |
 | `listMeetings` | Released meetings and their release dates |
@@ -59,9 +60,25 @@ Each question gets a default span of minutes: the last 3 years before the anchor
 
 `getSnapshot` is run by the harness, not offered to the model: it puts the key series in the first message.
 
-The harness also looks things up before the model starts, because a small model skips tools or wrongly says data is missing: the decision card or best passages for minutes questions (`fomc.focus.prefetch`), and the latest figures (with the values 3 and 12 months earlier) for any data topic in the question (`fomc.focus.dataPrefetch`, topics from `fomc.focus.dataTopics`, at most 6 series). Everything is read as known on the anchor date, and the answer is cleaned into plain words by `fomc.guard.plainEnglish`.
+The harness also looks things up before the model starts, because a small model skips tools or wrongly says data is missing: the decision card or best passages for minutes questions (`fomc.focus.prefetch`), the latest figures (with the values 3 and 12 months earlier) for any data topic in the question (`fomc.focus.dataPrefetch`, topics from `fomc.focus.dataTopics`, at most 6 series), and the `getPolicyPath` summary for questions about how rates moved (`fomc.focus.pathPrefetch`: a rate word plus a change-over-time word such as "changed", "since" or "between", or two years named). Everything is read as known on the anchor date, and the answer is cleaned into plain words by `fomc.guard.plainEnglish`.
 
 Paragraph ids look like `2020-03-15/policyAction/12`. The model cites them in brackets; `fomc.guard.citations` turns each into the exact paragraph and marks it verified only if its minutes were public at the anchor and a tool returned that id this session.
+
+### `getPolicyPath`
+
+Questions about the path of rates span many meetings, which a small model cannot look up one `getDecision` call at a time or add up reliably (in the 50-question evaluation, the 2015-to-2018 rate question was answered with the 2017 range for 2015). The tool does it in code and returns a summary sentence plus the facts behind it:
+
+- **Levels and changes** come from the rate data (`fomc.data.ratePath`: `DFEDTAR` until December 2008, then `DFEDTARU`/`DFEDTARL`), as known on the anchor date. This includes the three changes made between scheduled meetings (2008-01-22, 2008-10-08, 2020-03-04), which no decision card has. Changes before 2008 have no meeting in the data, so they are reported by date only. Changes are measured on the top of the range.
+- **Runs** are consecutive changes in one direction over the whole history: the current run, and the one before it when the last change reversed direction ("the first increase since 2023-07-26").
+- **Holds** count meetings with released minutes and no change.
+- **Dissents** (`fomc.data.dissentDirections`) compare the rate each dissenter preferred with the decision: `higher`, `lower`, or `other` (statement wording, asset purchases, or a preference that cannot be read). So a dissenter who wanted a 1/4 point cut when the Committee cut by 1/2 counts as `higher`. It reads the vote line and the paragraphs after it, the same ones as the decision card.
+- A change whose minutes were not public yet is listed, since the rate data already shows it, and marked `minutesPublic: false`; its dissents are left out.
+- **Citations** sit inside the summary, after each fact from the minutes (`… at the meeting ending 2026-09-16 [2026-09-16/policyAction/1]`), so a model that copies the summary copies them too; a run of holds cites the latest one. Changes between meetings and minutes not out yet have no paragraph, so no id.
+- **High effort:** the path states the target on every day it covers, so `fomc.guard.checkGrounding` accepts a `DFEDTAR`, `DFEDTARU` or `DFEDTARL` figure for any of those days (checked against the rate data). Without this, a correct rate figure taken from the path failed the analysis check.
+- **Span:** the latest 8 meetings (about a year) unless the model passes dates. Models copy the focus window from the question's note into any tool with dates; when the question named no year (the window's `fromQuestion` is false), that window is just "the last 3 years", so the tool treats those exact dates as no dates. The harness's own lookup passes `datesFromQuestion: true` (not offered to the model) so its dates are kept.
+- **Run before the model starts** for questions about how rates moved (`fomc.focus.pathPrefetch`), with the span from the question: "since 2022" (to the anchor date), the years named (one year is that calendar year), "the last three years", or else the latest 8 meetings. In testing, Qwen3 4B answered "How did the Committee's view of interest rate policy change between 2015 and 2018?" from the passages and latest figures without calling the tool.
+
+`tests/testPolicyPath.m` and `tests/testPathPrefetch.m` check it on real data, including 17 dissents read by hand from the minutes.
 
 ## Analysis mode (High effort)
 
@@ -108,7 +125,7 @@ Each run writes `logs/trace-<runId>.jsonl` (web sessions: `logs/web-<session>.js
 | `user_message` | `text`, `focusStart`, `focusEnd`, `focusReason` |
 | `model_response` | `round`, `content`, `nToolCalls`, `thinking`, `ms`, `stats` (promptTokens, outputTokens, promptMs, outputMs, loadMs) |
 | `tool_call` | `name`, `args`, `result` (JSON text), `ok`, `ms` |
-| `prefetch` | `kind` (`decision` or `passages`), `meeting` or `ids` |
+| `prefetch` | `kind` (`decision`, `passages`, `data` or `path`), `meeting`, `ids`, `series`, or `startDate` and `endDate` |
 | `guardrail_block` | `stage`, `tool`, `args`, `message` |
 | `nudge`, `compact` | `round`, or `replaced` |
 | `grounding_check` | `attempt`, `ok`, `failures`, `reply`, `ms`, `stats` |

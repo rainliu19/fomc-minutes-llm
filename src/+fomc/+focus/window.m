@@ -1,6 +1,7 @@
 function w = window(question, asOf, cfg)
 %WINDOW Default span of minutes for a question. A default, not a limit.
-%   w = fomc.focus.window(question, asOf, cfg), with w: start, end, years, reason.
+%   w = fomc.focus.window(question, asOf, cfg), with w: start, end, years, reason, and
+%   fromQuestion (true if the question named a year, false for the default span).
 %
 %   From years in the question (2008 or later, not after the anchor year):
 %     none          the last cfg.focusYears years up to the anchor date
@@ -35,5 +36,5 @@ else
     reason = "the question mentions " + strjoin(string(years), ", ") + ", so that whole span";
 end
 w = struct("start", dateshift(startDate, "start", "day"), "end", dateshift(endDate, "start", "day"), ...
-    "years", cfg.focusYears, "reason", reason);
+    "years", cfg.focusYears, "reason", reason, "fromQuestion", ~isempty(years));
 end
