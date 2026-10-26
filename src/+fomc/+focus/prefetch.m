@@ -1,14 +1,18 @@
-function [text, recs] = prefetch(ctx, question, isAnalysis)
+function [text, recs] = prefetch(ctx, question, isAnalysis, followsRatePath)
 %PREFETCH Lookups the harness does before the model starts: the minutes, the data, the rate path.
-%   [text, recs] = fomc.focus.prefetch(ctx, question, isAnalysis)
+%   [text, recs] = fomc.focus.prefetch(ctx, question, isAnalysis, followsRatePath)
 %   The minutes part is below; the data part is fomc.focus.dataPrefetch (figures for series
 %   the question is about); the path part is fomc.focus.pathPrefetch (how rates moved, for
-%   questions that ask). All are added to the question, in that order.
+%   questions that ask, or for a follow-up when followsRatePath is true; default false). All
+%   are added to the question, in that order.
 
+if nargin < 4
+    followsRatePath = false;
+end
 [text, recs] = minutesPrefetch(ctx, question, isAnalysis);
 [dataText, dataRecs] = fomc.focus.dataPrefetch(ctx, question);
 [text, recs] = addLookup(text, recs, dataText, dataRecs);
-[pathText, pathRecs] = fomc.focus.pathPrefetch(ctx, question);
+[pathText, pathRecs] = fomc.focus.pathPrefetch(ctx, question, followsRatePath);
 [text, recs] = addLookup(text, recs, pathText, pathRecs);
 end
 
