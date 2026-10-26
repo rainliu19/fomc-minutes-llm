@@ -42,7 +42,8 @@ Open http://localhost:8787. It starts Ollama and MATLAB, checks memory first, an
 | `skills/` | Model-readable skill instructions, rubrics and output schemas. |
 | `pipeline/` | MATLAB scripts that download and clean the data (FRED, Yahoo, Shiller, Treasury, the minutes). Run them only to refresh data. |
 | `data/` | The collected data: CSVs, and one text file per set of minutes in `data/minutes/`. The agent reads these. |
-| `tests/` | Automated checks: MATLAB tests (`buildtool test`), Python tests, and `bench_live.py`, which times the real model. |
+| `tests/` | Automated checks: MATLAB tests (`buildtool test`), Python tests, and the live model evaluation (`bench_live.py`, `bench_baseline.py`, `make_key.py`, `measure_memory.py`, `export_evals.py`). |
+| `evals/` | The 50-question answer key and each model's saved results. The Evaluation page (`/evaluation`) reads them. |
 | `docs/` | Guides: agent interface, data, performance, MATLAB gaps. |
 | `models/` | The local models you can pick on the page: one folder per model with its Ollama `Modelfile`, plus `models.json`, the list the page shows. |
 | `logs/` | Created when you run the agent: one trace file per session, and your saved chats in `logs/chats/` (private to each browser). Not in git. |
@@ -73,7 +74,7 @@ Open http://localhost:8787. It starts Ollama and MATLAB, checks memory first, an
 
 - [docs/agent_interface.md](docs/agent_interface.md): tools, trace format, plugging in the scorer and consumer agent
 - [docs/data.md](docs/data.md): series, caveats, rebuilding the data
-- [docs/performance.md](docs/performance.md): measured speed and memory
+- [docs/performance.md](docs/performance.md): measured speed, memory, and the model comparison (also at `/evaluation` and in `data/model_evaluation_*.csv`)
 - [docs/MATLAB_GAPS.md](docs/MATLAB_GAPS.md): what MATLAB or its LLM add-on could not do
 
 ## Limits

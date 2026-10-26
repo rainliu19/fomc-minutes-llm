@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model Evaluation</title>
+<style>
+  /* Same Fed-inspired colors and type as the chat page (static/index.html). */
+  :root {
+    --bg: #f5f5f5; --card: #ffffff; --text: #222222; --muted: #5f6b76; --line: #d9dde1;
+    --navy: #163855; --blue: #3a6c9c; --gold: #cf8b40; --ok: #3c763d; --bad: #a94442; --code: #f0f2f4; --mem: #5f7d99;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e1721; --card: #15212e; --text: #e8ecf0; --muted: #9aa8b5; --line: #263646;
+      --navy: #0b2236; --blue: #7fb0dc; --gold: #e0a35a; --ok: #7fc47c; --bad: #e68b88; --code: #0e1721; --mem: #8fa9c0;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  h1, h2 { font-family: Georgia, "Palatino Linotype", Palatino, "Times New Roman", serif; font-weight: normal; }
+  .top { background: var(--navy); color: #fff; border-bottom: 4px solid var(--gold); padding: 14px 20px 12px; }
+  .top h1 { font-size: 24px; margin: 0 0 4px; }
+  .top p { margin: 0; max-width: 780px; color: #d6e0ea; font-size: 14.5px; }
+  .top a { color: #fff; }
+  main { max-width: 1100px; margin: 0 auto; padding: 16px 20px 40px; }
+  h2 { font-size: 19px; margin: 26px 0 8px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 4px; padding: 12px 14px; overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-size: 14px; }
+  th, td { text-align: right; padding: 6px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  th { color: var(--muted); font-weight: normal; font-size: 13px; }
+  tr.model { cursor: pointer; }
+  tr.model:hover { background: var(--code); }
+  .note { color: var(--muted); font-size: 13px; }
+  .ok { color: var(--ok); } .bad { color: var(--bad); }
+  select { font: inherit; color: var(--text); background: var(--card); border: 1px solid var(--line); border-radius: 4px; padding: 6px 10px; }
+  .q td, .q th { white-space: normal; text-align: left; vertical-align: top; }
+  .q td.res, .q th.res, .q td.sec, .q th.sec { text-align: right; white-space: nowrap; }
+  .q details summary { cursor: pointer; color: var(--blue); font-size: 13px; margin-top: 2px; }
+  .q .ans { color: var(--muted); white-space: pre-wrap; margin-top: 4px; font-size: 13.5px; }
+  .pill { display: inline-block; padding: 0 7px; border-radius: 9px; font-size: 12px; background: var(--code); border: 1px solid var(--line); }
+  details.sec { margin-top: 26px; }
+  details.sec > summary { list-style: none; cursor: pointer; display: flex; align-items: baseline; gap: 8px; }
+  details.sec > summary::-webkit-details-marker { display: none; }
+  details.sec > summary::before { content: "\25BE"; color: var(--muted); font-size: 14px; }
+  details.sec:not([open]) > summary::before { content: "\25B8"; }
+  details.sec > summary h2 { margin: 0 0 8px; }
+  details.foot > summary h2 { font-size: 14px; font-style: italic; color: var(--muted); font-family: inherit; }
+  details.foot .how li { font-size: 12.5px; font-style: italic; color: var(--muted); }
+  .how ul { margin: 0; padding-left: 20px; } .how li { margin: 0 0 8px; font-size: 14px; } .how li:last-child { margin-bottom: 0; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 13px; color: var(--muted); margin: 0 0 6px; }
+  .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 2px; vertical-align: -1px; margin-right: 5px; }
+  svg text { fill: var(--text); font-size: 13px; }
+  svg .dim { fill: var(--muted); font-size: 12px; }
+  svg .grid { stroke: var(--line); }
+  svg .app { fill: var(--blue); } svg .bare { fill: var(--gold); } svg .mem { fill: var(--mem); }
+  svg.chartsvg { min-width: 760px; }
+  .bg-app { background: var(--blue); } .bg-bare { background: var(--gold); } .bg-mem { background: var(--mem); }
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>Model Evaluation</h1>
+  <p>How each local model does on the same 50 questions, scored against an answer key read from the decision cards, with our agent and as a baseline with no agent. <a href="/">Back to the chat</a></p>
+</div>
+<main>
+  <div id="empty" class="card" hidden>No results yet. Run <code>python tests/bench_live.py &lt;modelId&gt;</code> while the app is running.</div>
+
+  <h2>Accuracy and memory</h2>
+  <div class="card">
+    <div class="legend"><span><i class="bg-app"></i>Our agent (tools, minutes, checks)</span><span><i class="bg-bare"></i>Baseline (same model, no agent)</span><span><i class="bg-mem"></i>Memory</span></div>
+    <div id="chart"></div>
+    <div class="note">Models are ordered by accuracy, then by the baseline accuracy when tied. With 46 scored questions each score is uncertain by roughly 12 points either way, so small gaps are not real differences.</div>
+  </div>
+
+  <h2>Comparison</h2>
+  <div class="card"><table id="table"></table></div>
+  <p class="note">Our agent = share of the 46 scored questions answered correctly, with its 95% range (the 4 "why" questions have no key). Baseline = the same model with no agent: no tools, minutes or checks. Median = seconds per answer with our agent. Memory = the loaded model with its 8,192-token context, as a share of 8 GB; the hidden MATLAB adds about 1 GB more. Click a model to see its questions.</p>
+
+  <details class="sec">
+    <summary title="Click to collapse or expand"><h2>Full test results</h2></summary>
+    <div class="card"><table id="more"></table></div>
+    <p class="note">Silent errors = wrong answers that came with no warning on the page, the ones a user would not be told about. Stable = reworded versions of the same question all answered correctly. Right tool = the decision card or minutes search was used when it should be. Invented reason = a "why" answer gives a cause the retrieved paragraphs do not support (a heuristic flag, not proof).</p>
+  </details>
+
+  <details class="sec">
+    <summary title="Click to collapse or expand"><h2>Accuracy by question type</h2></summary>
+    <div class="card"><table id="cats"></table></div>
+    <p class="note">Correct answers out of the questions of each type, for the model with our agent. Decision, vote and follow-up questions ask what the Committee decided or who voted; stability asks the same decision question reworded; guardrail asks about a meeting whose minutes are not public yet.</p>
+  </details>
+
+  <details class="sec" id="sec-questions">
+    <summary title="Click to collapse or expand"><h2>Question-by-question results</h2></summary>
+    <p><label for="pick" class="note">Model </label> <select id="pick"></select></p>
+    <div class="card"><table id="detail" class="q"></table></div>
+  </details>
+
+  <details class="sec foot">
+    <summary title="Click to collapse or expand"><h2>Evaluation methodology</h2></summary>
+    <div class="card how">
+    <ul>
+      <li><b>The questions.</b> 50 fixed questions about decisions, votes, dissents, topics, year comparisons, follow-ups, reworded versions of the same question, and meetings whose minutes are not public yet. Code generates them (<code>tests/make_key.py</code>), so every model gets the identical set.</li>
+      <li><b>Who decides the right answer.</b> No person and no AI. The answer key comes from the Fed's minutes: each meeting's decision, target range and vote are read out of the minutes text by code, and those readings were checked against the actual change in the federal funds rate for all 150 meetings (<code>tests/testDecisions.m</code>).</li>
+      <li><b>Who grades the answers.</b> Code, not a person or an AI judge. Each answer is checked with fixed text patterns: the right direction (raised, cut or held), the right rate range, the right dissenters' names, or "not public yet" wording for unreleased meetings. A question counts as correct only if every check matches.</li>
+      <li><b>What the grader cannot see.</b> Because it reads text, an unusual but correct phrasing can be marked wrong. Topic and comparison questions only check for the topic words or both years, so a high score there is lenient. The 4 "why" questions have no key and are not scored; they only feed the invented-reason flag.</li>
+      <li><b>Baseline.</b> The same Ollama model and context size, given only the question and the date: no tools, minutes, data, guardrail or citation check. "Our agent" is everything we add around the model: the lookups, the point-in-time guardrail and the checks.</li>
+      <li><b>Limits.</b> One run per model per question, on one 8 GB Apple M1, so run-to-run variation is not measured. Every score is out of 46, so differences of a few points are not meaningful.</li>
+    </ul>
+    </div>
+  </details>
+</main>
+<script>
+const el = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;"}[c]));
+const pct = (k, n) => n ? Math.round(100 * k / n) + "%" : "n/a";
+const f2 = v => v == null ? "n/a" : Number(v).toFixed(2);
+const gb = s => s.model_memory_mb ? f2(s.model_memory_mb / 1024) + " GB (" + Math.round(s.model_memory_pct_of_8gb) + "%)" : "n/a";
+// "Qwen3 4B" for the model inside the app, "Qwen3 4B, bare model" for the same model alone
+const base = s => s.label.replace(/^[^:]*: /, "").replace(/, bare model$/, "");
+const name = s => base(s) + (s.baseline ? ", baseline" : ", our agent");
+// Best first: accuracy, then the same model's bare-model accuracy if tied, then the faster one
+const order = bareOf => (a, b) => b.summary.accuracy - a.summary.accuracy
+  || ((bareOf[b.summary.model] || {}).accuracy ?? -1) - ((bareOf[a.summary.model] || {}).accuracy ?? -1)
+  || a.summary.seconds_median - b.summary.seconds_median;
+
+function chart(apps, bareOf) {
+  // One picture, two panels sharing the same rows (best model first): accuracy on the left, memory on the right
+  const W = 1080, L = 240, AW = 500, MX = 840, MW = 190, row = 38, T = 30, H = T + row * apps.length + 22;
+  const x = v => L + AW * v, mx = g => MX + MW * g / 8;
+  let g = `<svg class="chartsvg" viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Accuracy and memory of each model">`;
+  g += `<text x="${L}" y="14" style="font-weight:600">Accuracy</text><text x="${MX}" y="14" style="font-weight:600">Memory when loaded</text><text class="dim" x="${MX}" y="27">of an 8 GB laptop</text>`;
+  for (const t of [0, .25, .5, .75, 1]) g += `<line class="grid" x1="${x(t)}" x2="${x(t)}" y1="${T}" y2="${H - 22}"/><text class="dim" x="${x(t)}" y="${H - 6}" text-anchor="middle">${t * 100}%</text>`;
+  for (const m of [0, 2, 4, 6, 8]) g += `<line class="grid" x1="${mx(m)}" x2="${mx(m)}" y1="${T}" y2="${H - 22}"/><text class="dim" x="${mx(m)}" y="${H - 6}" text-anchor="middle">${m}${m === 8 ? " GB" : ""}</text>`;
+  apps.forEach((r, i) => {
+    const s = r.summary, b = bareOf[s.model], y = T + i * row;
+    g += `<text x="${L - 10}" y="${y + 18}" text-anchor="end">${esc(base(s))}</text><text class="dim" x="${L - 10}" y="${y + 33}" text-anchor="end">${s.params_b}B parameters</text>`;
+    g += `<rect class="app" x="${L}" y="${y + 6}" width="${x(s.accuracy) - L}" height="13" rx="2"><title>${esc(base(s))} with our agent: ${pct(s.correct, s.n_scored)}</title></rect><text x="${x(s.accuracy) + 6}" y="${y + 17}">${pct(s.correct, s.n_scored)}</text>`;
+    if (b) g += `<rect class="bare" x="${L}" y="${y + 22}" width="${x(b.accuracy) - L}" height="11" rx="2"><title>${esc(base(s))} baseline: ${pct(b.correct, b.n_scored)}</title></rect><text class="dim" x="${x(b.accuracy) + 6}" y="${y + 32}">${pct(b.correct, b.n_scored)}</text>`;
+    if (s.model_memory_mb) { const gb = s.model_memory_mb / 1024;
+      g += `<rect class="mem" x="${MX}" y="${y + 10}" width="${mx(gb) - MX}" height="16" rx="2"><title>${esc(base(s))}: ${f2(gb)} GB, ${Math.round(s.model_memory_pct_of_8gb)}% of 8 GB</title></rect><text x="${mx(gb) + 6}" y="${y + 23}">${f2(gb)} GB <tspan class="dim">(${Math.round(s.model_memory_pct_of_8gb)}%)</tspan></text>`; }
+  });
+  el("chart").innerHTML = g + `</svg>`;
+}
+
+function comparison(apps, bareOf) {
+  const head = ["Model", "Parameters", "Our agent", "Baseline", "Median (s)", "Memory"];
+  let h = "<tr>" + head.map(t => `<th>${t}</th>`).join("") + "</tr>";
+  for (const r of apps) {
+    const s = r.summary, a = s.accuracy_ci, b = bareOf[s.model];
+    h += `<tr class="model" data-id="${s.model}"><td>${esc(base(s))}${s.complete ? "" : ' <span class="pill">partial</span>'}</td><td>${s.params_b}B</td>
+      <td>${pct(s.correct, s.n_scored)} <span class="note">(${s.correct}/${s.n_scored}; ${Math.round(a[0] * 100)}% to ${Math.round(a[1] * 100)}%)</span></td>
+      <td>${b ? pct(b.correct, b.n_scored) + ` <span class="note">(${b.correct}/${b.n_scored})</span>` : "not run"}</td>
+      <td>${f2(s.seconds_median)}</td><td>${gb(s)}</td></tr>`;
+  }
+  el("table").innerHTML = h;
+  document.querySelectorAll("tr.model").forEach(tr => tr.onclick = () => { el("sec-questions").open = true; el("pick").value = tr.dataset.id; el("pick").onchange(); el("pick").scrollIntoView({behavior: "smooth", block: "center"}); });
+}
+
+function more(all) {
+  // Every measure, for the app rows and the bare-model rows, best first
+  const head = ["Model", "Setup", "Parameters", "Accuracy", "Silent errors", "Stable", "Right tool", "Verified citations", "Wrong answers warned", "Invented reason", "Median (s)", "90th pct (s)", "Tokens/s", "Peak swap (MB)", "Memory"];
+  let h = "<tr>" + head.map(t => `<th>${t}</th>`).join("") + "</tr>";
+  for (const r of all) {
+    const s = r.summary, e = s.silent_errors;
+    h += `<tr><td>${esc(base(s))}</td><td>${s.baseline ? "baseline" : "our agent"}</td><td>${s.params_b}B</td><td>${pct(s.correct, s.n_scored)} (${s.correct}/${s.n_scored})</td>
+      <td>${e.count}/${e.n}</td><td>${s.stability.stable_groups}/${s.stability.groups}</td><td>${s.tool_accuracy.n ? pct(s.tool_accuracy.ok, s.tool_accuracy.n) : "n/a"}</td>
+      <td>${s.cases_citing_verified_id}/${s.n_cases} answers</td><td>${e.warned_wrong}/${e.wrong}</td><td>${s.invented_reason.flagged}/${s.invented_reason.n}</td>
+      <td>${f2(s.seconds_median)}</td><td>${f2(s.seconds_p90)}</td><td>${f2(s.decode_tok_s_median)}</td><td>${s.peak_swap_mb ?? "n/a"}</td><td>${gb(s)}</td></tr>`;
+  }
+  el("more").innerHTML = h;
+}
+
+function categories(apps) {
+  const cats = [...new Set(apps.flatMap(r => Object.keys(r.summary.by_category)))];
+  let h = "<tr><th>Model</th>" + cats.map(c => `<th>${c}</th>`).join("") + "</tr>";
+  for (const r of apps) h += `<tr><td>${esc(base(r.summary))}</td>` + cats.map(c => { const v = r.summary.by_category[c]; return `<td>${v ? v.correct + "/" + v.n : "n/a"}</td>`; }).join("") + "</tr>";
+  el("cats").innerHTML = h;
+}
+
+function questions(all, key) {
+  // One model at a time: each question, whether the answer was right, and the answer on request
+  const text = Object.fromEntries(key.map(k => [k.id, k.questions.join("  then  ")]));
+  const pick = el("pick");
+  pick.innerHTML = all.map(r => `<option value="${r.summary.model}">${esc(name(r.summary))}: ${pct(r.summary.correct, r.summary.n_scored)}</option>`).join("");
+  pick.onchange = () => {
+    const run = all.find(r => r.summary.model === pick.value);
+    let h = `<tr><th>Question</th><th>Type</th><th class="res">Result</th><th class="sec">Seconds</th></tr>`;
+    for (const c of run.cases.filter(c => c.effort === "low")) {
+      const res = c.passed == null ? `<span class="note">not scored</span>` : c.passed ? `<span class="ok">Correct</span>` : `<span class="bad">Incorrect</span>`;
+      h += `<tr><td>${esc(text[c.id] || c.id)}<details><summary>Show the answer</summary><div class="ans">${esc(c.answer)}</div></details></td><td>${c.category}</td><td class="res">${res}</td><td class="sec">${f2(c.seconds)}</td></tr>`;
+    }
+    el("detail").innerHTML = h;
+  };
+  pick.onchange();
+}
+
+Promise.all([fetch("/evals").then(r => r.json()), fetch("/evals/key").then(r => r.json())]).then(([runs, key]) => {
+  if (!runs.length) { el("empty").hidden = false; return; }
+  const bareOf = Object.fromEntries(runs.filter(r => r.summary.baseline).map(r => [r.summary.model.replace(/-baseline$/, ""), r.summary]));
+  const apps = runs.filter(r => !r.summary.baseline).sort(order(bareOf));
+  // Each model's bare-model row sits right under its in-app row
+  const all = apps.flatMap(r => [r, ...runs.filter(x => x.summary.baseline && x.summary.model === r.summary.model + "-baseline")]);
+  chart(apps, bareOf); comparison(apps, bareOf); more(all); categories(apps); questions(all, key);
+});
+</script>
+</body>
+</html>

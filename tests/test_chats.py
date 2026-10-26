@@ -3,6 +3,7 @@
     uv run python -m unittest tests/test_chats.py
 """
 import json
+import re
 import sys
 import tempfile
 import unittest
@@ -202,9 +203,31 @@ class ModelList(unittest.TestCase):
         self.assertEqual(len({m["id"] for m in self.models}), len(self.models))
         self.assertEqual(len({m["name"] for m in self.models}), len(self.models))
 
-    def test_the_first_model_is_the_default_and_there_are_at_most_three(self):
+    def test_the_first_model_is_the_default_and_three_are_offered(self):
         self.assertEqual(self.models[0]["id"], "qwen3")
-        self.assertLessEqual(len(self.models), 3)
+        self.assertEqual([m["id"] for m in self.models if m.get("offered", True)], ["qwen3", "fast", "q25-15"])
+
+    def test_every_model_has_a_parameter_count_for_the_evaluation(self):
+        for m in self.models:
+            self.assertGreater(m["params_b"], 0, m["id"])
+
+
+class Evaluation(unittest.TestCase):
+    """The key and the saved evaluations that the /evaluation page shows."""
+
+    def test_the_key_has_50_cases_with_questions_and_checks(self):
+        key = json.loads((REPO / "evals" / "key.json").read_text())
+        self.assertEqual(len(key), 50)
+        self.assertEqual(len({c["id"] for c in key}), 50)
+        for c in key:
+            self.assertTrue(c["questions"] and c["as_of"], c["id"])
+            for rx in c["checks"] + c["forbid"]:
+                re.compile(rx)                       # every pattern is a valid regex
+
+    def test_the_evals_route_lists_runs_smallest_model_first(self):
+        import app
+        sizes = [r["summary"]["params_b"] for r in app.evals()]
+        self.assertEqual(sizes, sorted(sizes))
 
 
 if __name__ == "__main__":
