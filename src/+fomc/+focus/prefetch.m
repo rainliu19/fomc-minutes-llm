@@ -1,10 +1,11 @@
 function [text, recs] = prefetch(ctx, question, isAnalysis, followsRatePath)
-%PREFETCH Lookups the harness does before the model starts: minutes, data, rate path, outlook.
+%PREFETCH Lookups the harness does before the model starts: minutes, data, rate path, economy, outlook.
 %   [text, recs] = fomc.focus.prefetch(ctx, question, isAnalysis, followsRatePath)
 %   The minutes part is below; the data part is fomc.focus.dataPrefetch (figures for series
 %   the question is about); the path part is fomc.focus.pathPrefetch (how rates moved, for
 %   questions that ask, or for a follow-up when followsRatePath is true; default false); the
-%   outlook part is fomc.focus.outlookPrefetch
+%   economy part is fomc.focus.economyPrefetch (the economy against the Fed's goals, for
+%   questions about where policy should go); the outlook part is fomc.focus.outlookPrefetch
 %   (what the rate path may mean ahead, for questions about its effects). All are added to the
 %   question, in that order.
 
@@ -16,6 +17,8 @@ end
 [text, recs] = addLookup(text, recs, dataText, dataRecs);
 [pathText, pathRecs] = fomc.focus.pathPrefetch(ctx, question, followsRatePath);
 [text, recs] = addLookup(text, recs, pathText, pathRecs);
+[economyText, economyRecs] = fomc.focus.economyPrefetch(ctx, question);
+[text, recs] = addLookup(text, recs, economyText, economyRecs);
 [outlookText, outlookRecs] = fomc.focus.outlookPrefetch(ctx, question);
 [text, recs] = addLookup(text, recs, outlookText, outlookRecs);
 end

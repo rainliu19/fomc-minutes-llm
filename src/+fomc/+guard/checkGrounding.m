@@ -6,8 +6,8 @@ function r = checkGrounding(structured, ctx, calls, knownIds)
 %   evidence: each cited id must exist, belong to minutes public on the anchor date, and
 %   have been returned by a tool this session; the harness then supplies the exact quote.
 %   dataCited: each figure must match a tool result or the snapshot, within rounding. A
-%   getPolicyPath result counts for the rate target on any day it covers; a getOutlook
-%   result counts for the series it lists.
+%   getPolicyPath result counts for the rate target on any day it covers; an assessEconomy
+%   lookup or getOutlook result counts for the series it lists.
 %   Cannot catch: a real paragraph cited for a claim it does not support.
 
 failures = strings(0, 1);
@@ -96,9 +96,9 @@ for i = 1:numel(snap.series)
 end
 
 % Then add the values from every successful getSeries or getSnapshot call, and from the
-% figure lookup (prefetchData) and getOutlook, which list their series the same way
+% figure lookups (prefetchData, assessEconomy) and getOutlook, which list their series the same way
 for c = calls(:).'
-    if ~any(c.name == ["getSeries", "getSnapshot", "prefetchData", "getOutlook"]) || ~c.ok
+    if ~any(c.name == ["getSeries", "getSnapshot", "prefetchData", "assessEconomy", "getOutlook"]) || ~c.ok
         continue
     end
     try

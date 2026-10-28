@@ -54,9 +54,9 @@ Open http://localhost:8787. It starts Ollama and MATLAB, checks memory first, an
 | Folder / file | What it is |
 |---|---|
 | `chat.m`, `runAgent.m`, `runTurn.m`, `effort.m` | Entry points, the main loop (ask the model, run its tools, repeat), and what Low, Medium and High effort change. |
-| `+tools/` | The tools the model can call: decisions, the path of rates over several meetings, search, read minutes, data series. |
-| `+data/` | Loads the data, works out what was known on a given date, and reads each meeting's decision. |
-| `+focus/` | Picks which minutes a question is about and looks up the first facts before the model starts. |
+| `+tools/` | The tools the model can call: decisions, the path of rates over several meetings, what recent rate moves may mean ahead, search, read minutes, data series. |
+| `+data/` | Loads the data, works out what was known on a given date, and reads each meeting's decision, the staff's forecast revisions and participants' views on future meetings. |
+| `+focus/` | Picks which minutes a question is about and looks up the first facts before the model starts, including the path of rates, how the economy compares with the Fed's goals and what the latest minutes say about future meetings, and the evidence on what the rate path may mean ahead. |
 | `+retrieve/` | Finds the paragraphs that best match a question. |
 | `+guard/` | The checks: no future dates, real citations, correct figures. |
 | `+analysis/` | The structured analysis (the High effort level). |
