@@ -288,6 +288,7 @@ function plainCall(name, a) {
     case "getSeries": return `Pulled ${String(a.seriesIds || "data series").replace(/,\s*/g, ", ")} as known on the as-of date`;
     case "describeSeries": return `Checked what ${a.seriesId || "a data series"} measures and when it is published`;
     case "getSnapshot": return "Loaded the key economic data as known on the as-of date";
+    case "getOutlook": return `Gathered the evidence on what recent rate moves may mean ahead${a.endDate ? ", as of " + date("endDate") : ""}`;
     case "scoreConsumerImpact": return "Asked for the consumer-impact score (not built yet)";
     case "prefetchData": return `Looked up the latest figures for ${String(a.series || "the data").split(",").map(x => SERIES[x.trim()] || x.trim()).join(", ")} before asking the model`;
     case "prefetchPassages": return "Found the best-matching passages in the minutes before asking the model";

@@ -23,8 +23,9 @@ classdef testBudgets < matlab.unittest.TestCase
     methods (Test)
         function theToolsOfferedToTheModelStaySmall(tc)
             % Raised from 3600 for getPolicyPath (about 330 characters, most of it the date
-            % parameters); the first-turn prompt budget below still applies
-            tc.verifyLessThanOrEqual(schemaChars(), 3750);
+            % parameters), then from 3750 for getOutlook (about 275); the first-turn prompt
+            % budget below still applies
+            tc.verifyLessThanOrEqual(schemaChars(), 4050);
         end
 
         function getSnapshotIsRunByTheHarnessNotOfferedToTheModel(tc)
@@ -39,7 +40,8 @@ classdef testBudgets < matlab.unittest.TestCase
                 ctx = fomc.context(asOf, tc.cfg, tc.D, tracePath=string(tempname) + ".jsonl");
                 p = fomc.systemPrompt() + fomc.contextBlock(ctx, fomc.dataBrief(ctx));
                 tokens = (strlength(p) + schemaChars()) / 3.3;
-                tc.verifyLessThanOrEqual(tokens, 1850, "first-turn prompt at " + fomc.util.fmtDate(asOf));
+                % Raised from 1850 for getOutlook (about 83 tokens; it was about 1824 before)
+                tc.verifyLessThanOrEqual(tokens, 1925, "first-turn prompt at " + fomc.util.fmtDate(asOf));
             end
         end
 

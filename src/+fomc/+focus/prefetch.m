@@ -1,10 +1,12 @@
 function [text, recs] = prefetch(ctx, question, isAnalysis, followsRatePath)
-%PREFETCH Lookups the harness does before the model starts: the minutes, the data, the rate path.
+%PREFETCH Lookups the harness does before the model starts: minutes, data, rate path, outlook.
 %   [text, recs] = fomc.focus.prefetch(ctx, question, isAnalysis, followsRatePath)
 %   The minutes part is below; the data part is fomc.focus.dataPrefetch (figures for series
 %   the question is about); the path part is fomc.focus.pathPrefetch (how rates moved, for
-%   questions that ask, or for a follow-up when followsRatePath is true; default false). All
-%   are added to the question, in that order.
+%   questions that ask, or for a follow-up when followsRatePath is true; default false); the
+%   outlook part is fomc.focus.outlookPrefetch
+%   (what the rate path may mean ahead, for questions about its effects). All are added to the
+%   question, in that order.
 
 if nargin < 4
     followsRatePath = false;
@@ -14,6 +16,8 @@ end
 [text, recs] = addLookup(text, recs, dataText, dataRecs);
 [pathText, pathRecs] = fomc.focus.pathPrefetch(ctx, question, followsRatePath);
 [text, recs] = addLookup(text, recs, pathText, pathRecs);
+[outlookText, outlookRecs] = fomc.focus.outlookPrefetch(ctx, question);
+[text, recs] = addLookup(text, recs, outlookText, outlookRecs);
 end
 
 function [text, recs] = addLookup(text, recs, more, moreRecs)

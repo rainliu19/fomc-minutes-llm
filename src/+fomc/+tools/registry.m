@@ -40,6 +40,11 @@ t = addParameter(t, "startDate", "type", "string", "description", "YYYY-MM-DD.",
 t = addParameter(t, "endDate", "type", "string", "description", "YYYY-MM-DD.", RequiredParameter=false);
 specs{end+1} = {"getPolicyPath", @fomc.tools.getPolicyPath, t, true};
 
+t = openAIFunction("getOutlook", ...
+    "What recent rate moves may mean ahead: Fed staff forecast changes, borrowing costs, spending, prices, past cycles.");
+t = addParameter(t, "endDate", "type", "string", "description", "YYYY-MM-DD for an earlier view.", RequiredParameter=false);
+specs{end+1} = {"getOutlook", @fomc.tools.getOutlook, t, true};
+
 t = openAIFunction("searchMinutes", ...
     "Find paragraphs in the minutes mentioning a word or phrase, newest first, each with an id. Matches words, not meaning, so try several wordings. Searches the focus window unless you pass dates.");
 t = addParameter(t, "query", "type", "string", "description", "A short phrase such as 'balance sheet runoff'. Use | for alternatives: 'tariff|trade policy'.");
