@@ -59,6 +59,7 @@ Each question gets a default span of minutes: the last 3 years before the anchor
 | `getSeries` | History of up to 5 series as known at the anchor |
 | `describeSeries` | What a series is and when each value becomes public |
 | `scoreConsumerImpact` | Calls the rubric scorer (a stub) |
+| `readSkill` | Loads a skill's `SKILL.md` or one of its referenced files from `skills/` |
 
 `getSnapshot` is run by the harness, not offered to the model: it puts the key series in the first message.
 
@@ -117,6 +118,26 @@ No one can know these effects in advance, so it makes no forecast of its own; it
 - **Markets:** the 2-year yield against the middle of the range, as in `assessEconomy`.
 
 Interest on federal debt and credit card and car loan rates are not in the data; the result says so. The tool description cost about 275 characters (83 tokens), so the budgets in `tests/testBudgets.m` were raised to 4,050 characters of tool descriptions and 1,925 tokens for the first-turn prompt (it is about 1,907). Its figures carry series, dates and values for `fomc.guard.checkGrounding`, and its paragraph ids count as returned by a tool. `tests/testOutlook.m` checks the tool (including `endDate` before the anchor, after it, and before the rate data), and the forecast reader against 20 meetings read by hand (every 2022 meeting and the latest twelve), the evidence in October 2026 (rates up, spending not yet measurable) and October 2022 (spending growth down from 6.7% to 1.8%), and every minutes release date.
+
+## Skill scoring
+
+Scoring requests in `fomc.runTurn` and the web chat are automatically routed to the `fomc-score` skill. The dedicated structured scoring entry point is also callable directly:
+
+```matlab
+s = fomc.newSession(fomc.latestAnchor(), fomc.config());
+out = fomc.skills.scoreMeeting(s, "2020-01-29"); % omit the date for the latest released meeting
+out.score       % the decoded score object
+out.ok          % true only if all score checks pass
+out.issues      % validation issues after the final attempt
+out.attempts    % one to three model attempts
+```
+
+Each result is checked against the skill schema, score ranges, exact minutes quotes, the coded rate decision, and dates later than the meeting's release. Validation failures are sent back to the model for up to three total attempts. If all attempts fail, `out.ok` is false and `out.failedDimensions` identifies the dimensions with reported issues; do not treat that score as validated. This entry point scores one meeting per call. In chat, a comparison such as
+`Compare 2020-01-29 with latest` scores the two distinct meetings independently.
+The comparison response has a `scores` array whose entries each match
+`skills/fomc-score/schema.json`, plus separate `validation` metadata for each
+meeting and aggregate validation status. If `latest` resolves to the same date
+as an explicitly supplied date, request another distinct meeting to compare.
 
 ## Analysis mode (High effort)
 
