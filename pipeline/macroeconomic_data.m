@@ -49,7 +49,10 @@ catalog = {
     "DFEDTARU","Target range upper",false
     "DFEDTARL","Target range lower",false
     "WALCL","Fed balance sheet",false
+    "DFF","Effective fed funds rate, daily",false
+    "DGS1MO","1-mo Treasury yield",false
     "DGS3MO","3-mo Treasury yield",false
+    "DGS6MO","6-mo Treasury yield",false
     "DGS2","2-yr Treasury yield",false
     "DGS10","10-yr Treasury yield",false
     "T10Y2Y","10y-2y spread",false

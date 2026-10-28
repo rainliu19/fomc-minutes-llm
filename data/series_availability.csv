@@ -22,7 +22,10 @@ T5YIFR,lagdays,1,Daily close known the next day
 DFEDTAR,lagdays,1,Target announced at the meeting; one day of margin
 DFEDTARU,lagdays,1,Target announced at the meeting; one day of margin
 DFEDTARL,lagdays,1,Target announced at the meeting; one day of margin
+DGS1MO,lagdays,1,Daily close known the next day
 DGS3MO,lagdays,1,Daily close known the next day
+DGS6MO,lagdays,1,Daily close known the next day
+DFF,lagdays,1,Daily effective rate published the next business day
 DGS2,lagdays,1,Daily close known the next day
 DGS10,lagdays,1,Daily close known the next day
 T10Y2Y,lagdays,1,Daily close known the next day
