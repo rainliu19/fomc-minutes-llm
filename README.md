@@ -52,16 +52,20 @@ confidence values.
 
 The agent resolves a requested meeting against its data and session anchor, and
 uses only minutes released by the meeting's release date. The dedicated scorer
-asks the model about one dimension at a time, so each prompt fits the local
-models' 8,192-token window: the shared scale, the skill's rules, that
-dimension's rubric, and the paragraphs of the minutes about it, chosen by code.
-The model's quotes are matched to the closest sentence of those paragraphs and
-replaced by it, so every quote is word for word. It then validates the result for schema shape, score
+supplies the complete minutes, the skill instructions, all rubric files, and
+the schema to the model. It then validates the result for schema shape, score
 range and confidence, exact minutes quotes of at most 40 words, rate-path
 consistency with the coded decision, and future dates in rationales. Failed
 checks are sent back for correction for up to three total attempts. If
 validation still fails, the result is marked unvalidated with its issues and
 failed dimensions; do not rely on it as verified.
+
+On the local models this one-call scorer does not fit: the instructions, rubrics
+and minutes come to about 17,000 tokens and the models read 8,192, so Ollama cuts
+the prompt. `fomc.skills.scoreByDimension` scores the same skill one dimension per
+call, with only the paragraphs about that dimension, and matches the model's
+quotes to the closest sentence so they are word for word. It is a separate file
+so this scorer is unchanged; see `docs/agent_interface.md`.
 
 For comparisons, each score object independently matches `schema.json`. The
 response carries those objects in `scores`, with per-meeting validation details

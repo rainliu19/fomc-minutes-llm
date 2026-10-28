@@ -4,11 +4,13 @@ classdef EchoScoreModel < handle
     %   Each call scores the dimension it is asked about and quotes, slightly reworded, the first
     %   sentence it was shown; the scorer matches the quote to that sentence word for word. The
     %   first failFirst calls quote made-up text, to exercise the retries. rate_path scores -0.5 for a
-    %   meeting whose minutes say "lower the target range", else 0. m.Index counts the calls.
+    %   meeting whose minutes say "lower the target range", else 0. m.Index counts the calls and
+    %   m.PromptChars records each prompt's length.
 
     properties
         FailFirst (1,1) double = 0
         Index (1,1) double = 0
+        PromptChars (1,:) double = []
     end
 
     methods
@@ -21,6 +23,7 @@ classdef EchoScoreModel < handle
         function [text, out, stats] = call(m, history, ~, ~)
             m.Index = m.Index + 1;
             prompt = string(history.Messages{1}.content);
+            m.PromptChars(end+1) = strlength(prompt);
             passages = extractAfter(prompt, "PASSAGES" + newline);
             first = extractBefore(extractAfter(passages, "] ") + newline, newline);
             sentence = strtrim(string(regexp(first, "^.*?[.!?](?=\s|$)", "match", "once")));

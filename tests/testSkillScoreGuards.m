@@ -110,8 +110,11 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
         end
 
         function generationRetriesValidationFailures(tc)
-            % The first call (rate_path) quotes made-up text; its retry passes
-            model = EchoScoreModel(1);
+            invalid = validScore(tc.meetingDate);
+            invalid.dimensions.inflation.evidence = {struct("quote", "fabricated text", "paragraph_ref", "p1")};
+            valid = validScore(tc.meetingDate);
+            model = fomc.llm.Mock({struct("content", jsonencode(invalid)), ...
+                struct("content", jsonencode(valid))});
             s = struct("ctx", tc.ctx, "llm", @model.call);
 
             output = fomc.skills.scoreMeeting(s, tc.meetingDate);
@@ -122,7 +125,9 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
         end
 
         function exhaustedRetriesReturnFailedDimensionMarkers(tc)
-            model = EchoScoreModel(Inf);
+            invalid = validScore(tc.meetingDate);
+            invalid.dimensions.inflation.evidence = {struct("quote", "fabricated text", "paragraph_ref", "p1")};
+            model = fomc.llm.Mock({struct("content", jsonencode(invalid))});
             s = struct("ctx", tc.ctx, "llm", @model.call);
 
             output = fomc.skills.scoreMeeting(s, tc.meetingDate);
@@ -133,29 +138,9 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
             tc.verifyNotEmpty(output.issues);
         end
 
-        function aDimensionWithNoValidAnswerIsReportedNotLeftNotDiscussed(tc)
-            % Every call returns text that is not JSON (a reply cut off by the output limit)
-            model = fomc.llm.Mock({struct("content", "{""status"": ""scored"", ""rationale"": ""cut off")});
-            s = struct("ctx", tc.ctx, "llm", @model.call);
-            output = fomc.skills.scoreMeeting(s, tc.meetingDate);
-            tc.verifyFalse(output.ok);
-            tc.verifyTrue(any(startsWith(output.issues, "rate_path: no valid score after 3 attempts")));
-            tc.verifyTrue(any(output.failedDimensions == "rate_path"));
-        end
-
-        function quotesAreTheNamedSentencesWordForWord(tc)
-            % The model names S1; the quote is that sentence of the minutes, with its paragraph id
-            model = EchoScoreModel();
-            s = struct("ctx", tc.ctx, "llm", @model.call);
-            output = fomc.skills.scoreMeeting(s, tc.meetingDate);
-            ev = fomc.util.asCell(output.score.dimensions.inflation.evidence);
-            tc.verifyEqual(string(ev{1}.quote), "Participants agreed that SYNTHETIC inflation was running below target.");
-            tc.verifyEqual(string(ev{1}.paragraph_ref), "2020-01-29/participantsViews/1");
-            tc.verifyEqual(output.passages.inflation, "2020-01-29/participantsViews/1");
-        end
-
         function runTurnRoutesScoringRequestsThroughTheSkill(tc)
-            model = EchoScoreModel();
+            valid = validScore(tc.meetingDate);
+            model = fomc.llm.Mock({struct("content", jsonencode(valid))});
             s = struct("ctx", tc.ctx, "llm", @model.call, "history", messageHistory, ...
                 "systemPrompt", fomc.systemPrompt(), "known", strings(0, 1));
 
@@ -166,10 +151,7 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
             tc.verifyEqual(structured.skill, "fomc-score");
             tc.verifySubstring(answer, """meeting_date"":""2020-01-29""");
             tc.verifyEmpty(calls);
-            % One call per dimension the minutes discuss: rate path, inflation, activity, risks
-            tc.verifyEqual(model.Index, 4);
-            tc.verifyEqual(structured.calls, 4);
-            tc.verifyEqual(string(structured.score.dimensions.labor_market.status), "not_discussed");
+            tc.verifyEqual(model.Index, 1);
             tc.verifyEqual(numel(s.history.Messages), 2);
         end
 
@@ -186,7 +168,16 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
         end
 
         function comparisonAcceptsLatestAndReturnsSchemaScoresSeparately(tc)
-            model = EchoScoreModel();
+            january = validScore("2020-01-29");
+            march = validScore("2020-03-18");
+            march.dimensions.rate_path.score = -0.25;
+            for dim = string(fieldnames(march.dimensions))'
+                march.dimensions.(dim).evidence = {struct("quote", ...
+                    "The Committee decided to lower the target range by 50 basis points.", ...
+                    "paragraph_ref", "2020-03-18/policyAction/1")};
+            end
+            model = fomc.llm.Mock({struct("content", jsonencode(january)), ...
+                struct("content", jsonencode(march))});
             s = struct("ctx", tc.ctx, "llm", @model.call, "history", messageHistory, ...
                 "systemPrompt", fomc.systemPrompt(), "known", strings(0, 1));
 
@@ -195,10 +186,8 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
             decoded = jsondecode(answer);
 
             tc.verifyTrue(structured.ok);
-            % January discusses 4 dimensions, March 2 (spending, and the cut)
-            tc.verifyEqual(model.Index, 6);
+            tc.verifyEqual(model.Index, 2);
             tc.verifyEqual(numel(structured.scores), 2);
-            tc.verifyEqual(structured.scores{2}.dimensions.rate_path.score, -0.5);
             tc.verifyEqual(string(structured.scores{1}.meeting_date), "2020-01-29");
             tc.verifyEqual(string(structured.scores{2}.meeting_date), "2020-03-18");
             tc.verifyEqual(numel(structured.validation), 2);

@@ -129,14 +129,8 @@ out = fomc.skills.scoreMeeting(s, "2020-01-29"); % omit the date for the latest 
 out.score       % the decoded score object
 out.ok          % true only if all score checks pass
 out.issues      % validation issues after the final attempt
-out.attempts    % the most attempts any dimension needed, one to three
-out.calls       % model calls, one per discussed dimension plus retries
-out.passages    % per dimension, the paragraph ids the model read
+out.attempts    % one to three model attempts
 ```
-
-**One dimension per call.** The skill's instructions, all seven rubrics and a full set of minutes come to about 17,000 tokens (minutes are about 46,000 characters at the median), and the local models read 8,192 (`num_ctx` in `models/*/Modelfile`); Ollama cuts a longer prompt without an error. So each dimension gets its own call: the shared scale (`rubric/00_scale.md`), the "Rules that prevent common mistakes" section of `SKILL.md`, that dimension's rubric, and the paragraphs of the minutes about it. Code ranks the paragraphs by the dimension's words (Participants' Views counting double, and the Committee Policy Action for the rate path and balance sheet), keeps the best that fit, and puts them back in the minutes' order, each after its paragraph id. A dimension no paragraph mentions is `not_discussed` without a call. The model answers with one dimension of `schema.json`; code assembles the seven and runs the checks below, counting only a dimension's own issues for its retries. A dimension with no valid answer after three attempts is reported in `out.issues`, not left as `not_discussed`.
-
-**Quotes.** The model's quotes are matched to the sentence of its passages that shares the most words (twice the shared count over both lengths, at least 0.6) and replaced by that sentence, cut to 40 words, with its paragraph id. Asked to copy quotes exactly, Qwen3 4B reworded them in 4 of the 7 dimensions of the September 2026 minutes and gave the same text on each retry. Asked instead to name numbered sentences, it chose poorly (a labor market sentence for inflation) and once wrote a sentence number without end until the output limit. With matching, the September 2026 minutes scored in 8 calls (2 minutes 41 seconds), every check passing, each prompt 3,000 to 4,500 tokens: rate path +0.75, inflation +0.75, labor market +0.5, economic activity +0.75, financial conditions +0.25, risk balance +0.75, balance sheet not discussed.
 
 Each result is checked against the skill schema, score ranges, exact minutes quotes, the coded rate decision, and dates later than the meeting's release. Validation failures are sent back to the model for up to three total attempts. If all attempts fail, `out.ok` is false and `out.failedDimensions` identifies the dimensions with reported issues; do not treat that score as validated. This entry point scores one meeting per call. In chat, a comparison such as
 `Compare 2020-01-29 with latest` scores the two distinct meetings independently.
@@ -144,6 +138,20 @@ The comparison response has a `scores` array whose entries each match
 `skills/fomc-score/schema.json`, plus separate `validation` metadata for each
 meeting and aggregate validation status. If `latest` resolves to the same date
 as an explicitly supplied date, request another distinct meeting to compare.
+
+### Scoring one dimension per call (`fomc.skills.scoreByDimension`)
+
+A variant of `fomc.skills.scoreMeeting` for the local models, kept in its own file so Aarya's scorer, which the chat's scoring requests use, is unchanged. It uses the skill as written (`skills/fomc-score`: the scale, the rules in `SKILL.md`, the rubrics, the dimension schema) and the same checks, and returns the same score object with `out.calls` (model calls) and `out.passages` (per dimension, the paragraph ids the model read); `out.attempts` is the most attempts any dimension needed. The tools built on the scores call this one.
+
+```matlab
+out = fomc.skills.scoreByDimension(s, "2026-09-16");
+```
+
+**One dimension per call.** The skill's instructions, all seven rubrics and a full set of minutes come to about 17,000 tokens (minutes are about 46,000 characters at the median), and the local models read 8,192 (`num_ctx` in `models/*/Modelfile`); Ollama cuts a longer prompt without an error. So `fomc.skills.scoreByDimension` gives each dimension its own call: the shared scale (`rubric/00_scale.md`), the "Rules that prevent common mistakes" section of `SKILL.md`, that dimension's rubric, and the paragraphs of the minutes about it. Code ranks the paragraphs by the dimension's words (Participants' Views counting double, and the Committee Policy Action for the rate path and balance sheet), keeps the best that fit, and puts them back in the minutes' order, each after its paragraph id. A dimension no paragraph mentions is `not_discussed` without a call. The model answers with one dimension of `schema.json`; code assembles the seven and runs the checks below, counting only a dimension's own issues for its retries. A dimension with no valid answer after three attempts is reported in `out.issues`, not left as `not_discussed`.
+
+**Quotes.** The model's quotes are matched to the sentence of its passages that shares the most words (twice the shared count over both lengths, at least 0.6) and replaced by that sentence, cut to 40 words, with its paragraph id. Asked to copy quotes exactly, Qwen3 4B reworded them in 4 of the 7 dimensions of the September 2026 minutes and gave the same text on each retry. Asked instead to name numbered sentences, it chose poorly (a labor market sentence for inflation) and once wrote a sentence number without end until the output limit. With matching, the September 2026 minutes scored in 8 calls (2 minutes 41 seconds), every check passing, each prompt 3,000 to 4,500 tokens: rate path +0.75, inflation +0.75, labor market +0.5, economic activity +0.75, financial conditions +0.25, risk balance +0.75, balance sheet not discussed.
+
+`tests/testScoreByDimension.m` checks it with a stand-in model (`tests/EchoScoreModel.m`) on the synthetic minutes, and that every prompt for the September 2026 minutes fits the window.
 
 ## Analysis mode (High effort)
 
