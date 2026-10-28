@@ -4,15 +4,15 @@
   "label": "Best quality: Qwen3 4B",
   "params_b": 4.0,
   "ollama_name": "fomc-qwen3",
-  "date": "2026-10-25",
+  "date": "2026-10-28",
   "complete": true,
-  "n_cases": 50,
-  "correct": 42,
-  "n_scored": 46,
-  "accuracy": 0.913,
+  "n_cases": 57,
+  "correct": 49,
+  "n_scored": 53,
+  "accuracy": 0.925,
   "accuracy_ci": [
-   0.797,
-   0.966
+   0.821,
+   0.97
   ],
   "by_category": {
    "comparison": {
@@ -31,6 +31,14 @@
     "correct": 4,
     "n": 5
    },
+   "nextmove": {
+    "correct": 4,
+    "n": 4
+   },
+   "outlook": {
+    "correct": 3,
+    "n": 3
+   },
    "stability": {
     "correct": 5,
     "n": 8
@@ -46,11 +54,11 @@
   },
   "silent_errors": {
    "count": 4,
-   "n": 46,
-   "rate": 0.087,
+   "n": 53,
+   "rate": 0.075,
    "ci": [
-    0.034,
-    0.203
+    0.03,
+    0.179
    ],
    "wrong": 4,
    "warned_wrong": 0
@@ -60,23 +68,23 @@
    "groups": 4
   },
   "tool_accuracy": {
-   "ok": 41,
-   "n": 45
+   "ok": 48,
+   "n": 52
   },
-  "cases_citing_verified_id": 39,
-  "cases_with_warning": 2,
+  "cases_citing_verified_id": 43,
+  "cases_with_warning": 3,
   "citations": {
-   "verified": 52,
-   "total": 55
+   "verified": 59,
+   "total": 62
   },
   "invented_reason": {
    "flagged": 2,
    "n": 2,
    "note": "heuristic: causal wording not found in tool results"
   },
-  "seconds_median": 14.6,
-  "seconds_p90": 20.1,
-  "decode_tok_s_median": 15.6,
+  "seconds_median": 15.2,
+  "seconds_p90": 25.1,
+  "decode_tok_s_median": 15.75,
   "peak_swap_mb": 3675,
   "high_effort": {
    "n": 5,
@@ -85,9 +93,7 @@
     5,
     5
    ]
-  },
-  "model_memory_mb": 3081,
-  "model_memory_pct_of_8gb": 37.6
+  }
  },
  "cases": [
   {
@@ -1585,6 +1591,206 @@
    "free_pct": 12,
    "swap_mb": 3675,
    "expected_tool": "getDecision"
+  },
+  {
+   "id": "outlook-01",
+   "category": "outlook",
+   "effort": "low",
+   "group": null,
+   "seconds": 24.8,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getOutlook"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3806,
+    "output_tokens": 147,
+    "prefill_tok_s": 280.1,
+    "decode_tok_s": 25.0
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The path of recent FOMC meetings shows inflation remains elevated, with core PCE rising 3.0% year-over-year and CPI at 3.4% in August 2026. The Fed staff forecasts inflation is now revised higher, with risks tilted to the upside. Borrowing costs have increased, as seen in rising 2-year and 10-year Treasury yields and higher corporate bond spreads. Consumer spending has been resilient, supported by strong business investment and resilient consumer sentiment. However, real GDP growth and spending are now revised stronger, suggesting economic activity remains robust. Markets expect further rate increases, with the 2-year yield above the policy target range. No direct evidence shows consumer spe",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getOutlook",
+   "free_pct": 17,
+   "swap_mb": 2892
+  },
+  {
+   "id": "outlook-02",
+   "category": "outlook",
+   "effort": "low",
+   "group": null,
+   "seconds": 25.1,
+   "tools": [
+    "prefetchData",
+    "getOutlook"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3453,
+    "output_tokens": 157,
+    "prefill_tok_s": 281.9,
+    "decode_tok_s": 24.4
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The 2022 increases in the federal funds rate led to higher mortgage rates. The 30-year mortgage rate rose from 3.11% in early 2022 to 6.42% in December 2022. This trend aligns with the broader rise in Treasury yields, including the 2-year yield increasing from 0.23% to 4.41% and the 10-year yield from 1.34% to 3.88%. Evidence from past rate runs shows that after a Fed rate increase, mortgage rates typically rise, with a median increase of 0.2 percentage points. This pattern was observed in five prior cycles, where mortgage rates increased in three cases.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getOutlook",
+   "free_pct": 19,
+   "swap_mb": 3470
+  },
+  {
+   "id": "outlook-03",
+   "category": "outlook",
+   "effort": "low",
+   "group": null,
+   "seconds": 20.9,
+   "tools": [
+    "prefetchData",
+    "getOutlook"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3395,
+    "output_tokens": 98,
+    "prefill_tok_s": 282.8,
+    "decode_tok_s": 26.3
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "There is no data on interest paid on federal debt in the provided information. The evidence available does not include details about interest costs on the federal debt, nor does it specify how rate increases affect debt servicing. While Treasury yields and inflation expectations are given, no direct link to interest on federal debt is established. Thus, based on the data as known on 2026-10-27, the impact of recent rate increases on interest on federal debt cannot be determined.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getOutlook",
+   "free_pct": 19,
+   "swap_mb": 3110
+  },
+  {
+   "id": "nextmove-01",
+   "category": "nextmove",
+   "effort": "low",
+   "group": null,
+   "seconds": 35.4,
+   "tools": [
+    "prefetchPassages",
+    "assessEconomy",
+    "getOutlook"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 4414,
+    "output_tokens": 184,
+    "prefill_tok_s": 264.8,
+    "decode_tok_s": 23.1
+   },
+   "citations_ok": 3,
+   "citations_total": 3,
+   "warning": "",
+   "invented_reason": false,
+   "answer": "At the next FOMC meeting, participants expect another increase in the federal funds rate, likely by year end, based on their assessment of inflation and employment risks [2026-09-16/participantsViews/11]. They emphasized that a higher path would provide insurance against persistent inflation due to strong demand or supply shocks [2026-09-16/participantsViews/10]. Core PCE inflation was 3.0% in August 2026, above the 2% target, and unemployment remained steady at 4.2%. Markets expect further increases, as the 2-year yield is 0.9 point above the middle of the target range. The Fed staff revised inflation forecasts higher and growth forecasts stronger in their latest outlook [2026-09-16/staffOu",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "assessEconomy",
+   "free_pct": 15,
+   "swap_mb": 3655
+  },
+  {
+   "id": "nextmove-02",
+   "category": "nextmove",
+   "effort": "low",
+   "group": null,
+   "seconds": 33.7,
+   "tools": [
+    "getDecision",
+    "prefetchData",
+    "assessEconomy"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3787,
+    "output_tokens": 174,
+    "prefill_tok_s": 271.0,
+    "decode_tok_s": 24.8
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The Fed is likely to cut rates at its next meeting. In the minutes of the July 31, 2024 meeting [2024-07-31/participantsViews/11], \"the vast majority observed that, if the data continued to come in about as expected, it would likely be appropriate to ease policy at the next meeting.\" Participants also noted that inflation was falling and unemployment was rising, with real GDP growth at 2.8% in Q2 2024. Markets expect a cut, as the 6-month Treasury bill yield was 4.9% on August 23, 2024, below the effective federal funds rate of 5.33%. This consensus among participants suggests a likely rate cut, though the Committee will wait for more data before acting.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "assessEconomy",
+   "free_pct": 15,
+   "swap_mb": 2606
+  },
+  {
+   "id": "nextmove-03",
+   "category": "nextmove",
+   "effort": "low",
+   "group": null,
+   "seconds": 29.5,
+   "tools": [
+    "prefetchPassages",
+    "assessEconomy"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3633,
+    "output_tokens": 195,
+    "prefill_tok_s": 273.7,
+    "decode_tok_s": 24.8
+   },
+   "citations_ok": 2,
+   "citations_total": 2,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "At the next Fed meeting, the policy rate is likely to remain unchanged. This is based on the minutes of the January 28, 2026 meeting, where participants leaned toward holding the rate steady as the Committee carefully assesses incoming data [2026-01-28/participantsViews/10]. Several participants cautioned that further easing could be misinterpreted as diminished commitment to the 2% inflation goal [2026-01-28/participantsViews/11]. The 6-month Treasury bill yield was 3.6% on February 20, 2026, slightly below the effective federal funds rate, indicating markets expect little change soon. Core PCE inflation was 3.0% in December 2025, above the 2% target, and unemployment was 4.3%, near its nor",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "assessEconomy",
+   "free_pct": 15,
+   "swap_mb": 2387
+  },
+  {
+   "id": "nextmove-04",
+   "category": "nextmove",
+   "effort": "low",
+   "group": null,
+   "seconds": 33.7,
+   "tools": [
+    "getDecision",
+    "prefetchData",
+    "assessEconomy"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3931,
+    "output_tokens": 237,
+    "prefill_tok_s": 271.6,
+    "decode_tok_s": 24.6
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "Participants judged that further increases in the federal funds rate would be appropriate to achieve the Committee's objectives, anticipating ongoing increases in the target range [2022-06-15/participantsViews/14]. They recognized that a more restrictive stance might be warranted if inflation pressures persisted [2022-06-15/participantsViews/14]. The minutes indicate participants generally expected continued rate hikes, supported by market expectations: the 6-month Treasury bill yield was 2.7% on 2022-07-08, above the effective federal funds rate of 1.21%, suggesting near-term increases are expected. Core PCE inflation was 4.7% in May 2022, 2.7 points above the 2% target, though it had been ",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "assessEconomy",
+   "free_pct": 16,
+   "swap_mb": 2531
   }
  ]
 }

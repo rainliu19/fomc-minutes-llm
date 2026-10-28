@@ -4,10 +4,11 @@
 
 The cards come from fomc.data.decisionCards, which tests/testDecisions.m checks against the actual
 rate change for all 150 meetings, so the key is read from data, not typed by hand. Export them from
-MATLAB first (see docs/performance.md). The key is fixed by a seed: rerunning gives the same 50 cases.
+MATLAB first (see docs/performance.md). The key is fixed by a seed: rerunning gives the same first 50 cases.
 
 Each case: id, category, as_of, questions (asked in order in one chat), checks (regexes the LAST
 answer must match), forbid (regexes it must not match), tool (a tool the run should have called).
+The last 7 cases (nextmove, outlook) are fixed by hand in outlook_cases, not drawn from the cards.
 """
 import csv
 import json
@@ -80,6 +81,55 @@ def decision_case(r, cid, category="decision", question=None):
             "questions": [question or f"What did the Committee decide at its {r['when']} meeting?"],
             "checks": [verb] + rng, "forbid": forbid, "tool": "getDecision",
             "meeting": r["meeting"]}
+
+
+# Never "will raise" or "will cut": the answer should say what the evidence shows, not what will happen
+CERTAIN = r"(?i)\b(will|is going to) (definitely |certainly |surely )?(raise|cut|lower|hike|increase|reduce) (rates|the (target )?range|interest rates)"
+# Nor the model's own view of what the Fed should do: "Yes, the Fed should raise rates"
+SHOULD = (r"(?i)\b(the fed|the committee|the fomc|it|they) should (raise|cut|lower|hold|increase|keep|ease|hike|reduce|tighten|pause)\b|"
+          r"^\W*yes,? (the fed|it|they) should\b")
+
+
+def outlook_cases():
+    """Fixed cases for the two forward-looking questions: what the Fed's recent path means for the economy
+    (getOutlook) and what conditions and the latest minutes mean for the next decisions (assessEconomy).
+    Each is pinned to a date whose latest minutes were read by hand: September 2026 (another increase
+    likely by year end), July 2024 (the vast majority saw a cut at the next meeting), January 2026 (hold
+    steady for some time) and June 2022 (ongoing increases). No seed, so the 50 cases above are unchanged."""
+    # Each direction's words, and forbids for denying it ("No, the Fed is not likely to cut" contains
+    # "cut") and for calling a different move likely ("The Fed is likely to hold rates at its next
+    # meeting" when it cut). The direction is the next decision where the data have it (July 2024 ->
+    # September cut, June 2022 -> July increase, January 2026 -> March hold) and the minutes' lean for
+    # September 2026, whose next meeting is after the data end.
+    words = {"up": r"increas\w*|rais\w*|hik\w*|tighten\w*|firm\w*",
+             "down": r"cut\w*|eas(e|ing)|lower\w*|reduc\w*",
+             "hold": r"hold\w*|steady|unchanged|pause\w*|keep\w*|maintain\w*"}
+    likely = {"up": r"(rais\w*|increas\w*|hik\w*|tighten\w*)",
+              "down": r"(cut\w*|lower\w*|reduc\w*|eas(e|ing))",
+              "hold": r"(hold\w*|keep\w*|leav\w*|remain\w*|stay\w*|pause\w*)( (rates|the (target )?range|(the )?rates?))? (unchanged|steady)?|remain unchanged|stay unchanged"}
+    nxt = [("2026-10-27", "What do current economic conditions and the latest Fed minutes mean for the next FOMC meeting?", "up", "2026-09-16"),
+           ("2024-08-25", "Is the Fed likely to cut rates at its next meeting?", "down", "2024-07-31"),
+           ("2026-02-23", "What could happen at the next Fed meeting?", "hold", "2026-01-28"),
+           ("2022-07-11", "Should the Fed raise rates at the next meeting?", "up", "2022-06-15")]
+    cases = []
+    for i, (asof, q, way, meeting) in enumerate(nxt):
+        deny = (rf"(?i)\b(not|unlikely)( (likely|expected|expect|going|set|poised|anticipat\w*))? (to )?({words[way]})\b|"
+                rf"^\W*no\b[^.]{{0,40}}\b({words[way]})")
+        other = "|".join(likely[w] for w in likely if w != way)
+        wrong = rf"(?i)\b(the fed|the committee|the fomc|it|rates?|the rate|policy) (is|are) (most |more |very )?(likely|expected|poised|set) to ({other})"
+        cases.append({"id": f"nextmove-{i + 1:02d}", "category": "nextmove", "as_of": asof, "meeting": meeting,
+                      "questions": [q], "checks": [rf"(?i)\b({words[way]})", re.escape(meeting) + r"/participantsViews/\d+"],
+                      "forbid": [CERTAIN, deny, wrong, SHOULD], "tool": "assessEconomy"})
+    ahead = [("2026-10-27", "What does the path of the past few FOMC meetings mean for inflation, borrowing costs and consumer spending?",
+              [r"(?i)inflation", r"(?i)mortgage|borrowing", r"(?i)spending"]),
+             ("2022-12-31", "What did the 2022 increases do to mortgage rates?", [r"(?i)mortgage", r"2022"]),
+             # Interest on federal debt is not in the data: the answer should say so, not guess
+             ("2026-10-27", "What do the recent rate increases mean for interest on the federal debt?",
+              [r"(?i)not (in|included|available|part of)|no data|isn't (in|available)|does not (include|cover)|doesn't (include|cover)"])]
+    for i, (asof, q, checks) in enumerate(ahead):
+        cases.append({"id": f"outlook-{i + 1:02d}", "category": "outlook", "as_of": asof, "meeting": "",
+                      "questions": [q], "checks": checks, "forbid": [CERTAIN], "tool": "getOutlook"})
+    return cases
 
 
 def main(cards_csv):
@@ -162,6 +212,8 @@ def main(cards_csv):
         c["checks"] = []
         cases.append(c)
 
+    cases += outlook_cases()
+
     out = Path(__file__).parent.parent / "evals"
     out.mkdir(exist_ok=True)
     (out / "key.json").write_text(json.dumps(cases, indent=1))
@@ -171,4 +223,5 @@ def main(cards_csv):
     print(len(cases), "cases", by)
 
 
-main(sys.argv[1])
+if __name__ == "__main__":
+    main(sys.argv[1])

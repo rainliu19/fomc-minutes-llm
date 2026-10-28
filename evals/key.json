@@ -802,5 +802,136 @@
   ],
   "tool": "getDecision",
   "meeting": "2026-01-28"
+ },
+ {
+  "id": "nextmove-01",
+  "category": "nextmove",
+  "as_of": "2026-10-27",
+  "meeting": "2026-09-16",
+  "questions": [
+   "What do current economic conditions and the latest Fed minutes mean for the next FOMC meeting?"
+  ],
+  "checks": [
+   "(?i)\\b(increas\\w*|rais\\w*|hik\\w*|tighten\\w*|firm\\w*)",
+   "2026\\-09\\-16/participantsViews/\\d+"
+  ],
+  "forbid": [
+   "(?i)\\b(will|is going to) (definitely |certainly |surely )?(raise|cut|lower|hike|increase|reduce) (rates|the (target )?range|interest rates)",
+   "(?i)\\b(not|unlikely)( (likely|expected|expect|going|set|poised|anticipat\\w*))? (to )?(increas\\w*|rais\\w*|hik\\w*|tighten\\w*|firm\\w*)\\b|^\\W*no\\b[^.]{0,40}\\b(increas\\w*|rais\\w*|hik\\w*|tighten\\w*|firm\\w*)",
+   "(?i)\\b(the fed|the committee|the fomc|it|rates?|the rate|policy) (is|are) (most |more |very )?(likely|expected|poised|set) to ((cut\\w*|lower\\w*|reduc\\w*|eas(e|ing))|(hold\\w*|keep\\w*|leav\\w*|remain\\w*|stay\\w*|pause\\w*)( (rates|the (target )?range|(the )?rates?))? (unchanged|steady)?|remain unchanged|stay unchanged)",
+   "(?i)\\b(the fed|the committee|the fomc|it|they) should (raise|cut|lower|hold|increase|keep|ease|hike|reduce|tighten|pause)\\b|^\\W*yes,? (the fed|it|they) should\\b"
+  ],
+  "tool": "assessEconomy"
+ },
+ {
+  "id": "nextmove-02",
+  "category": "nextmove",
+  "as_of": "2024-08-25",
+  "meeting": "2024-07-31",
+  "questions": [
+   "Is the Fed likely to cut rates at its next meeting?"
+  ],
+  "checks": [
+   "(?i)\\b(cut\\w*|eas(e|ing)|lower\\w*|reduc\\w*)",
+   "2024\\-07\\-31/participantsViews/\\d+"
+  ],
+  "forbid": [
+   "(?i)\\b(will|is going to) (definitely |certainly |surely )?(raise|cut|lower|hike|increase|reduce) (rates|the (target )?range|interest rates)",
+   "(?i)\\b(not|unlikely)( (likely|expected|expect|going|set|poised|anticipat\\w*))? (to )?(cut\\w*|eas(e|ing)|lower\\w*|reduc\\w*)\\b|^\\W*no\\b[^.]{0,40}\\b(cut\\w*|eas(e|ing)|lower\\w*|reduc\\w*)",
+   "(?i)\\b(the fed|the committee|the fomc|it|rates?|the rate|policy) (is|are) (most |more |very )?(likely|expected|poised|set) to ((rais\\w*|increas\\w*|hik\\w*|tighten\\w*)|(hold\\w*|keep\\w*|leav\\w*|remain\\w*|stay\\w*|pause\\w*)( (rates|the (target )?range|(the )?rates?))? (unchanged|steady)?|remain unchanged|stay unchanged)",
+   "(?i)\\b(the fed|the committee|the fomc|it|they) should (raise|cut|lower|hold|increase|keep|ease|hike|reduce|tighten|pause)\\b|^\\W*yes,? (the fed|it|they) should\\b"
+  ],
+  "tool": "assessEconomy"
+ },
+ {
+  "id": "nextmove-03",
+  "category": "nextmove",
+  "as_of": "2026-02-23",
+  "meeting": "2026-01-28",
+  "questions": [
+   "What could happen at the next Fed meeting?"
+  ],
+  "checks": [
+   "(?i)\\b(hold\\w*|steady|unchanged|pause\\w*|keep\\w*|maintain\\w*)",
+   "2026\\-01\\-28/participantsViews/\\d+"
+  ],
+  "forbid": [
+   "(?i)\\b(will|is going to) (definitely |certainly |surely )?(raise|cut|lower|hike|increase|reduce) (rates|the (target )?range|interest rates)",
+   "(?i)\\b(not|unlikely)( (likely|expected|expect|going|set|poised|anticipat\\w*))? (to )?(hold\\w*|steady|unchanged|pause\\w*|keep\\w*|maintain\\w*)\\b|^\\W*no\\b[^.]{0,40}\\b(hold\\w*|steady|unchanged|pause\\w*|keep\\w*|maintain\\w*)",
+   "(?i)\\b(the fed|the committee|the fomc|it|rates?|the rate|policy) (is|are) (most |more |very )?(likely|expected|poised|set) to ((rais\\w*|increas\\w*|hik\\w*|tighten\\w*)|(cut\\w*|lower\\w*|reduc\\w*|eas(e|ing)))",
+   "(?i)\\b(the fed|the committee|the fomc|it|they) should (raise|cut|lower|hold|increase|keep|ease|hike|reduce|tighten|pause)\\b|^\\W*yes,? (the fed|it|they) should\\b"
+  ],
+  "tool": "assessEconomy"
+ },
+ {
+  "id": "nextmove-04",
+  "category": "nextmove",
+  "as_of": "2022-07-11",
+  "meeting": "2022-06-15",
+  "questions": [
+   "Should the Fed raise rates at the next meeting?"
+  ],
+  "checks": [
+   "(?i)\\b(increas\\w*|rais\\w*|hik\\w*|tighten\\w*|firm\\w*)",
+   "2022\\-06\\-15/participantsViews/\\d+"
+  ],
+  "forbid": [
+   "(?i)\\b(will|is going to) (definitely |certainly |surely )?(raise|cut|lower|hike|increase|reduce) (rates|the (target )?range|interest rates)",
+   "(?i)\\b(not|unlikely)( (likely|expected|expect|going|set|poised|anticipat\\w*))? (to )?(increas\\w*|rais\\w*|hik\\w*|tighten\\w*|firm\\w*)\\b|^\\W*no\\b[^.]{0,40}\\b(increas\\w*|rais\\w*|hik\\w*|tighten\\w*|firm\\w*)",
+   "(?i)\\b(the fed|the committee|the fomc|it|rates?|the rate|policy) (is|are) (most |more |very )?(likely|expected|poised|set) to ((cut\\w*|lower\\w*|reduc\\w*|eas(e|ing))|(hold\\w*|keep\\w*|leav\\w*|remain\\w*|stay\\w*|pause\\w*)( (rates|the (target )?range|(the )?rates?))? (unchanged|steady)?|remain unchanged|stay unchanged)",
+   "(?i)\\b(the fed|the committee|the fomc|it|they) should (raise|cut|lower|hold|increase|keep|ease|hike|reduce|tighten|pause)\\b|^\\W*yes,? (the fed|it|they) should\\b"
+  ],
+  "tool": "assessEconomy"
+ },
+ {
+  "id": "outlook-01",
+  "category": "outlook",
+  "as_of": "2026-10-27",
+  "meeting": "",
+  "questions": [
+   "What does the path of the past few FOMC meetings mean for inflation, borrowing costs and consumer spending?"
+  ],
+  "checks": [
+   "(?i)inflation",
+   "(?i)mortgage|borrowing",
+   "(?i)spending"
+  ],
+  "forbid": [
+   "(?i)\\b(will|is going to) (definitely |certainly |surely )?(raise|cut|lower|hike|increase|reduce) (rates|the (target )?range|interest rates)"
+  ],
+  "tool": "getOutlook"
+ },
+ {
+  "id": "outlook-02",
+  "category": "outlook",
+  "as_of": "2022-12-31",
+  "meeting": "",
+  "questions": [
+   "What did the 2022 increases do to mortgage rates?"
+  ],
+  "checks": [
+   "(?i)mortgage",
+   "2022"
+  ],
+  "forbid": [
+   "(?i)\\b(will|is going to) (definitely |certainly |surely )?(raise|cut|lower|hike|increase|reduce) (rates|the (target )?range|interest rates)"
+  ],
+  "tool": "getOutlook"
+ },
+ {
+  "id": "outlook-03",
+  "category": "outlook",
+  "as_of": "2026-10-27",
+  "meeting": "",
+  "questions": [
+   "What do the recent rate increases mean for interest on the federal debt?"
+  ],
+  "checks": [
+   "(?i)not (in|included|available|part of)|no data|isn't (in|available)|does not (include|cover)|doesn't (include|cover)"
+  ],
+  "forbid": [
+   "(?i)\\b(will|is going to) (definitely |certainly |surely )?(raise|cut|lower|hike|increase|reduce) (rates|the (target )?range|interest rates)"
+  ],
+  "tool": "getOutlook"
  }
 ]
