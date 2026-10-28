@@ -52,8 +52,11 @@ confidence values.
 
 The agent resolves a requested meeting against its data and session anchor, and
 uses only minutes released by the meeting's release date. The dedicated scorer
-supplies the complete minutes, the skill instructions, all rubric files, and
-the schema to the model. It then validates the result for schema shape, score
+asks the model about one dimension at a time, so each prompt fits the local
+models' 8,192-token window: the shared scale, the skill's rules, that
+dimension's rubric, and the paragraphs of the minutes about it, chosen by code.
+The model's quotes are matched to the closest sentence of those paragraphs and
+replaced by it, so every quote is word for word. It then validates the result for schema shape, score
 range and confidence, exact minutes quotes of at most 40 words, rate-path
 consistency with the coded decision, and future dates in rationales. Failed
 checks are sent back for correction for up to three total attempts. If
