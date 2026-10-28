@@ -1,11 +1,12 @@
 function n = nextMeetingReading(D, asOf)
 %NEXTMEETINGREADING What the latest minutes and markets together suggest for the next meeting.
 %   n = fomc.data.nextMeetingReading(D, asOf)
-%   The minutes give the direction of future moves (fomc.data.policyViews); the 6-month bill
-%   against the effective fed funds rate gives the timing (fomc.data.billSignal). A backtest over the 149 pairs of minutes and the
-%   next meeting in this data found the minutes' lean right about the next decision 69% of the
-%   time, worse than always guessing a hold (77%), because participants often expect further
-%   moves and hold first; market rates were right more often (see fomc.data.billSignal). So the reading says what each
+%   The minutes give the direction of future moves (fomc.data.minutesDirection: the AI's
+%   rate-path score where the minutes have been scored, else the word rules of
+%   fomc.data.policyViews); the 6-month bill against the effective fed funds rate gives the
+%   timing (fomc.data.billSignal). On the 62 meetings from 2019 on, the AI's direction was right
+%   about the next decision 81% of the time, the word rules 76% and the bill 84%: participants
+%   often expect further moves and hold first (docs/agent_interface.md). So the reading says what each
 %   points to and how they combine, and how often the next meeting raised, held or cut after
 %   earlier minutes with the same pattern, counting only meetings held by asOf.
 %   n: minutesWay and marketWay ("up", "down", "hold", or "unclear"), reading (a sentence),
@@ -29,7 +30,8 @@ b = fomc.data.billSignal(D, asOf, rangeNow);
 if isempty(fieldnames(b))
     return
 end
-minutesWay = wayOf(fomc.data.policyViews(D, k).lean, rangeNow);
+dir = fomc.data.minutesDirection(D, k, rangeNow);
+minutesWay = dir.way;
 marketWay = string(b.way);
 
 % Earlier pairs with the same pattern: the minutes' way, and the bill on the day they came out
@@ -39,26 +41,8 @@ hist = struct("raised", sum(same.nextAction == "raise"), "held", sum(same.nextAc
     "cut", sum(same.nextAction == "cut"), "n", height(same));
 
 n = struct("minutesWay", minutesWay, "marketWay", marketWay, "reading", readingOf(minutesWay, marketWay), ...
-    "history", hist);
-n.text = "Next meeting: " + n.reading + " " + historyText(hist);
-end
-
-function w = wayOf(lean, rangeNow)
-% The direction a lean points: "up", "down", "hold" or "unclear". At a range of 0 to 1/4 percent
-% a lean to cuts means support by other means, so the rate itself holds.
-switch lean
-    case {"increases", "slower increases"}
-        w = "up";
-    case {"cuts", "slower cuts"}
-        w = "down";
-        if rangeNow.upper <= 0.25
-            w = "hold";
-        end
-    case "hold"
-        w = "hold";
-    otherwise
-        w = "unclear";
-end
+    "history", hist, "minutesSource", dir.source, "ratePathScore", dir.score, "ruleWay", dir.ruleWay);
+n.text = "Next meeting: " + n.reading + " " + sourceText(dir) + " " + historyText(hist);
 end
 
 function t = readingOf(minutesWay, marketWay)
@@ -85,6 +69,16 @@ elseif minutesWay == "hold"
 else
     t = "the minutes point to " + further.(minutesWay) + " but the 6-month bill suggests markets expect " + ...
         move.(marketWay) + ": the two signals disagree.";
+end
+end
+
+function t = sourceText(dir)
+% Where the minutes' direction came from: the AI's score of their rate path, or the word rules
+if dir.source == "ai"
+    t = "The minutes' direction is the AI's reading: it scored their rate path " + ...
+        string(sprintf("%+.2f", dir.score)) + ", from -1 (dovish) to +1 (hawkish).";
+else
+    t = "The minutes' direction is read from their wording by fixed rules.";
 end
 end
 
@@ -122,7 +116,9 @@ function H = history(D)
 % every meeting.
 persistent cachedKey cachedH
 M = D.meetings;
-key = height(M) + "|" + fomc.util.fmtDate(M.MeetingDate(end));
+% The AI's saved scores change the minutes' direction, so a new score means a new history
+key = height(M) + "|" + fomc.util.fmtDate(M.MeetingDate(end)) + "|" + ...
+    numel(fomc.skills.scoreCache("list", fomc.config(verbose=false).model));
 if ~isempty(cachedH) && cachedKey == key
     H = cachedH;
     return
@@ -134,7 +130,7 @@ for k = 1:n
     rel = M.ReleaseDate(k);
     [~, levels] = fomc.data.ratePath(D, rel);
     b = fomc.data.billSignal(D, rel, levels(end, :));
-    minutesWay(k) = wayOf(fomc.data.policyViews(D, k).lean, levels(end, :));
+    minutesWay(k) = fomc.data.minutesDirection(D, k, levels(end, :)).way;
     marketWay(k) = "none";
     if ~isempty(fieldnames(b))
         marketWay(k) = b.way;

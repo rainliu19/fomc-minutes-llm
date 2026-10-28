@@ -1,0 +1,94 @@
+{
+  "meetingDate": "2026-07-29",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2026-07-29",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "These participants remarked that price pressures appeared broad based and judged that the Committee should adopt a more restrictive policy stance to meet its commitment to achieving its price-stability and maximum-employment goals on a sustained basis.",
+            "paragraph_ref": "2026-07-29/participantsViews/11"
+          },
+          {
+            "quote": "A few of the participants who favored raising the target range for the federal funds rate at this meeting judged that doing so would likely help forestall the need for a steeper and potentially more costly sequence of tightening moves",
+            "paragraph_ref": "2026-07-29/participantsViews/12"
+          }
+        ],
+        "rationale": "Participants expressed a clear leaning toward a tighter policy stance, with several supporting a 25 basis point increase and noting broad-based inflation pressures. A few saw a rate hike as a way to avoid future steep tightening.",
+        "score": 0.5,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2026-07-29/participantsViews/8",
+      "2026-07-29/participantsViews/11",
+      "2026-07-29/participantsViews/12",
+      "2026-07-29/participantsViews/13",
+      "2026-07-29/participantsViews/14",
+      "2026-07-29/staffEconomy/6",
+      "2026-07-29/staffFinancial/1",
+      "2026-07-29/staffFinancial/4",
+      "2026-07-29/staffFinancial/5",
+      "2026-07-29/financialMarkets/1",
+      "2026-07-29/financialMarkets/3",
+      "2026-07-29/financialMarkets/5",
+      "2026-07-29/financialMarkets/6",
+      "2026-07-29/policyAction/1",
+      "2026-07-29/policyAction/4",
+      "2026-07-29/policyAction/11",
+      "2026-07-29/policyAction/15",
+      "2026-07-29/policyAction/16"
+    ]
+  }
+}

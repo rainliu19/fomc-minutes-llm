@@ -1,0 +1,88 @@
+{
+  "meetingDate": "2010-03-16",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2010-03-16",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "Nearly all members judged that it was appropriate to reiterate the expectation that economic conditions--including low levels of resource utilization, subdued inflation trends, and stable inflation expectations--were likely to warrant exceptionally low levels of the federal funds rate for an",
+            "paragraph_ref": "2010-03-16/policyAction/1"
+          },
+          {
+            "quote": "Hoenig dissented because he believed it was no longer advisable to indicate that economic and financial conditions were likely to warrant \"exceptionally low levels of the federal funds rate for an extended period.\" Mr.",
+            "paragraph_ref": "2010-03-16/policyAction/13"
+          }
+        ],
+        "rationale": "The minutes show a majority supporting a prolonged period of low rates, but one member opposed the language, suggesting a shift to a more flexible, less restrictive stance. This indicates a split view on the path of rates, leaning slightly toward easing.",
+        "score": -0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2010-03-16/participantsViews/7",
+      "2010-03-16/staffOutlook/1",
+      "2010-03-16/staffEconomy/3",
+      "2010-03-16/staffEconomy/6",
+      "2010-03-16/staffFinancial/1",
+      "2010-03-16/staffFinancial/2",
+      "2010-03-16/staffFinancial/4",
+      "2010-03-16/financialMarkets/4",
+      "2010-03-16/policyAction/1",
+      "2010-03-16/policyAction/3",
+      "2010-03-16/policyAction/9",
+      "2010-03-16/policyAction/13"
+    ]
+  }
+}

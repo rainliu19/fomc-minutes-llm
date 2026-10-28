@@ -1,0 +1,89 @@
+{
+  "meetingDate": "2022-01-26",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2022-01-26",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "With inflation well above 2 percent and a strong labor market, members expected that it would soon be appropriate to raise the target range for the federal funds rate.",
+            "paragraph_ref": "2022-01-26/policyAction/2"
+          },
+          {
+            "quote": "Consequently, most participants suggested that a faster pace of increases in the target range for the federal funds rate than in the post-2015 period would likely be warranted, should the economy evolve generally in line with the Committee's expectation.",
+            "paragraph_ref": "2022-01-26/participantsViews/13"
+          }
+        ],
+        "rationale": "Participants agreed that inflation was well above 2 percent and the labor market was strong, leading to a clear expectation of soon raising the federal funds rate. Most saw a faster pace than in past periods, indicating a hawkish bias.",
+        "score": 0.75,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2022-01-26/participantsViews/1",
+      "2022-01-26/participantsViews/11",
+      "2022-01-26/participantsViews/13",
+      "2022-01-26/participantsViews/14",
+      "2022-01-26/financialMarkets/3",
+      "2022-01-26/financialMarkets/7",
+      "2022-01-26/policyAction/1",
+      "2022-01-26/policyAction/2",
+      "2022-01-26/policyAction/3",
+      "2022-01-26/policyAction/7",
+      "2022-01-26/policyAction/19",
+      "2022-01-26/policyAction/24",
+      "2022-01-26/specialTopics/2"
+    ]
+  }
+}

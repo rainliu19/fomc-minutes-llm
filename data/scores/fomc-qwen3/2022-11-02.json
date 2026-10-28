@@ -1,0 +1,90 @@
+{
+  "meetingDate": "2022-11-02",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2022-11-02",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "Nevertheless, with realized inflation well above that goal and the labor market still very tight, participants agreed that ongoing increases in the target range for the federal funds rate would be appropriate and would help keep longer-term inflation expectations well",
+            "paragraph_ref": "2022-11-02/participantsViews/14"
+          },
+          {
+            "quote": "In addition, a substantial majority of participants judged that a slowing in the pace of increase would likely soon be appropriate.",
+            "paragraph_ref": "2022-11-02/participantsViews/16"
+          },
+          {
+            "quote": "Members anticipated that ongoing increases in the target range would be appropriate in order to attain a stance of monetary policy sufficiently restrictive to return inflation to 2 percent over time.",
+            "paragraph_ref": "2022-11-02/policyAction/3"
+          }
+        ],
+        "rationale": "The minutes show strong consensus on continuing rate hikes and a clear lean toward a slower pace in the future, driven by concerns about inflation and lags in policy effects. A majority supports slowing increases, indicating a balanced but cautious tightening bias.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2022-11-02/participantsViews/9",
+      "2022-11-02/participantsViews/12",
+      "2022-11-02/participantsViews/13",
+      "2022-11-02/participantsViews/14",
+      "2022-11-02/participantsViews/15",
+      "2022-11-02/participantsViews/16",
+      "2022-11-02/participantsViews/18",
+      "2022-11-02/policyAction/3",
+      "2022-11-02/policyAction/7",
+      "2022-11-02/policyAction/17"
+    ]
+  }
+}

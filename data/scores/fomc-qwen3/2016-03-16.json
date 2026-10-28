@@ -1,0 +1,93 @@
+{
+  "meetingDate": "2016-03-16",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2016-03-16",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "Indeed, several members noted that their current projections of the path for the federal funds rate that would likely be appropriate this year and next were lower than they had projected in December.",
+            "paragraph_ref": "2016-03-16/policyAction/4"
+          },
+          {
+            "quote": "The Committee expected that economic conditions would evolve in a manner that would warrant only gradual increases in the federal funds rate, and that the federal funds rate was likely to remain, for some time, below levels that were expected",
+            "paragraph_ref": "2016-03-16/policyAction/4"
+          },
+          {
+            "quote": "A couple of participants, however, saw an increase in the target range to 1/2 to 3/4 percent as appropriate at this meeting, citing evidence that the economy was continuing to expand at a moderate rate despite developments abroad and earlier",
+            "paragraph_ref": "2016-03-16/participantsViews/15"
+          }
+        ],
+        "rationale": "Most participants favored gradual rate increases, with a clear lean toward easing policy due to inflation shortfall and labor market strength. A few supported a faster increase, but overall, the path was seen as cautious and below longer-run levels.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2016-03-16/participantsViews/1",
+      "2016-03-16/participantsViews/12",
+      "2016-03-16/participantsViews/14",
+      "2016-03-16/participantsViews/15",
+      "2016-03-16/participantsViews/16",
+      "2016-03-16/financialMarkets/1",
+      "2016-03-16/policyAction/3",
+      "2016-03-16/policyAction/4",
+      "2016-03-16/policyAction/7",
+      "2016-03-16/policyAction/12",
+      "2016-03-16/policyAction/13",
+      "2016-03-16/policyAction/17",
+      "2016-03-16/policyAction/18"
+    ]
+  }
+}

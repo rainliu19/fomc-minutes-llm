@@ -1,0 +1,94 @@
+{
+  "meetingDate": "2025-01-29",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2025-01-29",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "With the stance of policy significantly less restrictive than it had been before the Committee's policy easing over its previous three meetings, all participants viewed it as appropriate to maintain the target range for the federal funds rate at 4-1/4",
+            "paragraph_ref": "2025-01-29/participantsViews/9"
+          },
+          {
+            "quote": "Participants indicated that, provided the economy remained near maximum employment, they would want to see further progress on inflation before making additional adjustments to the target range for the federal funds rate.",
+            "paragraph_ref": "2025-01-29/participantsViews/10"
+          },
+          {
+            "quote": "Members agreed that in considering the extent and timing of additional adjustments to the target range for the federal funds rate, the Committee would carefully assess incoming data, the evolving outlook, and the balance of risks.",
+            "paragraph_ref": "2025-01-29/policyAction/2"
+          }
+        ],
+        "rationale": "The minutes show a clear consensus to maintain the current rate range and emphasize waiting for further inflation progress before adjusting. No indication of a tightening or easing bias exists.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2025-01-29/participantsViews/2",
+      "2025-01-29/participantsViews/9",
+      "2025-01-29/participantsViews/10",
+      "2025-01-29/participantsViews/11",
+      "2025-01-29/staffFinancial/4",
+      "2025-01-29/financialMarkets/1",
+      "2025-01-29/policyAction/2",
+      "2025-01-29/policyAction/3",
+      "2025-01-29/policyAction/6",
+      "2025-01-29/policyAction/16",
+      "2025-01-29/policyAction/17",
+      "2025-01-29/policyAction/20",
+      "2025-01-29/specialTopics/1",
+      "2025-01-29/specialTopics/2"
+    ]
+  }
+}

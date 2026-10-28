@@ -1,0 +1,82 @@
+{
+  "meetingDate": "2010-06-23",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2010-06-23",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "In their discussion of monetary policy for the period ahead, members agreed that it would be appropriate to maintain the target range of 0 to 1/4 percent for the federal funds rate.",
+            "paragraph_ref": "2010-06-23/policyAction/1"
+          }
+        ],
+        "rationale": "The minutes state the Committee agreed to maintain the federal funds rate at 0 to 1/4 percent, with no indication of a future rate increase or cut. The discussion emphasized the need for continued low rates due to weak labor markets and subdued inflation, but one member dissented on the long-term communication of such low rates.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2010-06-23/participantsViews/1",
+      "2010-06-23/participantsViews/2",
+      "2010-06-23/participantsViews/8",
+      "2010-06-23/staffOutlook/1",
+      "2010-06-23/staffFinancial/1",
+      "2010-06-23/financialMarkets/4",
+      "2010-06-23/policyAction/1",
+      "2010-06-23/policyAction/5",
+      "2010-06-23/policyAction/7",
+      "2010-06-23/policyAction/11"
+    ]
+  }
+}

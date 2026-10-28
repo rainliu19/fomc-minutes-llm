@@ -1,0 +1,92 @@
+{
+  "meetingDate": "2024-12-18",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2024-12-18",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "The vast majority of participants viewed it as appropriate to lower the target range for the federal funds rate by 25 basis points to 4¼ to 4½ percent.",
+            "paragraph_ref": "2024-12-18/participantsViews/10"
+          },
+          {
+            "quote": "In discussing the outlook for monetary policy, participants indicated that the Committee was at or near the point at which it would be appropriate to slow the pace of policy easing.",
+            "paragraph_ref": "2024-12-18/participantsViews/11"
+          },
+          {
+            "quote": "In considering the extent and timing of additional adjustments to the target range for the federal funds rate, the Committee will carefully assess incoming data, the evolving outlook, and the balance of risks.",
+            "paragraph_ref": "2024-12-18/policyAction/16"
+          }
+        ],
+        "rationale": "The minutes confirm a 25 basis point cut in the rate, which is a rate cut. The forward guidance shows a deliberate slowdown in easing, indicating a cautious, restrictive stance. This constitutes a clear lean toward easing, not tightening.",
+        "score": -0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2024-12-18/participantsViews/1",
+      "2024-12-18/participantsViews/2",
+      "2024-12-18/participantsViews/4",
+      "2024-12-18/participantsViews/10",
+      "2024-12-18/participantsViews/11",
+      "2024-12-18/participantsViews/12",
+      "2024-12-18/financialMarkets/2",
+      "2024-12-18/policyAction/2",
+      "2024-12-18/policyAction/6",
+      "2024-12-18/policyAction/8",
+      "2024-12-18/policyAction/16",
+      "2024-12-18/policyAction/20"
+    ]
+  }
+}

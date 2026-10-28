@@ -1,0 +1,83 @@
+{
+  "meetingDate": "2013-12-18",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2013-12-18",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "Accordingly, almost all members agreed to add language indicating the Committee's anticipation, based on its current assessment of additional measures of labor market conditions, indicators of inflation pressures and inflation expectations, and readings on financial developments, that it would be",
+            "paragraph_ref": "2013-12-18/policyAction/3"
+          },
+          {
+            "quote": "The Committee now anticipates, based on its assessment of these factors, that it likely will be appropriate to maintain the current target range for the federal funds rate well past the time that the unemployment rate declines below 6-1/2 percent,",
+            "paragraph_ref": "2013-12-18/policyAction/11"
+          }
+        ],
+        "rationale": "Participants unanimously agreed to maintain the current federal funds rate target range well past the unemployment rate threshold, emphasizing inflation as a key factor. This shows a clear bias toward easing policy, not tightening.",
+        "score": -0.5,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2013-12-18/participantsViews/1",
+      "2013-12-18/participantsViews/2",
+      "2013-12-18/participantsViews/12",
+      "2013-12-18/staffFinancial/2",
+      "2013-12-18/policyAction/2",
+      "2013-12-18/policyAction/3",
+      "2013-12-18/policyAction/11"
+    ]
+  }
+}

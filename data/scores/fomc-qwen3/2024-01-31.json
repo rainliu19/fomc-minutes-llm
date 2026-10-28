@@ -1,0 +1,90 @@
+{
+  "meetingDate": "2024-01-31",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2024-01-31",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "In discussing the policy outlook, participants judged that the policy rate was likely at its peak for this tightening cycle.",
+            "paragraph_ref": "2024-01-31/participantsViews/14"
+          },
+          {
+            "quote": "The Committee does not expect it will be appropriate to reduce the target range until it has gained greater confidence that inflation is moving sustainably toward 2 percent.",
+            "paragraph_ref": "2024-01-31/policyAction/17"
+          }
+        ],
+        "rationale": "Participants viewed the policy rate as likely at its peak and emphasized a clear bias toward waiting for sustained inflation progress before easing. The view was widely shared and explicitly stated in the minutes.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2024-01-31/participantsViews/2",
+      "2024-01-31/participantsViews/9",
+      "2024-01-31/participantsViews/12",
+      "2024-01-31/participantsViews/13",
+      "2024-01-31/participantsViews/14",
+      "2024-01-31/participantsViews/15",
+      "2024-01-31/participantsViews/16",
+      "2024-01-31/staffFinancial/1",
+      "2024-01-31/financialMarkets/2",
+      "2024-01-31/policyAction/2",
+      "2024-01-31/policyAction/3",
+      "2024-01-31/policyAction/4",
+      "2024-01-31/policyAction/7",
+      "2024-01-31/policyAction/17"
+    ]
+  }
+}

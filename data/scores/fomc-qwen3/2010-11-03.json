@@ -1,0 +1,85 @@
+{
+  "meetingDate": "2010-11-03",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2010-11-03",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "The Committee will maintain the target range for the federal funds rate at 0 to 1/4 percent and continues to anticipate that economic conditions, including low rates of resource utilization, subdued inflation trends, and stable inflation expectations, are likely to",
+            "paragraph_ref": "2010-11-03/policyAction/9"
+          },
+          {
+            "quote": "Accordingly, most members judged it appropriate to take action to promote a stronger pace of economic recovery and to help ensure that inflation, over time, is at levels consistent with the Committee's mandate.",
+            "paragraph_ref": "2010-11-03/policyAction/1"
+          }
+        ],
+        "rationale": "The minutes state the Committee will maintain the federal funds rate at 0 to 1/4 percent and expect exceptionally low rates for an extended period. Most members supported this, with one dissenting. The forward-looking view is clear and balanced, with no strong push for tightening or easing.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2010-11-03/participantsViews/1",
+      "2010-11-03/participantsViews/2",
+      "2010-11-03/participantsViews/6",
+      "2010-11-03/participantsViews/7",
+      "2010-11-03/participantsViews/8",
+      "2010-11-03/staffFinancial/1",
+      "2010-11-03/policyAction/1",
+      "2010-11-03/policyAction/9",
+      "2010-11-03/policyAction/13"
+    ]
+  }
+}

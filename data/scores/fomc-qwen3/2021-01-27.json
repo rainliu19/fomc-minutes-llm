@@ -1,0 +1,85 @@
+{
+  "meetingDate": "2021-01-27",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2021-01-27",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "All members agreed to maintain the target range for the federal funds rate at 0 to 1/4 percent, and they expected that it would be appropriate to maintain this target range until labor market conditions had reached levels consistent with",
+            "paragraph_ref": "2021-01-27/policyAction/4"
+          }
+        ],
+        "rationale": "The minutes clearly state all members agreed to maintain the current rate range and expect to keep it until labor market and inflation goals are met. This reflects a strong commitment to an accommodative stance.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2021-01-27/participantsViews/3",
+      "2021-01-27/participantsViews/6",
+      "2021-01-27/participantsViews/7",
+      "2021-01-27/participantsViews/8",
+      "2021-01-27/participantsViews/12",
+      "2021-01-27/participantsViews/13",
+      "2021-01-27/policyAction/1",
+      "2021-01-27/policyAction/3",
+      "2021-01-27/policyAction/4",
+      "2021-01-27/policyAction/6",
+      "2021-01-27/policyAction/9",
+      "2021-01-27/policyAction/21",
+      "2021-01-27/policyAction/22"
+    ]
+  }
+}

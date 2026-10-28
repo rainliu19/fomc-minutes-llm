@@ -1,0 +1,91 @@
+{
+  "meetingDate": "2018-06-13",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2018-06-13",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "Based on their current assessments, almost all participants expressed the view that it would be appropriate for the Committee to continue its gradual approach to policy firming by raising the target range for the federal funds rate 25 basis points",
+            "paragraph_ref": "2018-06-13/participantsViews/10"
+          },
+          {
+            "quote": "Consequently, members expected that further gradual increases in the target range for the federal funds rate would be consistent with sustained expansion of economic activity, strong labor market conditions, and inflation near the Committee's symmetric 2 percent objective over the",
+            "paragraph_ref": "2018-06-13/policyAction/2"
+          }
+        ],
+        "rationale": "Participants unanimously supported a 25 basis point rate hike and a gradual path for future increases, with most viewing it as consistent with strong labor markets and inflation near 2%. The forward-looking view emphasized continued firming, not a pause or easing.",
+        "score": 0.75,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2018-06-13/participantsViews/1",
+      "2018-06-13/participantsViews/3",
+      "2018-06-13/participantsViews/6",
+      "2018-06-13/participantsViews/9",
+      "2018-06-13/participantsViews/10",
+      "2018-06-13/participantsViews/11",
+      "2018-06-13/participantsViews/12",
+      "2018-06-13/participantsViews/13",
+      "2018-06-13/participantsViews/14",
+      "2018-06-13/policyAction/2",
+      "2018-06-13/policyAction/3",
+      "2018-06-13/policyAction/4",
+      "2018-06-13/policyAction/7",
+      "2018-06-13/policyAction/12",
+      "2018-06-13/policyAction/13"
+    ]
+  }
+}

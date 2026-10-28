@@ -1,0 +1,92 @@
+{
+  "meetingDate": "2015-12-16",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2015-12-16",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "The Committee expects that economic conditions will evolve in a manner that will warrant only gradual increases in the federal funds rate; the federal funds rate is likely to remain, for some time, below levels that are expected to prevail",
+            "paragraph_ref": "2015-12-16/policyAction/15"
+          },
+          {
+            "quote": "The Committee expects that economic conditions will evolve in a manner that will warrant only gradual increases in the federal funds rate; the federal funds rate is likely to remain, for some time, below levels that are expected to prevail",
+            "paragraph_ref": "2015-12-16/policyAction/15"
+          },
+          {
+            "quote": "Members stressed the potential need to accelerate or slow the pace of normalization as the economic outlook evolved.",
+            "paragraph_ref": "2015-12-16/policyAction/6"
+          }
+        ],
+        "rationale": "Participants agreed on gradual increases in the federal funds rate, with a clear emphasis on caution due to inflation uncertainty and the need to monitor progress. The path was seen as gradual and not yet near the longer-run level.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2015-12-16/participantsViews/1",
+      "2015-12-16/participantsViews/2",
+      "2015-12-16/participantsViews/15",
+      "2015-12-16/policyAction/1",
+      "2015-12-16/policyAction/5",
+      "2015-12-16/policyAction/6",
+      "2015-12-16/policyAction/7",
+      "2015-12-16/policyAction/9",
+      "2015-12-16/policyAction/14",
+      "2015-12-16/policyAction/15",
+      "2015-12-16/policyAction/16",
+      "2015-12-16/policyAction/19"
+    ]
+  }
+}

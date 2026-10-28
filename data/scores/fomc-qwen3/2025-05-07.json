@@ -1,0 +1,89 @@
+{
+  "meetingDate": "2025-05-07",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2025-05-07",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "In support of its goals, the Committee agreed to maintain the target range for the federal funds rate at 4-1/4 to 4-1/2 percent.",
+            "paragraph_ref": "2025-05-07/policyAction/2"
+          },
+          {
+            "quote": "In considering the extent and timing of additional adjustments to the target range for the federal funds rate, the Committee will carefully assess incoming data, the evolving outlook, and the balance of risks.",
+            "paragraph_ref": "2025-05-07/policyAction/15"
+          }
+        ],
+        "rationale": "All participants agreed to maintain the current rate range, with no indication of a tightening or easing bias. Forward guidance emphasizes caution and data dependence, reflecting a balanced stance.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2025-05-07/participantsViews/6",
+      "2025-05-07/participantsViews/7",
+      "2025-05-07/participantsViews/8",
+      "2025-05-07/participantsViews/9",
+      "2025-05-07/financialMarkets/6",
+      "2025-05-07/policyAction/2",
+      "2025-05-07/policyAction/3",
+      "2025-05-07/policyAction/6",
+      "2025-05-07/policyAction/15",
+      "2025-05-07/policyAction/16",
+      "2025-05-07/policyAction/20",
+      "2025-05-07/specialTopics/1",
+      "2025-05-07/specialTopics/4"
+    ]
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "meetingDate": "2023-06-14",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2023-06-14",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "Almost all participants noted that in their economic projections that they judged that additional increases in the target federal funds rate during 2023 would be appropriate.",
+            "paragraph_ref": "2023-06-14/participantsViews/12"
+          },
+          {
+            "quote": "Many also noted that, after rapidly tightening the stance of monetary policy last year, the Committee had slowed the pace of tightening and that a further moderation in the pace of policy firming was appropriate in order to provide additional",
+            "paragraph_ref": "2023-06-14/participantsViews/12"
+          },
+          {
+            "quote": "Most participants observed that uncertainty about the outlook for the economy and inflation remained elevated and that additional information would be valuable for considering the appropriate stance of monetary policy.",
+            "paragraph_ref": "2023-06-14/participantsViews/12"
+          }
+        ],
+        "rationale": "Participants agreed to hold the rate steady but saw further increases in 2023 as appropriate, with a clear lean toward gradual tightening despite slowing the pace of policy firming. The view was balanced but forward-looking, with most supporting future increases.",
+        "score": 0.5,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2023-06-14/participantsViews/1",
+      "2023-06-14/participantsViews/3",
+      "2023-06-14/participantsViews/4",
+      "2023-06-14/participantsViews/10",
+      "2023-06-14/participantsViews/11",
+      "2023-06-14/participantsViews/12",
+      "2023-06-14/financialMarkets/2",
+      "2023-06-14/policyAction/3",
+      "2023-06-14/policyAction/4",
+      "2023-06-14/policyAction/7",
+      "2023-06-14/policyAction/17"
+    ]
+  }
+}

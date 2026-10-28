@@ -1,0 +1,87 @@
+{
+  "meetingDate": "2015-06-17",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2015-06-17",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "The Committee concluded that, although it had seen some progress, the conditions warranting an increase in the target range for the federal funds rate had not yet been met, and that additional information on the outlook, particularly for labor markets",
+            "paragraph_ref": "2015-06-17/policyAction/4"
+          },
+          {
+            "quote": "The Committee agreed to maintain the target range for the federal funds rate at 0 to 1/4 percent and to reaffirm in the statement that the Committee's decision about how long to maintain the current target range for the federal",
+            "paragraph_ref": "2015-06-17/policyAction/6"
+          }
+        ],
+        "rationale": "Participants emphasized that conditions for policy firming had not yet been met and stressed the need for further improvement in labor markets and inflation before raising rates. The minutes show a clear consensus to hold the rate and await data, with no indication of a move toward tightening.",
+        "score": -0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2015-06-17/participantsViews/1",
+      "2015-06-17/participantsViews/9",
+      "2015-06-17/participantsViews/12",
+      "2015-06-17/participantsViews/13",
+      "2015-06-17/staffFinancial/5",
+      "2015-06-17/policyAction/1",
+      "2015-06-17/policyAction/4",
+      "2015-06-17/policyAction/6",
+      "2015-06-17/policyAction/7",
+      "2015-06-17/policyAction/13",
+      "2015-06-17/policyAction/15"
+    ]
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "meetingDate": "2024-07-31",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2024-07-31",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "All participants supported maintaining the target range for the federal funds rate at 5-1/4 to 5-1/2 percent, although several observed that the recent progress on inflation and increases in the unemployment rate had provided a plausible case for reducing the",
+            "paragraph_ref": "2024-07-31/participantsViews/10"
+          },
+          {
+            "quote": "The Committee does not expect it will be appropriate to reduce the target range until it has gained greater confidence that inflation is moving sustainably toward 2 percent.",
+            "paragraph_ref": "2024-07-31/policyAction/17"
+          }
+        ],
+        "rationale": "Participants supported holding the rate, with a clear bias toward waiting for stronger data before cutting. The minutes emphasize data dependence and caution against easing, indicating a cautious, restrictive stance.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2024-07-31/participantsViews/3",
+      "2024-07-31/participantsViews/6",
+      "2024-07-31/participantsViews/8",
+      "2024-07-31/participantsViews/10",
+      "2024-07-31/participantsViews/11",
+      "2024-07-31/participantsViews/12",
+      "2024-07-31/policyAction/2",
+      "2024-07-31/policyAction/3",
+      "2024-07-31/policyAction/7",
+      "2024-07-31/policyAction/17",
+      "2024-07-31/policyAction/18",
+      "2024-07-31/policyAction/22"
+    ]
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "meetingDate": "2009-08-12",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2009-08-12",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "The future path of the federal funds rate would continue to depend on the Committee's evolving outlook, but, for now, given their forecasts for only a gradual upturn in economic activity and subdued inflation, members thought it most likely that",
+            "paragraph_ref": "2009-08-12/policyAction/1"
+          },
+          {
+            "quote": "The future path of the federal funds rate would continue to depend on the Committee's evolving outlook, but, for now, given their forecasts for only a gradual upturn in economic activity and subdued inflation, members thought it most likely that",
+            "paragraph_ref": "2009-08-12/policyAction/1"
+          }
+        ],
+        "rationale": "The minutes indicate a clear consensus to maintain the federal funds rate at 0 to 1/4 percent for an extended period, with no indication of a tightening bias or forward movement. The view is balanced and forward-looking only with a strong emphasis on maintaining low rates.",
+        "score": -0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2009-08-12/participantsViews/2",
+      "2009-08-12/participantsViews/3",
+      "2009-08-12/participantsViews/6",
+      "2009-08-12/participantsViews/7",
+      "2009-08-12/staffEconomy/4",
+      "2009-08-12/staffFinancial/1",
+      "2009-08-12/financialMarkets/3",
+      "2009-08-12/policyAction/1",
+      "2009-08-12/policyAction/7"
+    ]
+  }
+}

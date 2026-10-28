@@ -1,0 +1,94 @@
+{
+  "meetingDate": "2022-03-16",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2022-03-16",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "Against this backdrop, all participants agreed that it was appropriate to begin a process of removing policy accommodation by raising the target range for the federal funds rate at this meeting.",
+            "paragraph_ref": "2022-03-16/participantsViews/8"
+          },
+          {
+            "quote": "Many participants noted that—with inflation well above the Committee's objective, inflationary risks to the upside, and the federal funds rate well below participants' estimates of its longer-run level—they would have preferred a 50 basis point increase in the target range",
+            "paragraph_ref": "2022-03-16/participantsViews/9"
+          },
+          {
+            "quote": "Participants judged that it would be appropriate to move the stance of monetary policy toward a neutral posture expeditiously.",
+            "paragraph_ref": "2022-03-16/participantsViews/10"
+          }
+        ],
+        "rationale": "All participants agreed to raise the federal funds rate and saw ongoing increases as warranted. Many preferred a larger hike, and the Committee signaled an expeditious move toward a neutral stance. This shows a strong, unified push for tightening policy.",
+        "score": 0.75,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2022-03-16/participantsViews/1",
+      "2022-03-16/participantsViews/2",
+      "2022-03-16/participantsViews/3",
+      "2022-03-16/participantsViews/8",
+      "2022-03-16/participantsViews/9",
+      "2022-03-16/participantsViews/10",
+      "2022-03-16/participantsViews/11",
+      "2022-03-16/financialMarkets/5",
+      "2022-03-16/policyAction/3",
+      "2022-03-16/policyAction/4",
+      "2022-03-16/policyAction/7",
+      "2022-03-16/policyAction/16",
+      "2022-03-16/policyAction/17",
+      "2022-03-16/policyAction/21"
+    ]
+  }
+}

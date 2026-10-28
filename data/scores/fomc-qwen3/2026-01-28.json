@@ -1,0 +1,97 @@
+{
+  "meetingDate": "2026-01-28",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2026-01-28",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "Against this backdrop, almost all participants supported maintaining the current target range for the federal funds rate at this meeting, while a couple of participants preferred to lower the target range.",
+            "paragraph_ref": "2026-01-28/participantsViews/9"
+          },
+          {
+            "quote": "Some participants commented that it would likely be appropriate to hold the policy rate steady for some time as the Committee carefully assesses incoming data, and a number of these participants judged that additional policy easing may not be warranted",
+            "paragraph_ref": "2026-01-28/participantsViews/10"
+          },
+          {
+            "quote": "All participants agreed that monetary policy was not on a preset course and would be informed by a wide range of incoming data, the evolving economic outlook, and the balance of risks.",
+            "paragraph_ref": "2026-01-28/participantsViews/10"
+          }
+        ],
+        "rationale": "The minutes show a majority preference for holding the rate, with some caution about easing. A few participants favored a cut, but most emphasized data-dependent decisions and balanced risk assessment. No strong push for tightening or easing is evident.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2026-01-28/participantsViews/5",
+      "2026-01-28/participantsViews/9",
+      "2026-01-28/participantsViews/10",
+      "2026-01-28/participantsViews/11",
+      "2026-01-28/staffEconomy/6",
+      "2026-01-28/staffFinancial/1",
+      "2026-01-28/staffFinancial/3",
+      "2026-01-28/staffFinancial/6",
+      "2026-01-28/financialMarkets/1",
+      "2026-01-28/policyAction/1",
+      "2026-01-28/policyAction/2",
+      "2026-01-28/policyAction/3",
+      "2026-01-28/policyAction/6",
+      "2026-01-28/policyAction/14",
+      "2026-01-28/policyAction/15",
+      "2026-01-28/policyAction/18",
+      "2026-01-28/policyAction/19"
+    ]
+  }
+}

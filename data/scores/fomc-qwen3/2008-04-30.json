@@ -1,0 +1,85 @@
+{
+  "meetingDate": "2008-04-30",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2008-04-30",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "In the Committee's discussion of monetary policy for the intermeeeting period, most members judged that policy should be eased by 25 basis points at this meeting.",
+            "paragraph_ref": "2008-04-30/policyAction/1"
+          },
+          {
+            "quote": "Nonetheless, most members agreed that a further, modest easing in the stance of policy was appropriate to balance better the risks to achieving the Committee's dual objectives of maximum employment and price stability over the medium run.",
+            "paragraph_ref": "2008-04-30/policyAction/1"
+          }
+        ],
+        "rationale": "The minutes show a majority view for a 25 basis point easing, with most participants agreeing it was appropriate. The actual decision was a rate cut, so the score must be negative. The view is a slight lean toward easing, consistent with a negative score.",
+        "score": -0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2008-04-30/participantsViews/2",
+      "2008-04-30/participantsViews/4",
+      "2008-04-30/participantsViews/10",
+      "2008-04-30/participantsViews/11",
+      "2008-04-30/staffEconomy/11",
+      "2008-04-30/policyAction/1",
+      "2008-04-30/policyAction/8",
+      "2008-04-30/policyAction/11",
+      "2008-04-30/policyAction/12"
+    ]
+  }
+}

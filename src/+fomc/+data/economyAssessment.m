@@ -66,10 +66,15 @@ if ~isempty(fieldnames(minutes))
     r.minutes = minutes;
 end
 r.series = [inflSeries; unempSeries; jobsSeries; growthSeries; gapSeries; marketSeries];
+% How the minutes' direction was read: the AI's score where the minutes were scored, else code
+howRead = "The lean of the minutes is read by code from their wording.";
+if isfield(r, "minutes") && r.minutes.directionSource == "ai"
+    howRead = "The lean of the minutes is the AI's score of their rate path, checked against the sentences it quotes.";
+end
 r.note = "Policy rules are rules of thumb, not forecasts: the Fed follows none of them, and the neutral real " + ...
     "rate is uncertain, so two values are shown. The CBO estimates and GDP are as published on the anchor " + ...
     "date and are revised later. Treasury yields also reflect term premia, so they are only a rough guide to " + ...
-    "expected policy. The lean of the minutes is read by code from their wording; quote the sentences, and " + ...
+    "expected policy. " + howRead + " Quote the sentences, and " + ...
     "say what participants expected, never what the Committee will do. For the next meeting, the minutes give " + ...
     "the direction and the 6-month bill the timing: participants often expect further moves and hold first.";
 end
@@ -287,10 +292,20 @@ if isempty(k)
 end
 V = fomc.data.policyViews(D, k);
 F = fomc.data.forecastRevisions(D, k);
-part = struct("meetingDate", V.meetingDate, "releaseDate", fomc.util.fmtDate(M.ReleaseDate(k)), "lean", V.lean);
-text = "In the minutes of the " + V.meetingDate + " meeting (released " + part.releaseDate + "), " + ...
-    "participants' views on future meetings " + leanWords(V.lean, V.leanShare, rangeNow) + ".";
-quoted = pickViews(V.views);
+dir = fomc.data.minutesDirection(D, k, rangeNow);
+part = struct("meetingDate", V.meetingDate, "releaseDate", fomc.util.fmtDate(M.ReleaseDate(k)), "lean", V.lean, ...
+    "directionSource", dir.source, "aiRatePathScore", dir.score);
+text = "In the minutes of the " + V.meetingDate + " meeting (released " + part.releaseDate + "), ";
+if dir.source == "ai"
+    % The AI read the minutes and scored the rate path; quote the sentences it cited
+    text = text + "the AI scored the rate path " + string(sprintf("%+.2f", dir.score)) + ...
+        " on its scale from -1 (dovish) to +1 (hawkish), " + aiWords(dir.way, rangeNow) + ".";
+    quoted = cellfun(@(e) struct("share", "", "lean", dir.way, "conditional", false, ...
+        "text", cutMark(string(e.quote)), "id", string(e.paragraph_ref)), dir.evidence(1:min(2, end)), UniformOutput=false);
+else
+    text = text + "participants' views on future meetings " + leanWords(V.lean, V.leanShare, rangeNow) + ".";
+    quoted = pickViews(V.views);
+end
 part.views = cellfun(@(v) struct("share", v.share, "lean", v.lean, "conditional", v.conditional, ...
     "text", v.text, "id", v.id), quoted, UniformOutput=false);
 for i = 1:numel(quoted)
@@ -342,6 +357,28 @@ if isempty(other) && numel(views) > 1
 end
 if ~isempty(other)
     quoted{2} = views{other};
+end
+end
+
+function q = cutMark(q)
+% The skill keeps quotes to 40 words, so a long sentence stops partway: mark where
+if ~endsWith(q, [".", "?", "!", """", ")", ":", ";"])
+    q = q + "...";
+end
+end
+
+function t = aiWords(way, rangeNow)
+% What the AI's rate-path direction means, in words
+switch way
+    case "up"
+        t = "a lean toward further increases";
+    case "down"
+        t = "a lean toward cuts";
+    otherwise
+        t = "a lean toward holding the rate where it is for now";
+        if rangeNow.upper <= 0.25
+            t = "no lean the rate itself can follow, as it is already at its lowest";
+        end
 end
 end
 

@@ -1,0 +1,89 @@
+{
+  "meetingDate": "2011-03-15",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2011-03-15",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "Given this economic outlook, the Committee agreed to continue to expand its holdings of longer-term Treasury securities as announced in November in order to promote a stronger pace of economic recovery and to help ensure that inflation, over time, is",
+            "paragraph_ref": "2011-03-15/policyAction/1"
+          },
+          {
+            "quote": "Specifically, the Committee maintained its existing policy of reinvesting principal payments from its securities holdings and reaffirmed its intention to purchase $600 billion of longer-term Treasury securities by the end of the second quarter of 2011.",
+            "paragraph_ref": "2011-03-15/policyAction/1"
+          },
+          {
+            "quote": "The Committee will maintain the target range for the federal funds rate at 0 to 1/4 percent and continues to anticipate that economic conditions, including low rates of resource utilization, subdued inflation trends, and stable inflation expectations, are likely to",
+            "paragraph_ref": "2011-03-15/policyAction/10"
+          }
+        ],
+        "rationale": "The minutes confirm a commitment to maintain the 0 to 1/4 percent federal funds rate target range and emphasize that exceptionally low rates are expected to persist due to weak labor markets and subdued inflation. No forward guidance for rate increases is provided.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2011-03-15/participantsViews/2",
+      "2011-03-15/participantsViews/5",
+      "2011-03-15/participantsViews/9",
+      "2011-03-15/staffOutlook/1",
+      "2011-03-15/staffFinancial/1",
+      "2011-03-15/staffFinancial/14",
+      "2011-03-15/policyAction/1",
+      "2011-03-15/policyAction/10",
+      "2011-03-15/policyAction/14"
+    ]
+  }
+}

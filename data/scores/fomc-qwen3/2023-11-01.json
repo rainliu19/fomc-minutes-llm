@@ -1,0 +1,90 @@
+{
+  "meetingDate": "2023-11-01",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2023-11-01",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "Amid these economic conditions, all participants judged it appropriate to maintain the target range for the federal funds rate at 5¼ to 5½ percent at this meeting.",
+            "paragraph_ref": "2023-11-01/participantsViews/9"
+          },
+          {
+            "quote": "In discussing the policy outlook, participants continued to judge that it was critical that the stance of monetary policy be kept sufficiently restrictive to return inflation to the Committee's 2 percent objective over time.",
+            "paragraph_ref": "2023-11-01/participantsViews/10"
+          },
+          {
+            "quote": "All participants agreed that the Committee was in a position to proceed carefully and that policy decisions at every meeting would continue to be based on the totality of incoming information and its implications for the economic outlook as well",
+            "paragraph_ref": "2023-11-01/participantsViews/10"
+          }
+        ],
+        "rationale": "The minutes show a unified view of maintaining a restrictive policy rate, with all participants agreeing to hold the rate at 5¼ to 5½ percent and emphasizing continued tightening to bring inflation down to 2 percent. Forward guidance highlights a firm commitment to restrictive policy, with no indication of easing.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2023-11-01/participantsViews/1",
+      "2023-11-01/participantsViews/3",
+      "2023-11-01/participantsViews/6",
+      "2023-11-01/participantsViews/9",
+      "2023-11-01/participantsViews/10",
+      "2023-11-01/participantsViews/11",
+      "2023-11-01/participantsViews/12",
+      "2023-11-01/policyAction/3",
+      "2023-11-01/policyAction/7",
+      "2023-11-01/policyAction/17"
+    ]
+  }
+}

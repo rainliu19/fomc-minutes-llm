@@ -5,14 +5,14 @@
   "params_b": 4.0,
   "ollama_name": "fomc-qwen3",
   "date": "2026-10-28",
-  "complete": true,
+  "complete": false,
   "n_cases": 57,
-  "correct": 49,
+  "correct": 48,
   "n_scored": 53,
-  "accuracy": 0.925,
+  "accuracy": 0.906,
   "accuracy_ci": [
-   0.821,
-   0.97
+   0.797,
+   0.959
   ],
   "by_category": {
    "comparison": {
@@ -32,7 +32,7 @@
     "n": 5
    },
    "nextmove": {
-    "correct": 4,
+    "correct": 3,
     "n": 4
    },
    "outlook": {
@@ -53,14 +53,14 @@
    }
   },
   "silent_errors": {
-   "count": 4,
+   "count": 5,
    "n": 53,
-   "rate": 0.075,
+   "rate": 0.094,
    "ci": [
-    0.03,
-    0.179
+    0.041,
+    0.203
    ],
-   "wrong": 4,
+   "wrong": 5,
    "warned_wrong": 0
   },
   "stability": {
@@ -74,8 +74,8 @@
   "cases_citing_verified_id": 43,
   "cases_with_warning": 3,
   "citations": {
-   "verified": 59,
-   "total": 62
+   "verified": 58,
+   "total": 61
   },
   "invented_reason": {
    "flagged": 2,
@@ -1682,7 +1682,7 @@
    "category": "nextmove",
    "effort": "low",
    "group": null,
-   "seconds": 35.4,
+   "seconds": 35.3,
    "tools": [
     "prefetchPassages",
     "assessEconomy",
@@ -1690,28 +1690,28 @@
    ],
    "stats": {
     "model_calls": 1,
-    "prompt_tokens": 4414,
-    "output_tokens": 184,
-    "prefill_tok_s": 264.8,
-    "decode_tok_s": 23.1
+    "prompt_tokens": 4774,
+    "output_tokens": 157,
+    "prefill_tok_s": 263.8,
+    "decode_tok_s": 21.6
    },
-   "citations_ok": 3,
-   "citations_total": 3,
+   "citations_ok": 1,
+   "citations_total": 1,
    "warning": "",
-   "invented_reason": false,
-   "answer": "At the next FOMC meeting, participants expect another increase in the federal funds rate, likely by year end, based on their assessment of inflation and employment risks [2026-09-16/participantsViews/11]. They emphasized that a higher path would provide insurance against persistent inflation due to strong demand or supply shocks [2026-09-16/participantsViews/10]. Core PCE inflation was 3.0% in August 2026, above the 2% target, and unemployment remained steady at 4.2%. Markets expect further increases, as the 2-year yield is 0.9 point above the middle of the target range. The Fed staff revised inflation forecasts higher and growth forecasts stronger in their latest outlook [2026-09-16/staffOu",
+   "invented_reason": null,
+   "answer": "The next FOMC meeting is expected to raise the federal funds rate, based on the minutes from the September 16, 2026 meeting [2026-09-16/participantsViews/11], which stated that \"another increase in the target range for the federal funds rate would likely be appropriate by year end.\" Participants also assessed that inflation remained above target and labor conditions were strong. The 2-year Treasury yield (4.75%) and 10-year yield (5.22%) suggest markets expect further increases. The Fed staff revised inflation forecasts higher and growth forecasts stronger, indicating a risk tilt to inflation. This pattern aligns with prior rate increases, where inflation and real spending growth typically d",
    "passed": true,
    "tool_ok": true,
    "expected_tool": "assessEconomy",
-   "free_pct": 15,
-   "swap_mb": 3655
+   "free_pct": 17,
+   "swap_mb": 3143
   },
   {
    "id": "nextmove-02",
    "category": "nextmove",
    "effort": "low",
    "group": null,
-   "seconds": 33.7,
+   "seconds": 32.5,
    "tools": [
     "getDecision",
     "prefetchData",
@@ -1719,56 +1719,56 @@
    ],
    "stats": {
     "model_calls": 1,
-    "prompt_tokens": 3787,
-    "output_tokens": 174,
-    "prefill_tok_s": 271.0,
-    "decode_tok_s": 24.8
+    "prompt_tokens": 4153,
+    "output_tokens": 168,
+    "prefill_tok_s": 274.7,
+    "decode_tok_s": 25.0
    },
-   "citations_ok": 1,
-   "citations_total": 1,
+   "citations_ok": 2,
+   "citations_total": 2,
    "warning": "",
    "invented_reason": null,
-   "answer": "The Fed is likely to cut rates at its next meeting. In the minutes of the July 31, 2024 meeting [2024-07-31/participantsViews/11], \"the vast majority observed that, if the data continued to come in about as expected, it would likely be appropriate to ease policy at the next meeting.\" Participants also noted that inflation was falling and unemployment was rising, with real GDP growth at 2.8% in Q2 2024. Markets expect a cut, as the 6-month Treasury bill yield was 4.9% on August 23, 2024, below the effective federal funds rate of 5.33%. This consensus among participants suggests a likely rate cut, though the Committee will wait for more data before acting.",
-   "passed": true,
+   "answer": "No, the Fed is not likely to cut rates at its next meeting. Participants at the July 31, 2024, meeting expected to hold the rate for now, noting that inflation had made progress and unemployment was rising, but they emphasized needing greater confidence that inflation is moving sustainably toward 2% before cutting [2024-07-31/participantsViews/10]. The Committee stated it does not expect a reduction until such confidence is gained [2024-07-31/policyAction/17]. While markets expect a cut soon (6-month bill at 4.9%), the minutes show a lean toward holding. The rate path was scored as +0.00 on the dovish-to-hawkish scale, indicating no clear shift.",
+   "passed": false,
    "tool_ok": true,
    "expected_tool": "assessEconomy",
    "free_pct": 15,
-   "swap_mb": 2606
+   "swap_mb": 3474
   },
   {
    "id": "nextmove-03",
    "category": "nextmove",
    "effort": "low",
    "group": null,
-   "seconds": 29.5,
+   "seconds": 31.1,
    "tools": [
     "prefetchPassages",
     "assessEconomy"
    ],
    "stats": {
     "model_calls": 1,
-    "prompt_tokens": 3633,
-    "output_tokens": 195,
-    "prefill_tok_s": 273.7,
-    "decode_tok_s": 24.8
+    "prompt_tokens": 3966,
+    "output_tokens": 166,
+    "prefill_tok_s": 276.5,
+    "decode_tok_s": 25.5
    },
-   "citations_ok": 2,
-   "citations_total": 2,
+   "citations_ok": 1,
+   "citations_total": 1,
    "warning": "",
-   "invented_reason": null,
-   "answer": "At the next Fed meeting, the policy rate is likely to remain unchanged. This is based on the minutes of the January 28, 2026 meeting, where participants leaned toward holding the rate steady as the Committee carefully assesses incoming data [2026-01-28/participantsViews/10]. Several participants cautioned that further easing could be misinterpreted as diminished commitment to the 2% inflation goal [2026-01-28/participantsViews/11]. The 6-month Treasury bill yield was 3.6% on February 20, 2026, slightly below the effective federal funds rate, indicating markets expect little change soon. Core PCE inflation was 3.0% in December 2025, above the 2% target, and unemployment was 4.3%, near its nor",
+   "invented_reason": false,
+   "answer": "At the next Fed meeting, the policy rate is likely to remain unchanged. The minutes from the January 28, 2026, meeting show that \"almost all participants supported maintaining the current target range\" and \"a number of these participants judged that additional policy easing may not be warranted\" [2026-01-28/participantsViews/9]. Market expectations, reflected in the 6-month Treasury bill yield at 3.6% (slightly below the effective federal funds rate), also suggest no imminent change. While inflation remains above target (3.0% core PCE), unemployment is at a normal level (4.3%), and labor market strength is solid. Participants expect continued data review before any adjustment. No decision or",
    "passed": true,
    "tool_ok": true,
    "expected_tool": "assessEconomy",
-   "free_pct": 15,
-   "swap_mb": 2387
+   "free_pct": 17,
+   "swap_mb": 3513
   },
   {
    "id": "nextmove-04",
    "category": "nextmove",
    "effort": "low",
    "group": null,
-   "seconds": 33.7,
+   "seconds": 34.2,
    "tools": [
     "getDecision",
     "prefetchData",
@@ -1776,21 +1776,21 @@
    ],
    "stats": {
     "model_calls": 1,
-    "prompt_tokens": 3931,
-    "output_tokens": 237,
-    "prefill_tok_s": 271.6,
-    "decode_tok_s": 24.6
+    "prompt_tokens": 4260,
+    "output_tokens": 190,
+    "prefill_tok_s": 272.6,
+    "decode_tok_s": 24.4
    },
-   "citations_ok": 1,
-   "citations_total": 1,
+   "citations_ok": 2,
+   "citations_total": 2,
    "warning": "",
    "invented_reason": null,
-   "answer": "Participants judged that further increases in the federal funds rate would be appropriate to achieve the Committee's objectives, anticipating ongoing increases in the target range [2022-06-15/participantsViews/14]. They recognized that a more restrictive stance might be warranted if inflation pressures persisted [2022-06-15/participantsViews/14]. The minutes indicate participants generally expected continued rate hikes, supported by market expectations: the 6-month Treasury bill yield was 2.7% on 2022-07-08, above the effective federal funds rate of 1.21%, suggesting near-term increases are expected. Core PCE inflation was 4.7% in May 2022, 2.7 points above the 2% target, though it had been ",
+   "answer": "Participants judged that an increase of 50 or 75 basis points would likely be appropriate at the next meeting [2022-06-15/participantsViews/14]. The minutes indicate a lean toward further rate increases, with the AI scoring the rate path +0.75 on its -1 to +1 scale [2022-06-15/participantsViews/13]. Core PCE inflation was 4.7% in May 2022, 2.7 points above the 2% target, and unemployment remained steady at 3.6%, below the CBO\u2019s estimate of 4.4%. Real GDP contracted 1.6% in Q1 2022, and the 6-month Treasury bill yield was 2.7%, above the effective federal funds rate, suggesting market expectations of soon-to-come increases.",
    "passed": true,
    "tool_ok": true,
    "expected_tool": "assessEconomy",
-   "free_pct": 16,
-   "swap_mb": 2531
+   "free_pct": 17,
+   "swap_mb": 3345
   }
  ]
 }

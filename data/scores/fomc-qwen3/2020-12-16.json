@@ -1,0 +1,88 @@
+{
+  "meetingDate": "2020-12-16",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2020-12-16",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "The Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent and expects it will be appropriate to maintain this target range until labor market conditions have reached levels consistent with the Committee's",
+            "paragraph_ref": "2020-12-16/policyAction/20"
+          },
+          {
+            "quote": "All members agreed to maintain the target range for the federal funds rate at 0 to 1/4 percent, and they expected that it would be appropriate to maintain this target range until labor market conditions had reached levels consistent with",
+            "paragraph_ref": "2020-12-16/policyAction/3"
+          }
+        ],
+        "rationale": "The minutes state the Committee will maintain the federal funds rate at 0 to 1/4 percent and will keep it there until labor market conditions improve and inflation reaches 2 percent. This reflects a clear commitment to an accommodative stance, with no indication of tightening or easing.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2020-12-16/participantsViews/1",
+      "2020-12-16/participantsViews/4",
+      "2020-12-16/participantsViews/7",
+      "2020-12-16/participantsViews/10",
+      "2020-12-16/participantsViews/11",
+      "2020-12-16/participantsViews/13",
+      "2020-12-16/staffOutlook/2",
+      "2020-12-16/staffFinancial/3",
+      "2020-12-16/policyAction/2",
+      "2020-12-16/policyAction/3",
+      "2020-12-16/policyAction/5",
+      "2020-12-16/policyAction/20"
+    ]
+  }
+}

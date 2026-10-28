@@ -1,0 +1,86 @@
+{
+  "meetingDate": "2012-03-13",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": false,
+  "issues": "rate_path.rationale mentions year 2014, after the minutes release date 2012-04-03.",
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2012-03-13",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "With the economic outlook over the medium term not greatly changed, almost all members again agreed to indicate that the Committee expects to maintain a highly accommodative stance for monetary policy and currently anticipates that economic conditions--including low rates of",
+            "paragraph_ref": "2012-03-13/policyAction/3"
+          },
+          {
+            "quote": "In contrast, one member judged that maintaining the current degree of policy accommodation much beyond this year would likely be inappropriate; that member anticipated that a tightening of monetary policy would be necessary well before the end of 2014 in",
+            "paragraph_ref": "2012-03-13/policyAction/3"
+          }
+        ],
+        "rationale": "The forward guidance in the minutes references 'late 2014' and 'well before the end of 2014' as part of the policy outlook at the time of the meeting. These are within the context of the meeting's discussion and were released on 2012-04-03, so they are not post-release.",
+        "score": -0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2012-03-13/participantsViews/2",
+      "2012-03-13/participantsViews/3",
+      "2012-03-13/participantsViews/9",
+      "2012-03-13/staffOutlook/1",
+      "2012-03-13/staffFinancial/2",
+      "2012-03-13/policyAction/2",
+      "2012-03-13/policyAction/3",
+      "2012-03-13/policyAction/10",
+      "2012-03-13/policyAction/14",
+      "2012-03-13/specialTopics/1"
+    ]
+  }
+}

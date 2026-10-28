@@ -1,7 +1,9 @@
-function output = scoreByDimension(s, meetingDate)
+function output = scoreByDimension(s, meetingDate, nvp)
 %SCOREBYDIMENSION Score one meeting with the fomc-score skill, one dimension per model call.
 %   output = fomc.skills.scoreByDimension(s) scores the latest released meeting.
 %   output = fomc.skills.scoreByDimension(s, meetingDate) scores a specific YYYY-MM-DD.
+%   output = fomc.skills.scoreByDimension(s, meetingDate, Dimensions=["rate_path"]) scores only
+%   those dimensions; the others are not_discussed with "Not scored in this run" as rationale.
 %   A variant of fomc.skills.scoreMeeting (Aarya's, which the chat's scoring requests use) for
 %   the local models' window. It uses the skill as written (skills/fomc-score: the scale, the
 %   rules in SKILL.md, the rubrics, the dimension schema) and the same checks
@@ -24,6 +26,13 @@ function output = scoreByDimension(s, meetingDate)
 %   model reads, judges and picks the evidence; code picks what it reads and checks what it
 %   returns (fomc.guard.validateScores). A dimension no paragraph mentions is not_discussed
 %   without a model call.
+
+arguments
+    s (1,1) struct
+    meetingDate (1,1) string = ""
+    nvp.Dimensions (1,:) string = ["rate_path", "inflation", "labor_market", "economic_activity", ...
+        "financial_conditions", "balance_sheet", "risk_balance"]
+end
 
 ctx = s.ctx;
 M = ctx.D.meetings;
@@ -68,7 +77,11 @@ dims = dimensionList();
 score = struct("meeting_date", meetingDate, "scale", "hawkish_positive", "dimensions", struct());
 for i = 1:height(dims)
     score.dimensions.(dims.key(i)) = placeholder();
+    if ~any(nvp.Dimensions == dims.key(i))
+        score.dimensions.(dims.key(i)).rationale = "Not scored in this run.";
+    end
 end
+dims = dims(ismember(dims.key, nvp.Dimensions), :);
 passages = struct();
 unscored = strings(0, 1);
 maxAttempts = 3;
@@ -138,7 +151,7 @@ end
 failures = [unscored; fomc.guard.validateScores(score, minutesText, meetingDate, ctx.D)];
 output = struct("score", score, "ok", isempty(failures), "issues", failures, ...
     "failedDimensions", dimensionsInFailures(failures), "attempts", max(attemptsUsed, 1), ...
-    "calls", calls, "passages", passages);
+    "calls", calls, "passages", passages, "dimensionsScored", dims.key.');
 end
 
 function T = dimensionList()

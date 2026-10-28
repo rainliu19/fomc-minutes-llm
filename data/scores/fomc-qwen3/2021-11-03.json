@@ -1,0 +1,86 @@
+{
+  "meetingDate": "2021-11-03",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2021-11-03",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "The Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent and expects it will be appropriate to maintain this target range until labor market conditions have reached levels consistent with the Committee's",
+            "paragraph_ref": "2021-11-03/policyAction/24"
+          },
+          {
+            "quote": "Various participants noted that the Committee should be prepared to adjust the pace of asset purchases and raise the target range for the federal funds rate sooner than participants currently anticipated if inflation continued to run higher than levels consistent",
+            "paragraph_ref": "2021-11-03/participantsViews/12"
+          }
+        ],
+        "rationale": "The minutes confirm the target range was held at 0 to 1/4 percent and emphasize readiness to raise it if inflation pressures persist, indicating a clear forward-leaning bias toward tighter policy despite no rate hike. This reflects a hawkish stance on the path of rates.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2021-11-03/participantsViews/1",
+      "2021-11-03/participantsViews/11",
+      "2021-11-03/participantsViews/12",
+      "2021-11-03/financialMarkets/3",
+      "2021-11-03/policyAction/1",
+      "2021-11-03/policyAction/3",
+      "2021-11-03/policyAction/6",
+      "2021-11-03/policyAction/7",
+      "2021-11-03/policyAction/10",
+      "2021-11-03/policyAction/24"
+    ]
+  }
+}

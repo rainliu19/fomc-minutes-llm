@@ -1,0 +1,91 @@
+{
+  "meetingDate": "2010-08-10",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": false,
+  "issues": [
+    "rate_path.score must be null when status is not_discussed.",
+    "rate_path.confidence must be null when status is not_discussed.",
+    "rate_path.evidence must be empty when status is not_discussed.",
+    "rate_path must be scored consistently with the meeting's actual hold."
+  ],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2010-08-10",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "The Committee will maintain the target range for the federal funds rate at 0 to 1/4 percent and continues to anticipate that economic conditions, including low rates of resource utilization, subdued inflation trends, and stable inflation expectations, are likely to",
+            "paragraph_ref": "2010-08-10/policyAction/9"
+          },
+          {
+            "quote": "All but one member concluded that it would be appropriate to begin reinvesting principal received from agency debt and MBS held in the SOMA by purchasing longer-term Treasury securities in order to keep constant the face value of securities held",
+            "paragraph_ref": "2010-08-10/policyAction/3"
+          }
+        ],
+        "rationale": "The Committee held the federal funds rate at 0 to 1/4 percent, with a majority viewing current conditions as warranting exceptionally low rates for an extended period. While one member dissented on the 'extended period' language, the consensus supports maintaining the current rate without a clear shift toward tightening or easing.",
+        "score": 0,
+        "status": "not_discussed"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2010-08-10/participantsViews/5",
+      "2010-08-10/participantsViews/7",
+      "2010-08-10/participantsViews/9",
+      "2010-08-10/staffOutlook/1",
+      "2010-08-10/staffFinancial/1",
+      "2010-08-10/policyAction/1",
+      "2010-08-10/policyAction/2",
+      "2010-08-10/policyAction/3",
+      "2010-08-10/policyAction/9",
+      "2010-08-10/policyAction/15"
+    ]
+  }
+}

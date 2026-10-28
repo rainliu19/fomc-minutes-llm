@@ -1,0 +1,82 @@
+{
+  "meetingDate": "2013-05-01",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2013-05-01",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "In particular, the Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent and currently anticipates that this exceptionally low range for the federal funds rate will be appropriate at least as long",
+            "paragraph_ref": "2013-05-01/policyAction/11"
+          }
+        ],
+        "rationale": "The minutes state the Committee will keep the federal funds rate at 0 to 1/4 percent for as long as unemployment remains above 6.5 percent and inflation expectations are stable. This reflects a clear commitment to maintaining a highly accommodative stance, indicating a dovish bias in the policy rate path.",
+        "score": -0.5,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2013-05-01/participantsViews/5",
+      "2013-05-01/participantsViews/8",
+      "2013-05-01/participantsViews/9",
+      "2013-05-01/participantsViews/10",
+      "2013-05-01/participantsViews/11",
+      "2013-05-01/policyAction/1",
+      "2013-05-01/policyAction/2",
+      "2013-05-01/policyAction/11",
+      "2013-05-01/policyAction/14",
+      "2013-05-01/specialTopics/1"
+    ]
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "meetingDate": "2015-04-29",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2015-04-29",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "Many participants, however, thought it unlikely that the data available in June would provide sufficient confirmation that the conditions for raising the target range for the federal funds rate had been satisfied, al-though they generally did not rule out this",
+            "paragraph_ref": "2015-04-29/participantsViews/9"
+          },
+          {
+            "quote": "The Committee anticipates that it will be appropriate to raise the target range for the federal funds rate when it has seen further improvement in the labor market and is reasonably confident that inflation will move back to its 2",
+            "paragraph_ref": "2015-04-29/policyAction/10"
+          }
+        ],
+        "rationale": "Participants expressed a range of views on when to raise the rate, with many doubting June data would confirm conditions for firming, but still acknowledged a possibility. A clear forward-looking bias exists toward future increases, though with hedging.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2015-04-29/participantsViews/8",
+      "2015-04-29/participantsViews/9",
+      "2015-04-29/participantsViews/10",
+      "2015-04-29/staffFinancial/2",
+      "2015-04-29/policyAction/3",
+      "2015-04-29/policyAction/4",
+      "2015-04-29/policyAction/10",
+      "2015-04-29/policyAction/11",
+      "2015-04-29/policyAction/12",
+      "2015-04-29/specialTopics/1"
+    ]
+  }
+}

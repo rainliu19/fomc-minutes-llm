@@ -1,0 +1,85 @@
+{
+  "meetingDate": "2013-10-30",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2013-10-30",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "In particular, the Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent and currently anticipates that this exceptionally low range for the federal funds rate will be appropriate at least as long",
+            "paragraph_ref": "2013-10-30/policyAction/12"
+          },
+          {
+            "quote": "When the Committee decides to begin to remove policy accommodation, it will take a balanced approach consistent with its longer-run goals of maximum employment and inflation of 2 percent.\"",
+            "paragraph_ref": "2013-10-30/policyAction/12"
+          }
+        ],
+        "rationale": "The minutes affirm a commitment to maintain the federal funds rate at 0 to 1/4 percent for a considerable time, with no indication of a move toward tightening. Forward guidance emphasizes a balanced, data-dependent approach to future adjustments, with no urgency or clear path to rate increases.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2013-10-30/participantsViews/4",
+      "2013-10-30/staffFinancial/2",
+      "2013-10-30/policyAction/2",
+      "2013-10-30/policyAction/3",
+      "2013-10-30/policyAction/4",
+      "2013-10-30/policyAction/12",
+      "2013-10-30/policyAction/15",
+      "2013-10-30/specialTopics/1",
+      "2013-10-30/specialTopics/4"
+    ]
+  }
+}

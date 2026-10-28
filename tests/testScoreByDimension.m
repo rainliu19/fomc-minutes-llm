@@ -94,6 +94,43 @@ classdef testScoreByDimension < matlab.unittest.TestCase
             tc.verifyEqual(model.Index, 2, "spending and the cut");
         end
 
+        function savedScoresAreKeptAndMerged(tc)
+            % Scoring the rate path, then inflation, keeps both in one saved file
+            model = EchoScoreModel();
+            s = struct("ctx", tc.ctx, "llm", @model.call);
+            folder = string(tempname);
+            fomc.skills.scoreCache("write", "mock", tc.meetingDate, ...
+                fomc.skills.scoreByDimension(s, tc.meetingDate, Dimensions="rate_path"), Folder=folder);
+            out = fomc.skills.scoreByDimension(s, tc.meetingDate, Dimensions="inflation");
+            tc.verifyEqual(out.calls, 1);
+            tc.verifyEqual(string(out.score.dimensions.rate_path.rationale), "Not scored in this run.");
+            r = fomc.skills.scoreCache("write", "mock", tc.meetingDate, out, Folder=folder);
+            tc.verifyEqual(sort(string(r.dimensionsScored(:))), ["inflation"; "rate_path"]);
+            tc.verifyEqual(string(r.score.dimensions.rate_path.rationale), "Participants described this topic.");
+            tc.verifyEqual(fomc.skills.scoreCache("list", "mock", Folder=folder), tc.meetingDate);
+            tc.verifyEmpty(fomc.skills.scoreCache("read", "mock", "2020-03-18", Folder=folder));
+        end
+
+        function theMinutesDirectionUsesTheAIScoreElseTheWordRules(tc)
+            % March 2020: the AI's rate path -0.5 points down; with no saved score, the word rules
+            model = EchoScoreModel();
+            s = struct("ctx", tc.ctx, "llm", @model.call);
+            folder = string(tempname);
+            fomc.skills.scoreCache("write", "mock", "2020-03-18", ...
+                fomc.skills.scoreByDimension(s, "2020-03-18", Dimensions="rate_path"), Folder=folder);
+            range = table(1, 1.25, VariableNames=["lower", "upper"]);
+            m = fomc.data.minutesDirection(tc.D, 2, range, Model="mock", Folder=folder);
+            tc.verifyEqual([m.source, m.way], ["ai", "down"]);
+            tc.verifyEqual(m.score, -0.5);
+            tc.verifyEqual(string(m.evidence{1}.paragraph_ref), "2020-03-18/policyAction/1");
+            m = fomc.data.minutesDirection(tc.D, 1, range, Model="mock", Folder=folder);
+            tc.verifyEqual(m.source, "rules");
+            % At a range of 0 to 1/4 percent a dovish score means the rate itself holds
+            m = fomc.data.minutesDirection(tc.D, 2, table(0, 0.25, VariableNames=["lower", "upper"]), ...
+                Model="mock", Folder=folder);
+            tc.verifyEqual(m.way, "hold");
+        end
+
         function eachPromptFitsTheModelsWindow(tc)
             % Real minutes: every prompt, with the system prompt and room for two answers, stays
             % within 8,192 tokens at 3.3 characters a token

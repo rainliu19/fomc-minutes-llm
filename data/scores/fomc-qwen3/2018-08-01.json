@@ -1,0 +1,93 @@
+{
+  "meetingDate": "2018-08-01",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2018-08-01",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "Many participants suggested that if incoming data continued to support their current economic outlook, it would likely soon be appropriate to take another step in removing policy accommodation.",
+            "paragraph_ref": "2018-08-01/participantsViews/13"
+          },
+          {
+            "quote": "Participants generally expected that further gradual increases in the target range for the federal funds rate would be consistent with a sustained expansion of economic activity, strong labor market conditions, and inflation near the Committee's symmetric 2 percent objective over",
+            "paragraph_ref": "2018-08-01/participantsViews/13"
+          },
+          {
+            "quote": "Consequently, members expected that further gradual increases in the target range for the federal funds rate would be consistent with sustained expansion of economic activity, strong labor market conditions, and inflation near the Committee's symmetric 2 percent objective over the",
+            "paragraph_ref": "2018-08-01/policyAction/2"
+          }
+        ],
+        "rationale": "Participants expressed a clear consensus that gradual rate increases would be appropriate to remove policy accommodation, with strong forward guidance on future hikes. The view was not hedged or data-dependent, indicating a firm leaning toward tightening.",
+        "score": 0.5,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2018-08-01/participantsViews/10",
+      "2018-08-01/participantsViews/12",
+      "2018-08-01/participantsViews/13",
+      "2018-08-01/participantsViews/14",
+      "2018-08-01/participantsViews/17",
+      "2018-08-01/staffFinancial/2",
+      "2018-08-01/financialMarkets/1",
+      "2018-08-01/policyAction/2",
+      "2018-08-01/policyAction/3",
+      "2018-08-01/policyAction/6",
+      "2018-08-01/policyAction/12",
+      "2018-08-01/specialTopics/1",
+      "2018-08-01/specialTopics/3"
+    ]
+  }
+}

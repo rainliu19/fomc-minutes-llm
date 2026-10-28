@@ -1,0 +1,89 @@
+{
+  "meetingDate": "2016-07-27",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2016-07-27",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "Several suggested that the Committee would likely have ample time to react if inflation rose more quickly than they currently anticipated, and they preferred to defer another increase in the federal funds rate until they were more confident that inflation",
+            "paragraph_ref": "2016-07-27/participantsViews/15"
+          },
+          {
+            "quote": "A couple of members indicated that, in light of their judgment that labor market conditions were at or close to the Committee's objectives, some moderation in employment gains was to be expected.",
+            "paragraph_ref": "2016-07-27/policyAction/2"
+          },
+          {
+            "quote": "Some other members anticipated that economic conditions would soon warrant taking another step in removing policy accommodation.",
+            "paragraph_ref": "2016-07-27/policyAction/6"
+          }
+        ],
+        "rationale": "The minutes show a split view: some participants support holding and waiting for more data, while others see a need for a rate increase. A few advocate raising the rate, but no clear majority or urgency. The overall view is balanced with a slight lean toward caution.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2016-07-27/participantsViews/15",
+      "2016-07-27/policyAction/2",
+      "2016-07-27/policyAction/6",
+      "2016-07-27/policyAction/7",
+      "2016-07-27/policyAction/10",
+      "2016-07-27/policyAction/15",
+      "2016-07-27/policyAction/16",
+      "2016-07-27/policyAction/20",
+      "2016-07-27/specialTopics/1"
+    ]
+  }
+}

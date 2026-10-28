@@ -1,0 +1,89 @@
+{
+  "meetingDate": "2018-09-26",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2018-09-26",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "With regard to the outlook for monetary policy beyond this meeting, participants generally anticipated that further gradual increases in the target range for the federal funds rate would most likely be consistent with a sustained economic expansion, strong labor market",
+            "paragraph_ref": "2018-09-26/participantsViews/13"
+          },
+          {
+            "quote": "Members agreed that the timing and size of future adjustments to the target range for the federal funds rate would depend on their assessment of realized and expected economic conditions relative to the Committee's maximum-employment objective and symmetric 2 percent",
+            "paragraph_ref": "2018-09-26/policyAction/3"
+          }
+        ],
+        "rationale": "The minutes show a clear consensus on gradual rate increases, with most participants expecting further firming consistent with strong labor markets and inflation near 2%. The forward guidance emphasizes a steady, balanced approach to tightening.",
+        "score": 0.5,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2018-09-26/participantsViews/1",
+      "2018-09-26/participantsViews/7",
+      "2018-09-26/participantsViews/10",
+      "2018-09-26/participantsViews/12",
+      "2018-09-26/participantsViews/13",
+      "2018-09-26/participantsViews/14",
+      "2018-09-26/participantsViews/15",
+      "2018-09-26/staffFinancial/3",
+      "2018-09-26/financialMarkets/2",
+      "2018-09-26/policyAction/3",
+      "2018-09-26/policyAction/4",
+      "2018-09-26/policyAction/6",
+      "2018-09-26/policyAction/12"
+    ]
+  }
+}

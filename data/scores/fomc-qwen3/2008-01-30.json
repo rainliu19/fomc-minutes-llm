@@ -1,0 +1,84 @@
+{
+  "meetingDate": "2008-01-30",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2008-01-30",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "“The Federal Open Market Committee decided today to lower its target for the federal funds rate 50 basis points to 3 percent.",
+            "paragraph_ref": "2008-01-30/policyAction/6"
+          },
+          {
+            "quote": "In the discussion of monetary policy for the intermeeting period, most members believed that a further significant easing in policy was warranted at this meeting to address the considerable worsening of the economic outlook since December as well as increased",
+            "paragraph_ref": "2008-01-30/policyAction/1"
+          }
+        ],
+        "rationale": "The minutes confirm a 50 basis point rate cut to 3 percent, with most members supporting significant easing due to worsening economic conditions. This reflects a clear dovish stance on policy rates.",
+        "score": -0.75,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2008-01-30/participantsViews/2",
+      "2008-01-30/participantsViews/3",
+      "2008-01-30/participantsViews/5",
+      "2008-01-30/participantsViews/9",
+      "2008-01-30/staffOutlook/1",
+      "2008-01-30/policyAction/1",
+      "2008-01-30/policyAction/6",
+      "2008-01-30/policyAction/12"
+    ]
+  }
+}

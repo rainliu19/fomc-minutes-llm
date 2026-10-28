@@ -67,6 +67,15 @@ call, with only the paragraphs about that dimension, and matches the model's
 quotes to the closest sentence so they are word for word. It is a separate file
 so this scorer is unchanged; see `docs/agent_interface.md`.
 
+`pipeline/score_minutes.m` scores the rate path of every released set of minutes
+once and saves the scores in `data/scores/<model>/`. `assessEconomy` and the
+next-meeting reading take the minutes' direction from those scores
+(`fomc.data.minutesDirection`), falling back to the word rules of
+`fomc.data.policyViews`, which are kept as the baseline. Tested on the 62
+meetings from 2019 on with a cutoff chosen on 2008 to 2018, the AI's direction
+was right about the next decision 81% of the time and the word rules 76%;
+the 6-month bill was right 84%, so it still gives the timing.
+
 For comparisons, each score object independently matches `schema.json`. The
 response carries those objects in `scores`, with per-meeting validation details
 in a separate `validation` field and aggregate validation status. `latest`
