@@ -35,8 +35,9 @@ function t = citeLine(r, q)
 % How to answer, and the ids of the minutes it quotes, asked for by name at the end, where a small
 % model reads them last. A question about what is likely at the next meeting is answered from
 % the next-meeting reading at the start (the minutes for direction, the 6-month bill for timing),
-% not from the minutes alone: in a backtest the minutes' lean was right about the next decision
-% 69% of the time, worse than always guessing a hold. Qwen3 4B also answered without citing the
+% not from the minutes alone: in a backtest from 2019 on, the minutes' direction was right about
+% the next decision 81% of the time (the AI's score; the word rules 76%) and the bill 84%,
+% since participants often expect further moves and hold first. Qwen3 4B also answered without citing the
 % quotes when the ask was only at the start. Asked "Should the Fed raise rates at the next
 % meeting?", it answered "Yes, the Fed should raise rates" even when told not to say what the Fed
 % should do, so a question that asks for a judgment is told what to answer with instead: what

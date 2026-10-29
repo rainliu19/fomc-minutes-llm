@@ -7,12 +7,13 @@ function r = economyAssessment(D, asOf)
 %   neutral real rate of 0.5 and 2 percent) against the actual target range, the 6-month
 %   Treasury bill against the effective fed funds rate, and the 2-year yield against the middle
 %   of the range. Then the latest minutes
-%   public on asOf: what participants said about the rate at future meetings
-%   (fomc.data.policyViews) and how the staff revised its forecast (fomc.data.forecastRevisions),
+%   public on asOf: which way they point for the rate at future meetings (fomc.data.minutesDirection:
+%   the AI's saved rate-path score, else what participants said, read by fomc.data.policyViews)
+%   and how the staff revised its forecast (fomc.data.forecastRevisions),
 %   each cited to its paragraph. Every value is read as known on asOf (fomc.data.valueAsOf),
 %   so revised series use the vintage then published. r.summary says it in plain sentences;
 %   r.series holds the inputs, for the High-effort figure check. Missing inputs are said to
-%   be missing, never guessed. No model.
+%   be missing, never guessed. No model call: the AI's scores were saved ahead of time.
 
 arguments
     D (1,1) struct

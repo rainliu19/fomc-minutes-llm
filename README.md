@@ -28,6 +28,8 @@ Open http://localhost:8787. It starts Ollama and MATLAB, checks memory first, an
 
 - **Point in time.** Pick an anchor date. The agent sees only minutes released by then, and data as it was known then (revisions included). Guardrails refuse anything later.
 - **Facts from code.** Decisions, votes and dissents are read from the minutes by pattern matching and checked against the real rate changes for all 150 meetings.
+- **Where policy may go.** `assessEconomy` sets the economy against the Fed's goals, what markets expect and what the latest minutes point to; `getOutlook` gathers the evidence on what recent rate moves may mean for borrowing, spending and prices. Both read everything as known on the anchor date.
+- **AI scores of the minutes.** The model scores each set of minutes once, ahead of time, on the rate path from -1 (dovish) to +1 (hawkish); the next-meeting reading takes the minutes' direction from those scores, with word rules as the baseline, and both are tested against what the Fed did next.
 - **Checkable answers.** Answers cite paragraph ids. The page shows each exact paragraph and flags anything unverified.
 - **Structured FOMC scoring.** Ask the agent to score a meeting's hawkish/dovish stance across seven dimensions. It uses a documented skill, returns schema-shaped JSON, and validates its scores and evidence.
 - **Fast on a small model.** Typical answers take 10 to 25 seconds on an 8 GB M1.
@@ -102,10 +104,10 @@ result.attempts    % one to three model attempts
 | `static/` | The chat page (one HTML file): chat history on the left, model and effort pickers. |
 | `src/` | The agent, written in MATLAB (`src/+fomc`, below). |
 | `skills/` | Model-readable skill instructions, rubrics and output schemas. |
-| `pipeline/` | MATLAB scripts that download and clean the data (FRED, Yahoo, Shiller, Treasury, the minutes). Run them only to refresh data. |
-| `data/` | The collected data: CSVs, and one text file per set of minutes in `data/minutes/`. The agent reads these. |
+| `pipeline/` | MATLAB scripts that download and clean the data (FRED, Yahoo, Shiller, Treasury, the minutes). Run them only to refresh data. `score_minutes.m` has the model score the rate path of new minutes (Ollama must be running). |
+| `data/` | The collected data: CSVs, one text file per set of minutes in `data/minutes/`, and the AI's saved scores of each set in `data/scores/<model>/`. The agent reads these. |
 | `tests/` | Automated checks: MATLAB tests (`buildtool test`), Python tests, and the live model evaluation (`bench_live.py`, `bench_baseline.py`, `make_key.py`, `measure_memory.py`, `export_evals.py`). |
-| `evals/` | The 50-question answer key and each model's saved results. The Evaluation page (`/evaluation`) reads them. |
+| `evals/` | The answer key (50 questions drawn from the decision cards and 7 forward-looking ones written by hand) and each model's saved results. The Evaluation page (`/evaluation`) reads them. |
 | `docs/` | Guides: agent interface, data, performance, MATLAB gaps. |
 | `models/` | The local models you can pick on the page: one folder per model with its Ollama `Modelfile`, plus `models.json`, the list the page shows. |
 | `logs/` | Created when you run the agent: one trace file per session, and your saved chats in `logs/chats/` (private to each browser). Not in git. |
@@ -118,19 +120,19 @@ result.attempts    % one to three model attempts
 |---|---|
 | `chat.m`, `runAgent.m`, `runTurn.m`, `effort.m` | Entry points, the main loop (ask the model, run its tools, repeat), and what Low, Medium and High effort change. |
 | `+tools/` | The tools the model can call: decisions, the path of rates over several meetings, where policy may go next, what recent rate moves may mean ahead, search, read minutes, data series, and `readSkill` for loading skill instructions or references. |
-| `+data/` | Loads the data, works out what was known on a given date, and reads each meeting's decision, the staff's forecast revisions and participants' views on future meetings. |
+| `+data/` | Loads the data, works out what was known on a given date, and reads each meeting's decision, the staff's forecast revisions, participants' views on future meetings, and which way the minutes point (the AI's saved score, else word rules). |
 | `+focus/` | Picks which minutes a question is about and looks up the first facts before the model starts, including the path of rates, how the economy compares with the Fed's goals and what the latest minutes say about future meetings, and the evidence on what the rate path may mean ahead. |
 | `+retrieve/` | Finds the paragraphs that best match a question. |
 | `+guard/` | The checks: no future dates, real citations, correct figures. |
 | `+analysis/` | The structured analysis (the High effort level). |
-| `+skills/` | Discovers and loads skill instructions and runs the validated structured scoring workflow. |
+| `+skills/` | Discovers and loads skill instructions and runs the validated structured scoring workflow: in one call (`scoreMeeting`) or one dimension per call for the local models (`scoreByDimension`), and saves the scores (`scoreCache`). |
 | `+llm/` | Talks to the local model (and a fake model for tests). |
 | `+history/` | Keeps the conversation short enough for the model. |
 | `+trace/` | Writes the log of everything the agent did. |
 | `+web/` | The functions the chat page calls (one turn, session store, continuing a saved chat). |
 | `+leak/` | Labels meetings by whether the model may have seen them in training. |
 | `+rubric/` | Placeholder for the consumer-impact score (Aarya). |
-| `+util/` | Small helpers for dates and JSON. |
+| `+util/` | Small helpers for dates and JSON, and the memory check for long model runs. |
 
 ## Docs
 

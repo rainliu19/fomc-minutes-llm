@@ -1,8 +1,9 @@
 function r = assessEconomy(ctx, args)
 %ASSESSECONOMY The economy against the Fed's goals and what the latest minutes say next (fomc.data.economyAssessment).
 %   Inflation, unemployment, jobs and growth against the goals, two policy rules against the
-%   target range, what Treasury yields suggest markets expect, and the lean of the latest
-%   minutes on future meetings with the staff forecast, as known on the anchor date or on
+%   target range, what Treasury yields suggest markets expect, and which way the latest
+%   minutes point for future meetings (the AI's saved score, else word rules) with the staff
+%   forecast, as known on the anchor date or on
 %   endDate if given (an earlier date shows it as it stood then). The harness also runs it
 %   before the model starts for questions about where policy is going (fomc.focus.economyPrefetch),
 %   so the model gets it even when it does not call the tool.
