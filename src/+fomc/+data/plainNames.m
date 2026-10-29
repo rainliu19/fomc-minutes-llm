@@ -58,6 +58,7 @@ rows = [
  "SHILLER_DIVIDEND", "S&P 500 dividends"
  "SHILLER_EARNINGS", "S&P 500 earnings"
  "SHILLER_CAPE", "the Shiller price-to-earnings ratio"
- "TREASURY_DEBT_TOTAL", "total public debt"];
+ "TREASURY_DEBT_TOTAL", "total public debt"
+ "TREASURY_AVG_RATE", "the average interest rate on Treasury debt"];
 T = table(rows(:,1), rows(:,2), VariableNames=["series_id", "name"]);
 end

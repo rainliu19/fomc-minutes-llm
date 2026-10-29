@@ -55,6 +55,11 @@ L{end+1} = mk("TREASURY_DEBT_TOTAL", "Total public debt outstanding", "US Treasu
               fileDate(fullfile(outDir,"debt_to_the_penny.csv")), ...
               table(d.date, d.totalPublicDebt, 'VariableNames', {'date','value'}));
 
+a = readDateCsv(fullfile(outDir,"avg_interest_rates.csv"));
+L{end+1} = mk("TREASURY_AVG_RATE", "Average interest rate on marketable Treasury debt", "US Treasury FiscalData", false, ...
+              fileDate(fullfile(outDir,"avg_interest_rates.csv")), ...
+              table(a.date, a.avgInterestRate, 'VariableNames', {'date','value'}));
+
 % Pull each entry's facts into parallel columns (id, label, source, frequency, ...)
 n = numel(L);
 sid = strings(n,1); lab = strings(n,1); src = strings(n,1); rev = false(n,1);
@@ -218,6 +223,7 @@ function u = otherUnits(id)
     elseif id == "SHILLER_CPI",              u = "Index level";
     elseif startsWith(id,"SHILLER_"),        u = "Index points";
     elseif id == "TREASURY_DEBT_TOTAL",      u = "US dollars";
+    elseif id == "TREASURY_AVG_RATE",        u = "Percent";
     else,                                    u = "";
     end
 end

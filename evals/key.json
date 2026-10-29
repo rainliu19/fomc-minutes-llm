@@ -819,7 +819,9 @@
    "(?i)\\b(will|is going to) (definitely |certainly |surely )?(raise|cut|lower|hike|increase|reduce) (rates|the (target )?range|interest rates)",
    "(?i)\\b(not|unlikely)( (likely|expected|expect|going|set|poised|anticipat\\w*))? (to )?(increas\\w*|rais\\w*|hik\\w*|tighten\\w*|firm\\w*)\\b|^\\W*no\\b[^.]{0,40}\\b(increas\\w*|rais\\w*|hik\\w*|tighten\\w*|firm\\w*)",
    "(?i)\\b(the fed|the committee|the fomc|it|rates?|the rate|policy) (is|are) (most |more |very )?(likely|expected|poised|set) to ((cut\\w*|lower\\w*|reduc\\w*|eas(e|ing))|(hold\\w*|keep\\w*|leav\\w*|remain\\w*|stay\\w*|pause\\w*)( (rates|the (target )?range|(the )?rates?))? (unchanged|steady)?|remain unchanged|stay unchanged)",
-   "(?i)\\b(the fed|the committee|the fomc|it|they) should (raise|cut|lower|hold|increase|keep|ease|hike|reduce|tighten|pause)\\b|^\\W*yes,? (the fed|it|they) should\\b"
+   "(?i)\\b(the fed|the committee|the fomc|it|they) should (raise|cut|lower|hold|increase|keep|ease|hike|reduce|tighten|pause)\\b|^\\W*yes,? (the fed|it|they) should\\b",
+   "(?i)since 1990|earlier (runs|cycles)|past (runs|cycles)",
+   "(?i)(inflation and growth|growth and inflation|growth)(?:(?!balanced)[^.,;]){0,50}(tilted|skewed)[^.,;]{0,15}(up|upside)"
   ],
   "tool": "assessEconomy"
  },
@@ -839,7 +841,8 @@
    "(?i)\\b(will|is going to) (definitely |certainly |surely )?(raise|cut|lower|hike|increase|reduce) (rates|the (target )?range|interest rates)",
    "(?i)\\b(not|unlikely)( (likely|expected|expect|going|set|poised|anticipat\\w*))? (to )?(cut\\w*|eas(e|ing)|lower\\w*|reduc\\w*)\\b|^\\W*no\\b[^.]{0,40}\\b(cut\\w*|eas(e|ing)|lower\\w*|reduc\\w*)",
    "(?i)\\b(the fed|the committee|the fomc|it|rates?|the rate|policy) (is|are) (most |more |very )?(likely|expected|poised|set) to ((rais\\w*|increas\\w*|hik\\w*|tighten\\w*)|(hold\\w*|keep\\w*|leav\\w*|remain\\w*|stay\\w*|pause\\w*)( (rates|the (target )?range|(the )?rates?))? (unchanged|steady)?|remain unchanged|stay unchanged)",
-   "(?i)\\b(the fed|the committee|the fomc|it|they) should (raise|cut|lower|hold|increase|keep|ease|hike|reduce|tighten|pause)\\b|^\\W*yes,? (the fed|it|they) should\\b"
+   "(?i)\\b(the fed|the committee|the fomc|it|they) should (raise|cut|lower|hold|increase|keep|ease|hike|reduce|tighten|pause)\\b|^\\W*yes,? (the fed|it|they) should\\b",
+   "(?i)since 1990|earlier (runs|cycles)|past (runs|cycles)"
   ],
   "tool": "assessEconomy"
  },
@@ -859,7 +862,8 @@
    "(?i)\\b(will|is going to) (definitely |certainly |surely )?(raise|cut|lower|hike|increase|reduce) (rates|the (target )?range|interest rates)",
    "(?i)\\b(not|unlikely)( (likely|expected|expect|going|set|poised|anticipat\\w*))? (to )?(hold\\w*|steady|unchanged|pause\\w*|keep\\w*|maintain\\w*)\\b|^\\W*no\\b[^.]{0,40}\\b(hold\\w*|steady|unchanged|pause\\w*|keep\\w*|maintain\\w*)",
    "(?i)\\b(the fed|the committee|the fomc|it|rates?|the rate|policy) (is|are) (most |more |very )?(likely|expected|poised|set) to ((rais\\w*|increas\\w*|hik\\w*|tighten\\w*)|(cut\\w*|lower\\w*|reduc\\w*|eas(e|ing)))",
-   "(?i)\\b(the fed|the committee|the fomc|it|they) should (raise|cut|lower|hold|increase|keep|ease|hike|reduce|tighten|pause)\\b|^\\W*yes,? (the fed|it|they) should\\b"
+   "(?i)\\b(the fed|the committee|the fomc|it|they) should (raise|cut|lower|hold|increase|keep|ease|hike|reduce|tighten|pause)\\b|^\\W*yes,? (the fed|it|they) should\\b",
+   "(?i)since 1990|earlier (runs|cycles)|past (runs|cycles)"
   ],
   "tool": "assessEconomy"
  },
@@ -879,7 +883,8 @@
    "(?i)\\b(will|is going to) (definitely |certainly |surely )?(raise|cut|lower|hike|increase|reduce) (rates|the (target )?range|interest rates)",
    "(?i)\\b(not|unlikely)( (likely|expected|expect|going|set|poised|anticipat\\w*))? (to )?(increas\\w*|rais\\w*|hik\\w*|tighten\\w*|firm\\w*)\\b|^\\W*no\\b[^.]{0,40}\\b(increas\\w*|rais\\w*|hik\\w*|tighten\\w*|firm\\w*)",
    "(?i)\\b(the fed|the committee|the fomc|it|rates?|the rate|policy) (is|are) (most |more |very )?(likely|expected|poised|set) to ((cut\\w*|lower\\w*|reduc\\w*|eas(e|ing))|(hold\\w*|keep\\w*|leav\\w*|remain\\w*|stay\\w*|pause\\w*)( (rates|the (target )?range|(the )?rates?))? (unchanged|steady)?|remain unchanged|stay unchanged)",
-   "(?i)\\b(the fed|the committee|the fomc|it|they) should (raise|cut|lower|hold|increase|keep|ease|hike|reduce|tighten|pause)\\b|^\\W*yes,? (the fed|it|they) should\\b"
+   "(?i)\\b(the fed|the committee|the fomc|it|they) should (raise|cut|lower|hold|increase|keep|ease|hike|reduce|tighten|pause)\\b|^\\W*yes,? (the fed|it|they) should\\b",
+   "(?i)since 1990|earlier (runs|cycles)|past (runs|cycles)"
   ],
   "tool": "assessEconomy"
  },
@@ -894,7 +899,8 @@
   "checks": [
    "(?i)inflation",
    "(?i)mortgage|borrowing",
-   "(?i)spending"
+   "(?i)spending",
+   "\\d{4}-\\d{2}-\\d{2}/staffOutlook/\\d+"
   ],
   "forbid": [
    "(?i)\\b(will|is going to) (definitely |certainly |surely )?(raise|cut|lower|hike|increase|reduce) (rates|the (target )?range|interest rates)"
@@ -911,7 +917,8 @@
   ],
   "checks": [
    "(?i)mortgage",
-   "2022"
+   "2022",
+   "\\d{4}-\\d{2}-\\d{2}/staffOutlook/\\d+"
   ],
   "forbid": [
    "(?i)\\b(will|is going to) (definitely |certainly |surely )?(raise|cut|lower|hike|increase|reduce) (rates|the (target )?range|interest rates)"
@@ -927,6 +934,7 @@
    "What do the recent rate increases mean for interest on the federal debt?"
   ],
   "checks": [
+   "(?i)average (interest )?rate",
    "(?i)not (in|included|available|part of)|no data|isn't (in|available)|does not (include|cover)|doesn't (include|cover)"
   ],
   "forbid": [

@@ -9,8 +9,11 @@ function [text, recs] = outlookPrefetch(ctx, question)
 %   normal tool path (guardrails and trace apply) for questions the wording shows are about
 %   effects ahead. A question that names only years before the anchor year ("What did the 2022
 %   increases do to mortgage rates?") gets the evidence as it stood at the end of the latest
-%   year named. A question about something the data lack (interest on federal debt, credit card
-%   or car loan rates) is told so first. Other questions get nothing. No model.
+%   year named. A question about something the data lack (credit card or car loan rates) is told
+%   so first; one about federal debt is told to answer from the Treasury's average rate and
+%   Treasury yields, since total interest payments are not in the data. The text ends by asking
+%   for the staff forecast's ids and the caveats the evidence carries. Other questions get
+%   nothing. No model.
 
 text = "";
 recs = struct("name", {}, "args", {}, "result", {}, "ok", {}, "ms", {});
@@ -29,23 +32,46 @@ r = jsondecode(json);
 text = "[Evidence on what the recent rate path may mean ahead, gathered by code from the minutes and data as known on " + ...
     r.anchorDate + ". It is the Fed staff's forecast, what has happened so far and earlier runs, not a prediction: " + ...
     "say what the evidence shows, never what will happen, and cite its ids:" + newline + missingFirst(lower(string(question))) + ...
-    string(r.summary) + "]";
+    string(r.summary) + howToAnswer(string(r.summary)) + "]";
 fomc.trace.logEvent(ctx, "prefetch", struct("kind", "outlook"));
+end
+
+function t = howToAnswer(summary)
+% Asked for at the end, where a small model reads it last. Qwen3 4B answered a mortgage and
+% spending question citing nothing, called August spending "resilient" when the evidence said it
+% was from before the increase, and called a slowdown seen in 2 earlier runs "modest"
+t = "";
+id = regexp(summary, "\[(\d{4}-\d{2}-\d{2}/\w+/\d+)\]", "tokens", "once");
+if ~isempty(id)
+    t = newline + "In the answer, cite the Fed staff's forecast with its ids, such as [" + string(id{1}) + "].";
+end
+if contains(summary, "Too early to show") || contains(summary, "a reading from before the")
+    t = t + newline + "Say that readings from before the first change cannot show its effect yet.";
+end
+if contains(summary, "Earlier runs")
+    t = t + newline + "For earlier runs, give the counts as written (for example ""in 2 of 2"") and their medians.";
+end
 end
 
 function t = missingFirst(q)
 % A question about something the data lack gets that said first, as an instruction: a small model
 % skipped the same line when it was only in the result's note
 t = "";
-missing = ["interest on (the )?(federal|national|government|u\.s\.) debt|(federal|national|government) debt|" + ...
-        "deficit|treasury'?s? interest|debt (service|servicing)", "interest on federal debt"
-    "credit cards?", "credit card rates"
+missing = ["credit cards?", "credit card rates"
     "car loans?|auto(mobile)? loans?|car payments?", "car loan rates"];
 named = strings(1, 0);
 for i = 1:height(missing)
     if ~isempty(regexp(q, missing(i, 1), "once"))
         named(end+1) = missing(i, 2); %#ok<AGROW>
     end
+end
+% Federal debt: the data have the Treasury's average rate and Treasury yields, not total interest paid
+debtWords = "interest on (the )?(federal|national|government|u\.s\.) debt|(federal|national|government) debt|" + ...
+    "deficit|treasury'?s? interest|debt (service|servicing)";
+if ~isempty(regexp(q, debtWords, "once"))
+    t = "The question asks about federal debt. Total interest payments are not in this data; say so, then " + ...
+        "answer from the Treasury's average rate on its marketable debt and from Treasury yields below: new " + ...
+        "borrowing pays current yields, so the average rate moves toward them as maturing debt is refinanced." + newline;
 end
 if isempty(named)
     return
@@ -54,7 +80,7 @@ verb = "is";
 if numel(named) > 1
     verb = "are";
 end
-t = "The question asks about " + strjoin(named, " and ") + ", which " + verb + " not in this data. " + ...
+t = t + "The question asks about " + strjoin(named, " and ") + ", which " + verb + " not in this data. " + ...
     "Begin the answer by saying so plainly, then give only the evidence below that bears on it." + newline;
 end
 

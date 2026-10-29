@@ -6,7 +6,8 @@ function [text, recs] = prefetch(ctx, question, isAnalysis, followsRatePath)
 %   questions that ask, or for a follow-up when followsRatePath is true; default false); the
 %   economy part is fomc.focus.economyPrefetch (the economy against the Fed's goals, for
 %   questions about where policy should go); the outlook part is fomc.focus.outlookPrefetch
-%   (what the rate path may mean ahead, for questions about its effects). All are added to the
+%   (what the rate path may mean ahead, for questions about its effects; left out when the
+%   economy part answers a question only about the next decisions). All are added to the
 %   question, in that order.
 
 if nargin < 4
@@ -19,8 +20,24 @@ end
 [text, recs] = addLookup(text, recs, pathText, pathRecs);
 [economyText, economyRecs] = fomc.focus.economyPrefetch(ctx, question);
 [text, recs] = addLookup(text, recs, economyText, economyRecs);
-[outlookText, outlookRecs] = fomc.focus.outlookPrefetch(ctx, question);
-[text, recs] = addLookup(text, recs, outlookText, outlookRecs);
+% A question about the next decisions gets the economy part alone, unless it also names an effect on
+% households: given both, Qwen3 4B blended them, answering "What do current economic conditions and
+% the latest Fed minutes mean for the next FOMC meeting?" with earlier runs since 1990 and the
+% 2-year yield in place of the next-meeting reading
+if economyText == "" || ~onlyAboutDecisions(lower(string(question)))
+    [outlookText, outlookRecs] = fomc.focus.outlookPrefetch(ctx, question);
+    [text, recs] = addLookup(text, recs, outlookText, outlookRecs);
+end
+end
+
+function tf = onlyAboutDecisions(q)
+% The next or future Fed decisions, with no effect on borrowing, spending or prices named
+decisions = "(next|future|upcoming|coming) (fomc |fed )?(meetings?|decisions?|moves?|steps?)|" + ...
+    "(should|will|would|could|might) the (fed|fomc|committee) (raise|cut|lower|hike|hold|increase|tighten|ease|pause|keep|change|do)|" + ...
+    "what (should|will|would|could|might) the (fed|fomc|committee) do";
+effects = "mortgage|borrow\w*|loans?(?![a-z])|credit|debt|spending|consum\w*|households?|housing|" + ...
+    "(?<![a-z])(house|homes?)(?![a-z])|inflation|(?<![a-z])prices|cost of living|wages?(?![a-z])|jobs?(?![a-z])|unemployment";
+tf = ~isempty(regexp(q, decisions, "once")) && isempty(regexp(q, effects, "once"));
 end
 
 function [text, recs] = addLookup(text, recs, more, moreRecs)

@@ -54,3 +54,4 @@ SHILLER_DIVIDEND,"S&P dividend (Shiller)",Shiller (shillerdata.com),monthly,1990
 SHILLER_EARNINGS,"S&P earnings (Shiller)",Shiller (shillerdata.com),monthly,1990-01-01,2026-06-01,438,0,Index points,"",,2026-10-09,"Published with a lag of several months, so the latest rows are missing"
 SHILLER_CAPE,"CAPE, P/E10 (Shiller)",Shiller (shillerdata.com),monthly,1990-01-01,2026-10-01,442,0,Ratio,"",,2026-10-09,"Uses the monthly average price, so not known until month end. After the last month with earnings, Shiller estimates earnings and CPI"
 TREASURY_DEBT_TOTAL,"Total public debt outstanding",US Treasury FiscalData,daily,1993-04-01,2026-10-08,8410,0,US dollars,"",,2026-10-09,""
+TREASURY_AVG_RATE,"Average interest rate on marketable Treasury debt",US Treasury FiscalData,monthly,2001-01-01,2026-09-01,307,0,Percent,"",,2026-10-28,""

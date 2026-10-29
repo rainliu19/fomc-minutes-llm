@@ -305,13 +305,14 @@ function stepHtml(name, kind, ms, plain, ok) {
   return `${fn}<span class="plain">${esc(plain)}</span>`;
 }
 
-// Tool calls are model-chosen; prefetch steps are looked up by the harness before the model starts
-const kindOf = (name) => name.startsWith("prefetch") ? "automatic lookup" : "tool";
+// Tool calls are model-chosen; lookups are run by the harness before the model starts (a lookup can run a
+// tool, such as getOutlook, through the normal tool path, so the turn marks them)
+const kindOf = (name, lookup) => lookup || name.startsWith("prefetch") ? "automatic lookup" : "tool";
 
 // A collapsible list of the tool calls the agent made; click one to see its arguments and result
 function toolsHtml(calls) {
   if (!calls || !calls.length) return "";
-  const items = calls.map(c => `<details class="tool step"><summary>${stepHtml(c.name, kindOf(c.name), c.ms, plainCall(c.name, c.args), c.ok)}</summary>` +
+  const items = calls.map(c => `<details class="tool step"><summary>${stepHtml(c.name, kindOf(c.name, c.lookup), c.ms, plainCall(c.name, c.args), c.ok)}</summary>` +
     `<pre>${esc(JSON.stringify(c.args))}\n\n${esc(c.result)}</pre></details>`).join("");
   return `<details><summary>Tools used (${calls.length})</summary>${items}</details>`;
 }

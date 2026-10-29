@@ -6,11 +6,12 @@ function r = outlookAssessment(D, asOf)
 %     down at each of the last 4 meetings with public minutes, and the risks the staff saw at
 %     the latest (fomc.data.forecastRevisions), with the paragraph behind each.
 %   - How far the rate changes have reached so far: each step from market rates to borrowing
-%     costs to spending and inflation, at the anchor date, just before the first change of
-%     the current run of increases or cuts, and six months before it (markets often move
-%     ahead of the Fed). A monthly reading from before the first change cannot show its effect.
+%     costs to spending and inflation, and the average rate the Treasury pays on its debt, at
+%     the anchor date, just before the first change of the current run of increases or cuts,
+%     and six months before it (markets often move ahead of the Fed). A monthly reading from
+%     before the first change cannot show its effect.
 %   - What followed earlier runs in the same direction since 1990: a year and two years
-%     after their first change.
+%     after their first change (the Treasury's average rate from 2001).
 %   Plus what markets expect: the 2-year Treasury yield against the middle of the range.
 %   r.summary says it in plain sentences, citing paragraph ids; r.series holds the figures
 %   cited, for the High-effort figure check. No model.
@@ -50,8 +51,9 @@ r.summary = strjoin([forecastText, soFarText, earlierText, marketText], " ");
 r.series = [series; marketSeries];
 r.note = "No one can know these effects in advance: the staff forecast is the Fed's own view, the data show " + ...
     "only what has happened so far, and earlier runs are history, not a rule. Say what the evidence shows " + ...
-    "(the staff expects, so far, in earlier runs), never what will happen. Interest on federal debt and " + ...
-    "credit card and car loan rates are not in this data.";
+    "(the staff expects, so far, in earlier runs), never what will happen. For federal debt the data have " + ...
+    "the average rate the Treasury pays and Treasury yields, not total interest payments; credit card and " + ...
+    "car loan rates are not in this data.";
 end
 
 function [part, text] = forecastPart(D, asOf)
@@ -128,12 +130,14 @@ steps = [
     "BAA10Y",       "the corporate bond spread (Baa)", "level"
     "PCEC96",       "real consumer spending growth",  "yoy"
     "PCEPILFE",     "core PCE inflation",             "yoy"
-    "MICH",         "consumers' expected inflation",  "level"];
+    "MICH",         "consumers' expected inflation",  "level"
+    "TREASURY_AVG_RATE", "the Treasury's average rate on its debt", "level"];
 part = {};
 series = {};
 fast = strings(1, 0);
 slow = strings(1, 0);
 notYet = strings(1, 0);
+debt = "";
 for i = 1:height(steps)
     [s, rows] = stepValues(D, asOf, steps(i, 1), steps(i, 3), firstDate);
     if isempty(fieldnames(s))
@@ -151,7 +155,12 @@ for i = 1:height(steps)
         end
     end
     phrase = phrase + ")";
-    if daily
+    if steps(i, 1) == "TREASURY_AVG_RATE"
+        debt = phrase;
+        if ~s.sinceFirstChange
+            debt = debt + ", a reading from before the " + run.direction;
+        end
+    elseif daily
         fast(end+1) = phrase; %#ok<AGROW>
     elseif s.sinceFirstChange
         slow(end+1) = phrase; %#ok<AGROW>
@@ -171,6 +180,9 @@ if ~isempty(fast)
 end
 if ~isempty(slow)
     text = text + " Spending and prices: " + strjoin(slow, "; ") + ".";
+end
+if debt ~= ""
+    text = text + " Federal debt: " + debt + ".";
 end
 if ~isempty(notYet)
     text = text + " Too early to show the " + dirWord + ": " + strjoin(notYet, ", ") + ...
@@ -259,7 +271,9 @@ end
 M = known(D, "MORTGAGE30US", asOf);
 C = known(D, "PCEC96", asOf);
 P = known(D, "PCEPILFE", asOf);
-out = struct("mortgage", nan(height(same), 2), "spending", nan(height(same), 2), "inflation", nan(height(same), 2));
+G = known(D, "TREASURY_AVG_RATE", asOf);
+out = struct("mortgage", nan(height(same), 2), "spending", nan(height(same), 2), "inflation", nan(height(same), 2), ...
+    "debtRate", nan(height(same), 2));
 for i = 1:height(same)
     d = same.date(i);
     entry = struct("firstChange", fomc.util.fmtDate(d));
@@ -271,10 +285,12 @@ for i = 1:height(same)
         out.mortgage(i, h) = levelChange(M, d, later);
         out.spending(i, h) = yoyChange(C, d, later);
         out.inflation(i, h) = yoyChange(P, d, later);
+        out.debtRate(i, h) = levelChange(G, d, later);
     end
     entry.mortgageChange = round(out.mortgage(i, :), 2);
     entry.spendingGrowthChange = round(out.spending(i, :), 2);
     entry.coreInflationChange = round(out.inflation(i, :), 2);
+    entry.treasuryAverageRateChange = round(out.debtRate(i, :), 2);
     part{end+1, 1} = entry; %#ok<AGROW>
 end
 dates = strjoin(fomc.util.fmtDate(same.date), ", ");
@@ -282,7 +298,11 @@ text = "Earlier runs of " + direction + "s since 1990 (first " + direction + " o
     "a year after the first " + direction + ": " + ...
     cycleText(out.mortgage(:, 1), "mortgage rate", "higher", "lower") + "; " + ...
     cycleText(out.spending(:, 1), "real spending growth", "faster", "slower") + "; " + ...
-    cycleText(out.inflation(:, 1), "core inflation", "higher", "lower") + ".";
+    cycleText(out.inflation(:, 1), "core inflation", "higher", "lower");
+if any(~isnan(out.debtRate(:, 1)))
+    text = text + "; " + cycleText(out.debtRate(:, 1), "the Treasury's average rate (from 2001)", "higher", "lower");
+end
+text = text + ".";
 if any(~isnan(out.inflation(:, 2)))
     text = text + " Two years after: " + cycleText(out.inflation(:, 2), "core inflation", "higher", "lower") + ".";
 end

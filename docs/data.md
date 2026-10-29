@@ -18,7 +18,7 @@ Each script is split into sections: run one at a time (Ctrl+Enter), in this orde
 | 1 | `pipeline/macroeconomic_data.m`, section 1 | Defines the series catalog (46 FRED series, flagged revised or not) | none |
 | 2 | section 2 | Pulls current-vintage values for every FRED series | `fred_current.mat` |
 | 3 | section 3 | Pulls the full vintage history (ALFRED) for the 17 revised series | `fred_vintages.mat` |
-| 4 | section 4 | Pulls total public debt from the Treasury FiscalData API (no key) | `debt_to_the_penny.csv` |
+| 4 | section 4 | Pulls total public debt and the average interest rate on marketable Treasury debt from the Treasury FiscalData API (no key) | `debt_to_the_penny.csv`, `avg_interest_rates.csv` |
 | 5 | `pipeline/market_data_extra.m` | Pulls S&P 500 daily closes and Shiller monthly data | `gspc_daily.csv`, `shiller_monthly.csv` |
 | 6 | `pipeline/export_csvs.m` | Combines everything into the output CSVs | see Output files |
 | 7 (optional) | `pipeline/macroeconomic_data.m`, section 5 | Builds the meeting-aligned dataset | `fomc_aligned_macro.csv`, `fomc_aligned_macro.mat` |
@@ -65,11 +65,11 @@ Each script is split into sections: run one at a time (Ctrl+Enter), in this orde
 | Yields and curve | `DGS3MO`, `DGS2`, `DGS10`, `T10Y2Y`, `T10Y3M`, `DFII10`, `THREEFYTP10` |
 | Credit and financial conditions | `BAMLH0A0HYM2`, `BAA10Y`, `NFCI`, `VIXCLS`, `MORTGAGE30US` |
 | Taylor-rule inputs (CBO) | `GDPPOT`, `NROU` |
-| Debt | `GFDEBTN`, `GFDEGDQ188S`, `TREASURY_DEBT_TOTAL` |
+| Debt | `GFDEBTN`, `GFDEGDQ188S`, `TREASURY_DEBT_TOTAL`, `TREASURY_AVG_RATE` (the average rate the Treasury pays on its marketable debt, monthly from 2001, known 10 days after the month ends) |
 | Markets and other | `SP500`, `GSPC`, `DTWEXBGS`, `DCOILWTICO`, `USREC` |
 | Shiller | `SHILLER_PRICE`, `SHILLER_DIVIDEND`, `SHILLER_EARNINGS`, `SHILLER_CAPE` |
 
-Sources: **FRED**, **Yahoo Finance** (`^GSPC`), **Shiller** (shillerdata.com) and **US Treasury FiscalData** (Debt to the Penny). Shiller's CPI and GS10 are left out of the export: FRED has both, and Shiller carries them forward past the latest release.
+Sources: **FRED**, **Yahoo Finance** (`^GSPC`), **Shiller** (shillerdata.com) and **US Treasury FiscalData** (Debt to the Penny, Average Interest Rates on U.S. Treasury Securities). Shiller's CPI and GS10 are left out of the export: FRED has both, and Shiller carries them forward past the latest release.
 
 ## Design notes
 

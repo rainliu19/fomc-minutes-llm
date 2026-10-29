@@ -118,6 +118,13 @@ try
 catch ME
     warning("Treasury API failed: %s", ME.message);
 end
+% The average interest rate the Treasury pays on its marketable debt, monthly from 2001
+try
+    avgRate = getTreasuryAvgRate();
+    writetable(avgRate, fullfile(outDir,"avg_interest_rates.csv"));
+catch ME
+    warning("Treasury average interest rate failed: %s", ME.message);
+end
 % Auction/issuance data: dataset "auctions_query" (v1/accounting/od/auctions_query)
 % on the same API; same paging pattern as getTreasuryDebt below.
 
@@ -198,6 +205,18 @@ function [val, obsDate] = asOfValue(T, asOf)
     sub = T(m,:);
     [obsDate, i] = max(sub.date);
     val = sub.value(i);
+end
+
+function T = getTreasuryAvgRate()
+    % Average interest rate on total marketable Treasury debt, one row per month, dated the
+    % first of the month (FiscalData dates it the last day)
+    base = "https://api.fiscaldata.treasury.gov/services/api/fiscal_service/v2/accounting/od/avg_interest_rates";
+    r = webread(base, "fields","record_date,avg_interest_rate_amt", ...
+                "filter","security_desc:eq:Total Marketable", "sort","record_date", ...
+                "page[size]","10000", weboptions("Timeout",60));
+    d = r.data;
+    T = table(dateshift(datetime(string({d.record_date})',"InputFormat","yyyy-MM-dd"),"start","month"), ...
+              str2double(string({d.avg_interest_rate_amt})'), 'VariableNames', {'date','avgInterestRate'});
 end
 
 function T = getTreasuryDebt()

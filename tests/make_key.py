@@ -8,7 +8,8 @@ MATLAB first (see docs/performance.md). The key is fixed by a seed: rerunning gi
 
 Each case: id, category, as_of, questions (asked in order in one chat), checks (regexes the LAST
 answer must match), forbid (regexes it must not match), tool (a tool the run should have called).
-The last 7 cases (nextmove, outlook) are fixed by hand in outlook_cases, not drawn from the cards.
+The last 7 cases (nextmove, outlook) are fixed by hand in outlook_cases, not drawn from the cards; to change
+only those, rebuild them with outlook_cases() and replace them in evals/key.json.
 """
 import csv
 import json
@@ -111,6 +112,11 @@ def outlook_cases():
            ("2024-08-25", "Is the Fed likely to cut rates at its next meeting?", "down", "2024-07-31"),
            ("2026-02-23", "What could happen at the next Fed meeting?", "hold", "2026-01-28"),
            ("2022-07-11", "Should the Fed raise rates at the next meeting?", "up", "2022-06-15")]
+    # The next-meeting reading, not getOutlook's earlier runs: given both, Qwen3 4B answered nextmove-01
+    # with "a pattern of increases since 1990" and said the staff saw "inflation and growth risks tilted
+    # upward" where the cited paragraph says growth risks were balanced
+    history = r"(?i)since 1990|earlier (runs|cycles)|past (runs|cycles)"
+    staff = {"2026-09-16": r"(?i)(inflation and growth|growth and inflation|growth)(?:(?!balanced)[^.,;]){0,50}(tilted|skewed)[^.,;]{0,15}(up|upside)"}
     cases = []
     for i, (asof, q, way, meeting) in enumerate(nxt):
         deny = (rf"(?i)\b(not|unlikely)( (likely|expected|expect|going|set|poised|anticipat\w*))? (to )?({words[way]})\b|"
@@ -119,13 +125,18 @@ def outlook_cases():
         wrong = rf"(?i)\b(the fed|the committee|the fomc|it|rates?|the rate|policy) (is|are) (most |more |very )?(likely|expected|poised|set) to ({other})"
         cases.append({"id": f"nextmove-{i + 1:02d}", "category": "nextmove", "as_of": asof, "meeting": meeting,
                       "questions": [q], "checks": [rf"(?i)\b({words[way]})", re.escape(meeting) + r"/participantsViews/\d+"],
-                      "forbid": [CERTAIN, deny, wrong, SHOULD], "tool": "assessEconomy"})
+                      "forbid": [CERTAIN, deny, wrong, SHOULD, history] + ([staff[meeting]] if meeting in staff else []),
+                      "tool": "assessEconomy"})
+    # The first two must cite the staff forecast, which the evidence asks for by id
+    staff_id = r"\d{4}-\d{2}-\d{2}/staffOutlook/\d+"
     ahead = [("2026-10-27", "What does the path of the past few FOMC meetings mean for inflation, borrowing costs and consumer spending?",
-              [r"(?i)inflation", r"(?i)mortgage|borrowing", r"(?i)spending"]),
-             ("2022-12-31", "What did the 2022 increases do to mortgage rates?", [r"(?i)mortgage", r"2022"]),
-             # Interest on federal debt is not in the data: the answer should say so, not guess
+              [r"(?i)inflation", r"(?i)mortgage|borrowing", r"(?i)spending", staff_id]),
+             ("2022-12-31", "What did the 2022 increases do to mortgage rates?", [r"(?i)mortgage", r"2022", staff_id]),
+             # Total interest on federal debt is not in the data, but the average rate the Treasury pays is:
+             # the answer should give it and say what is missing, not just say it cannot be known
              ("2026-10-27", "What do the recent rate increases mean for interest on the federal debt?",
-              [r"(?i)not (in|included|available|part of)|no data|isn't (in|available)|does not (include|cover)|doesn't (include|cover)"])]
+              [r"(?i)average (interest )?rate",
+               r"(?i)not (in|included|available|part of)|no data|isn't (in|available)|does not (include|cover)|doesn't (include|cover)"])]
     for i, (asof, q, checks) in enumerate(ahead):
         cases.append({"id": f"outlook-{i + 1:02d}", "category": "outlook", "as_of": asof, "meeting": "",
                       "questions": [q], "checks": checks, "forbid": [CERTAIN], "tool": "getOutlook"})

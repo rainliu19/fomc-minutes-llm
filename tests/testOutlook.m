@@ -138,7 +138,8 @@ classdef testOutlook < matlab.unittest.TestCase
                 g = fomc.guard.checkToolOutput(ctx, r, json);
                 tc.verifyTrue(g.ok, g.message);
                 tc.verifyFalse(contains(r.summary, ["NaN", "Inf", "  "]), fomc.util.fmtDate(asOf) + ": " + r.summary);
-                tc.verifyLessThanOrEqual(strlength(r.summary), 2000, fomc.util.fmtDate(asOf));
+                % Raised from 2000 for the Treasury's average rate (about 100 characters; 2,135 at most)
+                tc.verifyLessThanOrEqual(strlength(r.summary), 2200, fomc.util.fmtDate(asOf));
                 tc.verifyLessThanOrEqual(strlength(json), 8000, fomc.util.fmtDate(asOf));
                 % Every id in the summary is a paragraph whose minutes were public
                 for id = fomc.guard.idsIn(r.summary).'
@@ -238,16 +239,50 @@ classdef testOutlook < matlab.unittest.TestCase
 
         function aQuestionAboutMissingDataIsToldSoFirst(tc)
             % Qwen3 4B answered "What do the recent rate increases mean for interest on the federal
-            % debt?" without saying the data lack it, when that was only in the result's note
+            % debt?" without saying the data lack it, when that was only in the result's note. Total
+            % interest payments are still missing, but the Treasury's average rate is in the data
+            % now: answered "cannot be determined", the question is told to use it and the yields
             ctx = context(tc, datetime(2026,10,27));
             text = fomc.focus.outlookPrefetch(ctx, "What do the recent rate increases mean for interest on the federal debt?");
-            first = "The question asks about interest on federal debt, which is not in this data. Begin the answer by saying so plainly";
+            first = "The question asks about federal debt. Total interest payments are not in this data; say so";
             tc.verifySubstring(text, first);
             tc.verifyLessThan(strfind(text, first), strfind(text, "Fed staff forecasts"));
+            tc.verifySubstring(text, "Federal debt: the Treasury's average rate on its debt 3.52% (September 2026; just before: 3.48%");
             text = fomc.focus.outlookPrefetch(ctx, "How will higher rates affect credit card and car loan payments?");
             tc.verifySubstring(text, "about credit card rates and car loan rates, which are not in this data");
             text = fomc.focus.outlookPrefetch(ctx, "What do the recent minutes mean for inflation and mortgage rates?");
             tc.verifyFalse(contains(text, "not in this data. Begin"));
+        end
+
+        function theTreasurysAverageRateShowsWhatRateMovesDoToDebtCosts(tc)
+            % Treasury FiscalData, monthly from 2001, known 10 days after the month ends. By mid-2023
+            % the average rate had risen from 1.44% before the 2022 increases to 2.69%.
+            r = fomc.data.outlookAssessment(tc.D, datetime(2023,6,30));
+            tc.verifySubstring(r.summary, "Federal debt: the Treasury's average rate on its debt 2.69% (May 2023; just before: 1.44%");
+            % In October 2026 the latest reading (August) is from before the September increase
+            r = fomc.data.outlookAssessment(tc.D, datetime(2026,10,7));
+            tc.verifySubstring(r.summary, "the Treasury's average rate on its debt 3.48% (August 2026), a reading from before the increase.");
+            tc.verifySubstring(r.summary, "the Treasury's average rate (from 2001) higher in 2 of 3 (median +0.5 point)");
+            % Before the series starts it is left out, not shown as missing
+            r = fomc.data.outlookAssessment(tc.D, datetime(1999,1,1));
+            tc.verifyFalse(contains(r.summary, "Treasury's average rate"));
+            T = fomc.data.valueAsOf(tc.D, "TREASURY_AVG_RATE", datetime(2026,10,10));
+            tc.verifyEqual(T.date(end), datetime(2026,9,1), "September is known on October 10");
+            T = fomc.data.valueAsOf(tc.D, "TREASURY_AVG_RATE", datetime(2026,10,9));
+            tc.verifyEqual(T.date(end), datetime(2026,8,1));
+        end
+
+        function theEvidenceEndsByAskingForIdsAndItsCaveats(tc)
+            % Qwen3 4B answered a mortgage and spending question citing nothing, called August
+            % spending "resilient" when the evidence said it was from before the increase, and called
+            % a slowdown seen in 2 of 2 earlier runs "modest"
+            ctx = context(tc, datetime(2026,10,7));
+            text = fomc.focus.outlookPrefetch(ctx, "What do the Fed's recent rate increases mean for mortgage rates and consumer spending?");
+            tail = extractAfter(text, "Markets:");
+            tc.verifySubstring(tail, "cite the Fed staff's forecast with its ids, such as [2026-09-16/staffOutlook/1]");
+            tc.verifySubstring(tail, "Say that readings from before the first change cannot show its effect yet.");
+            tc.verifySubstring(tail, "give the counts as written");
+            tc.verifyTrue(endsWith(text, "and their medians.]"));
         end
 
         function prefetchOffMeansNoLookup(tc)

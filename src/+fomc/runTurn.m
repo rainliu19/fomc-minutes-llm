@@ -7,7 +7,8 @@ function [s, answer, structured, calls] = runTurn(s, userMsg, nvp)
 %   its call id, and calls the model again, until it replies without tool calls or after
 %   cfg.maxToolRounds. "analysis" then writes and checks the structured analysis
 %   (fomc.analysis.structure); structured is [] in chat mode. calls: one record per tool
-%   call (name, args, result, ok, ms). A failed turn is rolled back so the session stays valid.
+%   call (name, args, result, ok, ms); the first s.lastLookups of them are the harness's own
+%   lookups (fomc.focus.prefetch). A failed turn is rolled back so the session stays valid.
 
 arguments
     s (1,1) struct
@@ -41,12 +42,16 @@ question = userMsg + newline + newline + fomc.focus.note(ctx);
 % After a question about how rates moved, a follow-up that only changes the period gets the rate path too.
 followsRatePath = isfield(s, "lastUsedRatePath") && s.lastUsedRatePath;
 [found, pre] = fomc.focus.prefetch(ctx, userMsg, nvp.Format == "analysis", followsRatePath);
+% How many of this turn's calls the harness made before the model started (they come first), so
+% the page can tell them from the tools the model chose
+s.lastLookups = 0;
 if found ~= ""
     question = question + newline + found;
     for k = 1:numel(pre)
         calls(end+1) = pre(k); %#ok<AGROW>
         s.known = union(s.known, fomc.guard.idsIn(pre(k).result));
     end
+    s.lastLookups = numel(pre);
 end
 % Minutes that are not public yet: answer directly. The model is not asked, so it cannot invent a decision.
 isNotice = ~isempty(pre) && any(string({pre.name}) == "prefetchNotice");

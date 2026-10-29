@@ -186,6 +186,21 @@ classdef testEconomy < matlab.unittest.TestCase
             end
         end
 
+        function aQuestionAboutTheNextDecisionGetsTheEconomyLookupAlone(tc)
+            % Given getOutlook too, Qwen3 4B answered with earlier runs since 1990 and the 2-year
+            % yield in place of the next-meeting reading. A question that also names an effect on
+            % households gets both.
+            ctx = context(tc, datetime(2026,10,7));
+            [~, recs] = fomc.focus.prefetch(ctx, "What do current economic conditions and the latest Fed minutes mean for the next FOMC meeting?", false);
+            tc.verifyTrue(any(string({recs.name}) == "assessEconomy"));
+            tc.verifyFalse(any(string({recs.name}) == "getOutlook"));
+            [~, recs] = fomc.focus.prefetch(ctx, "Will the Fed raise rates at the next meeting, and what would that mean for mortgage rates?", false);
+            tc.verifyTrue(all(ismember(["assessEconomy", "getOutlook"], string({recs.name}))));
+            [~, recs] = fomc.focus.prefetch(ctx, "What do the Fed's recent rate increases mean for mortgage rates and consumer spending?", false);
+            tc.verifyTrue(any(string({recs.name}) == "getOutlook"));
+            tc.verifyFalse(any(string({recs.name}) == "assessEconomy"));
+        end
+
         function otherQuestionsGetNothing(tc)
             for q = ["What did the Committee decide at its March 2020 meeting?", ...
                     "How have interest rates changed over the past year?", "What is the unemployment rate?", ...

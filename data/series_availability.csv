@@ -54,3 +54,4 @@ SHILLER_CAPE,monthend,1,Monthly average known after the month ends
 SHILLER_DIVIDEND,monthend,120,Assumed four month publication lag; not checked
 SHILLER_EARNINGS,monthend,120,Assumed four month publication lag; not checked
 USREC,exclude,0,NBER announces turning points 6 to 20 months late so any as-of value would look ahead
+TREASURY_AVG_RATE,monthend,10,Published in the first business days of the next month; ten days of margin

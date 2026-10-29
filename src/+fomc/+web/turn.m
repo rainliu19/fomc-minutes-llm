@@ -88,7 +88,7 @@ end
 % Everything the page needs, as JSON
 out = struct("answer", answer, "structured", structured, ...
     "anchorDate", fomc.util.fmtDate(s.ctx.asOf), "seconds", toc(t0), ...
-    "citations", {num2cell(cites)}, "warning", warning, "toolCalls", {packCalls(calls)});
+    "citations", {num2cell(cites)}, "warning", warning, "toolCalls", {packCalls(calls, lookupsOf(s))});
 json = jsonencode(out);
 end
 
@@ -113,8 +113,17 @@ if isfield(st, "evidence") && ~isempty(st.evidence)
 end
 end
 
-function c = packCalls(calls)
-% Tool calls for display: name, arguments, a clipped result, status and time.
+function n = lookupsOf(s)
+% How many of the turn's calls the harness made before the model started
+n = 0;
+if isfield(s, "lastLookups")
+    n = s.lastLookups;
+end
+end
+
+function c = packCalls(calls, nLookups)
+% Tool calls for display: name, arguments, a clipped result, status, time, and whether the harness
+% ran it before the model started (lookup) rather than the model choosing it.
 c = cell(numel(calls), 1);
 for i = 1:numel(calls)
     result = calls(i).result;
@@ -123,6 +132,6 @@ for i = 1:numel(calls)
         result = extractBefore(result, 1501) + "...";
     end
     c{i} = struct("name", calls(i).name, "args", calls(i).args, "result", result, ...
-        "ok", calls(i).ok, "ms", calls(i).ms);
+        "ok", calls(i).ok, "ms", calls(i).ms, "lookup", i <= nLookups);
 end
 end
