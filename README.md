@@ -28,7 +28,7 @@ Open http://localhost:8787. It starts Ollama and MATLAB, checks memory first, an
 
 - **Point in time.** Pick an anchor date. The agent sees only minutes released by then, and data as it was known then (revisions included). Guardrails refuse anything later.
 - **Facts from code.** Decisions, votes and dissents are read from the minutes by pattern matching and checked against the real rate changes for all 150 meetings.
-- **Where policy may go.** `assessEconomy` sets the economy against the Fed's goals, what markets expect and what the latest minutes point to; `getOutlook` gathers the evidence on what recent rate moves may mean for borrowing, spending and prices. Both read everything as known on the anchor date.
+- **Where policy may go.** `assessEconomy` sets the economy against the Fed's goals, what markets expect and what the latest minutes point to; `getOutlook` gathers the evidence on what recent rate moves may mean for borrowing, spending, prices and the interest the Treasury pays on federal debt. Both read everything as known on the anchor date.
 - **AI scores of the minutes.** The model scores each set of minutes once, ahead of time, on the rate path from -1 (dovish) to +1 (hawkish); the next-meeting reading takes the minutes' direction from those scores, with word rules as the baseline, and both are tested against what the Fed did next.
 - **Checkable answers.** Answers cite paragraph ids. The page shows each exact paragraph and flags anything unverified.
 - **Structured FOMC scoring.** Ask the agent to score a meeting's hawkish/dovish stance across seven dimensions. It uses a documented skill, returns schema-shaped JSON, and validates its scores and evidence.
