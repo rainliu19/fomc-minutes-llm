@@ -186,6 +186,19 @@ classdef testEconomy < matlab.unittest.TestCase
             end
         end
 
+        function aQuestionOnlyAboutTheNextMeetingLeavesOutTheLongerRunBackground(tc)
+            % With the policy rules and the 2-year yield in the text, Qwen3 4B set the 2-year yield
+            % against the effective rate for the next meeting
+            ctx = context(tc, datetime(2026,10,7));
+            text = fomc.focus.economyPrefetch(ctx, "What could happen at the next Fed meeting?");
+            tc.verifySubstring(text, "The 6-month Treasury bill yield was 4.3%");
+            tc.verifyFalse(contains(text, ["Background on where policy may go", "Policy rules put", "The 2-year Treasury yield"]));
+            text = fomc.focus.economyPrefetch(ctx, "Is policy too tight?");
+            tc.verifySubstring(text, "Policy rules put");
+            text = fomc.focus.economyPrefetch(ctx, "What does the Taylor rule say about the next meeting?");
+            tc.verifySubstring(text, "Policy rules put");
+        end
+
         function aQuestionAboutTheNextDecisionGetsTheEconomyLookupAlone(tc)
             % Given getOutlook too, Qwen3 4B answered with earlier runs since 1990 and the 2-year
             % yield in place of the next-meeting reading. A question that also names an effect on

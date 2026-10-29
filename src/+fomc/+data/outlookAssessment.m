@@ -99,8 +99,9 @@ end
 end
 
 function t = tally(w, ids)
-% "revised higher at 3 [id] and about the same at 1 [id]", citing the latest meeting for each
-% answer; meetings whose minutes make no comparison are counted as such
+% "revised higher in 3 of 4 [id], about the same in 1 of 4 [id]", citing the latest meeting for
+% each answer; meetings whose minutes make no comparison are counted as such. "of 4" because
+% Qwen3 4B read "revised higher at 3" as a forecast of 3%
 order = unique([setdiff(w(w ~= ""), "about the same", "stable"); w(w == "about the same")], "stable");
 parts = strings(1, 0);
 for i = 1:numel(order)
@@ -111,11 +112,11 @@ for i = 1:numel(order)
     elseif order(i) == "mixed"
         phrase = "revised both ways";
     end
-    parts(end+1) = phrase + " at " + sum(w == order(i)) + cite(ids(j)); %#ok<AGROW>
+    parts(end+1) = phrase + " in " + sum(w == order(i)) + " of " + numel(w) + cite(ids(j)); %#ok<AGROW>
 end
 none = sum(w == "");
 if none > 0
-    parts(end+1) = "not compared at " + none;
+    parts(end+1) = "not compared in " + none + " of " + numel(w);
 end
 t = strjoin(parts, ", ");
 end

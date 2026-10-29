@@ -45,12 +45,30 @@ id = regexp(summary, "\[(\d{4}-\d{2}-\d{2}/\w+/\d+)\]", "tokens", "once");
 if ~isempty(id)
     t = newline + "In the answer, cite the Fed staff's forecast with its ids, such as [" + string(id{1}) + "].";
 end
-if contains(summary, "Too early to show") || contains(summary, "a reading from before the")
-    t = t + newline + "Say that readings from before the first change cannot show its effect yet.";
+% The risks again, whole: it gave "risks tilted to the upside" for inflation risks up and growth risks balanced
+risks = regexp(summary, "The staff's latest view of the risks: [^.]*\.", "match", "once");
+if ~isempty(risks)
+    t = t + newline + "Give the staff's view of each risk as written, not one for both: " + ...
+        erase(string(risks), "The staff's latest view of the risks: ");
+end
+% Which readings are too early, by name: told only "readings from before the first change", it said the
+% increase had "not yet shown a clear effect on mortgage rates", which had risen from 6.76% to 7.28%
+if contains(summary, "Rates: ")
+    t = t + newline + "Market rates and borrowing costs already show the change: give each one the question " + ...
+        "asks about now, just before the first change and six months before, as listed.";
+end
+early = regexp(summary, "Too early to show the \w+: (.*?) are readings from before it\.", "tokens", "once");
+if ~isempty(early)
+    named = regexprep(string(early{1}), " [\d.-]+% \([A-Za-z]+ \d{4}\)", "");
+    t = t + newline + "Only these are too early to show it, as readings from before the first change: " + named + ".";
 end
 if contains(summary, "Earlier runs")
-    t = t + newline + "For earlier runs, give the counts as written (for example ""in 2 of 2"") and their medians.";
+    t = t + newline + "For each thing the question asks about, say what earlier runs showed, with the count as " + ...
+        "written (for example ""in 2 of 2"") and the median.";
 end
+% It called 2.2% GDP growth after 2.5% "strengthened", and August spending "faster" with nothing to compare
+t = t + newline + "Use only the evidence's own comparisons: do not call a figure faster, stronger, slower or " + ...
+    "weaker unless the evidence compares it.";
 end
 
 function t = missingFirst(q)
@@ -69,9 +87,12 @@ end
 debtWords = "interest on (the )?(federal|national|government|u\.s\.) debt|(federal|national|government) debt|" + ...
     "deficit|treasury'?s? interest|debt (service|servicing)";
 if ~isempty(regexp(q, debtWords, "once"))
-    t = "The question asks about federal debt. Total interest payments are not in this data; say so, then " + ...
-        "answer from the Treasury's average rate on its marketable debt and from Treasury yields below: new " + ...
-        "borrowing pays current yields, so the average rate moves toward them as maturing debt is refinanced." + newline;
+    % Told "not in this data; say so", Qwen3 4B began "The recent rate increases do not directly affect interest
+    % on the federal debt, as total interest payments are not in the data"
+    t = "The question asks about federal debt. Higher rates do raise its interest costs: new borrowing and " + ...
+        "maturing debt that is refinanced pay current Treasury yields, so the Treasury's average rate moves toward " + ...
+        "them over time. Say that, then give the Treasury's average rate and the Treasury yields below. Only the " + ...
+        "total interest paid is not in this data; say so once, at the end." + newline;
 end
 if isempty(named)
     return

@@ -1,11 +1,12 @@
-function [text, recs] = dataPrefetch(ctx, question)
+function [text, recs] = dataPrefetch(ctx, question, skip)
 %DATAPREFETCH The latest figures for the data a question is about, looked up before the model starts.
 %   [text, recs] = fomc.focus.dataPrefetch(ctx, question)
 %   A small model often answers "that data is not available" without looking. So the harness
 %   picks the series from the question's wording (fomc.focus.dataTopics) and reads each one as
 %   known on the anchor date (fomc.data.valueAsOf): the latest value, and the value 3 and 12
 %   months earlier. text goes in front of the question; recs is the record for the trace and
-%   the figure check. Questions about no data topic get nothing.
+%   the figure check. Questions about no data topic get nothing. skip: series to leave out
+%   (fomc.focus.prefetch passes the ones another lookup already gives).
 
 text = "";
 recs = struct("name", {}, "args", {}, "result", {}, "ok", {}, "ms", {});
@@ -13,6 +14,9 @@ if ~ctx.cfg.prefetch
     return
 end
 ids = fomc.focus.dataTopics(question, ctx.D.dict.series_id);
+if nargin > 2
+    ids = ids(~ismember(ids, skip));
+end
 if isempty(ids)
     return
 end

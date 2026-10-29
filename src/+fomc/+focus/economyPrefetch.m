@@ -8,7 +8,8 @@ function [text, recs] = economyPrefetch(ctx, question)
 %   (fomc.data.economyAssessment), and adds the summary to the question. The model is also
 %   offered this as the assessEconomy tool, but a small model often skips tools, so the harness
 %   runs it through the normal tool path for questions the wording shows are about where policy
-%   is going. Other questions get nothing. No model.
+%   is going. A question only about the next meeting gets it without the background on the next
+%   year or two (policy rules, the 2-year yield). Other questions get nothing. No model.
 
 text = "";
 recs = struct("name", {}, "args", {}, "result", {}, "ok", {}, "ms", {});
@@ -24,10 +25,19 @@ if ~rec.ok
     return
 end
 r = jsondecode(json);
+summary = string(r.summary);
+% A question only about the next meeting leaves out the background on the next year or two (policy rules,
+% the 2-year yield): with it, Qwen3 4B set the 2-year yield against the effective rate in place of the
+% 6-month bill. Questions about the stance of policy or the longer run keep it.
+q = lower(string(question));
+if contains(summary, "Background on where policy may go") && ~isempty(regexp(q, "next (fomc |fed )?(meeting|decision|move)", "once")) && ...
+        isempty(regexp(q, "rule|taylor|neutral|tight|loose|restrictive|accommodative|curve|year|2-year|two-year|long", "once"))
+    summary = strtrim(extractBefore(summary, "Background on where policy may go"));
+end
 text = "[How the economy compares with the Fed's goals, and what the latest minutes say about future meetings, " + ...
     "worked out by code from the data and minutes as known on " + r.anchorDate + ". Policy rules are rules of thumb, " + ...
     "not forecasts; quote the minutes and cite their ids, and say what participants expected, never what the " + ...
-    "Committee will do:" + newline + r.summary + citeLine(r, lower(string(question))) + "]";
+    "Committee will do:" + newline + summary + citeLine(r, q) + "]";
 fomc.trace.logEvent(ctx, "prefetch", struct("kind", "economy"));
 end
 

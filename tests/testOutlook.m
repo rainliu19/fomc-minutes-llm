@@ -244,7 +244,7 @@ classdef testOutlook < matlab.unittest.TestCase
             % now: answered "cannot be determined", the question is told to use it and the yields
             ctx = context(tc, datetime(2026,10,27));
             text = fomc.focus.outlookPrefetch(ctx, "What do the recent rate increases mean for interest on the federal debt?");
-            first = "The question asks about federal debt. Total interest payments are not in this data; say so";
+            first = "The question asks about federal debt. Higher rates do raise its interest costs";
             tc.verifySubstring(text, first);
             tc.verifyLessThan(strfind(text, first), strfind(text, "Fed staff forecasts"));
             tc.verifySubstring(text, "Federal debt: the Treasury's average rate on its debt 3.52% (September 2026; just before: 3.48%");
@@ -280,9 +280,31 @@ classdef testOutlook < matlab.unittest.TestCase
             text = fomc.focus.outlookPrefetch(ctx, "What do the Fed's recent rate increases mean for mortgage rates and consumer spending?");
             tail = extractAfter(text, "Markets:");
             tc.verifySubstring(tail, "cite the Fed staff's forecast with its ids, such as [2026-09-16/staffOutlook/1]");
-            tc.verifySubstring(tail, "Say that readings from before the first change cannot show its effect yet.");
-            tc.verifySubstring(tail, "give the counts as written");
-            tc.verifyTrue(endsWith(text, "and their medians.]"));
+            % It then said the increase had not shown in mortgage rates (6.76% to 7.28%): the ending
+            % names the readings that are too early, and says the rates already moved
+            tc.verifySubstring(tail, "Market rates and borrowing costs already show the change");
+            tc.verifySubstring(tail, "Only these are too early to show it, as readings from before the first change: " + ...
+                "real consumer spending growth, core PCE inflation, consumers' expected inflation.");
+            % It gave "risks tilted to the upside" for inflation up and growth balanced
+            tc.verifySubstring(tail, "Give the staff's view of each risk as written, not one for both: inflation tilted " + ...
+                "to the upside [2026-09-16/staffOutlook/3]; growth and jobs balanced");
+            tc.verifySubstring(tail, "with the count as written (for example ""in 2 of 2"") and the median.");
+            tc.verifyTrue(endsWith(text, "unless the evidence compares it.]"));
+            % It read "inflation revised higher at 3" as a forecast of 3%
+            tc.verifySubstring(text, "inflation revised higher in 3 of 4 [2026-09-16/staffOutlook/1]");
+        end
+
+        function theDataLookupLeavesOutWhatTheOutlookGives(tc)
+            % Given both, Qwen3 4B quoted spending as raw index levels (16530 to 16955) and called it faster
+            ctx = context(tc, datetime(2026,10,7));
+            [text, recs] = fomc.focus.prefetch(ctx, "What do the Fed's recent rate increases mean for mortgage rates and consumer spending?", false);
+            data = recs(string({recs.name}) == "prefetchData");
+            tc.verifyFalse(any(contains(string(data.args.series), ["MORTGAGE30US", "PCEC96", "GDPC1", "MICH"])), data.args.series);
+            tc.verifyTrue(contains(string(data.args.series), "UMCSENT"), "what getOutlook does not give stays");
+            tc.verifyFalse(contains(text, "16955"));
+            % Without the outlook, the data part is unchanged
+            [~, recs] = fomc.focus.prefetch(ctx, "What is the 30-year mortgage rate?", false);
+            tc.verifyTrue(contains(string(recs(string({recs.name}) == "prefetchData").args.series), "MORTGAGE30US"));
         end
 
         function prefetchOffMeansNoLookup(tc)
