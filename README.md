@@ -101,7 +101,7 @@ result.attempts    % one to three model attempts
 |---|---|
 | `app.py` | Starts the chat page. |
 | `server/` | Python helpers behind `app.py`: start Ollama and MATLAB, check memory, save chats, shut everything down. |
-| `static/` | The chat page (one HTML file): chat history on the left, model and effort pickers. |
+| `static/` | The web pages: the chat (`index.html`: chat history on the left, model and effort pickers) and the Evaluation page (`evals.html`). |
 | `src/` | The agent, written in MATLAB (`src/+fomc`, below). |
 | `skills/` | Model-readable skill instructions, rubrics and output schemas. |
 | `pipeline/` | MATLAB scripts that download and clean the data (FRED, Yahoo, Shiller, Treasury, the minutes). Run them only to refresh data. `score_minutes.m` has the model score the rate path of new minutes (Ollama must be running). |
@@ -119,11 +119,11 @@ result.attempts    % one to three model attempts
 | Folder / file | What it is |
 |---|---|
 | `chat.m`, `runAgent.m`, `runTurn.m`, `effort.m` | Entry points, the main loop (ask the model, run its tools, repeat), and what Low, Medium and High effort change. |
-| `+tools/` | The tools the model can call: decisions, the path of rates over several meetings, where policy may go next, what recent rate moves may mean ahead, search, read minutes, data series, and `readSkill` for loading skill instructions or references. |
+| `+tools/` | The tools the model can call: list meetings, decisions, the path of rates over several meetings, where policy may go next, what recent rate moves may mean ahead, search, read minutes, data series, the consumer-impact score (a stub), and `readSkill` for loading skill instructions or references. |
 | `+data/` | Loads the data, works out what was known on a given date, and reads each meeting's decision, the staff's forecast revisions, participants' views on future meetings, and which way the minutes point (the AI's saved score, else word rules). |
 | `+focus/` | Picks which minutes a question is about and looks up the first facts before the model starts, including the path of rates, how the economy compares with the Fed's goals and what the latest minutes say about future meetings, and the evidence on what the rate path may mean ahead. |
 | `+retrieve/` | Finds the paragraphs that best match a question. |
-| `+guard/` | The checks: no future dates, real citations, correct figures. |
+| `+guard/` | The checks: no future dates, real citations, correct figures, plain wording, and the AI's scores (schema, score range, quotes word for word, the rate path against the decision). |
 | `+analysis/` | The structured analysis (the High effort level). |
 | `+skills/` | Discovers and loads skill instructions and runs the validated structured scoring workflow: in one call (`scoreMeeting`) or one dimension per call for the local models (`scoreByDimension`), and saves the scores (`scoreCache`). |
 | `+llm/` | Talks to the local model (and a fake model for tests). |
@@ -132,7 +132,7 @@ result.attempts    % one to three model attempts
 | `+web/` | The functions the chat page calls (one turn, session store, continuing a saved chat). |
 | `+leak/` | Labels meetings by whether the model may have seen them in training. |
 | `+rubric/` | Placeholder for the consumer-impact score (Aarya). |
-| `+util/` | Small helpers for dates and JSON, and the memory check for long model runs. |
+| `+util/` | Small helpers for dates, JSON and rate ranges, and the memory check for long model runs. |
 
 ## Docs
 
