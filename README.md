@@ -22,7 +22,7 @@ Open http://localhost:8787. It starts Ollama and MATLAB, checks memory first, an
 
 **Without the browser:** in MATLAB, from the repo root, run `setup` then `fomc.chat()`.
 
-**Test it:** `buildtool test` in MATLAB (about 2 minutes, no model needed) and `uv run python -m unittest tests/test_runtime.py`.
+**Test it:** `buildtool test` in MATLAB (about 2 minutes, no model needed) and `uv run python -m unittest tests/test_runtime.py tests/test_chats.py`.
 
 ## What it does
 
@@ -32,7 +32,7 @@ Open http://localhost:8787. It starts Ollama and MATLAB, checks memory first, an
 - **AI scores of the minutes.** The model scores each set of minutes once, ahead of time, on the rate path from -1 (dovish) to +1 (hawkish); the next-meeting reading takes the minutes' direction from those scores, with word rules as the baseline, and both are tested against what the Fed did next.
 - **Checkable answers.** Answers cite paragraph ids. The page shows each exact paragraph and flags anything unverified.
 - **Structured FOMC scoring.** Ask the agent to score a meeting's hawkish/dovish stance across seven dimensions. It uses a documented skill, returns schema-shaped JSON, and validates its scores and evidence.
-- **Fast on a small model.** Typical answers take 10 to 25 seconds on an 8 GB M1.
+- **Fast on a small model.** Typical answers take 10 to 25 seconds on an 8 GB M1; questions about where policy may go take about 25 to 35.
 
 ## Score FOMC minutes
 
@@ -67,7 +67,9 @@ and minutes come to about 17,000 tokens and the models read 8,192, so Ollama cut
 the prompt. `fomc.skills.scoreByDimension` scores the same skill one dimension per
 call, with only the paragraphs about that dimension, and matches the model's
 quotes to the closest sentence so they are word for word. It is a separate file
-so this scorer is unchanged; see `docs/agent_interface.md`.
+so this scorer is unchanged; see `docs/agent_interface.md`. Scoring requests in
+chat still go to the one-call scorer, so on the local models their prompt is cut;
+the tools use the scores saved by `scoreByDimension` instead.
 
 `pipeline/score_minutes.m` scores the rate path of every released set of minutes
 once and saves the scores in `data/scores/<model>/`. `assessEconomy` and the
@@ -144,6 +146,6 @@ result.attempts    % one to three model attempts
 ## Limits
 
 - The model is small: decisions and votes come from code, but check other claims against the cited paragraph.
-- The model may have seen what happened after past meetings; its training cutoff is not yet verified.
+- The model may have seen what happened after past meetings; its training cutoff is not yet verified. The same holds for its scores of older minutes, which may look better against what the Fed did next than they would on new minutes.
 - Data belongs to its providers (FRED, Yahoo Finance, Shiller, US Treasury FiscalData, federalreserve.gov); see [docs/data.md](docs/data.md).
 - License: not yet chosen.
