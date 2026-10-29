@@ -162,7 +162,7 @@ def main(cards_csv):
         cases.append({"id": f"vote-{i + 1:02d}", "category": "vote", "as_of": after(r), "meeting": r["meeting"],
                       "questions": [f"Was the vote unanimous at the {r['when']} meeting?"],
                       "checks": [r"(?i)unanimous|no (one )?dissent|none (voted|dissent)|all (voted|members)"],
-                      "forbid": [r"(?i)not unanimous|dissent(ed|ing) vote|voted against"], "tool": "getDecision"})
+                      "forbid": [r"(?i)not unanimous|(?<!\bno )dissent(ed|ing) votes?|(?<!\bno one )(?<!\bnobody )voted against"], "tool": "getDecision"})
     for i, r in enumerate(split):
         cases.append({"id": f"vote-{i + 4:02d}", "category": "vote", "as_of": after(r), "meeting": r["meeting"],
                       "questions": [f"Was the vote unanimous at the {r['when']} meeting? If not, who voted against?"],

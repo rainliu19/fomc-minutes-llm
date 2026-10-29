@@ -215,10 +215,13 @@ class ModelList(unittest.TestCase):
 class Evaluation(unittest.TestCase):
     """The key and the saved evaluations that the /evaluation page shows."""
 
-    def test_the_key_has_50_cases_with_questions_and_checks(self):
+    def test_the_key_has_57_cases_with_questions_and_checks(self):
+        # 50 drawn from the decision cards, and 7 forward-looking ones fixed by hand (4 nextmove, 3 outlook)
         key = json.loads((REPO / "evals" / "key.json").read_text())
-        self.assertEqual(len(key), 50)
-        self.assertEqual(len({c["id"] for c in key}), 50)
+        self.assertEqual(len(key), 57)
+        self.assertEqual(len({c["id"] for c in key}), 57)
+        self.assertEqual(sum(c["category"] == "nextmove" for c in key), 4)
+        self.assertEqual(sum(c["category"] == "outlook" for c in key), 3)
         for c in key:
             self.assertTrue(c["questions"] and c["as_of"], c["id"])
             for rx in c["checks"] + c["forbid"]:

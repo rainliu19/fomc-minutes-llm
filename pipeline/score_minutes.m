@@ -31,8 +31,7 @@ for k = 1:height(M)
         continue
     end
     [pressure, swapMB] = memoryNow();
-    % Swap stays allocated after memory frees up, so over 3.6 GB stops only while pressure is up
-    if pressure == 4 || (swapMB > 3600 && pressure > 1) || swapMB > 6000
+    if fomc.util.memoryShort(pressure, swapMB)
         fprintf("STOP before %s: memory short (pressure %d, %.0f MB swap). Run again to continue.\n", meeting, pressure, swapMB);
         break
     end
