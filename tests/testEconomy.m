@@ -283,8 +283,16 @@ classdef testEconomy < matlab.unittest.TestCase
             % told then to answer from the minutes alone, it was right, but the minutes' lean is
             % right about the next decision only 69% of the time
             text = fomc.focus.economyPrefetch(context(tc, datetime(2024,8,25)), "Is the Fed likely to cut rates at its next meeting?");
-            tc.verifySubstring(text, "answer from the next-meeting reading at the start, and say what it rests on");
+            tc.verifySubstring(text, "answer from the next-meeting reading: participants expected to hold for now, " + ...
+                "but the 6-month bill suggests markets expect a cut");
             tc.verifyFalse(contains(text, "answer it first from the minutes"));
+            % October 2026: Qwen3 4B cited the September decision as the next one and used the 2-year
+            % yield for the next meeting, so the ending says which is which
+            text = fomc.focus.economyPrefetch(context(tc, datetime(2026,10,7)), ...
+                "What do current economic conditions and the latest Fed minutes mean for the next FOMC meeting?");
+            tc.verifySubstring(text, "answer from the next-meeting reading: the minutes and the 6-month bill both point to an increase");
+            tc.verifySubstring(text, "(the 2-year yield is about the next two years)");
+            tc.verifySubstring(text, "The decision at the latest meeting is not the next one");
         end
 
         function aShouldQuestionIsAnsweredWithWhatParticipantsJudged(tc)
