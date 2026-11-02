@@ -105,6 +105,7 @@
       <li><b>Who grades the answers.</b> Code, not a person or an AI judge. Each answer is checked with fixed text patterns: the right direction (raised, cut or held), the right rate range, the right dissenters' names, or "not public yet" wording for unreleased meetings. A question counts as correct only if every check matches.</li>
       <li><b>What the grader cannot see.</b> Because it reads text, an unusual but correct phrasing can be marked wrong. Topic and comparison questions only check for the topic words or both years, so a high score there is lenient. The 4 "why" questions have no key and are not scored; they only feed the invented-reason flag.</li>
       <li><b>Baseline.</b> The same Ollama model and context size, given only the question and the date: no tools, minutes, data, guardrail or citation check. "Our agent" is everything we add around the model: the lookups, the point-in-time guardrail and the checks.</li>
+      <li><b>Tokens and cost.</b> Tokens are counted by Ollama over every model call in a question (the lookups, the answer and the citation check), averaged over all 50 questions. The models run locally, so the real cost is $0. "API cost" is what those same tokens would cost on a paid cloud model at its list price (Claude Haiku 5.5 and Sonnet 5.5, list prices checked <span id="pricedate"></span> on the Anthropic pricing page), with no caching discount. It is an estimate of the order of magnitude: a cloud model counts tokens with its own tokenizer. Questions the app refuses before calling the model (not public yet) cost $0, and a baseline follow-up counts only its last turn.</li>
       <li><b>Limits.</b> One run per model per question, on one 8 GB Apple M1, so run-to-run variation is not measured. Every score is out of 46, so differences of a few points are not meaningful.</li>
     </ul>
     </div>
@@ -115,6 +116,8 @@ const el = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;"}[c]));
 const pct = (k, n) => n ? Math.round(100 * k / n) + "%" : "n/a";
 const f2 = v => v == null ? "n/a" : Number(v).toFixed(2);
+const usd = v => v == null ? "n/a" : "$" + Number(v).toFixed(2);
+const tok = n => n == null ? "n/a" : Number(n).toLocaleString("en-US");
 const gb = s => s.model_memory_mb ? f2(s.model_memory_mb / 1024) + " GB (" + Math.round(s.model_memory_pct_of_8gb) + "%)" : "n/a";
 // "Qwen3 4B" for the model inside the app, "Qwen3 4B, bare model" for the same model alone
 const base = s => s.label.replace(/^[^:]*: /, "").replace(/, bare model$/, "");
@@ -144,14 +147,16 @@ function chart(apps, bareOf) {
 }
 
 function comparison(apps, bareOf) {
-  const head = ["Model", "Parameters", "Our agent", "Baseline", "Median (s)", "Memory"];
+  const head = ["Model", "Parameters", "Our agent", "Baseline", "Median (s)", "Memory", "Tokens / question", "API cost / 1,000 questions"];
   let h = "<tr>" + head.map(t => `<th>${t}</th>`).join("") + "</tr>";
   for (const r of apps) {
     const s = r.summary, a = s.accuracy_ci, b = bareOf[s.model];
     h += `<tr class="model" data-id="${s.model}"><td>${esc(base(s))}${s.complete ? "" : ' <span class="pill">partial</span>'}</td><td>${s.params_b}B</td>
       <td>${pct(s.correct, s.n_scored)} <span class="note">(${s.correct}/${s.n_scored}; ${Math.round(a[0] * 100)}% to ${Math.round(a[1] * 100)}%)</span></td>
       <td>${b ? pct(b.correct, b.n_scored) + ` <span class="note">(${b.correct}/${b.n_scored})</span>` : "not run"}</td>
-      <td>${f2(s.seconds_median)}</td><td>${gb(s)}</td></tr>`;
+      <td>${f2(s.seconds_median)}</td><td>${gb(s)}</td>
+      <td>${tok(s.tokens.in_per_question + s.tokens.out_per_question)} <span class="note">(${tok(s.tokens.in_per_question)} in, ${tok(s.tokens.out_per_question)} out)</span></td>
+      <td>${usd(s.tokens.api_cost_per_1000.haiku)} <span class="note">(local: $0.00)</span></td></tr>`;
   }
   el("table").innerHTML = h;
   document.querySelectorAll("tr.model").forEach(tr => tr.onclick = () => { el("sec-questions").open = true; el("pick").value = tr.dataset.id; el("pick").onchange(); el("pick").scrollIntoView({behavior: "smooth", block: "center"}); });
@@ -159,14 +164,15 @@ function comparison(apps, bareOf) {
 
 function more(all) {
   // Every measure, for the app rows and the bare-model rows, best first
-  const head = ["Model", "Setup", "Parameters", "Accuracy", "Silent errors", "Stable", "Right tool", "Verified citations", "Wrong answers warned", "Invented reason", "Median (s)", "90th pct (s)", "Tokens/s", "Peak swap (MB)", "Memory"];
+  const head = ["Model", "Setup", "Parameters", "Accuracy", "Silent errors", "Stable", "Right tool", "Verified citations", "Wrong answers warned", "Invented reason", "Median (s)", "90th pct (s)", "Tokens/s", "Peak swap (MB)", "Memory", "Input tokens / question", "Output tokens / question", "API cost / 1,000 (Haiku 5.5)", "API cost / 1,000 (Sonnet 5.5)"];
   let h = "<tr>" + head.map(t => `<th>${t}</th>`).join("") + "</tr>";
   for (const r of all) {
     const s = r.summary, e = s.silent_errors;
     h += `<tr><td>${esc(base(s))}</td><td>${s.baseline ? "baseline" : "our agent"}</td><td>${s.params_b}B</td><td>${pct(s.correct, s.n_scored)} (${s.correct}/${s.n_scored})</td>
       <td>${e.count}/${e.n}</td><td>${s.stability.stable_groups}/${s.stability.groups}</td><td>${s.tool_accuracy.n ? pct(s.tool_accuracy.ok, s.tool_accuracy.n) : "n/a"}</td>
       <td>${s.cases_citing_verified_id}/${s.n_cases} answers</td><td>${e.warned_wrong}/${e.wrong}</td><td>${s.invented_reason.flagged}/${s.invented_reason.n}</td>
-      <td>${f2(s.seconds_median)}</td><td>${f2(s.seconds_p90)}</td><td>${f2(s.decode_tok_s_median)}</td><td>${s.peak_swap_mb ?? "n/a"}</td><td>${gb(s)}</td></tr>`;
+      <td>${f2(s.seconds_median)}</td><td>${f2(s.seconds_p90)}</td><td>${f2(s.decode_tok_s_median)}</td><td>${s.peak_swap_mb ?? "n/a"}</td><td>${gb(s)}</td>
+      <td>${tok(s.tokens.in_per_question)}</td><td>${tok(s.tokens.out_per_question)}</td><td>${usd(s.tokens.api_cost_per_1000.haiku)}</td><td>${usd(s.tokens.api_cost_per_1000.sonnet)}</td></tr>`;
   }
   el("more").innerHTML = h;
 }
@@ -201,6 +207,7 @@ Promise.all([fetch("/evals").then(r => r.json()), fetch("/evals/key").then(r => 
   const apps = runs.filter(r => !r.summary.baseline).sort(order(bareOf));
   // Each model's bare-model row sits right under its in-app row
   const all = apps.flatMap(r => [r, ...runs.filter(x => x.summary.baseline && x.summary.model === r.summary.model + "-baseline")]);
+  el("pricedate").textContent = apps[0].summary.tokens.api_prices.checked;
   chart(apps, bareOf); comparison(apps, bareOf); more(all); categories(apps); questions(all, key);
 });
 </script>

@@ -34,15 +34,17 @@ def run_case(entry, case):
     """Ask a case's questions in one conversation; score the last answer with the key."""
     messages = [{"role": "system", "content": f"Today is {case['as_of']}. You answer questions about Federal Open Market Committee minutes."}]
     answer, r, total = "", {}, 0.0
+    p_tok = o_tok = 0                                                   # tokens over every turn, as the app's trace counts them
     for q in case["questions"]:
         messages.append({"role": "user", "content": q})
         t0 = time.time()
         answer, r = ask(entry["name"], messages)
         total = time.time() - t0
+        p_tok += r.get("prompt_eval_count", 0); o_tok += r.get("eval_count", 0)
         messages.append({"role": "assistant", "content": answer})
     answer = re.sub(r"(?s)<think>.*?</think>", "", answer).strip()      # drop a thinking model's scratch text
     p_ms, o_ms = r.get("prompt_eval_duration", 0) / 1e6, r.get("eval_duration", 0) / 1e6
-    stats = {"model_calls": len(case["questions"]), "prompt_tokens": r.get("prompt_eval_count", 0), "output_tokens": r.get("eval_count", 0),
+    stats = {"model_calls": len(case["questions"]), "prompt_tokens": p_tok, "output_tokens": o_tok,
              "prefill_tok_s": round(r.get("prompt_eval_count", 0) / (p_ms / 1000), 1) if p_ms else None,
              "decode_tok_s": round(r.get("eval_count", 0) / (o_ms / 1000), 1) if o_ms else None}
     row = {"id": case["id"], "category": case["category"], "effort": "low", "group": case.get("group"), "seconds": round(total, 1),

@@ -171,7 +171,14 @@ def summarize(rows, meta):
     # Wrong answers that came with no warning on the page: the errors a user would not be told about
     silent = sum(1 for r in scored if r["passed"] is False and not r["warning"])
     tool_k, tool_n = share(low, "tool_ok")
-    return {**meta, "n_cases": len(low), "correct": k, "n_scored": len(scored), "accuracy": round(k / len(scored), 3) if scored else None,
+    # Tokens over every model call in the question, and what the same tokens would cost on a paid cloud API
+    t_in, t_out = sum(r["stats"]["prompt_tokens"] for r in low), sum(r["stats"]["output_tokens"] for r in low)
+    prices = json.loads((REPO / "models" / "api_prices.json").read_text())
+    n = max(len(low), 1)
+    tokens = {"in_per_question": round(t_in / n), "out_per_question": round(t_out / n), "total_in": t_in, "total_out": t_out,
+              "api_cost_per_1000": {p["id"]: round(1000 * (t_in * p["usd_per_mtok_in"] + t_out * p["usd_per_mtok_out"]) / 1e6 / n, 2) for p in prices["models"]},
+              "api_prices": {"checked": prices["checked"], "source": prices["source"], "models": prices["models"]}}
+    return {**meta, "tokens": tokens, "n_cases": len(low), "correct": k, "n_scored": len(scored), "accuracy": round(k / len(scored), 3) if scored else None,
             "accuracy_ci": wilson(k, len(scored)), "by_category": by_cat,
             "silent_errors": {"count": silent, "n": len(scored), "rate": round(silent / len(scored), 3) if scored else None,
                               "ci": wilson(silent, len(scored)), "wrong": len(scored) - k,
