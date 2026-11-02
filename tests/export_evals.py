@@ -3,7 +3,8 @@
     python tests/export_evals.py
 
 data/model_evaluation_summary.csv: one row per model with Model, Params, Correct, Baseline,
-                                   Median Latency and Memory. Baseline is the same model asked bare.
+                                   Median Latency, Memory, Tokens per Question and API Cost per 1,000 Questions
+                                   (the cheaper reference model, Claude Haiku 5.5; models/api_prices.json). Baseline is the same model asked bare.
 data/model_evaluation_cases.csv:   one row per question asked, with the answer.
 Needs no model; run it after tests/bench_live.py and tests/bench_baseline.py finish.
 """
@@ -31,7 +32,9 @@ def summary_rows(runs):
         rows.append({"Model": s["label"].split(": ")[-1], "Params": f"{s['params_b']}B", "Correct": pct_text(s),
                      "Baseline": pct_text(bare[s["model"]]) if s["model"] in bare else "not run",
                      "Median Latency": f"{s['seconds_median']:.2f} s",
-                     "Memory": f"{mem / 1024:.2f} GB ({round(s['model_memory_pct_of_8gb'])}%)" if mem else "not measured"})
+                     "Memory": f"{mem / 1024:.2f} GB ({round(s['model_memory_pct_of_8gb'])}%)" if mem else "not measured",
+                     "Tokens per Question": s["tokens"]["in_per_question"] + s["tokens"]["out_per_question"],
+                     "API Cost per 1,000 Questions": f"${s['tokens']['api_cost_per_1000']['haiku']:.2f}"})
     return rows
 
 
@@ -59,7 +62,7 @@ def main():
         for c in r["cases"]:
             cases.append({"model_id": s["model"], "label": s["label"].split(": ")[-1], "params_b": s["params_b"], "case_id": c["id"], "category": c["category"],
                           "effort": c["effort"], "correct": "" if c["passed"] is None else c["passed"], "right_tool": "" if c["tool_ok"] is None else c["tool_ok"],
-                          "seconds": c["seconds"], "tools": " ".join(c["tools"]), "verified_citations": c["citations_ok"], "citations": c["citations_total"],
+                          "seconds": c["seconds"], "input_tokens": c["stats"]["prompt_tokens"], "output_tokens": c["stats"]["output_tokens"], "model_calls": c["stats"]["model_calls"], "tools": " ".join(c["tools"]), "verified_citations": c["citations_ok"], "citations": c["citations_total"],
                           "possible_invented_reason": "" if c["invented_reason"] is None else c["invented_reason"], "warning": c["warning"],
                           "swap_mb": c.get("swap_mb", ""), "answer": c["answer"].replace("\n", " ")})
     with open(out / "model_evaluation_cases.csv", "w", newline="", encoding="utf-8") as f:
