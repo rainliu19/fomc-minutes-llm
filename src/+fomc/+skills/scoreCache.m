@@ -3,7 +3,8 @@ function out = scoreCache(action, model, meetingDate, output, nvp)
 %   out = fomc.skills.scoreCache("read", model, meetingDate) returns the saved result of
 %   fomc.skills.scoreByDimension for that meeting and model, or [] if there is none.
 %   fomc.skills.scoreCache("write", model, meetingDate, output) saves one, keeping dimensions
-%   scored earlier that this run did not score.
+%   scored earlier that this run did not score, with their issues; the old issues of a
+%   dimension scored again are dropped, so ok reflects the latest score of each dimension.
 %   fomc.skills.scoreCache("list", model) returns the meeting dates with a saved score.
 %   Scoring one meeting takes the local model minutes, too slow while answering a question, so
 %   pipeline/score_minutes.m scores the released minutes ahead of time. Files are
@@ -40,9 +41,12 @@ switch action
         if isfile(file)
             old = jsondecode(fileread(file));
         end
+        % A run that scores some dimensions checks the others as placeholders (a not_discussed
+        % rate path fails the decision check), so keep only the issues of what it scored
+        issues = ownIssues(output.issues, output.dimensionsScored);
         record = struct("meetingDate", meetingDate, "model", model, ...
-            "scoredOn", string(datetime("now"), "yyyy-MM-dd"), "ok", output.ok, ...
-            "issues", output.issues, "dimensionsScored", output.dimensionsScored, ...
+            "scoredOn", string(datetime("now"), "yyyy-MM-dd"), "ok", isempty(issues), ...
+            "issues", issues, "dimensionsScored", output.dimensionsScored, ...
             "score", output.score, "passages", output.passages);
         % Keep the dimensions an earlier run scored that this one did not
         if ~isempty(old)
@@ -54,8 +58,15 @@ switch action
                 end
             end
             record.dimensionsScored = union(string(output.dimensionsScored), kept, "stable");
-            record.ok = output.ok && old.ok;
-            record.issues = [string(output.issues(:)); string(old.issues(:))];
+            % Only the old issues of the dimensions kept still stand: a dimension scored again
+            % replaces its old issues, so a failed score can pass once it is scored again
+            oldIssues = strings(0, 1);
+            if ~isempty(kept)
+                oldIssues = ownIssues(old.issues, kept);
+                oldIssues = oldIssues(contains(oldIssues, kept));
+            end
+            record.issues = [issues; oldIssues];
+            record.ok = isempty(record.issues);
         end
         if ~isfolder(folder)
             mkdir(folder);
@@ -65,4 +76,16 @@ switch action
         fclose(fid);
         out = record;
 end
+end
+
+function issues = ownIssues(issues, scored)
+% The issues that name a dimension scored, or no dimension at all. One saved issue reads back
+% from JSON as a char row, so make strings before making a column
+issues = string(issues);
+issues = issues(:);
+all = ["rate_path", "inflation", "labor_market", "economic_activity", ...
+    "financial_conditions", "balance_sheet", "risk_balance"];
+others = setdiff(all, string(scored));
+aboutOthers = ~contains(issues, string(scored)) & contains(issues, others);
+issues = issues(~aboutOthers);
 end

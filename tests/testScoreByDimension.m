@@ -111,6 +111,27 @@ classdef testScoreByDimension < matlab.unittest.TestCase
             tc.verifyEmpty(fomc.skills.scoreCache("read", "mock", "2020-03-18", Folder=folder));
         end
 
+        function aFailedScorePassesOnceThatDimensionIsScoredAgain(tc)
+            % A failed rate path saved first: scoring inflation keeps its issue; scoring the rate
+            % path again, and passing, clears it
+            model = EchoScoreModel();
+            s = struct("ctx", tc.ctx, "llm", @model.call);
+            folder = string(tempname);
+            failed = fomc.skills.scoreByDimension(s, tc.meetingDate, Dimensions="rate_path");
+            failed.ok = false;
+            failed.issues = "rate_path: a check failed";
+            fomc.skills.scoreCache("write", "mock", tc.meetingDate, failed, Folder=folder);
+            r = fomc.skills.scoreCache("write", "mock", tc.meetingDate, ...
+                fomc.skills.scoreByDimension(s, tc.meetingDate, Dimensions="inflation"), Folder=folder);
+            tc.verifyFalse(r.ok);
+            tc.verifyEqual(string(r.issues), "rate_path: a check failed");
+            r = fomc.skills.scoreCache("write", "mock", tc.meetingDate, ...
+                fomc.skills.scoreByDimension(s, tc.meetingDate, Dimensions="rate_path"), Folder=folder);
+            tc.verifyTrue(r.ok, strjoin(string(r.issues), " "));
+            tc.verifyEmpty(r.issues);
+            tc.verifyEqual(sort(string(r.dimensionsScored(:))), ["inflation"; "rate_path"]);
+        end
+
         function theMinutesDirectionUsesTheAIScoreElseTheWordRules(tc)
             % March 2020: the AI's rate path -0.5 points down; with no saved score, the word rules
             model = EchoScoreModel();
