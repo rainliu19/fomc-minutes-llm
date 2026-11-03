@@ -232,6 +232,19 @@ class Evaluation(unittest.TestCase):
         sizes = [r["summary"]["params_b"] for r in app.evals()]
         self.assertEqual(sizes, sorted(sizes))
 
+    def test_every_run_has_tokens_and_a_cloud_api_cost_that_matches_the_price_table(self):
+        import app
+        prices = json.loads((REPO / "models" / "api_prices.json").read_text())["models"]
+        runs = app.evals()
+        self.assertEqual(len(runs), 16)                        # the price file is not mistaken for a run
+        for r in runs:
+            t = r["summary"]["tokens"]
+            self.assertGreaterEqual(t["in_per_question"], 0)
+            for p in prices:
+                self.assertGreater(p["usd_per_mtok_in"], 0)
+                want = (t["total_in"] * p["usd_per_mtok_in"] + t["total_out"] * p["usd_per_mtok_out"]) / 1e6 / r["summary"]["n_cases"] * 1000
+                self.assertAlmostEqual(t["api_cost_per_1000"][p["id"]], want, delta=0.01, msg=r["summary"]["model"])
+
 
 if __name__ == "__main__":
     unittest.main()

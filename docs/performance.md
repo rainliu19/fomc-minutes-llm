@@ -69,6 +69,8 @@ Most of the accuracy comes from the app's lookups and checks, not from what the 
 
 **Memory** is the size Ollama reports for the loaded model with its 8,192-token context (`tests/measure_memory.py`). The hidden MATLAB adds about 1 GB more.
 
+**Tokens and cost.** Tokens are counted by Ollama over every model call in a question and averaged over the questions of each run (50, or 57 for Qwen3 4B's rerun). The app sends about 2,300 to 4,200 input tokens per question (the retrieved minutes) and writes 77 to 420; the bare model sends about 60. Local runs cost $0. The Evaluation page and `data/model_evaluation_summary.csv` also show what the same tokens would cost on a paid cloud API, per 1,000 questions: about $0.38 at Claude Haiku 5.5 prices and about $7.60 at Claude Sonnet 5.5 prices for Qwen3 4B, on its rerun of all 57 questions (`models/api_prices.json`, prices checked 2026-10-06). It is an order-of-magnitude estimate: a cloud model counts tokens its own way, no caching discount is applied, and the 5 "not public yet" questions never reach the model. Saved bare-model follow-ups count only their last turn; new runs count every turn. Change a price in `models/api_prices.json` and run `python tests/bench_live.py --rescore`.
+
 An earlier note said a 1.5B model reached about 70%. On this key Qwen2.5 1.5B scores 80% (37 of 46).
 
 ### Found by the evaluation, not fixed here

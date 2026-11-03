@@ -6,6 +6,34 @@
   "ollama_name": "fomc-fast",
   "date": "2026-10-25",
   "complete": true,
+  "tokens": {
+   "in_per_question": 2401,
+   "out_per_question": 130,
+   "total_in": 120043,
+   "total_out": 6483,
+   "api_cost_per_1000": {
+    "haiku": 0.3,
+    "sonnet": 6.1
+   },
+   "api_prices": {
+    "checked": "2026-10-06",
+    "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+    "models": [
+     {
+      "id": "haiku",
+      "label": "Claude Haiku 5.5",
+      "usd_per_mtok_in": 0.1,
+      "usd_per_mtok_out": 0.5
+     },
+     {
+      "id": "sonnet",
+      "label": "Claude Sonnet 5.5",
+      "usd_per_mtok_in": 2.0,
+      "usd_per_mtok_out": 10.0
+     }
+    ]
+   }
+  },
   "n_cases": 50,
   "correct": 42,
   "n_scored": 46,

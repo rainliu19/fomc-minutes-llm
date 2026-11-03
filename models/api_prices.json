@@ -1,0 +1,9 @@
+{
+ "note": "Reference prices for the cloud-API equivalent cost on the Evaluation page. Our models run locally, so the real cost is $0. Edit or add rows here and run: python tests/bench_live.py --rescore",
+ "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+ "checked": "2026-10-06",
+ "models": [
+  {"id": "haiku", "label": "Claude Haiku 5.5", "usd_per_mtok_in": 0.10, "usd_per_mtok_out": 0.50},
+  {"id": "sonnet", "label": "Claude Sonnet 5.5", "usd_per_mtok_in": 2.00, "usd_per_mtok_out": 10.00}
+ ]
+}
