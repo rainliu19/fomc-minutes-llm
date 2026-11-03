@@ -1,0 +1,94 @@
+{
+  "meetingDate": "2017-06-14",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2017-06-14",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "Based on this assessment, almost all participants expressed the view that it would be appropriate for the Committee to raise the target range for the federal funds rate 25 basis points at this meeting.",
+            "paragraph_ref": "2017-06-14/participantsViews/10"
+          },
+          {
+            "quote": "After assessing current conditions and the outlook for economic activity, the labor market, and inflation, all but one member agreed to raise the target range for the federal funds rate to 1 to 1-1/4 percent.",
+            "paragraph_ref": "2017-06-14/policyAction/4"
+          },
+          {
+            "quote": "In view of realized and expected labor market conditions and inflation, the Committee decided to raise the target range for the federal funds rate to 1 to 1-1/4 percent.",
+            "paragraph_ref": "2017-06-14/policyAction/13"
+          }
+        ],
+        "rationale": "The minutes show near-unanimous agreement to raise the federal funds rate by 25 basis points, with only one dissenting voice. Forward-looking language emphasizes gradual tightening and continued accommodativeness, supporting a hawkish stance on the rate path.",
+        "score": 0.75,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2017-06-14/participantsViews/1",
+      "2017-06-14/participantsViews/9",
+      "2017-06-14/participantsViews/10",
+      "2017-06-14/participantsViews/13",
+      "2017-06-14/participantsViews/14",
+      "2017-06-14/policyAction/3",
+      "2017-06-14/policyAction/4",
+      "2017-06-14/policyAction/5",
+      "2017-06-14/policyAction/8",
+      "2017-06-14/policyAction/13",
+      "2017-06-14/policyAction/14",
+      "2017-06-14/policyAction/18",
+      "2017-06-14/policyAction/19",
+      "2017-06-14/specialTopics/10"
+    ]
+  }
+}

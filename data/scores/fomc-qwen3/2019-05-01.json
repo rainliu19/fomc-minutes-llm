@@ -1,0 +1,86 @@
+{
+  "meetingDate": "2019-05-01",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2019-05-01",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "In light of global economic and financial developments as well as muted inflation pressures, participants generally agreed that a patient approach to determining future adjustments to the target range for the federal funds rate remained appropriate.",
+            "paragraph_ref": "2019-05-01/participantsViews/10"
+          },
+          {
+            "quote": "In light of global economic and financial developments as well as muted inflation pressures, participants generally agreed that a patient approach to determining future adjustments to the target range for the federal funds rate remained appropriate.",
+            "paragraph_ref": "2019-05-01/participantsViews/10"
+          }
+        ],
+        "rationale": "Participants agreed on a patient approach to future rate adjustments, with no indication of a tightening or easing bias. The minutes emphasize moderation and data dependence, reflecting a balanced view.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2019-05-01/participantsViews/2",
+      "2019-05-01/participantsViews/10",
+      "2019-05-01/staffFinancial/2",
+      "2019-05-01/financialMarkets/1",
+      "2019-05-01/policyAction/3",
+      "2019-05-01/policyAction/7",
+      "2019-05-01/policyAction/12",
+      "2019-05-01/policyAction/16",
+      "2019-05-01/specialTopics/4",
+      "2019-05-01/specialTopics/5"
+    ]
+  }
+}

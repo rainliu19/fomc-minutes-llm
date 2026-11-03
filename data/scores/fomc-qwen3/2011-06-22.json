@@ -1,0 +1,96 @@
+{
+  "meetingDate": "2011-06-22",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": false,
+  "issues": [
+    "rate_path.score must be null when status is not_discussed.",
+    "rate_path.confidence must be null when status is not_discussed.",
+    "rate_path.evidence must be empty when status is not_discussed.",
+    "rate_path must be scored consistently with the meeting's actual hold."
+  ],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2011-06-22",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "Against this backdrop, members agreed that it was appropriate to maintain the Committee's current policy stance and accumulate further information regarding the outlook for growth and inflation before deciding on the next policy step.",
+            "paragraph_ref": "2011-06-22/policyAction/1"
+          },
+          {
+            "quote": "On the one hand, a few members noted that, depending on how economic conditions evolve, the Committee might have to consider providing additional monetary policy stimulus, especially if economic growth remained too slow to meaningfully reduce the unemployment rate in",
+            "paragraph_ref": "2011-06-22/policyAction/1"
+          },
+          {
+            "quote": "On the other hand, a few members viewed the increase in inflation risks as suggesting that economic conditions might well evolve in a way that would warrant the Committee taking steps to begin removing policy accommodation sooner than currently anticipated.",
+            "paragraph_ref": "2011-06-22/policyAction/1"
+          }
+        ],
+        "rationale": "The Committee held the federal funds rate at 0 to 1/4 percent. While some participants expressed concern about slowing growth and inflation risks, there is no clear consensus on a path for future rate changes. The discussion reflects uncertainty, with a slight lean toward possible easing but no decisive direction.",
+        "score": -0.25,
+        "status": "not_discussed"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2011-06-22/participantsViews/1",
+      "2011-06-22/participantsViews/3",
+      "2011-06-22/participantsViews/5",
+      "2011-06-22/participantsViews/9",
+      "2011-06-22/staffOutlook/1",
+      "2011-06-22/staffFinancial/2",
+      "2011-06-22/staffFinancial/15",
+      "2011-06-22/policyAction/1",
+      "2011-06-22/policyAction/8",
+      "2011-06-22/specialTopics/3",
+      "2011-06-22/specialTopics/7"
+    ]
+  }
+}

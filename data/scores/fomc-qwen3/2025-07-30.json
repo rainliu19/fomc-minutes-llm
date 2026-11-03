@@ -1,0 +1,88 @@
+{
+  "meetingDate": "2025-07-30",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2025-07-30",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "A couple of members preferred to lower the target range for the federal funds rate by 25 basis points at this meeting.",
+            "paragraph_ref": "2025-07-30/policyAction/2"
+          },
+          {
+            "quote": "She also expressed her view that taking action to begin moving the policy rate at a gradual pace toward its neutral level would have proactively hedged against a further weakening in the economy and the risk of damage to the",
+            "paragraph_ref": "2025-07-30/policyAction/20"
+          }
+        ],
+        "rationale": "Several participants, including Governor Bowman, advocated for a rate reduction, citing inflation near target and weakening labor market dynamics. However, the majority maintained the current rate range, and forward guidance emphasized data-dependent adjustments.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2025-07-30/participantsViews/7",
+      "2025-07-30/participantsViews/8",
+      "2025-07-30/participantsViews/9",
+      "2025-07-30/participantsViews/10",
+      "2025-07-30/participantsViews/11",
+      "2025-07-30/financialMarkets/2",
+      "2025-07-30/policyAction/2",
+      "2025-07-30/policyAction/3",
+      "2025-07-30/policyAction/6",
+      "2025-07-30/policyAction/15",
+      "2025-07-30/policyAction/16",
+      "2025-07-30/policyAction/20"
+    ]
+  }
+}

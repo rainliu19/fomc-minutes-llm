@@ -55,6 +55,11 @@ L{end+1} = mk("TREASURY_DEBT_TOTAL", "Total public debt outstanding", "US Treasu
               fileDate(fullfile(outDir,"debt_to_the_penny.csv")), ...
               table(d.date, d.totalPublicDebt, 'VariableNames', {'date','value'}));
 
+a = readDateCsv(fullfile(outDir,"avg_interest_rates.csv"));
+L{end+1} = mk("TREASURY_AVG_RATE", "Average interest rate on marketable Treasury debt", "US Treasury FiscalData", false, ...
+              fileDate(fullfile(outDir,"avg_interest_rates.csv")), ...
+              table(a.date, a.avgInterestRate, 'VariableNames', {'date','value'}));
+
 % Pull each entry's facts into parallel columns (id, label, source, frequency, ...)
 n = numel(L);
 sid = strings(n,1); lab = strings(n,1); src = strings(n,1); rev = false(n,1);
@@ -108,11 +113,20 @@ writetable(vint, fullfile(outDir,"fred_vintages_long.csv"));
 fprintf("fred_vintages_long.csv   %8d rows (%d series)\n", height(vint), numel(vids));
 
 %% 5. Series dictionary
-% Look up units and titles on FRED (needs the key); other sources have fixed units
+% Look up units and titles on FRED (needs the key); other sources have fixed units. Without the
+% key, keep what the existing dictionary already says, so a run without it does not blank them
 units = strings(n,1);  ftitle = strings(n,1);  sa = strings(n,1);
+old = table();
+if isempty(apiKey) && isfile(fullfile(outDir,"series_dictionary.csv"))
+    old = readtable(fullfile(outDir,"series_dictionary.csv"), TextType="string");
+end
 for i = 1:n
     if src(i) == "FRED"
-        if ~isempty(apiKey)
+        if isempty(apiKey) && ~isempty(old) && any(old.series_id == sid(i))
+            o = old(find(old.series_id == sid(i), 1), :);
+            units(i) = o.units;  ftitle(i) = o.fred_title;  sa(i) = o.seasonal_adjustment;
+            units(ismissing(units)) = "";  ftitle(ismissing(ftitle)) = "";  sa(ismissing(sa)) = "";
+        elseif ~isempty(apiKey)
             try
                 mt = getFredMeta(sid(i), apiKey);
                 units(i) = mt.units;  ftitle(i) = mt.title;  sa(i) = mt.sa;
@@ -209,6 +223,7 @@ function u = otherUnits(id)
     elseif id == "SHILLER_CPI",              u = "Index level";
     elseif startsWith(id,"SHILLER_"),        u = "Index points";
     elseif id == "TREASURY_DEBT_TOTAL",      u = "US dollars";
+    elseif id == "TREASURY_AVG_RATE",        u = "Percent";
     else,                                    u = "";
     end
 end

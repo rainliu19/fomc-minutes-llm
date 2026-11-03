@@ -1,0 +1,81 @@
+{
+  "meetingDate": "2013-06-19",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2013-06-19",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "In particular, the Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent and currently anticipates that this exceptionally low range for the federal funds rate will be appropriate at least as long",
+            "paragraph_ref": "2013-06-19/policyAction/11"
+          }
+        ],
+        "rationale": "The minutes state the Committee decided to maintain the federal funds rate at 0 to 1/4 percent and expect this low range to remain appropriate for a considerable time. No forward guidance or tightening bias is expressed.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2013-06-19/participantsViews/1",
+      "2013-06-19/participantsViews/3",
+      "2013-06-19/participantsViews/9",
+      "2013-06-19/participantsViews/10",
+      "2013-06-19/participantsViews/13",
+      "2013-06-19/staffFinancial/2",
+      "2013-06-19/policyAction/2",
+      "2013-06-19/policyAction/3",
+      "2013-06-19/policyAction/11"
+    ]
+  }
+}

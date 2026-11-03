@@ -1,0 +1,93 @@
+{
+  "meetingDate": "2019-06-19",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2019-06-19",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "Many judged additional monetary policy accommodation would be warranted in the near term should these recent developments prove to be sustained and continue to weigh on the economic outlook.",
+            "paragraph_ref": "2019-06-19/participantsViews/10"
+          },
+          {
+            "quote": "Several participants noted that a near-term cut in the target range for the federal funds rate could help cushion the effects of possible future adverse shocks to the economy and, hence, was appropriate policy from a risk-management perspective.",
+            "paragraph_ref": "2019-06-19/participantsViews/10"
+          },
+          {
+            "quote": "One member preferred to lower the target range for the federal funds rate by 25 basis points at this meeting, stating that the Committee should ease policy at this meeting to re-center inflation and inflation expectations at the Committee's symmetric",
+            "paragraph_ref": "2019-06-19/policyAction/1"
+          }
+        ],
+        "rationale": "Participants widely supported additional policy accommodation, with many advocating a near-term cut to address inflation risks and global uncertainties. A few explicitly favored a cut, and the overall tone leaned toward easing policy despite a hold in the rate.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2019-06-19/participantsViews/9",
+      "2019-06-19/participantsViews/10",
+      "2019-06-19/participantsViews/11",
+      "2019-06-19/staffFinancial/2",
+      "2019-06-19/financialMarkets/2",
+      "2019-06-19/financialMarkets/3",
+      "2019-06-19/policyAction/1",
+      "2019-06-19/policyAction/2",
+      "2019-06-19/policyAction/5",
+      "2019-06-19/policyAction/10",
+      "2019-06-19/policyAction/11",
+      "2019-06-19/policyAction/14",
+      "2019-06-19/policyAction/15"
+    ]
+  }
+}

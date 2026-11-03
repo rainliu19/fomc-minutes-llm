@@ -1,0 +1,91 @@
+{
+  "meetingDate": "2020-09-16",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2020-09-16",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "All members agreed to maintain the target range for the federal funds rate at 0 to 1/4 percent.",
+            "paragraph_ref": "2020-09-16/policyAction/3"
+          },
+          {
+            "quote": "The Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent and expects it will be appropriate to maintain this target range until labor market conditions have reached levels consistent with the Committee's",
+            "paragraph_ref": "2020-09-16/policyAction/20"
+          },
+          {
+            "quote": "To this end, almost all members agreed on a specification for outcome-based forward guidance that indicated that the Committee expects that it will be appropriate to maintain the current setting of the target range for the federal funds rate until",
+            "paragraph_ref": "2020-09-16/policyAction/3"
+          }
+        ],
+        "rationale": "The minutes show a clear consensus to maintain the rate at 0 to 1/4 percent and to hold it until labor market and inflation targets are met, indicating a strong bias toward easing policy, not tightening. This forward guidance reflects a commitment to an accommodative stance, with no indication of a tightening path.",
+        "score": -0.5,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2020-09-16/participantsViews/1",
+      "2020-09-16/participantsViews/3",
+      "2020-09-16/participantsViews/9",
+      "2020-09-16/participantsViews/13",
+      "2020-09-16/participantsViews/14",
+      "2020-09-16/participantsViews/16",
+      "2020-09-16/staffFinancial/12",
+      "2020-09-16/policyAction/2",
+      "2020-09-16/policyAction/3",
+      "2020-09-16/policyAction/9",
+      "2020-09-16/policyAction/20"
+    ]
+  }
+}

@@ -1,0 +1,90 @@
+{
+  "meetingDate": "2022-05-04",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2022-05-04",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "They further anticipated that ongoing increases in the target range for the federal funds rate would be warranted to achieve the Committee's objectives.",
+            "paragraph_ref": "2022-05-04/participantsViews/9"
+          },
+          {
+            "quote": "Most participants judged that 50 basis point increases in the target range would likely be appropriate at the next couple of meetings.",
+            "paragraph_ref": "2022-05-04/participantsViews/10"
+          },
+          {
+            "quote": "In support of these goals, the Committee decided to raise the target range for the federal funds rate to 3/4 to 1 percent and anticipated that ongoing increases in the target range would be appropriate.",
+            "paragraph_ref": "2022-05-04/policyAction/3"
+          }
+        ],
+        "rationale": "Participants unanimously agreed to raise the rate and expected ongoing increases, with strong consensus on a tightening path. The language of 'appropriate' and 'warranted' signals a clear, forward-looking bias toward tighter policy.",
+        "score": 0.75,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2022-05-04/participantsViews/2",
+      "2022-05-04/participantsViews/6",
+      "2022-05-04/participantsViews/9",
+      "2022-05-04/participantsViews/10",
+      "2022-05-04/participantsViews/11",
+      "2022-05-04/participantsViews/12",
+      "2022-05-04/financialMarkets/1",
+      "2022-05-04/financialMarkets/5",
+      "2022-05-04/policyAction/3",
+      "2022-05-04/policyAction/29"
+    ]
+  }
+}

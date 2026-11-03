@@ -1,0 +1,86 @@
+{
+  "meetingDate": "2014-10-29",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2014-10-29",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "Most participants judged that it would be helpful to include new language in the Committee's forward guidance to clarify how the Committee's decision about when to begin the policy normalization process will depend on incoming information about the economy.",
+            "paragraph_ref": "2014-10-29/participantsViews/9"
+          },
+          {
+            "quote": "The Committee agreed to include additional wording in the statement in order to emphasize that the Committee's decision on the timing of the first increase in the federal funds rate would be data dependent.",
+            "paragraph_ref": "2014-10-29/policyAction/4"
+          }
+        ],
+        "rationale": "Participants agreed that rate increases would depend on incoming data, with most supporting a data-dependent path. A minority urged maintaining the rate longer due to weak inflation. No clear push for tightening or easing.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2014-10-29/participantsViews/8",
+      "2014-10-29/participantsViews/9",
+      "2014-10-29/staffOutlook/1",
+      "2014-10-29/staffFinancial/2",
+      "2014-10-29/staffFinancial/10",
+      "2014-10-29/policyAction/1",
+      "2014-10-29/policyAction/4",
+      "2014-10-29/policyAction/11",
+      "2014-10-29/policyAction/12",
+      "2014-10-29/policyAction/15"
+    ]
+  }
+}

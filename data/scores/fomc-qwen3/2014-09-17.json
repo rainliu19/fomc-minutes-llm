@@ -1,0 +1,88 @@
+{
+  "meetingDate": "2014-09-17",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2014-09-17",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "That said, several participants thought that the current forward guidance regarding the federal funds rate suggested a longer period before liftoff, and perhaps also a more gradual increase in the federal funds rate thereafter, than they believed was likely to",
+            "paragraph_ref": "2014-09-17/participantsViews/13"
+          },
+          {
+            "quote": "A number of participants also noted that changes to the forward guidance might be misinterpreted as a signal of a fundamental shift in the stance of policy that could result in an unintended tightening of financial conditions.",
+            "paragraph_ref": "2014-09-17/participantsViews/13"
+          }
+        ],
+        "rationale": "Participants expressed concern that the forward guidance implied a longer period before rate increases and a more gradual path than they believed was appropriate, indicating a cautious, data-dependent stance. Some saw the current guidance as overly cautious, suggesting a lean toward patience and gradual tightening.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2014-09-17/participantsViews/1",
+      "2014-09-17/participantsViews/7",
+      "2014-09-17/participantsViews/13",
+      "2014-09-17/participantsViews/14",
+      "2014-09-17/policyAction/1",
+      "2014-09-17/policyAction/4",
+      "2014-09-17/policyAction/12",
+      "2014-09-17/policyAction/13",
+      "2014-09-17/policyAction/17",
+      "2014-09-17/specialTopics/4",
+      "2014-09-17/specialTopics/5",
+      "2014-09-17/specialTopics/8"
+    ]
+  }
+}

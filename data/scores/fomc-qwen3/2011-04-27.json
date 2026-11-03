@@ -1,0 +1,83 @@
+{
+  "meetingDate": "2011-04-27",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2011-04-27",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "That said, a few members viewed the increase in inflation risks as suggesting that economic conditions might well evolve in a way that would warrant the Committee taking steps toward less-accommodative policy sooner than currently anticipated.",
+            "paragraph_ref": "2011-04-27/policyAction/1"
+          },
+          {
+            "quote": "Most participants indicated that once asset sales became appropriate, such sales should be put on a largely predetermined and preannounced path; however, many of those participants noted that the pace of sales could nonetheless be adjusted in response to material",
+            "paragraph_ref": "2011-04-27/financialMarkets/6"
+          }
+        ],
+        "rationale": "Some participants suggested earlier tightening, but no clear majority or urgency. The view was cautious and data-dependent, with a slight lean toward future tightening but no decisive action or consensus.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2011-04-27/participantsViews/12",
+      "2011-04-27/financialMarkets/3",
+      "2011-04-27/financialMarkets/4",
+      "2011-04-27/financialMarkets/6",
+      "2011-04-27/financialMarkets/8",
+      "2011-04-27/policyAction/1",
+      "2011-04-27/policyAction/10"
+    ]
+  }
+}

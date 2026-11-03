@@ -1,0 +1,92 @@
+{
+  "meetingDate": "2010-04-28",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2010-04-28",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "Even though the recovery appeared to be continuing and was expected to strengthen gradually over time, most members projected that economic slack would continue to be quite elevated for some time, with inflation remaining below rates that would be consistent",
+            "paragraph_ref": "2010-04-28/policyAction/1"
+          },
+          {
+            "quote": "As at previous meetings, a few members noted that at the current juncture, the risks of an early start to policy tightening exceeded those associated with a later start, because the scope for more accommodative policy was limited by the",
+            "paragraph_ref": "2010-04-28/policyAction/1"
+          },
+          {
+            "quote": "Hoenig dissented because he believed it was no longer advisable to indicate that economic and financial conditions were likely to warrant \"exceptionally low levels of the federal funds rate for an extended period.\" Mr.",
+            "paragraph_ref": "2010-04-28/policyAction/11"
+          }
+        ],
+        "rationale": "The minutes show a consensus to hold rates at 0 to ¼ percent, with a few members suggesting a gradual increase toward 1 percent by summer. This indicates a slight lean toward easing, but no clear push for tightening. The dissenting view emphasizes caution, reflecting a balanced but slightly dovish stance.",
+        "score": -0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2010-04-28/participantsViews/1",
+      "2010-04-28/participantsViews/3",
+      "2010-04-28/participantsViews/10",
+      "2010-04-28/staffOutlook/1",
+      "2010-04-28/staffEconomy/2",
+      "2010-04-28/staffEconomy/4",
+      "2010-04-28/staffFinancial/1",
+      "2010-04-28/staffFinancial/9",
+      "2010-04-28/financialMarkets/7",
+      "2010-04-28/policyAction/1",
+      "2010-04-28/policyAction/7",
+      "2010-04-28/policyAction/11"
+    ]
+  }
+}

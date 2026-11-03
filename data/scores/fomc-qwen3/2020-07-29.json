@@ -1,0 +1,89 @@
+{
+  "meetingDate": "2020-07-29",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2020-07-29",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "Furthermore, participants continued to judge that it would be appropriate to maintain this target range until they were confident that the economy had weathered recent events and was on track to achieve the Committee's maximum employment and price stability goals.",
+            "paragraph_ref": "2020-07-29/participantsViews/11"
+          },
+          {
+            "quote": "The Committee expects to maintain this target range until it is confident that the economy has weathered recent events and is on track to achieve its maximum employment and price stability goals.",
+            "paragraph_ref": "2020-07-29/policyAction/17"
+          }
+        ],
+        "rationale": "All participants agreed to maintain the rate at 0 to 1/4 percent and emphasized holding it until confidence in the economy's recovery was achieved. No forward-leaning language or tightening bias is present.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2020-07-29/participantsViews/7",
+      "2020-07-29/participantsViews/11",
+      "2020-07-29/participantsViews/13",
+      "2020-07-29/participantsViews/14",
+      "2020-07-29/participantsViews/15",
+      "2020-07-29/staffFinancial/2",
+      "2020-07-29/financialMarkets/3",
+      "2020-07-29/policyAction/2",
+      "2020-07-29/policyAction/7",
+      "2020-07-29/policyAction/8",
+      "2020-07-29/policyAction/17",
+      "2020-07-29/policyAction/22",
+      "2020-07-29/specialTopics/1"
+    ]
+  }
+}

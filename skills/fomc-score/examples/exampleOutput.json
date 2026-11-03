@@ -1,0 +1,68 @@
+{
+  "meeting_date": "2000-01-01",
+  "scale": "hawkish_positive",
+  "dimensions": {
+    "rate_path": {
+      "status": "scored",
+      "score": 0.5,
+      "confidence": "medium",
+      "rationale": "Placeholder example showing the output shape. Committee held rates, but many participants leaned toward further firming.",
+      "evidence": [
+        { "quote": "Placeholder verbatim quote from the minutes goes here.", "paragraph_ref": "p42" }
+      ]
+    },
+    "inflation": {
+      "status": "scored",
+      "score": 0.75,
+      "confidence": "high",
+      "rationale": "Placeholder. Most participants described inflation as well above target and persistent.",
+      "evidence": [
+        { "quote": "Placeholder verbatim quote.", "paragraph_ref": "p17" },
+        { "quote": "Second placeholder verbatim quote.", "paragraph_ref": "p38" }
+      ]
+    },
+    "labor_market": {
+      "status": "scored",
+      "score": 0.25,
+      "confidence": "medium",
+      "rationale": "Placeholder. Strong but gradually easing.",
+      "evidence": [
+        { "quote": "Placeholder verbatim quote.", "paragraph_ref": "p21" }
+      ]
+    },
+    "economic_activity": {
+      "status": "scored",
+      "score": 0.0,
+      "confidence": "low",
+      "rationale": "Placeholder. Mixed indicators and participants split.",
+      "evidence": [
+        { "quote": "Placeholder verbatim quote.", "paragraph_ref": "p25" }
+      ]
+    },
+    "financial_conditions": {
+      "status": "scored",
+      "score": 0.25,
+      "confidence": "medium",
+      "rationale": "Placeholder. Conditions eased slightly; a few noted it.",
+      "evidence": [
+        { "quote": "Placeholder verbatim quote.", "paragraph_ref": "p9" }
+      ]
+    },
+    "balance_sheet": {
+      "status": "not_discussed",
+      "score": null,
+      "confidence": null,
+      "rationale": "Only routine operations were reported; no discussion of the pace of runoff.",
+      "evidence": []
+    },
+    "risk_balance": {
+      "status": "scored",
+      "score": 0.5,
+      "confidence": "medium",
+      "rationale": "Placeholder. Many emphasized upside inflation risk; some cited downside risks.",
+      "evidence": [
+        { "quote": "Placeholder verbatim quote.", "paragraph_ref": "p44" }
+      ]
+    }
+  }
+}

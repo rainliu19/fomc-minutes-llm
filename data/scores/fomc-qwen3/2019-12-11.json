@@ -1,0 +1,94 @@
+{
+  "meetingDate": "2019-12-11",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2019-12-11",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "Members agreed to maintain the target range for the federal funds rate at 1-1/2 to 1-3/4 percent.",
+            "paragraph_ref": "2019-12-11/policyAction/2"
+          },
+          {
+            "quote": "The expected path of the federal funds rate implied by the medians of survey respondents' modal forecasts remained essentially flat through 2020.",
+            "paragraph_ref": "2019-12-11/financialMarkets/2"
+          },
+          {
+            "quote": "Members judged that the current stance of monetary policy is appropriate to support sustained expansion of economic activity, strong labor market conditions, and inflation near the Committee's symmetric 2 percent objective.",
+            "paragraph_ref": "2019-12-11/policyAction/2"
+          }
+        ],
+        "rationale": "The minutes show a clear consensus to hold the federal funds rate steady, with no indication of tightening or easing. Forward-looking expectations remain flat, and the current stance is described as appropriate for the near term.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2019-12-11/participantsViews/1",
+      "2019-12-11/participantsViews/10",
+      "2019-12-11/staffFinancial/2",
+      "2019-12-11/financialMarkets/2",
+      "2019-12-11/financialMarkets/7",
+      "2019-12-11/policyAction/2",
+      "2019-12-11/policyAction/3",
+      "2019-12-11/policyAction/4",
+      "2019-12-11/policyAction/6",
+      "2019-12-11/policyAction/11",
+      "2019-12-11/policyAction/12",
+      "2019-12-11/policyAction/15",
+      "2019-12-11/specialTopics/2",
+      "2019-12-11/specialTopics/7"
+    ]
+  }
+}

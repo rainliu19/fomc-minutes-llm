@@ -1,0 +1,95 @@
+{
+  "meetingDate": "2026-04-29",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2026-04-29",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "Participants generally judged that the current policy rate was within the range of plausible estimates of its neutral level and that the Committee still remained well positioned to base the extent and timing of adjustments to the policy rate on",
+            "paragraph_ref": "2026-04-29/participantsViews/9"
+          },
+          {
+            "quote": "A majority of participants highlighted, however, that some policy firming would likely become appropriate if inflation were to continue to run persistently above 2 percent.",
+            "paragraph_ref": "2026-04-29/participantsViews/10"
+          },
+          {
+            "quote": "One participant preferred to lower the target range for the federal funds rate 25 basis points, noting concerns that the current policy stance was overly restrictive in a situation of downside risks to the labor market.",
+            "paragraph_ref": "2026-04-29/participantsViews/9"
+          }
+        ],
+        "rationale": "The minutes show a balanced discussion with a majority leaning toward potential future tightening if inflation persists above 2%, while one participant advocated easing. No clear consensus on a path, but forward-looking language indicates cautious firming.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2026-04-29/participantsViews/8",
+      "2026-04-29/participantsViews/9",
+      "2026-04-29/participantsViews/10",
+      "2026-04-29/participantsViews/11",
+      "2026-04-29/participantsViews/12",
+      "2026-04-29/staffFinancial/1",
+      "2026-04-29/staffFinancial/5",
+      "2026-04-29/financialMarkets/4",
+      "2026-04-29/policyAction/2",
+      "2026-04-29/policyAction/3",
+      "2026-04-29/policyAction/6",
+      "2026-04-29/policyAction/14",
+      "2026-04-29/policyAction/15",
+      "2026-04-29/policyAction/17",
+      "2026-04-29/policyAction/18"
+    ]
+  }
+}

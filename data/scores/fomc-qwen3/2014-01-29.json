@@ -1,0 +1,85 @@
+{
+  "meetingDate": "2014-01-29",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2014-01-29",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "A few participants raised the possibility that it might be appropriate to increase the federal funds rate relatively soon.",
+            "paragraph_ref": "2014-01-29/participantsViews/10"
+          },
+          {
+            "quote": "The Committee continues to anticipate, based on its assessment of these factors, that it likely will be appropriate to maintain the current target range for the federal funds rate well past the time that the unemployment rate declines below 6-1/2",
+            "paragraph_ref": "2014-01-29/policyAction/12"
+          }
+        ],
+        "rationale": "A few participants suggested raising the rate soon, but most emphasized maintaining the current rate range well past the 6-1/2% unemployment threshold. The view is balanced, with no strong consensus on tightening.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2014-01-29/participantsViews/1",
+      "2014-01-29/participantsViews/2",
+      "2014-01-29/participantsViews/5",
+      "2014-01-29/participantsViews/9",
+      "2014-01-29/participantsViews/10",
+      "2014-01-29/policyAction/2",
+      "2014-01-29/policyAction/3",
+      "2014-01-29/policyAction/10",
+      "2014-01-29/policyAction/12"
+    ]
+  }
+}

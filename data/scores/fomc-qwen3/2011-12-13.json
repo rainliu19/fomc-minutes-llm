@@ -1,0 +1,91 @@
+{
+  "meetingDate": "2011-12-13",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2011-12-13",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "As a result, almost all members agreed to maintain the existing stance of monetary policy at this meeting.",
+            "paragraph_ref": "2011-12-13/policyAction/2"
+          },
+          {
+            "quote": "A number of members indicated that current and prospective economic conditions could well warrant additional policy accommodation, but they believed that any additional actions would be more effective if accompanied by enhanced communication about the Committee's longer-run economic goals and",
+            "paragraph_ref": "2011-12-13/policyAction/2"
+          },
+          {
+            "quote": "One member preferred to undertake additional accommodation at this meeting and dissented from the policy decision.",
+            "paragraph_ref": "2011-12-13/policyAction/2"
+          }
+        ],
+        "rationale": "The minutes show a majority supporting a hold, with some advocating for additional accommodation. No clear push for rate changes or forward guidance on tightening or easing. The view is balanced, with dissent from one member.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2011-12-13/participantsViews/2",
+      "2011-12-13/participantsViews/7",
+      "2011-12-13/staffOutlook/1",
+      "2011-12-13/staffEconomy/7",
+      "2011-12-13/staffFinancial/13",
+      "2011-12-13/policyAction/2",
+      "2011-12-13/policyAction/7",
+      "2011-12-13/policyAction/10",
+      "2011-12-13/policyAction/14",
+      "2011-12-13/specialTopics/1",
+      "2011-12-13/specialTopics/2"
+    ]
+  }
+}

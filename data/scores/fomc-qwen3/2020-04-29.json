@@ -1,0 +1,90 @@
+{
+  "meetingDate": "2020-04-29",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2020-04-29",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "In light of their assessment that the ongoing public health crisis would weigh heavily on economic activity, employment, and inflation in the near term and posed considerable risks to the economic outlook over the medium term, all participants judged that",
+            "paragraph_ref": "2020-04-29/participantsViews/13"
+          },
+          {
+            "quote": "Members noted that they expected to maintain this target range until they were confident that the economy had weathered recent events and was on track to achieve the Committee's maximum employment and price stability goals.",
+            "paragraph_ref": "2020-04-29/policyAction/2"
+          }
+        ],
+        "rationale": "The minutes unanimously support maintaining the federal funds rate at 0 to 1/4 percent, with no indication of a tightening bias. The decision is framed as temporary, pending confidence in the economy's recovery.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2020-04-29/participantsViews/7",
+      "2020-04-29/participantsViews/11",
+      "2020-04-29/participantsViews/13",
+      "2020-04-29/participantsViews/14",
+      "2020-04-29/participantsViews/16",
+      "2020-04-29/staffFinancial/4",
+      "2020-04-29/financialMarkets/3",
+      "2020-04-29/financialMarkets/6",
+      "2020-04-29/policyAction/1",
+      "2020-04-29/policyAction/2",
+      "2020-04-29/policyAction/4",
+      "2020-04-29/policyAction/7",
+      "2020-04-29/policyAction/16",
+      "2020-04-29/policyAction/21"
+    ]
+  }
+}

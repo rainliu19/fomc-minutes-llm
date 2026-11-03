@@ -1,0 +1,88 @@
+{
+  "meetingDate": "2019-01-30",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2019-01-30",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "Many participants suggested that it was not yet clear what adjustments to the target range for the federal funds rate may be appropriate later this year; several of these participants argued that rate increases might prove necessary only if inflation",
+            "paragraph_ref": "2019-01-30/participantsViews/14"
+          },
+          {
+            "quote": "In light of global economic and financial developments and muted inflation pressures, the Committee will be patient as it determines what future adjustments to the target range for the federal funds rate may be appropriate to support these outcomes.",
+            "paragraph_ref": "2019-01-30/policyAction/11"
+          }
+        ],
+        "rationale": "Participants expressed a patient approach, with many indicating uncertainty about future rate adjustments and a clear view that increases would only be needed if inflation rose above baseline. The forward guidance emphasizes patience and data dependence, reflecting a balanced but cautious stance.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2019-01-30/participantsViews/12",
+      "2019-01-30/participantsViews/13",
+      "2019-01-30/participantsViews/14",
+      "2019-01-30/participantsViews/15",
+      "2019-01-30/participantsViews/16",
+      "2019-01-30/financialMarkets/3",
+      "2019-01-30/policyAction/3",
+      "2019-01-30/policyAction/4",
+      "2019-01-30/policyAction/6",
+      "2019-01-30/policyAction/11",
+      "2019-01-30/policyAction/15",
+      "2019-01-30/specialTopics/2"
+    ]
+  }
+}

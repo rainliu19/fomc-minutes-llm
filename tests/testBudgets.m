@@ -23,8 +23,10 @@ classdef testBudgets < matlab.unittest.TestCase
     methods (Test)
         function theToolsOfferedToTheModelStaySmall(tc)
             % Raised from 3600 for getPolicyPath (about 330 characters, most of it the date
-            % parameters); the first-turn prompt budget below still applies
-            tc.verifyLessThanOrEqual(schemaChars(), 3750);
+            % parameters), then from 3750 for getOutlook (about 275), then from 4050 for
+            % assessEconomy (about 300), then from 4400 for readSkill (about 434, total about
+            % 4,758); the first-turn prompt budget below still applies
+            tc.verifyLessThanOrEqual(schemaChars(), 4800);
         end
 
         function getSnapshotIsRunByTheHarnessNotOfferedToTheModel(tc)
@@ -39,7 +41,10 @@ classdef testBudgets < matlab.unittest.TestCase
                 ctx = fomc.context(asOf, tc.cfg, tc.D, tracePath=string(tempname) + ".jsonl");
                 p = fomc.systemPrompt() + fomc.contextBlock(ctx, fomc.dataBrief(ctx));
                 tokens = (strlength(p) + schemaChars()) / 3.3;
-                tc.verifyLessThanOrEqual(tokens, 1850, "first-turn prompt at " + fomc.util.fmtDate(asOf));
+                % Raised from 1850 for getOutlook (about 83 tokens; it was about 1824 before), then
+                % from 1925 for assessEconomy (about 91 tokens), then from 2025 for readSkill and
+                % the skill list in the system prompt (it is about 2,348 now)
+                tc.verifyLessThanOrEqual(tokens, 2375, "first-turn prompt at " + fomc.util.fmtDate(asOf));
             end
         end
 
@@ -56,7 +61,7 @@ classdef testBudgets < matlab.unittest.TestCase
             % sessions, the model server can reuse its work.
             a = fomc.systemPrompt(); b = fomc.systemPrompt();
             tc.verifyEqual(a, b);
-            tc.verifyLessThan(strlength(a), 1350);
+            tc.verifyLessThan(strlength(a), 2200);
             ctxA = fomc.context(datetime(2020,4,8), tc.cfg, tc.D, tracePath=string(tempname) + ".jsonl");
             ctxB = fomc.context(datetime(2019,4,8), tc.cfg, tc.D, tracePath=string(tempname) + ".jsonl");
             tc.verifyNotEqual(fomc.contextBlock(ctxA, "x"), fomc.contextBlock(ctxB, "x"));

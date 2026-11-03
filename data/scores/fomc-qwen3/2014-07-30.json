@@ -1,0 +1,86 @@
+{
+  "meetingDate": "2014-07-30",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2014-07-30",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "Moreover, many participants noted that if convergence toward the Committee's objectives occurred more quickly than expected, it might become appropriate to begin removing monetary policy accommodation sooner than they currently anticipated.",
+            "paragraph_ref": "2014-07-30/participantsViews/10"
+          },
+          {
+            "quote": "The Committee currently anticipates that, even after employment and inflation are near mandate-consistent levels, economic conditions may, for some time, warrant keeping the target federal funds rate below levels the Committee views as normal in the longer run.\"",
+            "paragraph_ref": "2014-07-30/policyAction/13"
+          }
+        ],
+        "rationale": "Participants acknowledged progress toward goals but emphasized caution in reducing policy accommodation, with some suggesting a delay in tightening. The forward guidance reflects a balanced view with a slight lean toward maintaining current rates.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2014-07-30/participantsViews/10",
+      "2014-07-30/staffFinancial/2",
+      "2014-07-30/policyAction/1",
+      "2014-07-30/policyAction/4",
+      "2014-07-30/policyAction/10",
+      "2014-07-30/policyAction/12",
+      "2014-07-30/policyAction/13",
+      "2014-07-30/policyAction/16",
+      "2014-07-30/specialTopics/2",
+      "2014-07-30/specialTopics/4"
+    ]
+  }
+}

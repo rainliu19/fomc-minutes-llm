@@ -1,0 +1,89 @@
+{
+  "meetingDate": "2014-12-17",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2014-12-17",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "Most participants agreed that it would be useful to state that the Committee judges that it can be patient in beginning to normalize the stance of monetary policy; they noted that such language would provide more flexibility to adjust policy",
+            "paragraph_ref": "2014-12-17/participantsViews/10"
+          },
+          {
+            "quote": "Based on its current assessment, the Committee judges that it can be patient in beginning to normalize the stance of monetary policy.",
+            "paragraph_ref": "2014-12-17/policyAction/8"
+          },
+          {
+            "quote": "However, if incoming information indicates faster progress toward the Committee's employment and inflation objectives than the Committee now expects, then increases in the target range for the federal funds rate are likely to occur sooner than currently anticipated.",
+            "paragraph_ref": "2014-12-17/policyAction/8"
+          }
+        ],
+        "rationale": "Most participants supported a patient approach to normalizing policy, with forward guidance indicating that rate increases could happen sooner if economic progress exceeds expectations. This reflects a clear lean toward future tightening, though with data dependence and no urgency.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2014-12-17/participantsViews/1",
+      "2014-12-17/participantsViews/8",
+      "2014-12-17/participantsViews/10",
+      "2014-12-17/participantsViews/11",
+      "2014-12-17/policyAction/1",
+      "2014-12-17/policyAction/3",
+      "2014-12-17/policyAction/8",
+      "2014-12-17/policyAction/10",
+      "2014-12-17/policyAction/13"
+    ]
+  }
+}

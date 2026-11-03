@@ -1,0 +1,94 @@
+{
+  "meetingDate": "2026-03-18",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2026-03-18",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "Many participants judged that, in time, it would likely become appropriate to lower the target range for the federal funds rate if inflation were to decline in line with their expectations.",
+            "paragraph_ref": "2026-03-18/participantsViews/10"
+          },
+          {
+            "quote": "A couple of these participants highlighted that, in their projection for the appropriate path of the policy rate, they had pushed their assessment of the most likely timing of rate cuts further into the future in light of recent readings",
+            "paragraph_ref": "2026-03-18/participantsViews/10"
+          },
+          {
+            "quote": "With upside risks to inflation and downside risks to employment both elevated, some participants remarked that it was important that the Committee follow its balanced approach in promoting the Federal Reserve's employment and inflation goals, taking into account the extent",
+            "paragraph_ref": "2026-03-18/participantsViews/11"
+          }
+        ],
+        "rationale": "Participants expressed a cautious, forward-looking view, with a clear leaning toward potential future rate cuts if inflation declines, but emphasized monitoring risks and maintaining flexibility. No strong consensus for tightening or easing was evident.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2026-03-18/participantsViews/1",
+      "2026-03-18/participantsViews/4",
+      "2026-03-18/participantsViews/9",
+      "2026-03-18/participantsViews/10",
+      "2026-03-18/participantsViews/11",
+      "2026-03-18/participantsViews/12",
+      "2026-03-18/financialMarkets/3",
+      "2026-03-18/policyAction/3",
+      "2026-03-18/policyAction/4",
+      "2026-03-18/policyAction/7",
+      "2026-03-18/policyAction/15",
+      "2026-03-18/policyAction/16",
+      "2026-03-18/policyAction/19",
+      "2026-03-18/policyAction/20"
+    ]
+  }
+}

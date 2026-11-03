@@ -83,6 +83,18 @@ classdef testPrefetch < matlab.unittest.TestCase
             tc.verifyFalse(contains(string(out.answer), "did not pass its checks"));
         end
 
+        function theWebTurnMarksTheLookupsTheHarnessRan(tc)
+            % The decision card is looked up through getDecision before the model starts; the page
+            % showed it as a tool the model chose. The turn now says which calls were lookups.
+            m = fomc.llm.Mock({struct("content", "It held. [2020-01-29/policyAction/1]")});
+            s = fomc.newSession(datetime(2020,3,1), tc.cfg, Llm=@m.call, Data=tc.D, TracePath=string(tempname)+".jsonl");
+            [s, ~, ~, calls] = fomc.runTurn(s, "What did the Committee decide at its latest meeting?");
+            tc.verifyEqual([string(calls.name), string(s.lastLookups)], ["getDecision", "1"]);
+            out = webTurn(tc, "It held. [2020-01-29/policyAction/1]");
+            tc.verifyEqual(out.toolCalls(1).name, 'getDecision');
+            tc.verifyTrue(out.toolCalls(1).lookup);
+        end
+
         function anIsoDateForAnUnreleasedMeetingIsHandledTheSameWay(tc)
             [text, recs] = fomc.focus.prefetch(tc.ctx, "What was the vote at the 2020-03-18 meeting?", false);
             tc.verifyEqual([recs.name], "prefetchNotice");

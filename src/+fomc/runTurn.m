@@ -7,7 +7,8 @@ function [s, answer, structured, calls] = runTurn(s, userMsg, nvp)
 %   its call id, and calls the model again, until it replies without tool calls or after
 %   cfg.maxToolRounds. "analysis" then writes and checks the structured analysis
 %   (fomc.analysis.structure); structured is [] in chat mode. calls: one record per tool
-%   call (name, args, result, ok, ms). A failed turn is rolled back so the session stays valid.
+%   call (name, args, result, ok, ms); the first s.lastLookups of them are the harness's own
+%   lookups (fomc.focus.prefetch). A failed turn is rolled back so the session stays valid.
 
 arguments
     s (1,1) struct
@@ -26,18 +27,31 @@ calls = struct("name", {}, "args", {}, "result", {}, "ok", {}, "ms", {});
 fomc.trace.logEvent(ctx, "user_message", struct("text", userMsg, ...
     "focusStart", fomc.util.fmtDate(ctx.focus.start), "focusEnd", fomc.util.fmtDate(ctx.focus.end), ...
     "focusReason", ctx.focus.reason));
+
+% Skill-matched scoring requests use the dedicated structured scorer and validation loop.
+if fomc.focus.wantsScoring(userMsg)
+    [s, answer, structured] = scoreWithSkill(s, userMsg);
+    fomc.trace.logEvent(ctx, "final_answer", struct("text", answer, ...
+        "nToolCalls", 0, "finished", isstruct(structured) && isfield(structured, "ok") && structured.ok));
+    return
+end
+
 % Build the message the model will see: the question plus the focus note
 question = userMsg + newline + newline + fomc.focus.note(ctx);
 % Let the harness look up the decision card or best passages itself, so a small model cannot skip it.
 % After a question about how rates moved, a follow-up that only changes the period gets the rate path too.
 followsRatePath = isfield(s, "lastUsedRatePath") && s.lastUsedRatePath;
 [found, pre] = fomc.focus.prefetch(ctx, userMsg, nvp.Format == "analysis", followsRatePath);
+% How many of this turn's calls the harness made before the model started (they come first), so
+% the page can tell them from the tools the model chose
+s.lastLookups = 0;
 if found ~= ""
     question = question + newline + found;
     for k = 1:numel(pre)
         calls(end+1) = pre(k); %#ok<AGROW>
         s.known = union(s.known, fomc.guard.idsIn(pre(k).result));
     end
+    s.lastLookups = numel(pre);
 end
 % Minutes that are not public yet: answer directly. The model is not asked, so it cannot invent a decision.
 isNotice = ~isempty(pre) && any(string({pre.name}) == "prefetchNotice");
@@ -148,6 +162,77 @@ catch ME
 end
 % Record the outcome in the trace
 fomc.trace.logEvent(ctx, "final_answer", struct("text", answer, "nToolCalls", numel(calls), "finished", finished));
+end
+
+function [s, answer, output] = scoreWithSkill(s, userMsg)
+% Route one or more requested meeting dates to the validated score skill.
+text = char(userMsg);
+dateMatches = regexp(text, '\d{4}-\d{2}-\d{2}', 'match');
+dates = unique(string(dateMatches(:)), "stable");
+isComparison = any(contains(lower(userMsg), ["compare", "comparison", "versus", " vs "]));
+asksLatest = ~isempty(regexpi(text, '(?<![a-z])latest(?![a-z])', 'once'));
+if isComparison && asksLatest
+    dates = unique([dates(:); latestReleasedMeetingDate(s)], "stable");
+end
+if isComparison && numel(dates) < 2
+    answer = "To compare FOMC scores, include at least two distinct meeting dates (YYYY-MM-DD), or pair one date with 'latest'.";
+    output = struct("skill", "fomc-score", "ok", false, "issues", answer, ...
+        "failedDimensions", strings(0, 1), "attempts", 0);
+else
+    try
+        if numel(dates) <= 1
+            meetingDate = "";
+            if ~isempty(dates)
+                meetingDate = dates(1);
+            end
+            output = fomc.skills.scoreMeeting(s, meetingDate);
+            output.skill = "fomc-score";
+            answer = string(jsonencode(output.score));
+        else
+            scores = cell(numel(dates), 1);
+            validation = cell(numel(dates), 1);
+            allIssues = strings(0, 1);
+            failedDimensions = strings(0, 1);
+            attempts = 0;
+            ok = true;
+            for i = 1:numel(dates)
+                result = fomc.skills.scoreMeeting(s, dates(i));
+                scores{i} = result.score;
+                validation{i} = struct("meeting_date", string(result.score.meeting_date), ...
+                    "ok", result.ok, "issues", result.issues, ...
+                    "failedDimensions", result.failedDimensions, "attempts", result.attempts);
+                ok = ok && result.ok;
+                attempts = attempts + result.attempts;
+                allIssues = [allIssues; string(result.score.meeting_date) + ": " + result.issues(:)]; %#ok<AGROW>
+                failedDimensions = union(failedDimensions, result.failedDimensions, "stable");
+            end
+            output = struct("skill", "fomc-score", "scores", {scores}, "validation", {validation}, ...
+                "ok", ok, "issues", allIssues, "failedDimensions", failedDimensions, ...
+                "attempts", attempts);
+            answer = string(jsonencode(output));
+        end
+    catch ME
+        issue = "Scoring failed: " + fomc.trace.scrub(string(ME.message));
+        output = struct("skill", "fomc-score", "ok", false, "issues", issue, ...
+            "failedDimensions", strings(0, 1), "attempts", 0);
+        answer = string(jsonencode(output));
+        fomc.trace.logEvent(s.ctx, "skill_score_error", struct("message", issue));
+    end
+end
+
+s.history = addUserMessage(s.history, userMsg);
+s.history = addResponseMessage(s.history, struct("role", "assistant", "content", answer));
+end
+
+function meetingDate = latestReleasedMeetingDate(s)
+% Resolve "latest" using the same release-date rule as scoreMeeting.
+M = s.ctx.D.meetings;
+available = find(M.ReleaseDate <= s.ctx.asOf);
+if isempty(available)
+    error("fomc:skills:noReleasedMeetings", "No meeting minutes were released by the anchor date.");
+end
+[~, order] = sort(M.ReleaseDate(available), "descend");
+meetingDate = fomc.util.fmtDate(M.MeetingDate(available(order(1))));
 end
 
 function tcs = toolCallsOf(out)

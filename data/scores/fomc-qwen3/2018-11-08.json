@@ -1,0 +1,96 @@
+{
+  "meetingDate": "2018-11-08",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2018-11-08",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "Almost all participants reaffirmed the view that further gradual increases in the target range for the federal funds rate would likely be consistent with sustaining the Committee's objectives of maximum employment and price stability.",
+            "paragraph_ref": "2018-11-08/participantsViews/12"
+          },
+          {
+            "quote": "Consistent with their judgment that a gradual approach to policy normalization remained appropriate, almost all participants expressed the view that another increase in the target range for the federal funds rate was likely to be warranted fairly soon if incoming",
+            "paragraph_ref": "2018-11-08/participantsViews/13"
+          },
+          {
+            "quote": "Consequently, members continued to expect that further gradual increases in the target range for the federal funds rate would be consistent with sustained expansion of economic activity, strong labor market conditions, and inflation near the Committee's symmetric 2 percent objective",
+            "paragraph_ref": "2018-11-08/policyAction/2"
+          }
+        ],
+        "rationale": "The minutes show strong consensus among participants that further gradual increases in the federal funds rate are likely, with most viewing such increases as warranted soon if economic data supports it. This forward-looking bias indicates a clear lean toward tighter policy.",
+        "score": 0.75,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2018-11-08/participantsViews/2",
+      "2018-11-08/participantsViews/7",
+      "2018-11-08/participantsViews/8",
+      "2018-11-08/participantsViews/12",
+      "2018-11-08/participantsViews/13",
+      "2018-11-08/participantsViews/14",
+      "2018-11-08/staffFinancial/3",
+      "2018-11-08/financialMarkets/2",
+      "2018-11-08/financialMarkets/6",
+      "2018-11-08/policyAction/2",
+      "2018-11-08/policyAction/3",
+      "2018-11-08/policyAction/5",
+      "2018-11-08/policyAction/10",
+      "2018-11-08/policyAction/11",
+      "2018-11-08/policyAction/12",
+      "2018-11-08/policyAction/15"
+    ]
+  }
+}

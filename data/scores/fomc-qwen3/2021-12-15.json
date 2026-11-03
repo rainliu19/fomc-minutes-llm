@@ -1,0 +1,92 @@
+{
+  "meetingDate": "2021-12-15",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2021-12-15",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "In support of these goals, the Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent.",
+            "paragraph_ref": "2021-12-15/policyAction/22"
+          },
+          {
+            "quote": "With inflation having exceeded 2 percent for some time, the Committee expects it will be appropriate to maintain this target range until labor market conditions have reached levels consistent with the Committee's assessments of maximum employment.",
+            "paragraph_ref": "2021-12-15/policyAction/22"
+          },
+          {
+            "quote": "Participants generally emphasized that, as in the previous normalization episode and as expressed in the Committee's Statement on Longer-Run Goals and Monetary Policy Strategy, changes in the target range for the federal funds rate should be the Committee's primary means",
+            "paragraph_ref": "2021-12-15/specialTopics/3"
+          }
+        ],
+        "rationale": "The minutes state the Committee decided to keep the federal funds rate at 0 to 1/4 percent and will maintain it until labor market conditions meet maximum employment. This reflects a clear, forward-looking stance of holding rates, with no indication of tightening or easing. The view is balanced and data-dependent, with no strong push for change.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2021-12-15/participantsViews/1",
+      "2021-12-15/participantsViews/2",
+      "2021-12-15/participantsViews/12",
+      "2021-12-15/participantsViews/14",
+      "2021-12-15/financialMarkets/4",
+      "2021-12-15/policyAction/1",
+      "2021-12-15/policyAction/4",
+      "2021-12-15/policyAction/6",
+      "2021-12-15/policyAction/9",
+      "2021-12-15/policyAction/22",
+      "2021-12-15/specialTopics/3",
+      "2021-12-15/specialTopics/5"
+    ]
+  }
+}

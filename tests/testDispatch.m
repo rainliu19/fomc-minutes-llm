@@ -31,6 +31,43 @@ classdef testDispatch < matlab.unittest.TestCase
             tc.verifyFalse(rec.ok);
         end
 
+        function readSkillIsRegisteredAndExposed(tc)
+            reg = fomc.tools.registry();
+            i = find(string({reg.name}) == "readSkill", 1);
+            tc.verifyNotEmpty(i);
+            tc.verifyTrue(reg(i).expose);
+        end
+
+        function readSkillLoadsDefaultSkillInstructionsAndLogs(tc)
+            [json, rec] = fomc.tools.dispatch(tc.ctx, "readSkill", struct("name", "fomc-score"));
+            result = jsondecode(json);
+            tc.verifyTrue(rec.ok);
+            tc.verifyEqual(string(result.file), "SKILL.md");
+            tc.verifySubstring(result.content, "FOMC Minutes Scoring");
+            events = readlines(tc.ctx.tracePath);
+            tc.verifyTrue(any(contains(events, """type"":""skill_read""")));
+        end
+
+        function readSkillRejectsMissingName(tc)
+            [json, rec] = fomc.tools.dispatch(tc.ctx, "readSkill", struct());
+            tc.verifyFalse(rec.ok);
+            tc.verifySubstring(json, "'name' is required");
+        end
+
+        function readSkillReportsUnknownNameAndAvailableSkills(tc)
+            [json, rec] = fomc.tools.dispatch(tc.ctx, "readSkill", struct("name", "unknown-skill"));
+            tc.verifyFalse(rec.ok);
+            tc.verifySubstring(json, "Unknown skill");
+            tc.verifySubstring(json, "fomc-score");
+        end
+
+        function readSkillCanLoadReferencedFile(tc)
+            [json, rec] = fomc.tools.dispatch(tc.ctx, "readSkill", ...
+                struct("name", "fomc-score", "file", "rubric/ratePath.md"));
+            tc.verifyTrue(rec.ok);
+            tc.verifySubstring(json, "rate_path");
+        end
+
         function badJsonReturnsErrorJson(tc)
             [json, rec] = fomc.tools.dispatch(tc.ctx, "listMeetings", "{not json");
             tc.verifySubstring(json, "not valid JSON");

@@ -1,0 +1,91 @@
+{
+  "meetingDate": "2018-12-19",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2018-12-19",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "Based on their current assessments, most participants expressed the view that it would be appropriate for the Committee to raise the target range for the federal funds rate 25 basis points at this meeting.",
+            "paragraph_ref": "2018-12-19/participantsViews/13"
+          },
+          {
+            "quote": "Against this backdrop, many participants expressed the view that, especially in an environment of muted inflation pressures, the Committee could afford to be patient about further policy firming.",
+            "paragraph_ref": "2018-12-19/participantsViews/14"
+          },
+          {
+            "quote": "With regard to the outlook for monetary policy beyond this meeting, participants generally judged that some further gradual increases in the target range for the federal funds rate would most likely be consistent with a sustained economic expansion, strong labor",
+            "paragraph_ref": "2018-12-19/participantsViews/14"
+          }
+        ],
+        "rationale": "Most participants supported a 25 basis point rate hike, with a view that further gradual increases would be appropriate. A clear leaning toward tightening is present, though with hedging on timing due to uncertainty.",
+        "score": 0.5,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2018-12-19/participantsViews/1",
+      "2018-12-19/participantsViews/4",
+      "2018-12-19/participantsViews/12",
+      "2018-12-19/participantsViews/13",
+      "2018-12-19/participantsViews/14",
+      "2018-12-19/participantsViews/15",
+      "2018-12-19/participantsViews/17",
+      "2018-12-19/financialMarkets/3",
+      "2018-12-19/policyAction/3",
+      "2018-12-19/policyAction/6",
+      "2018-12-19/specialTopics/2"
+    ]
+  }
+}

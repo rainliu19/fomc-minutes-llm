@@ -168,7 +168,7 @@ mine = runId == runId(end);
 last = height(moves);
 lastMove = struct("date", fomc.util.fmtDate(moves.date(last)), ...
     "meetingDate", meetingOf(moves, last, M), "change", moves.change(last), ...
-    "targetRange", rangeText(moves.lower(last), moves.upper(last)));
+    "targetRange", fomc.util.rangeText(moves.lower(last), moves.upper(last)));
 if moves.betweenMeetings(last)
     lastMove.betweenMeetings = true;
 elseif ~isnan(moves.meetingIdx(last)) && ~moves.minutesOut(last)
@@ -212,12 +212,12 @@ function s = runInfo(R, M, levels)
 prior = levels(levels.date < R.date(1), :);
 fromRange = "";
 if ~isempty(prior)
-    fromRange = rangeText(prior.lower(end), prior.upper(end));
+    fromRange = fomc.util.rangeText(prior.lower(end), prior.upper(end));
 end
 s = struct("direction", directionWord(R.change(1)), "changes", height(R), ...
     "totalChange", round(sum(R.change), 4), ...
     "startDate", meetingOrDate(R, 1, M), "endDate", meetingOrDate(R, height(R), M), ...
-    "fromRange", fromRange, "toRange", rangeText(R.lower(end), R.upper(end)));
+    "fromRange", fromRange, "toRange", fomc.util.rangeText(R.lower(end), R.upper(end)));
 end
 
 function rows = listChanges(S, D)
@@ -227,7 +227,7 @@ M = D.meetings;
 rows = cell(height(S), 1);
 for i = 1:height(S)
     row = struct("date", fomc.util.fmtDate(S.date(i)), "change", S.change(i), ...
-        "targetRange", rangeText(S.lower(i), S.upper(i)), "meetingDate", meetingOf(S, i, M));
+        "targetRange", fomc.util.rangeText(S.lower(i), S.upper(i)), "meetingDate", meetingOf(S, i, M));
     if S.betweenMeetings(i)
         row.betweenMeetings = true;
     elseif S.minutesOut(i)
@@ -285,7 +285,7 @@ fromUpper = NaN;
 fromRange = "";
 if ~isempty(before)
     fromUpper = before.upper(end);
-    fromRange = rangeText(before.lower(end), before.upper(end));
+    fromRange = fomc.util.rangeText(before.lower(end), before.upper(end));
 end
 span = struct("startDate", fomc.util.fmtDate(spanStart), "endDate", fomc.util.fmtDate(spanEnd), ...
     "meetings", numel(k), "increases", sum(S.change > 0), "cuts", sum(S.change < 0), ...
@@ -294,7 +294,7 @@ span = struct("startDate", fomc.util.fmtDate(spanStart), "endDate", fomc.util.fm
     "changesMinutesNotPublic", sum(~isnan(S.meetingIdx) & ~S.minutesOut), ...
     "changesBeforeMinutesData", sum(isnan(S.meetingIdx) & ~S.betweenMeetings), ...
     "netChange", round(endLevel.upper - fromUpper, 4), ...
-    "fromRange", fromRange, "toRange", rangeText(endLevel.lower, endLevel.upper));
+    "fromRange", fromRange, "toRange", fomc.util.rangeText(endLevel.lower, endLevel.upper));
 end
 
 function m = meetingOf(T, i, M)
@@ -417,29 +417,6 @@ if ~isempty(parts)
     t = " Dissenting votes: " + strjoin(parts, "; ") + ".";
 elseif span.meetings > 0
     t = " No one dissented at these meetings.";
-end
-end
-
-function t = rangeText(lower, upper)
-% Written the way the minutes write it: "3-3/4 to 4 percent", or "3 percent" for one target
-if lower == upper
-    t = fraction(upper) + " percent";
-else
-    t = fraction(lower) + " to " + fraction(upper) + " percent";
-end
-end
-
-function t = fraction(x)
-% 3.75 -> "3-3/4", 0.25 -> "1/4", 4 -> "4"
-whole = floor(x + 1e-9);
-eighths = round((x - whole) * 8);
-names = ["", "1/8", "1/4", "3/8", "1/2", "5/8", "3/4", "7/8"];
-if eighths == 0
-    t = string(whole);
-elseif whole == 0
-    t = names(eighths + 1);
-else
-    t = string(whole) + "-" + names(eighths + 1);
 end
 end
 

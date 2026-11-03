@@ -18,5 +18,9 @@ p = strjoin([
     "7. Be brief: under 120 words unless asked for detail. No investment advice."
     "8. The anchor date in the first message is today. Use only what the tools and that message show, never memory of later events."
     "9. Write for a reader who is not an economist or a programmer: plain words, dates spelled out. Say 'the unemployment rate', never UNRATE; never write series codes, section names or tool names."
+    "10. If a skill listed below matches the request, load it with readSkill and follow it. A skill's required output format overrides rules 7 and 9 for that answer."
     ], newline);
+
+% Skills are generated from skills/ and are stable across sessions, preserving prompt reuse.
+p = p + newline + newline + fomc.skills.format();
 end

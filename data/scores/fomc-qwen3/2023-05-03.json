@@ -1,0 +1,91 @@
+{
+  "meetingDate": "2023-05-03",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2023-05-03",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "Against this backdrop, all participants agreed that it was appropriate to raise the target range for the federal funds rate 25 basis points to 5 percent to 5-1/4 percent.",
+            "paragraph_ref": "2023-05-03/participantsViews/10"
+          },
+          {
+            "quote": "Participants generally expressed uncertainty about how much more policy tightening may be appropriate.",
+            "paragraph_ref": "2023-05-03/participantsViews/13"
+          },
+          {
+            "quote": "In determining the extent to which additional policy firming may be appropriate to return inflation to 2 percent over time, various participants noted specific factors that should bear on future decisions on policy actions.",
+            "paragraph_ref": "2023-05-03/participantsViews/11"
+          }
+        ],
+        "rationale": "The meeting included a unanimous rate hike to 5-1/4 percent, which is a clear tightening action. Despite uncertainty about future tightening, the decision to raise rates and the consensus on firming policy justify a positive score. The forward guidance shows caution, but the actual hike and unanimous agreement support a score above zero.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2023-05-03/participantsViews/2",
+      "2023-05-03/participantsViews/5",
+      "2023-05-03/participantsViews/6",
+      "2023-05-03/participantsViews/7",
+      "2023-05-03/participantsViews/10",
+      "2023-05-03/participantsViews/11",
+      "2023-05-03/participantsViews/13",
+      "2023-05-03/participantsViews/14",
+      "2023-05-03/policyAction/3",
+      "2023-05-03/policyAction/7",
+      "2023-05-03/policyAction/17"
+    ]
+  }
+}

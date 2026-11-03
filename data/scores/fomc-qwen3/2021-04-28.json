@@ -1,0 +1,90 @@
+{
+  "meetingDate": "2021-04-28",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2021-04-28",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "The Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent and expects it will be appropriate to maintain this target range until labor market conditions have reached levels consistent with the Committee's",
+            "paragraph_ref": "2021-04-28/policyAction/20"
+          },
+          {
+            "quote": "Members agreed that the Federal Reserve was committed to using its full range of tools to support the U.S. economy in this challenging time, thereby promoting its maximum-employment and price-stability goals.",
+            "paragraph_ref": "2021-04-28/policyAction/2"
+          }
+        ],
+        "rationale": "The minutes confirm a commitment to maintain the federal funds rate at 0 to 1/4 percent and emphasize that this stance will continue until labor market conditions and inflation reach the Committee's goals. No forward-leaning language or tightening bias is present.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2021-04-28/participantsViews/4",
+      "2021-04-28/participantsViews/5",
+      "2021-04-28/participantsViews/10",
+      "2021-04-28/staffFinancial/1",
+      "2021-04-28/staffFinancial/11",
+      "2021-04-28/financialMarkets/3",
+      "2021-04-28/policyAction/1",
+      "2021-04-28/policyAction/2",
+      "2021-04-28/policyAction/3",
+      "2021-04-28/policyAction/4",
+      "2021-04-28/policyAction/8",
+      "2021-04-28/policyAction/20",
+      "2021-04-28/policyAction/21",
+      "2021-04-28/policyAction/24"
+    ]
+  }
+}

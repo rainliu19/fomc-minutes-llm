@@ -1,0 +1,94 @@
+{
+  "meetingDate": "2025-12-10",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2025-12-10",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "In support of the Committee's goals and in light of the shift in the balance of risks, nine members agreed to lower the target range for the federal funds rate by 1/4 percentage point to 3-1/2 to 3-3/4 percent.",
+            "paragraph_ref": "2025-12-10/policyAction/2"
+          },
+          {
+            "quote": "Against this backdrop, most participants supported lowering the target range for the federal funds rate at this meeting, while some preferred to keep the target range unchanged.",
+            "paragraph_ref": "2025-12-10/participantsViews/10"
+          },
+          {
+            "quote": "A few participants judged that lowering the federal funds rate target range at this meeting was not justified because data received over the intermeeting period did not suggest any significant further weakening in the labor market.",
+            "paragraph_ref": "2025-12-10/participantsViews/10"
+          }
+        ],
+        "rationale": "The Committee lowered the federal funds rate by 1/4 percentage point, a rate cut. Most participants supported the move, citing elevated risks to employment. The decision was a clear easing, so the score must be negative, consistent with the actual policy action.",
+        "score": -0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2025-12-10/participantsViews/1",
+      "2025-12-10/participantsViews/6",
+      "2025-12-10/participantsViews/10",
+      "2025-12-10/participantsViews/11",
+      "2025-12-10/participantsViews/12",
+      "2025-12-10/staffFinancial/2",
+      "2025-12-10/financialMarkets/1",
+      "2025-12-10/policyAction/2",
+      "2025-12-10/policyAction/3",
+      "2025-12-10/policyAction/7",
+      "2025-12-10/policyAction/15",
+      "2025-12-10/policyAction/16",
+      "2025-12-10/policyAction/19",
+      "2025-12-10/policyAction/20"
+    ]
+  }
+}

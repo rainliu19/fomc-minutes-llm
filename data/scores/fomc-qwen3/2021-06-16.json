@@ -1,0 +1,95 @@
+{
+  "meetingDate": "2021-06-16",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2021-06-16",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "The Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent and expects it will be appropriate to maintain this target range until labor market conditions have reached levels consistent with the Committee's",
+            "paragraph_ref": "2021-06-16/policyAction/20"
+          },
+          {
+            "quote": "The Desk's survey measures of the expected path of the target federal funds rate were also fairly steady, and the median respondent continued to expect the first target rate increase to occur in the third quarter of 2023.",
+            "paragraph_ref": "2021-06-16/financialMarkets/3"
+          },
+          {
+            "quote": "In light of the incoming data and the implications for their economic outlooks, a few participants mentioned that they expected the economic conditions set out in the Committee's forward guidance for the federal funds rate to be met somewhat earlier",
+            "paragraph_ref": "2021-06-16/participantsViews/12"
+          }
+        ],
+        "rationale": "The minutes show a clear commitment to maintaining the 0 to 1/4 percent rate range and expect it to stay in place until labor market and inflation goals are met. Forward guidance points to a delayed rate increase, with no indication of a tightening bias. The path is described as data-dependent and uncertain, with no urgency for action.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2021-06-16/participantsViews/1",
+      "2021-06-16/participantsViews/9",
+      "2021-06-16/participantsViews/12",
+      "2021-06-16/participantsViews/15",
+      "2021-06-16/staffFinancial/1",
+      "2021-06-16/staffFinancial/8",
+      "2021-06-16/financialMarkets/3",
+      "2021-06-16/policyAction/1",
+      "2021-06-16/policyAction/2",
+      "2021-06-16/policyAction/3",
+      "2021-06-16/policyAction/4",
+      "2021-06-16/policyAction/8",
+      "2021-06-16/policyAction/20",
+      "2021-06-16/policyAction/21",
+      "2021-06-16/policyAction/24"
+    ]
+  }
+}

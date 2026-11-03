@@ -1,0 +1,91 @@
+{
+  "meetingDate": "2015-09-17",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2015-09-17",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "The Committee anticipates that it will be appropriate to raise the target range for the federal funds rate when it has seen some further improvement in the labor market and is reasonably confident that inflation will move back to its",
+            "paragraph_ref": "2015-09-17/policyAction/13"
+          },
+          {
+            "quote": "Most participants continued to anticipate that, based on their assessment of current economic conditions and their outlook for economic activity, the labor market, and inflation, the conditions for policy firming had been met or would likely be met by the",
+            "paragraph_ref": "2015-09-17/participantsViews/13"
+          },
+          {
+            "quote": "A few mentioned that a pickup in wage increases could bolster their confidence that resource utilization had tightened sufficiently to help move inflation toward the Committee's objective, but they did not view an acceleration in wages as a necessary condition",
+            "paragraph_ref": "2015-09-17/participantsViews/13"
+          }
+        ],
+        "rationale": "Participants saw conditions for policy firming as met or likely by year-end, with a clear lean toward future rate increases, though some expressed caution about timing. A few supported earlier action, and the Committee emphasized a gradual path, indicating a balanced but forward-leaning view.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2015-09-17/participantsViews/1",
+      "2015-09-17/participantsViews/13",
+      "2015-09-17/participantsViews/14",
+      "2015-09-17/staffFinancial/2",
+      "2015-09-17/policyAction/1",
+      "2015-09-17/policyAction/5",
+      "2015-09-17/policyAction/6",
+      "2015-09-17/policyAction/13",
+      "2015-09-17/policyAction/15",
+      "2015-09-17/policyAction/18",
+      "2015-09-17/specialTopics/1"
+    ]
+  }
+}

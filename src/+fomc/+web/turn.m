@@ -55,14 +55,24 @@ cites = fomc.guard.citations(answer, s.ctx, s.known);
 % Choose a warning for the page, if any: bad figures first, then missing or unverified citations
 warning = "";
 sources = [s.contextBlock; string({calls.result}).'];
-badFigures = fomc.guard.checkFigures(answer, sources);
-if ~isempty(badFigures)
-    warning = "Check these figures against the minutes, they do not appear in the sources: " + strjoin(badFigures, "; ") + ".";
-elseif fomc.focus.aboutMinutes(message) && format == "chat" && ~any(string({calls.name}) == "prefetchNotice")
-    if isempty(cites) || ~any([cites.ok])
-        warning = "This answer cites no paragraph from the minutes. Treat it as unverified.";
-    elseif ~all([cites.ok])
-        warning = "Some citations could not be verified.";
+isSkillScore = isstruct(structured) && isscalar(structured) && isfield(structured, "skill");
+if isSkillScore
+    if ~isfield(structured, "ok") || ~structured.ok
+        warning = "FOMC skill score was not validated. Issues: " + ...
+            strjoin(string(structured.issues), " ") + ...
+            ". Failed dimensions: " + strjoin(string(structured.failedDimensions), ", ") + ...
+            ". Do not rely on it as verified.";
+    end
+else
+    badFigures = fomc.guard.checkFigures(answer, sources);
+    if ~isempty(badFigures)
+        warning = "Check these figures against the minutes, they do not appear in the sources: " + strjoin(badFigures, "; ") + ".";
+    elseif fomc.focus.aboutMinutes(message) && format == "chat" && ~any(string({calls.name}) == "prefetchNotice")
+        if isempty(cites) || ~any([cites.ok])
+            warning = "This answer cites no paragraph from the minutes. Treat it as unverified.";
+        elseif ~all([cites.ok])
+            warning = "Some citations could not be verified.";
+        end
     end
 end
 
@@ -71,14 +81,14 @@ structured = plainStructured(structured);
 if format == "analysis" && isstruct(structured) && isfield(structured, "groundingOk") && structured.groundingOk
     % show the checked summary, not the draft
     answer = string(structured.summary) + newline + "Policy stance: " + string(structured.policyStance) + ".";
-elseif format == "analysis" && ~any(string({calls.name}) == "prefetchNotice")
+elseif format == "analysis" && ~isSkillScore && ~any(string({calls.name}) == "prefetchNotice")
     answer = "The analysis did not pass its checks, so it should not be relied on. The model's draft was:" + newline + answer;
 end
 
 % Everything the page needs, as JSON
 out = struct("answer", answer, "structured", structured, ...
     "anchorDate", fomc.util.fmtDate(s.ctx.asOf), "seconds", toc(t0), ...
-    "citations", {num2cell(cites)}, "warning", warning, "toolCalls", {packCalls(calls)});
+    "citations", {num2cell(cites)}, "warning", warning, "toolCalls", {packCalls(calls, lookupsOf(s))});
 json = jsonencode(out);
 end
 
@@ -103,8 +113,17 @@ if isfield(st, "evidence") && ~isempty(st.evidence)
 end
 end
 
-function c = packCalls(calls)
-% Tool calls for display: name, arguments, a clipped result, status and time.
+function n = lookupsOf(s)
+% How many of the turn's calls the harness made before the model started
+n = 0;
+if isfield(s, "lastLookups")
+    n = s.lastLookups;
+end
+end
+
+function c = packCalls(calls, nLookups)
+% Tool calls for display: name, arguments, a clipped result, status, time, and whether the harness
+% ran it before the model started (lookup) rather than the model choosing it.
 c = cell(numel(calls), 1);
 for i = 1:numel(calls)
     result = calls(i).result;
@@ -113,6 +132,6 @@ for i = 1:numel(calls)
         result = extractBefore(result, 1501) + "...";
     end
     c{i} = struct("name", calls(i).name, "args", calls(i).args, "result", result, ...
-        "ok", calls(i).ok, "ms", calls(i).ms);
+        "ok", calls(i).ok, "ms", calls(i).ms, "lookup", i <= nLookups);
 end
 end

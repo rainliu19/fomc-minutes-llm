@@ -1,0 +1,90 @@
+{
+  "meetingDate": "2015-01-28",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2015-01-28",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "The Committee agreed to maintain the target range for the federal funds rate at 0 to 1/4 percent and to reaffirm the indication in the statement that the Committee's decision about how long to maintain the current target range for",
+            "paragraph_ref": "2015-01-28/policyAction/3"
+          },
+          {
+            "quote": "Members agreed to continue to include, in the forward guidance, language indicating that the Committee judges that it can be patient in beginning to normalize the stance of monetary policy.",
+            "paragraph_ref": "2015-01-28/policyAction/3"
+          },
+          {
+            "quote": "Many participants indicated that their assessment of the balance of risks associated with the timing of the beginning of policy normalization had inclined them toward keeping the federal funds rate at its effective lower bound for a longer time.",
+            "paragraph_ref": "2015-01-28/specialTopics/17"
+          }
+        ],
+        "rationale": "The minutes show a clear consensus to maintain the current rate and a cautious, data-dependent approach to future increases, with a strong emphasis on avoiding premature tightening. Participants leaned toward delaying firming due to risks to labor market and inflation progress.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2015-01-28/participantsViews/7",
+      "2015-01-28/staffFinancial/9",
+      "2015-01-28/policyAction/1",
+      "2015-01-28/policyAction/3",
+      "2015-01-28/policyAction/9",
+      "2015-01-28/specialTopics/2",
+      "2015-01-28/specialTopics/5",
+      "2015-01-28/specialTopics/15",
+      "2015-01-28/specialTopics/16",
+      "2015-01-28/specialTopics/17"
+    ]
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "meetingDate": "2023-09-20",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2023-09-20",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "A majority of participants judged that one more increase in the target federal funds rate at a future meeting would likely be appropriate, while some judged it likely that no further increases would be warranted.",
+            "paragraph_ref": "2023-09-20/participantsViews/9"
+          },
+          {
+            "quote": "All participants agreed that it was appropriate to continue the process of reducing the Federal Reserve's securities holdings, as described in its previously announced Plans for Reducing the Size of the Federal Reserve's Balance Sheet.",
+            "paragraph_ref": "2023-09-20/participantsViews/8"
+          },
+          {
+            "quote": "Participants observed that the continuing process of reducing the size of the Federal Reserve's balance sheet was an important part of the overall approach to achieving their macroeconomic objectives.",
+            "paragraph_ref": "2023-09-20/participantsViews/10"
+          }
+        ],
+        "rationale": "The minutes show a majority expecting a future rate increase, with a balanced view on further tightening. The stance remains restrictive, and participants emphasize data dependence and a focus on inflation control.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2023-09-20/participantsViews/1",
+      "2023-09-20/participantsViews/2",
+      "2023-09-20/participantsViews/3",
+      "2023-09-20/participantsViews/8",
+      "2023-09-20/participantsViews/9",
+      "2023-09-20/participantsViews/10",
+      "2023-09-20/participantsViews/11",
+      "2023-09-20/participantsViews/12",
+      "2023-09-20/staffFinancial/1",
+      "2023-09-20/policyAction/3",
+      "2023-09-20/policyAction/4",
+      "2023-09-20/policyAction/7",
+      "2023-09-20/policyAction/17"
+    ]
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "meetingDate": "2020-06-10",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2020-06-10",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "In light of these developments, members decided to maintain the target range for the federal funds rate at 0 to 1/4 percent.",
+            "paragraph_ref": "2020-06-10/policyAction/2"
+          },
+          {
+            "quote": "The Committee expects to maintain this target range until it is confident that the economy has weathered recent events and is on track to achieve its maximum employment and price stability goals.",
+            "paragraph_ref": "2020-06-10/policyAction/17"
+          }
+        ],
+        "rationale": "All participants agreed to maintain the federal funds rate at 0 to 1/4 percent, with a clear consensus on holding the rate until the economy shows recovery. No indication of a tightening bias or forward movement toward higher rates.",
+        "score": -0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2020-06-10/participantsViews/1",
+      "2020-06-10/participantsViews/3",
+      "2020-06-10/participantsViews/6",
+      "2020-06-10/participantsViews/14",
+      "2020-06-10/participantsViews/17",
+      "2020-06-10/financialMarkets/2",
+      "2020-06-10/policyAction/2",
+      "2020-06-10/policyAction/17",
+      "2020-06-10/specialTopics/1",
+      "2020-06-10/specialTopics/3"
+    ]
+  }
+}

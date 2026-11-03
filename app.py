@@ -102,6 +102,7 @@ class ChatRequest(BaseModel):
 def index(request: Request):
     # Give a new browser its owner id now, so the page's first requests all use the same one
     response = FileResponse(HERE / "static" / "index.html")
+    response.headers["Cache-Control"] = "no-cache"    # recheck the page after an update; Safari kept an old copy
     if not re.fullmatch(r"[0-9a-f]{32}", request.cookies.get(OWNER_COOKIE, "")):
         set_owner_cookie(response, uuid.uuid4().hex)
     return response
@@ -118,7 +119,7 @@ def info(model: str = ""):
 
 @app.get("/evaluation")
 def evaluation_page():
-    return FileResponse(HERE / "static" / "evals.html")
+    return FileResponse(HERE / "static" / "evals.html", headers={"Cache-Control": "no-cache"})
 
 
 @app.get("/evals")

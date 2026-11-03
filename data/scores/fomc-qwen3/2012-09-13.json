@@ -1,0 +1,82 @@
+{
+  "meetingDate": "2012-09-13",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2012-09-13",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "To support continued progress toward maximum employment and price stability, the Committee expects that a highly accommodative stance of monetary policy will remain appropriate for a considerable time after the economic recovery strengthens.",
+            "paragraph_ref": "2012-09-13/policyAction/10"
+          },
+          {
+            "quote": "In particular, the Committee also decided today to keep the target range for the federal funds rate at 0 to 1/4 percent and currently anticipates that exceptionally low levels for the federal funds rate are likely to be warranted at",
+            "paragraph_ref": "2012-09-13/policyAction/10"
+          }
+        ],
+        "rationale": "The minutes state a clear commitment to maintaining a highly accommodative stance and a target range of 0 to 1/4 percent, with no indication of future tightening. The forward guidance includes a timeline consistent with the release date, and all references are within the context of the meeting's decision and outlook as of October 2012.",
+        "score": -0.75,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2012-09-13/participantsViews/1",
+      "2012-09-13/participantsViews/3",
+      "2012-09-13/participantsViews/11",
+      "2012-09-13/participantsViews/12",
+      "2012-09-13/policyAction/2",
+      "2012-09-13/policyAction/10"
+    ]
+  }
+}

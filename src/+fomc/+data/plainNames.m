@@ -26,11 +26,14 @@ rows = [
  "GACDFSA066MSFRBPHI", "the Philadelphia Fed manufacturing index"
  "GACDISA066MSFRBNY", "the New York Fed manufacturing index"
  "FEDFUNDS", "the effective federal funds rate"
+ "DFF", "the daily effective federal funds rate"
  "DFEDTAR", "the federal funds rate target"
  "DFEDTARU", "the top of the federal funds target range"
  "DFEDTARL", "the bottom of the federal funds target range"
  "WALCL", "the Fed's balance sheet"
+ "DGS1MO", "the 1-month Treasury yield"
  "DGS3MO", "the 3-month Treasury yield"
+ "DGS6MO", "the 6-month Treasury yield"
  "DGS2", "the 2-year Treasury yield"
  "DGS10", "the 10-year Treasury yield"
  "T10Y2Y", "the gap between 10-year and 2-year Treasury yields"
@@ -55,6 +58,7 @@ rows = [
  "SHILLER_DIVIDEND", "S&P 500 dividends"
  "SHILLER_EARNINGS", "S&P 500 earnings"
  "SHILLER_CAPE", "the Shiller price-to-earnings ratio"
- "TREASURY_DEBT_TOTAL", "total public debt"];
+ "TREASURY_DEBT_TOTAL", "total public debt"
+ "TREASURY_AVG_RATE", "the average interest rate on Treasury debt"];
 T = table(rows(:,1), rows(:,2), VariableNames=["series_id", "name"]);
 end

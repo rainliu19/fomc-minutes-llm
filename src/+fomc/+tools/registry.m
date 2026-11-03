@@ -40,6 +40,16 @@ t = addParameter(t, "startDate", "type", "string", "description", "YYYY-MM-DD.",
 t = addParameter(t, "endDate", "type", "string", "description", "YYYY-MM-DD.", RequiredParameter=false);
 specs{end+1} = {"getPolicyPath", @fomc.tools.getPolicyPath, t, true};
 
+t = openAIFunction("getOutlook", ...
+    "What recent rate moves may mean ahead: Fed staff forecast changes, borrowing costs, spending, prices, past cycles.");
+t = addParameter(t, "endDate", "type", "string", "description", "YYYY-MM-DD for an earlier view.", RequiredParameter=false);
+specs{end+1} = {"getOutlook", @fomc.tools.getOutlook, t, true};
+
+t = openAIFunction("assessEconomy", ...
+    "Where policy may go next: the economy against the Fed's goals, policy rules, market pricing, the latest minutes' views on future meetings.");
+t = addParameter(t, "endDate", "type", "string", "description", "YYYY-MM-DD for an earlier view.", RequiredParameter=false);
+specs{end+1} = {"assessEconomy", @fomc.tools.assessEconomy, t, true};
+
 t = openAIFunction("searchMinutes", ...
     "Find paragraphs in the minutes mentioning a word or phrase, newest first, each with an id. Matches words, not meaning, so try several wordings. Searches the focus window unless you pass dates.");
 t = addParameter(t, "query", "type", "string", "description", "A short phrase such as 'balance sheet runoff'. Use | for alternatives: 'tariff|trade policy'.");
@@ -75,6 +85,13 @@ t = openAIFunction("scoreConsumerImpact", ...
     "Rubric score of whether one meeting's direction is positive or negative for the US consumer. Only when the user asks about consumer impact.");
 t = addParameter(t, "meetingDate", "type", "string", "description", "Last day of the meeting, YYYY-MM-DD.");
 specs{end+1} = {"scoreConsumerImpact", @fomc.tools.scoreConsumerImpact, t, true};
+
+t = openAIFunction("readSkill", ...
+    "Load instructions or a reference file for a skill. Call with name alone for SKILL.md; pass file for a referenced file, such as rubric/inflation.md.");
+t = addParameter(t, "name", "type", "string", "description", "Skill name, such as fomc-score.");
+t = addParameter(t, "file", "type", "string", "description", ...
+    "Optional relative path inside the skill, such as rubric/inflation.md.", RequiredParameter=false);
+specs{end+1} = {"readSkill", @fomc.tools.readSkill, t, true};
 
 t = openAIFunction("getSnapshot", "Latest known value of the core series (run by the harness).");
 t = addParameter(t, "group", "type", "string", "enum", groups.', "description", "Which group. Default all.", RequiredParameter=false);

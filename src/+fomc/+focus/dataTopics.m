@@ -11,7 +11,7 @@ rules = {
     "mortgage|housing", "MORTGAGE30US"
     "oil|crude|energy price", "DCOILWTICO"
     "dollar|currency|exchange rate", "DTWEXBGS"
-    "debt|deficit", ["GFDEGDQ188S", "GFDEBTN"]
+    "debt|deficit", ["GFDEGDQ188S", "GFDEBTN", "TREASURY_AVG_RATE"]
     "balance sheet|quantitative|runoff|asset purchase", "WALCL"
     "stock|equit|s&p", ["GSPC", "SHILLER_CAPE"]
     "wage|pay growth|hourly earnings|compensation", ["CES0500000003", "ECIWAG"]

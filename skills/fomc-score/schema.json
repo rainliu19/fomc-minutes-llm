@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "FOMC minutes score",
+  "type": "object",
+  "required": ["meeting_date", "scale", "dimensions"],
+  "additionalProperties": false,
+  "properties": {
+    "meeting_date": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Meeting date, YYYY-MM-DD."
+    },
+    "scale": {
+      "type": "string",
+      "enum": ["hawkish_positive"],
+      "description": "+1 hawkish, -1 dovish."
+    },
+    "dimensions": {
+      "type": "object",
+      "required": [
+        "rate_path", "inflation", "labor_market", "economic_activity",
+        "financial_conditions", "balance_sheet", "risk_balance"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "rate_path":            { "$ref": "#/definitions/dimension" },
+        "inflation":            { "$ref": "#/definitions/dimension" },
+        "labor_market":         { "$ref": "#/definitions/dimension" },
+        "economic_activity":    { "$ref": "#/definitions/dimension" },
+        "financial_conditions": { "$ref": "#/definitions/dimension" },
+        "balance_sheet":        { "$ref": "#/definitions/dimension" },
+        "risk_balance":         { "$ref": "#/definitions/dimension" }
+      }
+    }
+  },
+  "definitions": {
+    "dimension": {
+      "type": "object",
+      "required": ["status", "score", "confidence", "rationale", "evidence"],
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["scored", "not_discussed"]
+        },
+        "score": {
+          "type": ["number", "null"],
+          "minimum": -1,
+          "maximum": 1,
+          "multipleOf": 0.25,
+          "description": "null only when status is not_discussed."
+        },
+        "confidence": {
+          "type": ["string", "null"],
+          "enum": ["high", "medium", "low", null]
+        },
+        "rationale": {
+          "type": "string",
+          "maxLength": 500
+        },
+        "evidence": {
+          "type": "array",
+          "maxItems": 3,
+          "items": {
+            "type": "object",
+            "required": ["quote"],
+            "additionalProperties": false,
+            "properties": {
+              "quote": {
+                "type": "string",
+                "description": "Verbatim from the minutes, 40 words or fewer."
+              },
+              "paragraph_ref": {
+                "type": "string",
+                "description": "Paragraph id from the retrieval tool, if available."
+              }
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if":   { "properties": { "status": { "const": "not_discussed" } } },
+          "then": {
+            "properties": {
+              "score": { "type": "null" },
+              "confidence": { "type": "null" },
+              "evidence": { "maxItems": 0 }
+            }
+          },
+          "else": {
+            "properties": {
+              "score": { "type": "number" },
+              "confidence": { "type": "string" },
+              "evidence": { "minItems": 1 }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

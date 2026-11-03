@@ -1,0 +1,90 @@
+{
+  "meetingDate": "2022-07-27",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2022-07-27",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "In discussing potential policy actions at upcoming meetings, participants continued to anticipate that ongoing increases in the target range for the federal funds rate would be appropriate to achieve the Committee's objectives.",
+            "paragraph_ref": "2022-07-27/participantsViews/13"
+          },
+          {
+            "quote": "With inflation remaining well above the Committee's objective, participants judged that moving to a restrictive stance of policy was required to meet the Committee's legislative mandate to promote maximum employment and price stability.",
+            "paragraph_ref": "2022-07-27/participantsViews/13"
+          },
+          {
+            "quote": "Participants judged that, as the stance of monetary policy tightened further, it likely would become appropriate at some point to slow the pace of policy rate increases while assessing the effects of cumulative policy adjustments on economic activity and inflation.",
+            "paragraph_ref": "2022-07-27/participantsViews/13"
+          }
+        ],
+        "rationale": "Participants unanimously agreed on the need for continued rate increases to combat elevated inflation and anchor expectations. Forward-looking views emphasized ongoing tightening and a potential slowdown in future hikes, showing a clear bias toward further policy firming.",
+        "score": 0.75,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2022-07-27/participantsViews/2",
+      "2022-07-27/participantsViews/8",
+      "2022-07-27/participantsViews/9",
+      "2022-07-27/participantsViews/12",
+      "2022-07-27/participantsViews/13",
+      "2022-07-27/participantsViews/14",
+      "2022-07-27/participantsViews/15",
+      "2022-07-27/financialMarkets/4",
+      "2022-07-27/policyAction/3",
+      "2022-07-27/policyAction/7"
+    ]
+  }
+}

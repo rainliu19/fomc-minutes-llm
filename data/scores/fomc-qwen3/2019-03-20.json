@@ -1,0 +1,91 @@
+{
+  "meetingDate": "2019-03-20",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2019-03-20",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "With regard to the outlook for monetary policy beyond this meeting, a majority of participants expected that the evolution of the economic outlook and risks to the outlook would likely warrant leaving the target range unchanged for the remainder of",
+            "paragraph_ref": "2019-03-20/participantsViews/12"
+          },
+          {
+            "quote": "In light of these uncertainties as well as continued evidence of muted inflation pressures, participants generally agreed that a patient approach to determining future adjustments to the target range for the federal funds rate remained appropriate.",
+            "paragraph_ref": "2019-03-20/participantsViews/11"
+          },
+          {
+            "quote": "However, members continued to view sustained expansion of economic activity, strong labor market conditions, and inflation near the Committee's symmetric 2 percent objective as the most likely outcomes for the U.S. economy in the period ahead.",
+            "paragraph_ref": "2019-03-20/policyAction/2"
+          }
+        ],
+        "rationale": "The minutes show a clear consensus on maintaining the current rate and a patient approach to future adjustments, with no indication of a tightening or easing bias. A majority expects no change for the rest of the year, and the Committee emphasizes ongoing data dependence.",
+        "score": 0,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2019-03-20/participantsViews/1",
+      "2019-03-20/participantsViews/6",
+      "2019-03-20/participantsViews/11",
+      "2019-03-20/participantsViews/12",
+      "2019-03-20/participantsViews/13",
+      "2019-03-20/participantsViews/14",
+      "2019-03-20/staffFinancial/2",
+      "2019-03-20/policyAction/2",
+      "2019-03-20/policyAction/3",
+      "2019-03-20/policyAction/6",
+      "2019-03-20/policyAction/11"
+    ]
+  }
+}

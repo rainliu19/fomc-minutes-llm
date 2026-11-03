@@ -1,0 +1,83 @@
+{
+  "meetingDate": "2009-09-23",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2009-09-23",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "high",
+        "evidence": [
+          {
+            "quote": "Accordingly, the Committee agreed that it was appropriate to maintain its target range for the federal funds rate at 0 to 1/4 percent and to reiterate its view that economic conditions were likely to warrant an exceptionally low level of",
+            "paragraph_ref": "2009-09-23/policyAction/1"
+          },
+          {
+            "quote": "The Committee will maintain the target range for the federal funds rate at 0 to 1/4 percent and continues to anticipate that economic conditions are likely to warrant exceptionally low levels of the federal funds rate for an extended period.",
+            "paragraph_ref": "2009-09-23/policyAction/7"
+          }
+        ],
+        "rationale": "The minutes clearly state the Committee will maintain the federal funds rate at 0 to 1/4 percent and expect exceptionally low rates for an extended period, indicating a strong bias toward easing policy. No forward-looking tightening is mentioned.",
+        "score": -0.5,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2009-09-23/participantsViews/2",
+      "2009-09-23/participantsViews/3",
+      "2009-09-23/staffFinancial/1",
+      "2009-09-23/staffFinancial/9",
+      "2009-09-23/financialMarkets/4",
+      "2009-09-23/policyAction/1",
+      "2009-09-23/policyAction/7"
+    ]
+  }
+}

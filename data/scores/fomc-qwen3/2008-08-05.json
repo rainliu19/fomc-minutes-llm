@@ -1,0 +1,91 @@
+{
+  "meetingDate": "2008-08-05",
+  "model": "fomc-qwen3",
+  "scoredOn": "2026-10-28",
+  "ok": true,
+  "issues": [],
+  "dimensionsScored": "rate_path",
+  "score": {
+    "meeting_date": "2008-08-05",
+    "scale": "hawkish_positive",
+    "dimensions": {
+      "rate_path": {
+        "confidence": "medium",
+        "evidence": [
+          {
+            "quote": "Most members did not see the current stance of policy as particularly accommodative, given that many households and businesses were facing elevated borrowing costs and reduced credit availability due to the effects of financial market strains as well as macroeconomic",
+            "paragraph_ref": "2008-08-05/policyAction/1"
+          },
+          {
+            "quote": "Although members generally anticipated that the next policy move would likely be a tightening, the timing and extent of any change in policy stance would depend on evolving economic and financial developments and the implications for the outlook for economic",
+            "paragraph_ref": "2008-08-05/policyAction/1"
+          },
+          {
+            "quote": "Fisher dissented because he favored an increase in the target federal funds rate to help restrain inflation and inflation expectations, which were at risk of drifting higher.",
+            "paragraph_ref": "2008-08-05/policyAction/11"
+          }
+        ],
+        "rationale": "Participants expressed concern about inflation risks and a clear leaning toward future tightening, though the decision was to hold the rate. A few supported a rate increase, indicating a split view with a moderate tightening bias.",
+        "score": 0.25,
+        "status": "scored"
+      },
+      "inflation": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "labor_market": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "economic_activity": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "financial_conditions": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "balance_sheet": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      },
+      "risk_balance": {
+        "status": "not_discussed",
+        "score": [],
+        "confidence": [],
+        "rationale": "Not scored in this run.",
+        "evidence": []
+      }
+    }
+  },
+  "passages": {
+    "rate_path": [
+      "2008-08-05/participantsViews/1",
+      "2008-08-05/participantsViews/2",
+      "2008-08-05/participantsViews/6",
+      "2008-08-05/participantsViews/7",
+      "2008-08-05/participantsViews/8",
+      "2008-08-05/staffEconomy/11",
+      "2008-08-05/staffEconomy/12",
+      "2008-08-05/policyAction/1",
+      "2008-08-05/policyAction/3",
+      "2008-08-05/policyAction/6",
+      "2008-08-05/policyAction/11"
+    ]
+  }
+}
