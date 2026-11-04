@@ -1,5 +1,7 @@
 classdef testSkillScoreLive < matlab.unittest.TestCase
     % The scoring skill with the REAL local model: are the scores sensible and stable?
+    % Scores go through fomc.skills.scoreByDimension, as chat's do: one model call per
+    % dimension, since the one-call scorer's prompt does not fit the local models' window.
     % Opt-in and slow (many model calls). Needs Ollama running with the fomc-qwen3 model.
     %
     %   setenv("FOMC_LIVE", "1"); runtests("tests/testSkillScoreLive.m")
@@ -9,7 +11,7 @@ classdef testSkillScoreLive < matlab.unittest.TestCase
 
     properties
         S          % session at the latest anchor, connected to Ollama
-        Cache      % meeting date -> scoreMeeting output (a handle, so it persists across tests)
+        Cache      % meeting date -> scoreByDimension output (a handle, so it persists across tests)
     end
 
     properties (Constant)
@@ -56,7 +58,7 @@ classdef testSkillScoreLive < matlab.unittest.TestCase
         end
 
         function latestMeetingScores(tc)
-            r = fomc.skills.scoreMeeting(tc.S);
+            r = fomc.skills.scoreByDimension(tc.S);
             tc.logResult("latest", r);
             tc.verifyTrue(r.ok, strjoin(r.issues, " "));
             M = tc.S.ctx.D.meetings;
@@ -138,7 +140,7 @@ classdef testSkillScoreLive < matlab.unittest.TestCase
             runs = cell(1, tc.StabilityRuns);
             runs{1} = tc.scored(date);
             for k = 2:tc.StabilityRuns
-                runs{k} = fomc.skills.scoreMeeting(tc.S, date);
+                runs{k} = fomc.skills.scoreByDimension(tc.S, date);
                 tc.logResult(date + " run " + k, runs{k});
             end
             for k = 1:numel(runs)
@@ -147,11 +149,11 @@ classdef testSkillScoreLive < matlab.unittest.TestCase
             for n = string(fieldnames(runs{1}.score.dimensions)).'
                 statuses = cellfun(@(r) statusOf(r.score, n), runs);
                 values = cellfun(@(r) scoreOf(r.score, n), runs);
-                tc.log(1, sprintf("%s: %s", n, strjoin(string(values), ", ")));
+                tc.log(1, sprintf("%s: %s", n, strjoin(compose("%g", values), ", ")));
                 tc.verifyEqual(numel(unique(statuses)), 1, n + " status changed between runs");
                 if all(statuses == "scored")
                     tc.verifyLessThanOrEqual(max(values) - min(values), tc.StabilityTolerance, ...
-                        n + " moved by more than " + tc.StabilityTolerance + ": " + strjoin(string(values), ", "));
+                        n + " moved by more than " + tc.StabilityTolerance + ": " + strjoin(compose("%g", values), ", "));
                 end
             end
         end
@@ -161,7 +163,7 @@ classdef testSkillScoreLive < matlab.unittest.TestCase
         function r = scored(tc, date)
             % Score a meeting once and reuse the result in later tests
             if ~isKey(tc.Cache, date)
-                r = fomc.skills.scoreMeeting(tc.S, date);
+                r = fomc.skills.scoreByDimension(tc.S, date);
                 tc.Cache(date) = r;
                 tc.logResult(date, r);
             end
@@ -172,7 +174,7 @@ classdef testSkillScoreLive < matlab.unittest.TestCase
             parts = strings(0);
             if isfield(r, "score") && isstruct(r.score) && isfield(r.score, "dimensions")
                 for n = string(fieldnames(r.score.dimensions)).'
-                    parts(end+1) = n + "=" + string(scoreOf(r.score, n)); %#ok<AGROW>
+                    parts(end+1) = n + "=" + compose("%g", scoreOf(r.score, n)); %#ok<AGROW>
                 end
             end
             tc.log(1, sprintf("%s: ok=%d attempts=%d %s", label, r.ok, r.attempts, strjoin(parts, " ")));

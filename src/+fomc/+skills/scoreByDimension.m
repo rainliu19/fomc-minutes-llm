@@ -4,8 +4,8 @@ function output = scoreByDimension(s, meetingDate, nvp)
 %   output = fomc.skills.scoreByDimension(s, meetingDate) scores a specific YYYY-MM-DD.
 %   output = fomc.skills.scoreByDimension(s, meetingDate, Dimensions=["rate_path"]) scores only
 %   those dimensions; the others are not_discussed with "Not scored in this run" as rationale.
-%   A variant of fomc.skills.scoreMeeting (Aarya's, which the chat's scoring requests use) for
-%   the local models' window. It uses the skill as written (skills/fomc-score: the scale, the
+%   A variant of fomc.skills.scoreMeeting (Aarya's one-call scorer) for the local models'
+%   window; chat's scoring requests (fomc.runTurn) and the saved scores both use this one. It uses the skill as written (skills/fomc-score: the scale, the
 %   rules in SKILL.md, the rubrics, the dimension schema) and the same checks
 %   (fomc.guard.validateScores), and returns the same score object, plus calls and passages.
 %   output.score contains the model result; output.ok and output.issues report validation;

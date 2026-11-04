@@ -71,8 +71,11 @@ switch action
         if ~isfolder(folder)
             mkdir(folder);
         end
+        % Saved as the schema has it (evidence arrays, null scores); both read back the same
+        saved = record;
+        saved.score = fomc.skills.forJson(record.score);
         fid = fopen(file, "w");
-        fwrite(fid, jsonencode(record, PrettyPrint=true), "char");
+        fwrite(fid, jsonencode(saved, PrettyPrint=true), "char");
         fclose(fid);
         out = record;
 end

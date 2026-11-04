@@ -142,7 +142,7 @@ Total interest payments on federal debt and credit card and car loan rates are n
 
 ## Skill scoring
 
-Scoring requests in `fomc.runTurn` and the web chat are automatically routed to the `fomc-score` skill. The dedicated structured scoring entry point is also callable directly:
+Scoring requests in `fomc.runTurn` and the web chat are automatically routed to the `fomc-score` skill and scored with `fomc.skills.scoreByDimension` (below), one dimension per model call, so every prompt fits the local models' window. A meeting can be named by date or by month and year ("December 2015"); a month with no meeting held by the anchor, or with several, gets a question asking for the date. The answer is the score as JSON matching `skills/fomc-score/schema.json`: `fomc.skills.forJson` makes evidence an array and an empty score or confidence `null` before encoding, since MATLAB's `jsondecode`/`jsonencode` turn a one-quote evidence array into an object and `null` into `[]`. The one-call scorer is also callable directly:
 
 ```matlab
 s = fomc.newSession(fomc.latestAnchor(), fomc.config());
@@ -153,7 +153,7 @@ out.issues      % validation issues after the final attempt
 out.attempts    % one to three model attempts
 ```
 
-Each result is checked against the skill schema, score ranges, exact minutes quotes, the coded rate decision, and dates later than the meeting's release. Validation failures are sent back to the model for up to three total attempts. If all attempts fail, `out.ok` is false and `out.failedDimensions` identifies the dimensions with reported issues; do not treat that score as validated. This entry point scores one meeting per call. In chat, a comparison such as
+Each result is checked against the skill schema, score ranges, exact minutes quotes, the coded rate decision, and dates later than the meeting's release. Validation failures are sent back to the model for up to three total attempts. If all attempts fail, `out.ok` is false and `out.failedDimensions` identifies the dimensions with reported issues; do not treat that score as validated. This entry point scores one meeting per call, with the complete minutes in one prompt of about 11,000 to 17,000 tokens: the local models (8,192) refuse or cut it, so it is for models with a larger window. In chat, a comparison such as
 `Compare 2020-01-29 with latest` scores the two distinct meetings independently.
 The comparison response has a `scores` array whose entries each match
 `skills/fomc-score/schema.json`, plus separate `validation` metadata for each
@@ -162,7 +162,7 @@ as an explicitly supplied date, request another distinct meeting to compare.
 
 ### Scoring one dimension per call (`fomc.skills.scoreByDimension`)
 
-A variant of `fomc.skills.scoreMeeting` for the local models, kept in its own file so Aarya's scorer, which the chat's scoring requests use, is unchanged. It uses the skill as written (`skills/fomc-score`: the scale, the rules in `SKILL.md`, the rubrics, the dimension schema) and the same checks, and returns the same score object with `out.calls` (model calls) and `out.passages` (per dimension, the paragraph ids the model read); `out.attempts` is the most attempts any dimension needed. The tools built on the scores call this one.
+A variant of `fomc.skills.scoreMeeting` for the local models, kept in its own file so Aarya's one-call scorer is unchanged. Chat's scoring requests and the tools built on the saved scores both use this one. It uses the skill as written (`skills/fomc-score`: the scale, the rules in `SKILL.md`, the rubrics, the dimension schema) and the same checks, and returns the same score object with `out.calls` (model calls) and `out.passages` (per dimension, the paragraph ids the model read); `out.attempts` is the most attempts any dimension needed.
 
 ```matlab
 out = fomc.skills.scoreByDimension(s, "2026-09-16");

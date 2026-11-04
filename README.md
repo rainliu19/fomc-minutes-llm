@@ -53,23 +53,26 @@ discussed is represented with `status: "not_discussed"` and null score and
 confidence values.
 
 The agent resolves a requested meeting against its data and session anchor, and
-uses only minutes released by the meeting's release date. The dedicated scorer
-supplies the complete minutes, the skill instructions, all rubric files, and
-the schema to the model. It then validates the result for schema shape, score
+uses only minutes released by the meeting's release date. A meeting can be named
+by its date (YYYY-MM-DD) or by month and year ("the December 2015 meeting"); a
+month with no meeting, or with more than one, gets a question asking for the
+date rather than a score of some other meeting. Chat scores each meeting with
+`fomc.skills.scoreByDimension`, one dimension per model call: each call gets the
+skill's scale and rules, that dimension's rubric, and the paragraphs of the
+minutes about it, so every prompt fits the local models' 8,192-token window.
+The model's quotes are matched to the closest sentence of those paragraphs, so
+they are word for word. Each dimension is then validated for schema shape, score
 range and confidence, exact minutes quotes of at most 40 words, rate-path
 consistency with the coded decision, and future dates in rationales. Failed
 checks are sent back for correction for up to three total attempts. If
 validation still fails, the result is marked unvalidated with its issues and
 failed dimensions; do not rely on it as verified.
 
-On the local models this one-call scorer does not fit: the instructions, rubrics
-and minutes come to about 17,000 tokens and the models read 8,192, so Ollama cuts
-the prompt. `fomc.skills.scoreByDimension` scores the same skill one dimension per
-call, with only the paragraphs about that dimension, and matches the model's
-quotes to the closest sentence so they are word for word. It is a separate file
-so this scorer is unchanged; see `docs/agent_interface.md`. Scoring requests in
-chat still go to the one-call scorer, so on the local models their prompt is cut;
-the tools use the scores saved by `scoreByDimension` instead.
+`fomc.skills.scoreMeeting` scores the whole meeting in one call, with the complete
+minutes, the skill instructions and all rubric files. That prompt comes to about
+11,000 to 17,000 tokens, more than the local models' 8,192, so Ollama refuses it or
+cuts it; it is kept for models with a larger window. Chat and the saved scores the
+tools read both use `scoreByDimension`, so they agree; see `docs/agent_interface.md`.
 
 `pipeline/score_minutes.m` scores the rate path of every released set of minutes
 once and saves the scores in `data/scores/<model>/`. `assessEconomy` and the
@@ -90,11 +93,11 @@ In MATLAB, the scorer can also be called directly:
 
 ```matlab
 s = fomc.newSession(fomc.latestAnchor(), fomc.config());
-result = fomc.skills.scoreMeeting(s, "2020-01-29"); % omit the date for latest
-result.score       % schema-shaped score object
+result = fomc.skills.scoreByDimension(s, "2020-01-29"); % omit the date for latest
+result.score       % score object (encode with fomc.skills.forJson for schema-shaped JSON)
 result.ok          % whether all checks passed
 result.issues      % validation issues after the final attempt
-result.attempts    % one to three model attempts
+result.attempts    % the most attempts any dimension needed, one to three
 ```
 
 ## What each folder is
@@ -127,7 +130,7 @@ result.attempts    % one to three model attempts
 | `+retrieve/` | Finds the paragraphs that best match a question. |
 | `+guard/` | The checks: no future dates, real citations, correct figures, plain wording, and the AI's scores (schema, score range, quotes word for word, the rate path against the decision). |
 | `+analysis/` | The structured analysis (the High effort level). |
-| `+skills/` | Discovers and loads skill instructions and runs the validated structured scoring workflow: in one call (`scoreMeeting`) or one dimension per call for the local models (`scoreByDimension`), and saves the scores (`scoreCache`). |
+| `+skills/` | Discovers and loads skill instructions and runs the validated structured scoring workflow: one dimension per call for the local models (`scoreByDimension`, used by chat and the saved scores) or in one call (`scoreMeeting`), writes scores as schema-shaped JSON (`forJson`), and saves them (`scoreCache`). |
 | `+llm/` | Talks to the local model (and a fake model for tests). |
 | `+history/` | Keeps the conversation short enough for the model. |
 | `+trace/` | Writes the log of everything the agent did. |

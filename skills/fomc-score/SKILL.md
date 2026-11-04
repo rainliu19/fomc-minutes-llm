@@ -28,7 +28,7 @@ If the minutes for the requested date are not available by the anchor date, repo
 
 ## Workflow
 
-1. **Use only the supplied minutes** for the selected meeting. The scoring call receives the complete minutes text; do not assume an additional retrieval tool is available. For a comparison, score each meeting separately and independently.
+1. **Use only the supplied minutes** for the selected meeting. The scoring call receives either the complete minutes text or, when one dimension is scored per call, the paragraphs of the minutes about that dimension; do not assume an additional retrieval tool is available. For a comparison, score each meeting separately and independently.
 2. **Respect the as-of date.** Use only the minutes text and data known on or before the meeting's release date. Do not use knowledge of later events.
 3. **Read the supplied rubric references** and evaluate each of the seven dimensions. Decide the score using the rubric anchors, in steps of 0.25.
 4. Pick 1 to 3 **verbatim** quotes (each 40 words or fewer) from the supplied minutes that justify each score, and write a one or two sentence rationale. State the evidence; do not editorialize.

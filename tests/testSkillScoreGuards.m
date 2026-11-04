@@ -139,8 +139,8 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
         end
 
         function runTurnRoutesScoringRequestsThroughTheSkill(tc)
-            valid = validScore(tc.meetingDate);
-            model = fomc.llm.Mock({struct("content", jsonencode(valid))});
+            % Chat scores one dimension per call (scoreByDimension); FakeScorer answers each
+            model = FakeScorer(tc.D);
             s = struct("ctx", tc.ctx, "llm", @model.call, "history", messageHistory, ...
                 "systemPrompt", fomc.systemPrompt(), "known", strings(0, 1));
 
@@ -151,12 +151,33 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
             tc.verifyEqual(structured.skill, "fomc-score");
             tc.verifySubstring(answer, """meeting_date"":""2020-01-29""");
             tc.verifyEmpty(calls);
-            tc.verifyEqual(model.Index, 1);
+            tc.verifyEqual(model.Dates, "2020-01-29");
+            tc.verifyGreaterThanOrEqual(model.Calls, 1);
             tc.verifyEqual(numel(s.history.Messages), 2);
         end
 
+        function monthAndYearScoresTheMeetingThatMonth(tc)
+            model = FakeScorer(tc.D);
+            s = struct("ctx", tc.ctx, "llm", @model.call, "history", messageHistory, ...
+                "systemPrompt", fomc.systemPrompt(), "known", strings(0, 1));
+            [~, ~, structured] = fomc.runTurn(s, "Score the Jan. 2020 meeting.");
+            tc.verifyTrue(structured.ok, strjoin(structured.issues, " "));
+            tc.verifyEqual(model.Dates, "2020-01-29");
+        end
+
+        function monthWithoutAMeetingAsksForTheDate(tc)
+            % Not the latest meeting, quietly: there was no meeting in February 2020
+            model = FakeScorer(tc.D);
+            s = struct("ctx", tc.ctx, "llm", @model.call, "history", messageHistory, ...
+                "systemPrompt", fomc.systemPrompt(), "known", strings(0, 1));
+            [~, answer, structured] = fomc.runTurn(s, "Score the February 2020 meeting.");
+            tc.verifyFalse(structured.ok);
+            tc.verifySubstring(answer, "no FOMC meeting in February 2020");
+            tc.verifyEqual(model.Calls, 0);
+        end
+
         function comparisonWithoutDatesRequestsDatesInsteadOfScoringLatest(tc)
-            model = fomc.llm.Mock({struct("content", jsonencode(validScore(tc.meetingDate)))});
+            model = FakeScorer(tc.D);
             s = struct("ctx", tc.ctx, "llm", @model.call, "history", messageHistory, ...
                 "systemPrompt", fomc.systemPrompt(), "known", strings(0, 1));
 
@@ -164,20 +185,11 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
 
             tc.verifyFalse(structured.ok);
             tc.verifySubstring(answer, "include at least two distinct meeting dates");
-            tc.verifyEqual(model.Index, 0);
+            tc.verifyEqual(model.Calls, 0);
         end
 
         function comparisonAcceptsLatestAndReturnsSchemaScoresSeparately(tc)
-            january = validScore("2020-01-29");
-            march = validScore("2020-03-18");
-            march.dimensions.rate_path.score = -0.25;
-            for dim = string(fieldnames(march.dimensions))'
-                march.dimensions.(dim).evidence = {struct("quote", ...
-                    "The Committee decided to lower the target range by 50 basis points.", ...
-                    "paragraph_ref", "2020-03-18/policyAction/1")};
-            end
-            model = fomc.llm.Mock({struct("content", jsonencode(january)), ...
-                struct("content", jsonencode(march))});
+            model = FakeScorer(tc.D);
             s = struct("ctx", tc.ctx, "llm", @model.call, "history", messageHistory, ...
                 "systemPrompt", fomc.systemPrompt(), "known", strings(0, 1));
 
@@ -185,8 +197,8 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
                 "Compare the score for 2020-01-29 with the latest meeting.");
             decoded = jsondecode(answer);
 
-            tc.verifyTrue(structured.ok);
-            tc.verifyEqual(model.Index, 2);
+            tc.verifyTrue(structured.ok, strjoin(structured.issues, " "));
+            tc.verifyEqual(model.Dates, ["2020-01-29"; "2020-03-18"]);
             tc.verifyEqual(numel(structured.scores), 2);
             tc.verifyEqual(string(structured.scores{1}.meeting_date), "2020-01-29");
             tc.verifyEqual(string(structured.scores{2}.meeting_date), "2020-03-18");
