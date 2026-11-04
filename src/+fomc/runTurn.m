@@ -248,7 +248,7 @@ tokens = regexpi(text, ['(?<![a-z])(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:
 abbreviations = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 held = s.ctx.D.meetings.MeetingDate(s.ctx.D.meetings.MeetingDate <= s.ctx.asOf);
 for k = 1:numel(tokens)
-    mo = find(abbreviations == extractBefore(lower(string(tokens{k}{1})) + "  ", 4));
+    mo = find(abbreviations == extractBefore(lower(string(tokens{k}{1})), 4));
     yr = str2double(tokens{k}{2});
     named = string(datetime(yr, mo, 1), "MMMM yyyy");
     inMonth = held(year(held) == yr & month(held) == mo);
@@ -260,14 +260,15 @@ for k = 1:numel(tokens)
         return
     else
         issue = "There were " + numel(inMonth) + " FOMC meetings in " + named + " (" + ...
-            strjoin(fomc.util.fmtDate(inMonth), ", ") + "). Which one should I score? Give the date as YYYY-MM-DD.";
+            strjoin(fomc.util.fmtDate(inMonth), ", ") + "). Which one should I score? " + ...
+            "Give the date as YYYY-MM-DD.";
         return
     end
 end
 end
 
 function meetingDate = latestReleasedMeetingDate(s)
-% Resolve "latest" using the same release-date rule as scoreMeeting.
+% Resolve "latest" using the same release-date rule as the scorers.
 M = s.ctx.D.meetings;
 available = find(M.ReleaseDate <= s.ctx.asOf);
 if isempty(available)

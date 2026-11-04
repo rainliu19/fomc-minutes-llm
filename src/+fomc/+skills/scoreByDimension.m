@@ -5,21 +5,23 @@ function output = scoreByDimension(s, meetingDate, nvp)
 %   output = fomc.skills.scoreByDimension(s, meetingDate, Dimensions=["rate_path"]) scores only
 %   those dimensions; the others are not_discussed with "Not scored in this run" as rationale.
 %   A variant of fomc.skills.scoreMeeting (Aarya's one-call scorer) for the local models'
-%   window; chat's scoring requests (fomc.runTurn) and the saved scores both use this one. It uses the skill as written (skills/fomc-score: the scale, the
-%   rules in SKILL.md, the rubrics, the dimension schema) and the same checks
+%   window; chat's scoring requests (fomc.runTurn) and the saved scores both use this one.
+%   It uses the skill as written (skills/fomc-score: the scale, the rules in SKILL.md, the
+%   rubrics, the dimension schema) and the same checks
 %   (fomc.guard.validateScores), and returns the same score object, plus calls and passages.
 %   output.score contains the model result; output.ok and output.issues report validation;
 %   output.attempts is the most attempts any dimension needed (1 to 3); output.calls counts
 %   the model calls; output.passages lists, per dimension, the paragraph ids the model read.
 %
 %   The skill's instructions, all seven rubrics and the full minutes come to about 17,000
-%   tokens, and the local models read 8,192 (num_ctx in models/*/Modelfile); Ollama cuts a
-%   longer prompt without an error. So each dimension is scored in its own call, with the
-%   shared scale, the skill's rules, that dimension's rubric and the paragraphs of the minutes
-%   about it: code ranks the paragraphs by the dimension's words, Participants' Views first,
-%   and keeps the best that fit. The model quotes the sentences that justify its score; code
-%   matches each quote to the closest sentence of the passages (by shared words) and uses that
-%   sentence, cut to 40 words, so every quote is word for word from the minutes. Asked to copy
+%   tokens, and the local models read 8,192 (num_ctx in models/*/Modelfile); Ollama refuses a
+%   longer prompt or, in some versions, cuts it without an error. So each dimension is scored
+%   in its own call, with the shared scale, the skill's rules, that dimension's rubric and the
+%   paragraphs of the minutes about it: code ranks the paragraphs by the dimension's words,
+%   Participants' Views first, and keeps the best that fit. The model quotes the sentences that
+%   justify its score; code matches each quote to the closest sentence of the passages (by
+%   shared words) and uses that sentence, cut to 40 words, so every quote is word for word from
+%   the minutes. Asked to copy
 %   quotes exactly, Qwen3 4B reworded them in 4 of 7 dimensions of the September 2026 minutes
 %   and repeated the same text on each retry; asked instead to name numbered sentences, it chose
 %   poorly (a labor market sentence for inflation) and once wrote "S1999..." without end. The

@@ -22,7 +22,7 @@ Open http://localhost:8787. It starts Ollama and MATLAB, checks memory first, an
 
 **Without the browser:** in MATLAB, from the repo root, run `setup` then `fomc.chat()`.
 
-**Test it:** `buildtool test` in MATLAB (about 2 minutes, no model needed) and `uv run python -m unittest tests/test_runtime.py tests/test_chats.py`.
+**Test it:** `buildtool test` in MATLAB (about 2 minutes, no model needed) and `uv run python -m unittest tests/test_runtime.py tests/test_chats.py`. The scoring tests against the real model are opt-in and slow (about 30 minutes, Ollama running): `setenv("FOMC_LIVE", "1"); runtests("tests/testSkillScoreLive.m")`.
 
 ## What it does
 
@@ -113,7 +113,7 @@ result.attempts    % the most attempts any dimension needed, one to three
 | `data/` | The collected data: CSVs, one text file per set of minutes in `data/minutes/`, and the AI's saved scores of each set in `data/scores/<model>/`. The agent reads these. |
 | `tests/` | Automated checks: MATLAB tests (`buildtool test`), Python tests, and the live model evaluation (`bench_live.py`, `bench_baseline.py`, `make_key.py`, `measure_memory.py`, `export_evals.py`). |
 | `evals/` | The answer key (50 questions drawn from the decision cards and 7 forward-looking ones written by hand) and each model's saved results. The Evaluation page (`/evaluation`) reads them. |
-| `docs/` | Guides: agent interface, data, performance, MATLAB gaps. |
+| `docs/` | Guides: agent interface, how the policy tools work, data, performance, MATLAB gaps. |
 | `models/` | The local models you can pick on the page: one folder per model with its Ollama `Modelfile`, plus `models.json`, the list the page shows. |
 | `logs/` | Created when you run the agent: one trace file per session, and your saved chats in `logs/chats/` (private to each browser). Not in git. |
 | `setup.m`, `buildfile.m` | MATLAB helpers: add `src/` to the path; run the checks and tests (`buildtool`). |
@@ -142,6 +142,7 @@ result.attempts    % the most attempts any dimension needed, one to three
 ## Docs
 
 - [docs/agent_interface.md](docs/agent_interface.md): tools, trace format, plugging in the scorer and consumer agent
+- [docs/how_the_tools_work.md](docs/how_the_tools_work.md): how `getPolicyPath`, `assessEconomy` and `getOutlook` reach their answers, in plain terms
 - [docs/data.md](docs/data.md): series, caveats, rebuilding the data
 - [docs/performance.md](docs/performance.md): measured speed, memory, and the model comparison (also at `/evaluation` and in `data/model_evaluation_*.csv`)
 - [docs/MATLAB_GAPS.md](docs/MATLAB_GAPS.md): what MATLAB or its LLM add-on could not do

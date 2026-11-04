@@ -131,7 +131,7 @@ classdef testSkillScoreLive < matlab.unittest.TestCase
                 "the average stance should be clearly more hawkish in June 2022");
         end
 
-        % --- 7. Stability ---
+        % --- 5. Stability ---
 
         function sameMeetingScoresConsistently(tc)
             % Score one meeting several times; each dimension's spread must be at most 0.25

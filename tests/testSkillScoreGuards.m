@@ -141,8 +141,7 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
         function runTurnRoutesScoringRequestsThroughTheSkill(tc)
             % Chat scores one dimension per call (scoreByDimension); FakeScorer answers each
             model = FakeScorer(tc.D);
-            s = struct("ctx", tc.ctx, "llm", @model.call, "history", messageHistory, ...
-                "systemPrompt", fomc.systemPrompt(), "known", strings(0, 1));
+            s = tc.chatSession(model);
 
             [s, answer, structured, calls] = fomc.runTurn(s, ...
                 "Score the FOMC minutes for 2020-01-29.", Format="chat");
@@ -158,19 +157,21 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
 
         function monthAndYearScoresTheMeetingThatMonth(tc)
             model = FakeScorer(tc.D);
-            s = struct("ctx", tc.ctx, "llm", @model.call, "history", messageHistory, ...
-                "systemPrompt", fomc.systemPrompt(), "known", strings(0, 1));
+            s = tc.chatSession(model);
+
             [~, ~, structured] = fomc.runTurn(s, "Score the Jan. 2020 meeting.");
+
             tc.verifyTrue(structured.ok, strjoin(structured.issues, " "));
             tc.verifyEqual(model.Dates, "2020-01-29");
         end
 
         function monthWithoutAMeetingAsksForTheDate(tc)
-            % Not the latest meeting, quietly: there was no meeting in February 2020
+            % There was no meeting in February 2020: ask for the date, do not score the latest
             model = FakeScorer(tc.D);
-            s = struct("ctx", tc.ctx, "llm", @model.call, "history", messageHistory, ...
-                "systemPrompt", fomc.systemPrompt(), "known", strings(0, 1));
+            s = tc.chatSession(model);
+
             [~, answer, structured] = fomc.runTurn(s, "Score the February 2020 meeting.");
+
             tc.verifyFalse(structured.ok);
             tc.verifySubstring(answer, "no FOMC meeting in February 2020");
             tc.verifyEqual(model.Calls, 0);
@@ -178,8 +179,7 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
 
         function comparisonWithoutDatesRequestsDatesInsteadOfScoringLatest(tc)
             model = FakeScorer(tc.D);
-            s = struct("ctx", tc.ctx, "llm", @model.call, "history", messageHistory, ...
-                "systemPrompt", fomc.systemPrompt(), "known", strings(0, 1));
+            s = tc.chatSession(model);
 
             [~, answer, structured] = fomc.runTurn(s, "Compare FOMC stance numerically across meetings.");
 
@@ -190,8 +190,7 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
 
         function comparisonAcceptsLatestAndReturnsSchemaScoresSeparately(tc)
             model = FakeScorer(tc.D);
-            s = struct("ctx", tc.ctx, "llm", @model.call, "history", messageHistory, ...
-                "systemPrompt", fomc.systemPrompt(), "known", strings(0, 1));
+            s = tc.chatSession(model);
 
             [~, answer, structured] = fomc.runTurn(s, ...
                 "Compare the score for 2020-01-29 with the latest meeting.");
@@ -208,6 +207,14 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
             tc.verifyFalse(isfield(decoded.scores, "ok"));
             tc.verifyEqual(sort(string(fieldnames(structured.scores{1}))), ...
                 sort(["meeting_date"; "scale"; "dimensions"]));
+        end
+    end
+
+    methods
+        function s = chatSession(tc, model)
+            % A chat session at the test anchor whose model is model.call
+            s = struct("ctx", tc.ctx, "llm", @model.call, "history", messageHistory, ...
+                "systemPrompt", fomc.systemPrompt(), "known", strings(0, 1));
         end
     end
 end
