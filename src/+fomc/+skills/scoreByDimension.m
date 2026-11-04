@@ -99,6 +99,9 @@ for i = 1:height(dims)
         "to 1 in steps of 0.25, or null when not_discussed), confidence (null when not_discussed), a " + ...
         "rationale of one or two short sentences (under 60 words) about the minutes, and evidence: 1 to 3 quotes of sentences from the passages that justify the score (none " + ...
         "when not_discussed).";
+    if key == "rate_path"
+        task = task + " " + decisionNote(ctx.D, row);
+    end
     fixed = task + "SCALE" + scale + "RULES" + rules + "RUBRIC" + rubric;
     % What is left of the window for passages, keeping room for two answers and a retry note
     budget = floor((8192 - 2 * maxOut - 300) * 3.3) - systemChars - strlength(fixed);
@@ -121,7 +124,8 @@ for i = 1:height(dims)
             [candidate, unknown] = withQuotes(jsondecode(content), sentences);
             trial = score;
             trial.dimensions.(key) = candidate;
-            failures = fomc.guard.validateScores(trial, minutesText, meetingDate, ctx.D);
+            failures = [fomc.guard.validateScores(trial, minutesText, meetingDate, ctx.D); ...
+                fomc.guard.checkRationaleSign(trial)];
             failures = [key + ": " + unknown; failures(contains(failures, key))];
         catch ME
             candidate = struct();
@@ -231,6 +235,34 @@ end
 text = strjoin(blocks, string(newline) + newline);
 end
 
+function note = decisionNote(D, row)
+% The meeting's decision as read by code (fomc.data.decisionCards), and the rubric's scores for
+% that kind of move. The rubric tells the model to look up the decision, which it cannot do
+% from the passages alone; told only that a cut "must be below 0", Qwen3 4B scored the 50 basis
+% point cut of 2024-09-18 and the cut to near zero of 2008-12-16 at -0.25, "under the rule".
+card = D.cards(row, :);
+action = string(card.action);
+range = string(card.targetRange);
+switch action
+    case "raise"
+        note = "Code read the decision of this meeting from the minutes: the Committee raised the " + ...
+            "target range to " + range + ". Under the rubric's anchors an increase scores +0.5 to +1: " + ...
+            "+0.5 for a small increase with hedging on what comes next, +0.75 for an increase, +1 when " + ...
+            "many argue for more or faster; +0.25 only if the minutes describe it as the final increase.";
+    case "cut"
+        note = "Code read the decision of this meeting from the minutes: the Committee lowered the " + ...
+            "target range to " + range + ". Under the rubric's anchors a cut scores -0.5 to -1: " + ...
+            "-0.5 for a small cut with hedging on what comes next, -0.75 for a cut, -1 for a large cut " + ...
+            "or emergency language; -0.25 only if the minutes describe it as the final cut.";
+    case "hold"
+        note = "Code read the decision of this meeting from the minutes: the Committee kept the target " + ...
+            "range at " + range + ". Score a hold from the forward-looking language: it may be " + ...
+            "positive, negative or zero.";
+    otherwise
+        note = "";
+end
+end
+
 function [d, unknown] = withQuotes(d, sentences)
 % The model's dimension with each quote replaced by the sentence of the passages it matches best
 % (by shared words: twice the shared count over both lengths), cut to 40 words, with its
@@ -260,8 +292,12 @@ for k = 1:numel(named)
         continue
     end
     words = split(sentences.text(row));
-    evidence{end+1} = struct("quote", strjoin(words(1:min(40, numel(words))), " "), ...
-        "paragraph_ref", sentences.paragraph(row)); %#ok<AGROW>
+    quote = strjoin(words(1:min(40, numel(words))), " ");
+    % Two quotes that match the same sentence count once
+    if any(cellfun(@(e) e.quote == quote, evidence))
+        continue
+    end
+    evidence{end+1} = struct("quote", quote, "paragraph_ref", sentences.paragraph(row)); %#ok<AGROW>
 end
 d.evidence = evidence;
 end

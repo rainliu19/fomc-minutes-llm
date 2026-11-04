@@ -102,6 +102,35 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
             tc.verifyEmpty(issues);
         end
 
+        function rationaleSignMustMatchTheScore(tc)
+            % The March 2020 slip: "dovish" in the rationale, a positive score
+            result = validScore(tc.meetingDate);
+            result.dimensions.balance_sheet.score = 0.25;
+            result.dimensions.balance_sheet.rationale = "A clear expansion, so it reflects a dovish stance.";
+            result.dimensions.inflation.score = -0.5;
+            result.dimensions.inflation.rationale = "Participants sounded hawkish on prices.";
+
+            issues = fomc.guard.checkRationaleSign(result);
+
+            tc.verifyNumElements(issues, 2);
+            tc.verifyTrue(any(startsWith(issues, "balance_sheet: the rationale calls it dovish")));
+            tc.verifyTrue(any(startsWith(issues, "inflation: the rationale calls it hawkish")));
+        end
+
+        function rationaleSignAllowsComparisonsAndMatchingScores(tc)
+            result = validScore(tc.meetingDate);
+            result.dimensions.balance_sheet.score = 0.25;
+            result.dimensions.balance_sheet.rationale = "Runoff continued; the stance was not dovish.";
+            result.dimensions.inflation.score = -0.25;
+            result.dimensions.inflation.rationale = "Less hawkish than before: inflation was easing.";
+            result.dimensions.rate_path.score = 0.75;
+            result.dimensions.rate_path.rationale = "A hawkish increase with more expected.";
+            result.dimensions.labor_market.score = 0.25;
+            result.dimensions.labor_market.rationale = "Mixed: some hawkish and some dovish views.";
+
+            tc.verifyEmpty(fomc.guard.checkRationaleSign(result));
+        end
+
         function rationaleCannotUseDatesAfterRelease(tc)
             result = validScore(tc.meetingDate);
             result.dimensions.inflation.rationale = "Later conditions in 2021-01-01 confirmed the trend.";
