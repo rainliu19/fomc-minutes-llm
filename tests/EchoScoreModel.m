@@ -4,13 +4,16 @@ classdef EchoScoreModel < handle
     %   Each call scores the dimension it is asked about and quotes, slightly reworded, the first
     %   sentence it was shown; the scorer matches the quote to that sentence word for word. The
     %   first failFirst calls quote made-up text, to exercise the retries. rate_path scores -0.5 for a
-    %   meeting whose minutes say "lower the target range", else 0. m.Index counts the calls and
-    %   m.PromptChars records each prompt's length.
+    %   meeting whose minutes say "lower the target range", else 0. Asked for an anchor (the
+    %   scorer's schema), it names the rubric row of that score, or the closest row offered.
+    %   m.Index counts the calls, m.PromptChars records each prompt's length and m.Formats each
+    %   schema.
 
     properties
         FailFirst (1,1) double = 0
         Index (1,1) double = 0
         PromptChars (1,:) double = []
+        Formats (1,:) string = strings(1, 0)
     end
 
     methods
@@ -20,7 +23,7 @@ classdef EchoScoreModel < handle
             end
         end
 
-        function [text, out, stats] = call(m, history, ~, ~)
+        function [text, out, stats] = call(m, history, ~, format)
             m.Index = m.Index + 1;
             prompt = string(history.Messages{1}.content);
             m.PromptChars(end+1) = strlength(prompt);
@@ -36,9 +39,18 @@ classdef EchoScoreModel < handle
             if contains(prompt, "the expected path of the policy rate") && contains(prompt, "lower the target range")
                 score = -0.5;
             end
-            d = struct("status", "scored", "score", score, "confidence", "medium", ...
-                "rationale", "Participants described this topic.", ...
-                "evidence", {{struct("quote", quote)}});
+            m.Formats(end+1) = string(format);
+            if contains(string(format), """stance_anchor""")
+                rows = jsondecode(format).properties.stance_anchor.enum;    % the labels, then null
+                labels = string(rows(~cellfun(@isempty, rows)));
+                [~, k] = min(abs(str2double(regexp(labels, "[+-]?\d\.\d+(?=\)$)", "match", "once")) - score));
+                d = struct("evidence", {{struct("quote", quote)}}, ...
+                    "rationale", "Participants described this topic.", "stance_anchor", labels(k), "stance_confidence", "medium");
+            else
+                d = struct("status", "scored", "score", score, "confidence", "medium", ...
+                    "rationale", "Participants described this topic.", ...
+                    "evidence", {{struct("quote", quote)}});
+            end
             text = string(jsonencode(d));
             out = struct("role", "assistant", "content", text, "thinking", "");
             stats = struct("promptTokens", 0, "outputTokens", 0, "promptMs", 0, "outputMs", 0, "loadMs", 0);
