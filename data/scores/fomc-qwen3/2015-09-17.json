@@ -1,7 +1,7 @@
 {
   "meetingDate": "2015-09-17",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -17,57 +17,53 @@
             "paragraph_ref": "2015-09-17/policyAction/13"
           },
           {
-            "quote": "Most participants continued to anticipate that, based on their assessment of current economic conditions and their outlook for economic activity, the labor market, and inflation, the conditions for policy firming had been met or would likely be met by the",
-            "paragraph_ref": "2015-09-17/participantsViews/13"
-          },
-          {
-            "quote": "A few mentioned that a pickup in wage increases could bolster their confidence that resource utilization had tightened sufficiently to help move inflation toward the Committee's objective, but they did not view an acceleration in wages as a necessary condition",
-            "paragraph_ref": "2015-09-17/participantsViews/13"
+            "quote": "One member, however, preferred to raise the target range for the federal funds rate at this meeting, indicating that the current low level of real interest rates was not appropriate in the context of current economic conditions.",
+            "paragraph_ref": "2015-09-17/policyAction/5"
           }
         ],
-        "rationale": "Participants saw conditions for policy firming as met or likely by year-end, with a clear lean toward future rate increases, though some expressed caution about timing. A few supported earlier action, and the Committee emphasized a gradual path, indicating a balanced but forward-leaning view.",
+        "rationale": "The minutes indicate a forward-looking bias toward future rate increases, with most participants expecting gradual tightening after labor market improvement and inflation returns to 2%. A minority supported an immediate hike, but no clear consensus on pace or timing.",
         "score": 0.25,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -82,8 +78,8 @@
       "2015-09-17/policyAction/1",
       "2015-09-17/policyAction/5",
       "2015-09-17/policyAction/6",
+      "2015-09-17/policyAction/7",
       "2015-09-17/policyAction/13",
-      "2015-09-17/policyAction/15",
       "2015-09-17/policyAction/18",
       "2015-09-17/specialTopics/1"
     ]

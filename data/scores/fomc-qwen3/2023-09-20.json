@@ -1,7 +1,7 @@
 {
   "meetingDate": "2023-09-20",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -25,49 +25,49 @@
             "paragraph_ref": "2023-09-20/participantsViews/10"
           }
         ],
-        "rationale": "The minutes show a majority expecting a future rate increase, with a balanced view on further tightening. The stance remains restrictive, and participants emphasize data dependence and a focus on inflation control.",
+        "rationale": "The minutes show a majority expecting a future rate increase, with a balanced view on further tightening. The Committee held the rate, but emphasized a restrictive stance and data-dependent forward guidance, indicating a lean toward continued tightening.",
         "score": 0.25,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -83,10 +83,8 @@
       "2023-09-20/participantsViews/10",
       "2023-09-20/participantsViews/11",
       "2023-09-20/participantsViews/12",
-      "2023-09-20/staffFinancial/1",
       "2023-09-20/policyAction/3",
       "2023-09-20/policyAction/4",
-      "2023-09-20/policyAction/7",
       "2023-09-20/policyAction/17"
     ]
   }

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2018-05-02",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -13,6 +13,10 @@
         "confidence": "high",
         "evidence": [
           {
+            "quote": "Most participants judged that if incoming information broadly confirmed their current economic outlook, it would likely soon be appropriate for the Committee to take another step in removing policy accommodation.",
+            "paragraph_ref": "2018-05-02/participantsViews/9"
+          },
+          {
             "quote": "Members expected that economic conditions would evolve in a manner that would warrant further gradual increases in the federal funds rate.",
             "paragraph_ref": "2018-05-02/policyAction/4"
           },
@@ -21,49 +25,49 @@
             "paragraph_ref": "2018-05-02/policyAction/4"
           }
         ],
-        "rationale": "Participants agreed that economic conditions would warrant further gradual rate increases, and that the rate would remain below longer-run levels, indicating a clear lean toward future tightening.",
+        "rationale": "Participants agreed that economic conditions would warrant further gradual rate increases, and most saw a need to remove policy accommodation. Forward guidance indicates a clear lean toward future tightening, despite holding the rate.",
         "score": 0.5,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -81,8 +85,7 @@
       "2018-05-02/policyAction/4",
       "2018-05-02/policyAction/6",
       "2018-05-02/policyAction/12",
-      "2018-05-02/policyAction/13",
-      "2018-05-02/policyAction/16"
+      "2018-05-02/policyAction/13"
     ]
   }
 }

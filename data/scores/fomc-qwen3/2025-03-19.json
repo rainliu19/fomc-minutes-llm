@@ -1,7 +1,7 @@
 {
   "meetingDate": "2025-03-19",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -13,57 +13,57 @@
         "confidence": "high",
         "evidence": [
           {
-            "quote": "Members agreed that in considering the extent and timing of additional adjustments to the target range for the federal funds rate, the Committee would carefully assess incoming data, the evolving outlook, and the balance of risks.",
-            "paragraph_ref": "2025-03-19/policyAction/2"
+            "quote": "In considering the extent and timing of additional adjustments to the target range for the federal funds rate, the Committee will carefully assess incoming data, the evolving outlook, and the balance of risks.",
+            "paragraph_ref": "2025-03-19/policyAction/15"
           },
           {
-            "quote": "Beginning in April, the Committee will slow the pace of decline of its securities holdings by reducing the monthly redemption cap on Treasury securities from $25 billion to $5 billion.",
+            "quote": "The Committee is strongly committed to supporting maximum employment and returning inflation to its 2 percent objective.",
             "paragraph_ref": "2025-03-19/policyAction/15"
           }
         ],
-        "rationale": "The minutes show a cautious, data-dependent approach to future rate adjustments, with no indication of a tightening or easing bias. The Committee emphasized monitoring risks and maintaining the current rate range, with no forward guidance on changes.",
+        "rationale": "The Committee held the rate and emphasized caution, monitoring risks and waiting for clarity. Forward-looking language shows a balanced view with no clear tilt toward tightening or easing.",
         "score": 0,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -79,7 +79,6 @@
       "2025-03-19/participantsViews/13",
       "2025-03-19/staffEconomy/7",
       "2025-03-19/financialMarkets/2",
-      "2025-03-19/policyAction/1",
       "2025-03-19/policyAction/2",
       "2025-03-19/policyAction/3",
       "2025-03-19/policyAction/6",

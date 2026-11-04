@@ -1,7 +1,7 @@
 {
   "meetingDate": "2010-03-16",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -17,53 +17,53 @@
             "paragraph_ref": "2010-03-16/policyAction/1"
           },
           {
-            "quote": "Hoenig dissented because he believed it was no longer advisable to indicate that economic and financial conditions were likely to warrant \"exceptionally low levels of the federal funds rate for an extended period.\" Mr.",
-            "paragraph_ref": "2010-03-16/policyAction/13"
+            "quote": "A few members also noted that at the current juncture the risks of an early start to policy tightening exceeded those associated with a later start, because the Committee could be flexible in adjusting the magnitude and pace of tightening",
+            "paragraph_ref": "2010-03-16/policyAction/1"
           }
         ],
-        "rationale": "The minutes show a majority supporting a prolonged period of low rates, but one member opposed the language, suggesting a shift to a more flexible, less restrictive stance. This indicates a split view on the path of rates, leaning slightly toward easing.",
-        "score": -0.25,
+        "rationale": "The minutes show a consensus to hold the rate at 0 to 1/4 percent, with a forward-looking view that tightening could begin if conditions improve. A minority opposed emphasizing 'exceptionally low' rates, suggesting a cautious, flexible stance. This indicates a balanced, slightly hawkish view on future tightening, not a clear push for easing.",
+        "score": 0.25,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }

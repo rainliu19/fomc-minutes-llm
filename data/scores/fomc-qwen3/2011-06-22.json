@@ -1,14 +1,9 @@
 {
   "meetingDate": "2011-06-22",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
-  "ok": false,
-  "issues": [
-    "rate_path.score must be null when status is not_discussed.",
-    "rate_path.confidence must be null when status is not_discussed.",
-    "rate_path.evidence must be empty when status is not_discussed.",
-    "rate_path must be scored consistently with the meeting's actual hold."
-  ],
+  "scoredOn": "2026-11-04",
+  "ok": true,
+  "issues": [],
   "dimensionsScored": "rate_path",
   "score": {
     "meeting_date": "2011-06-22",
@@ -30,49 +25,49 @@
             "paragraph_ref": "2011-06-22/policyAction/1"
           }
         ],
-        "rationale": "The Committee held the federal funds rate at 0 to 1/4 percent. While some participants expressed concern about slowing growth and inflation risks, there is no clear consensus on a path for future rate changes. The discussion reflects uncertainty, with a slight lean toward possible easing but no decisive direction.",
-        "score": -0.25,
-        "status": "not_discussed"
+        "rationale": "The minutes show a balanced view with some participants leaning toward easing and others toward maintaining policy, but no clear consensus on future rate changes. Forward-looking language is cautious, indicating a hold with mild uncertainty about future action.",
+        "score": 0,
+        "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -84,10 +79,10 @@
       "2011-06-22/participantsViews/3",
       "2011-06-22/participantsViews/5",
       "2011-06-22/participantsViews/9",
-      "2011-06-22/staffOutlook/1",
       "2011-06-22/staffFinancial/2",
       "2011-06-22/staffFinancial/15",
       "2011-06-22/policyAction/1",
+      "2011-06-22/policyAction/2",
       "2011-06-22/policyAction/8",
       "2011-06-22/specialTopics/3",
       "2011-06-22/specialTopics/7"

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2014-10-29",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,60 +10,60 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
-        "confidence": "medium",
+        "confidence": "high",
         "evidence": [
           {
             "quote": "Most participants judged that it would be helpful to include new language in the Committee's forward guidance to clarify how the Committee's decision about when to begin the policy normalization process will depend on incoming information about the economy.",
             "paragraph_ref": "2014-10-29/participantsViews/9"
           },
           {
-            "quote": "The Committee agreed to include additional wording in the statement in order to emphasize that the Committee's decision on the timing of the first increase in the federal funds rate would be data dependent.",
+            "quote": "In particular, the statement would say that, if incoming information indicated faster progress toward the Committee's employment and inflation objectives than the Committee now expects, then increases in the target range for the federal funds rate would likely occur sooner",
             "paragraph_ref": "2014-10-29/policyAction/4"
           }
         ],
-        "rationale": "Participants agreed that rate increases would depend on incoming data, with most supporting a data-dependent path. A minority urged maintaining the rate longer due to weak inflation. No clear push for tightening or easing.",
+        "rationale": "The minutes show a clear forward-looking bias toward future rate increases, contingent on data. Most participants support a data-dependent path with potential for earlier hikes if progress is faster than expected. This indicates a lean toward tightening policy, despite a hold on the rate.",
         "score": 0.25,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -75,7 +75,6 @@
       "2014-10-29/participantsViews/9",
       "2014-10-29/staffOutlook/1",
       "2014-10-29/staffFinancial/2",
-      "2014-10-29/staffFinancial/10",
       "2014-10-29/policyAction/1",
       "2014-10-29/policyAction/4",
       "2014-10-29/policyAction/11",

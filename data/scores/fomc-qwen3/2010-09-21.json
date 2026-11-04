@@ -1,7 +1,7 @@
 {
   "meetingDate": "2010-09-21",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -17,53 +17,53 @@
             "paragraph_ref": "2010-09-21/policyAction/8"
           },
           {
-            "quote": "Members generally thought that the statement should note that the Committee was prepared to provide additional accommodation if needed to support the economic recovery and to return inflation, over time, to levels consistent with its mandate.",
-            "paragraph_ref": "2010-09-21/policyAction/2"
+            "quote": "The Committee will continue to monitor the economic outlook and financial developments and is prepared to provide additional accommodation if needed to support the economic recovery and to return inflation, over time, to levels consistent with its mandate.\"",
+            "paragraph_ref": "2010-09-21/policyAction/9"
           }
         ],
-        "rationale": "The minutes indicate a clear commitment to maintaining the current rate and preparing for possible future easing, with no indication of tightening. The view is balanced but leans toward accommodation, consistent with a dovish stance.",
+        "rationale": "The minutes indicate a hold on the rate with a clear forward-looking bias toward further easing if conditions worsen, and a view that low rates are needed for an extended period. This reflects a dovish stance on the path of rates.",
         "score": -0.25,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -74,7 +74,6 @@
       "2010-09-21/participantsViews/1",
       "2010-09-21/participantsViews/7",
       "2010-09-21/staffOutlook/1",
-      "2010-09-21/staffEconomy/4",
       "2010-09-21/staffFinancial/1",
       "2010-09-21/staffFinancial/11",
       "2010-09-21/policyAction/1",

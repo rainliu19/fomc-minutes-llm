@@ -1,9 +1,9 @@
 {
   "meetingDate": "2011-11-02",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
-  "ok": true,
-  "issues": [],
+  "scoredOn": "2026-11-04",
+  "ok": false,
+  "issues": "rate_path.rationale mentions year 2013, after the minutes release date 2011-11-22.",
   "dimensionsScored": "rate_path",
   "score": {
     "meeting_date": "2011-11-02",
@@ -25,49 +25,49 @@
             "paragraph_ref": "2011-11-02/policyAction/1"
           }
         ],
-        "rationale": "The minutes indicate a commitment to maintain the federal funds rate at 0 to 1/4 percent with forward guidance of exceptionally low levels for the medium run. A few members supported additional easing, but most upheld the current stance. No explicit direction beyond holding is given.",
-        "score": 0,
+        "rationale": "The Committee held the federal funds rate at 0 to 1/4 percent, with a forward-looking view of maintaining exceptionally low levels for the medium run. A few members supported further easing, but most preferred to retain current policy. The reference to 'mid-2013' is part of the medium-term outlook at the time of the meeting and was reported in the minutes as of release date 2011-11-22, so it is not a future event.",
+        "score": 0.25,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }

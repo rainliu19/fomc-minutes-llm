@@ -1,7 +1,7 @@
 {
   "meetingDate": "2019-01-30",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -17,53 +17,57 @@
             "paragraph_ref": "2019-01-30/participantsViews/14"
           },
           {
+            "quote": "A patient approach would have the added benefit of giving policymakers an opportunity to judge the response of economic activity and inflation to the recent steps taken to normalize the stance of monetary policy.",
+            "paragraph_ref": "2019-01-30/participantsViews/13"
+          },
+          {
             "quote": "In light of global economic and financial developments and muted inflation pressures, the Committee will be patient as it determines what future adjustments to the target range for the federal funds rate may be appropriate to support these outcomes.",
             "paragraph_ref": "2019-01-30/policyAction/11"
           }
         ],
-        "rationale": "Participants expressed a patient approach, with many indicating uncertainty about future rate adjustments and a clear view that increases would only be needed if inflation rose above baseline. The forward guidance emphasizes patience and data dependence, reflecting a balanced but cautious stance.",
-        "score": 0.25,
+        "rationale": "The minutes show a clear consensus on maintaining the current rate and a patient approach, with many participants indicating future increases would depend on inflation outcomes. No strong push for tightening or easing is evident.",
+        "score": 0,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -81,8 +85,8 @@
       "2019-01-30/policyAction/4",
       "2019-01-30/policyAction/6",
       "2019-01-30/policyAction/11",
-      "2019-01-30/policyAction/15",
-      "2019-01-30/specialTopics/2"
+      "2019-01-30/specialTopics/2",
+      "2019-01-30/specialTopics/10"
     ]
   }
 }

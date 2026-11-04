@@ -1,7 +1,7 @@
 {
   "meetingDate": "2025-09-17",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -25,49 +25,49 @@
             "paragraph_ref": "2025-09-17/policyAction/15"
           }
         ],
-        "rationale": "The minutes show a strong consensus to reduce the federal funds rate, with almost all participants supporting a 1/4 percentage point cut and most expecting further easing. This reflects a clear shift toward easier policy due to rising employment risks.",
+        "rationale": "The minutes show near-unanimous support for a rate cut and a clear forward-looking bias toward further easing, despite a few dissenting views. The decision aligns with a shift in balance of risks, emphasizing downside employment risks.",
         "score": -0.5,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -82,7 +82,6 @@
       "2025-09-17/participantsViews/8",
       "2025-09-17/participantsViews/9",
       "2025-09-17/participantsViews/10",
-      "2025-09-17/staffFinancial/2",
       "2025-09-17/financialMarkets/2",
       "2025-09-17/policyAction/2",
       "2025-09-17/policyAction/6",

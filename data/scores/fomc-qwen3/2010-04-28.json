@@ -1,7 +1,7 @@
 {
   "meetingDate": "2010-04-28",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -25,49 +25,49 @@
             "paragraph_ref": "2010-04-28/policyAction/11"
           }
         ],
-        "rationale": "The minutes show a consensus to hold rates at 0 to ¼ percent, with a few members suggesting a gradual increase toward 1 percent by summer. This indicates a slight lean toward easing, but no clear push for tightening. The dissenting view emphasizes caution, reflecting a balanced but slightly dovish stance.",
-        "score": -0.25,
+        "rationale": "The minutes show a consensus to hold rates at 0 to ¼ percent, with a few members suggesting a later increase. Forward-looking language indicates a cautious, balanced view with a slight lean toward easing, but no clear push for tightening. The dissenting view emphasizes avoiding prolonged low rates to prevent imbalances.",
+        "score": 0,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }

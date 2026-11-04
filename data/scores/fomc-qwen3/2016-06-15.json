@@ -1,7 +1,7 @@
 {
   "meetingDate": "2016-06-15",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -21,53 +21,53 @@
             "paragraph_ref": "2016-06-15/policyAction/6"
           },
           {
-            "quote": "Some of them emphasized that, with labor market conditions and inflation at or close to the Committee's objectives, taking another step in removing monetary accommodation should not be delayed too long.",
-            "paragraph_ref": "2016-06-15/policyAction/5"
+            "quote": "In determining the timing and size of future adjustments to the target range for the federal funds rate, the Committee will assess realized and expected economic conditions relative to its objectives of maximum employment and 2 percent inflation.",
+            "paragraph_ref": "2016-06-15/policyAction/15"
           }
         ],
-        "rationale": "Most participants supported a gradual increase in the federal funds rate if conditions improved, but acknowledged uncertainty and emphasized a cautious, data-dependent approach. The path was seen as gradual and below longer-run levels, with a clear lean toward easing only if inflation and labor markets strengthened.",
+        "rationale": "Most participants saw gradual rate increases as appropriate, with a clear bias toward a slow, data-dependent path. The Committee emphasized waiting for more data and maintaining an accommodative stance, indicating a cautious, forward-looking bias toward easing policy only if conditions improved.",
         "score": 0.25,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -81,7 +81,6 @@
       "2016-06-15/participantsViews/13",
       "2016-06-15/participantsViews/14",
       "2016-06-15/participantsViews/15",
-      "2016-06-15/staffFinancial/7",
       "2016-06-15/policyAction/5",
       "2016-06-15/policyAction/6",
       "2016-06-15/policyAction/14",

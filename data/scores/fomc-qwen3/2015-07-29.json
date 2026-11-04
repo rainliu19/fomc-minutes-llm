@@ -1,7 +1,7 @@
 {
   "meetingDate": "2015-07-29",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -13,61 +13,61 @@
         "confidence": "medium",
         "evidence": [
           {
-            "quote": "The Committee concluded that, although it had seen further progress, the economic conditions warranting an increase in the target range for the federal funds rate had not yet been met.",
-            "paragraph_ref": "2015-07-29/policyAction/4"
+            "quote": "Participants observed that the labor market had improved notably since early this year, but many saw scope for some further improvement.",
+            "paragraph_ref": "2015-07-29/participantsViews/11"
           },
           {
-            "quote": "Members generally agreed that additional information on the outlook would be necessary before deciding to implement an increase in the target range.",
-            "paragraph_ref": "2015-07-29/policyAction/4"
+            "quote": "It was also noted that a prompt start to normalization would likely convey the Committee's confidence in prospects for the economy.",
+            "paragraph_ref": "2015-07-29/participantsViews/12"
           },
           {
             "quote": "The Committee anticipates that it will be appropriate to raise the target range for the federal funds rate when it has seen some further improvement in the labor market and is reasonably confident that inflation will move back to its",
             "paragraph_ref": "2015-07-29/policyAction/13"
           }
         ],
-        "rationale": "Participants acknowledged progress but saw conditions as not yet meeting the threshold for rate increases. A clear majority emphasized waiting for further data before acting, with some expressing cautious optimism about future improvements. No strong push for immediate tightening was evident.",
-        "score": -0.25,
+        "rationale": "Participants expressed cautious optimism about labor market improvements and inflation, with a view that policy normalization could begin soon, though with data dependence. Forward-looking language suggests a mild tilt toward tightening, but no clear consensus or urgency.",
+        "score": 0.25,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -82,8 +82,8 @@
       "2015-07-29/policyAction/1",
       "2015-07-29/policyAction/4",
       "2015-07-29/policyAction/6",
-      "2015-07-29/policyAction/7",
       "2015-07-29/policyAction/13",
+      "2015-07-29/policyAction/14",
       "2015-07-29/specialTopics/1",
       "2015-07-29/specialTopics/2"
     ]

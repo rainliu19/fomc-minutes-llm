@@ -1,7 +1,7 @@
 {
   "meetingDate": "2019-03-20",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -17,57 +17,57 @@
             "paragraph_ref": "2019-03-20/participantsViews/12"
           },
           {
-            "quote": "In light of these uncertainties as well as continued evidence of muted inflation pressures, participants generally agreed that a patient approach to determining future adjustments to the target range for the federal funds rate remained appropriate.",
-            "paragraph_ref": "2019-03-20/participantsViews/11"
+            "quote": "Several of these participants noted that the current target range for the federal funds rate was close to their estimates of its longer-run neutral level and foresaw economic growth continuing near its longer-run trend rate over the forecast period.",
+            "paragraph_ref": "2019-03-20/participantsViews/12"
           },
           {
-            "quote": "However, members continued to view sustained expansion of economic activity, strong labor market conditions, and inflation near the Committee's symmetric 2 percent objective as the most likely outcomes for the U.S. economy in the period ahead.",
-            "paragraph_ref": "2019-03-20/policyAction/2"
+            "quote": "In light of these uncertainties as well as continued evidence of muted inflation pressures, participants generally agreed that a patient approach to determining future adjustments to the target range for the federal funds rate remained appropriate.",
+            "paragraph_ref": "2019-03-20/participantsViews/11"
           }
         ],
-        "rationale": "The minutes show a clear consensus on maintaining the current rate and a patient approach to future adjustments, with no indication of a tightening or easing bias. A majority expects no change for the rest of the year, and the Committee emphasizes ongoing data dependence.",
+        "rationale": "The minutes show a majority expecting to hold the rate, with a patient approach and no clear push for tightening or easing. Forward-looking language emphasizes stability and data dependence, indicating balanced views.",
         "score": 0,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -82,10 +82,11 @@
       "2019-03-20/participantsViews/13",
       "2019-03-20/participantsViews/14",
       "2019-03-20/staffFinancial/2",
-      "2019-03-20/policyAction/2",
       "2019-03-20/policyAction/3",
       "2019-03-20/policyAction/6",
-      "2019-03-20/policyAction/11"
+      "2019-03-20/policyAction/11",
+      "2019-03-20/policyAction/12",
+      "2019-03-20/policyAction/15"
     ]
   }
 }

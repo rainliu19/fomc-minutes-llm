@@ -1,7 +1,7 @@
 {
   "meetingDate": "2014-12-17",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -25,49 +25,49 @@
             "paragraph_ref": "2014-12-17/policyAction/8"
           }
         ],
-        "rationale": "Most participants supported a patient approach to normalizing policy, with forward guidance indicating that rate increases could happen sooner if economic progress exceeds expectations. This reflects a clear lean toward future tightening, though with data dependence and no urgency.",
+        "rationale": "The minutes show a clear forward-looking bias toward future rate increases, with most participants agreeing on patience in normalizing policy and conditional language for earlier hikes if progress accelerates. This indicates a lean toward tightening, despite a hold on the rate.",
         "score": 0.25,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -82,8 +82,7 @@
       "2014-12-17/policyAction/1",
       "2014-12-17/policyAction/3",
       "2014-12-17/policyAction/8",
-      "2014-12-17/policyAction/10",
-      "2014-12-17/policyAction/13"
+      "2014-12-17/policyAction/10"
     ]
   }
 }

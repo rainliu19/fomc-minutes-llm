@@ -1,7 +1,7 @@
 {
   "meetingDate": "2016-12-14",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -21,49 +21,49 @@
             "paragraph_ref": "2016-12-14/policyAction/5"
           }
         ],
-        "rationale": "Participants agreed on a gradual pace of rate increases, with most viewing it as appropriate and consistent with current conditions. The path was seen as gradual and data-dependent, with no strong push for faster tightening or easing.",
-        "score": 0.25,
+        "rationale": "The minutes describe a gradual pace of rate increases as appropriate and emphasize that the rate is likely to remain below longer-run levels, indicating a clear lean toward a gradual tightening path with no urgency or strong push for faster hikes.",
+        "score": 0.5,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -80,7 +80,6 @@
       "2016-12-14/policyAction/2",
       "2016-12-14/policyAction/4",
       "2016-12-14/policyAction/5",
-      "2016-12-14/policyAction/6",
       "2016-12-14/policyAction/8",
       "2016-12-14/policyAction/13",
       "2016-12-14/policyAction/14"

@@ -1,9 +1,9 @@
 {
   "meetingDate": "2012-04-25",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": false,
-  "issues": "rate_path is scored but has no evidence.",
+  "issues": "rate_path.rationale mentions year 2014, after the minutes release date 2012-05-16.",
   "dimensionsScored": "rate_path",
   "score": {
     "meeting_date": "2012-04-25",
@@ -11,50 +11,59 @@
     "dimensions": {
       "rate_path": {
         "confidence": "high",
-        "evidence": [],
-        "rationale": "The minutes show a clear consensus to maintain the federal funds rate at 0 to 1/4 percent, with no indication of a tightening bias. A few members expressed concern about inflation risks, but no majority supported rate increases. The stance is described as highly accommodative and expected to last through the medium term, consistent with the release date.",
+        "evidence": [
+          {
+            "quote": "In particular, the Committee agreed to keep the target range for the federal funds rate at 0 to 1/4 percent, to continue the program of extending the average maturity of the Federal Reserve's holdings of securities as announced last September,",
+            "paragraph_ref": "2012-04-25/policyAction/2"
+          },
+          {
+            "quote": "With the economic outlook over the medium term not greatly changed, almost all of the members again agreed to indicate that the Committee expects to maintain a highly accommodative stance for monetary policy and currently anticipates that economic conditions--including low",
+            "paragraph_ref": "2012-04-25/policyAction/3"
+          }
+        ],
+        "rationale": "The Committee held the federal funds rate at 0 to 1/4 percent and emphasized a highly accommodative stance. Forward-looking language indicates low rates through late 2014, which was part of the original release and consistent with the meeting date.",
         "score": 0,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -70,8 +79,7 @@
       "2012-04-25/policyAction/2",
       "2012-04-25/policyAction/3",
       "2012-04-25/policyAction/6",
-      "2012-04-25/policyAction/12",
-      "2012-04-25/policyAction/16"
+      "2012-04-25/policyAction/12"
     ]
   }
 }

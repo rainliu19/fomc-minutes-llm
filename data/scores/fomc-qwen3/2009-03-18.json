@@ -1,7 +1,7 @@
 {
   "meetingDate": "2009-03-18",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -17,53 +17,53 @@
             "paragraph_ref": "2009-03-18/policyAction/7"
           },
           {
-            "quote": "The Committee believed that purchases of these amounts would help to promote a return to economic growth and price stability.",
-            "paragraph_ref": "2009-03-18/policyAction/1"
+            "quote": "To provide greater support to mortgage lending and housing markets, the Committee decided today to increase the size of the Federal Reserve's balance sheet further by purchasing up to an additional $750 billion of agency mortgage-backed securities, bringing its total",
+            "paragraph_ref": "2009-03-18/policyAction/7"
           }
         ],
-        "rationale": "The minutes state the Committee will maintain the federal funds rate at 0 to 1/4 percent and expect it to remain exceptionally low for an extended period, indicating a clear commitment to easy policy. No forward-looking tightening bias is expressed.",
-        "score": -0.5,
+        "rationale": "The minutes state the Committee held the rate at 0 to 1/4 percent and expected exceptionally low rates to last for an extended period, with no indication of future tightening. Forward-looking language emphasizes prolonged low rates, indicating a clear bias toward easing, not tightening.",
+        "score": -0.25,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2017-02-01",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -17,53 +17,57 @@
             "paragraph_ref": "2017-02-01/participantsViews/11"
           },
           {
+            "quote": "A few participants noted that continuing to remove policy accommodation in a timely manner, potentially at an upcoming meeting, would allow the Committee greater flexibility in responding to subsequent changes in economic conditions.",
+            "paragraph_ref": "2017-02-01/participantsViews/13"
+          },
+          {
             "quote": "The Committee expected that economic conditions would evolve in a manner that would warrant only gradual increases in the federal funds rate and that the federal funds rate was likely to remain, for some time, below levels expected to prevail",
             "paragraph_ref": "2017-02-01/policyAction/5"
           }
         ],
-        "rationale": "Participants leaned toward a gradual pace of rate increases, with most agreeing on a gradual path and a view that rates would remain below longer-run levels for some time. No strong push for faster hikes or cuts was evident.",
+        "rationale": "The minutes show a clear consensus on a gradual pace of rate increases, with most participants agreeing on a gradual path and a few emphasizing timely action to maintain flexibility. The view that rates would remain below longer-run levels indicates a cautious, forward-looking stance.",
         "score": 0.25,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -79,9 +83,9 @@
       "2017-02-01/policyAction/2",
       "2017-02-01/policyAction/4",
       "2017-02-01/policyAction/5",
-      "2017-02-01/policyAction/6",
       "2017-02-01/policyAction/13",
-      "2017-02-01/policyAction/14"
+      "2017-02-01/policyAction/14",
+      "2017-02-01/policyAction/18"
     ]
   }
 }

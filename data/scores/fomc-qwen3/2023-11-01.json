@@ -1,7 +1,7 @@
 {
   "meetingDate": "2023-11-01",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -25,49 +25,49 @@
             "paragraph_ref": "2023-11-01/participantsViews/10"
           }
         ],
-        "rationale": "The minutes show a unified view of maintaining a restrictive policy rate, with all participants agreeing to hold the rate at 5¼ to 5½ percent and emphasizing continued tightening to bring inflation down to 2 percent. Forward guidance highlights a firm commitment to restrictive policy, with no indication of easing.",
+        "rationale": "The minutes show a clear consensus to hold the rate at 5¼ to 5½ percent and emphasize a restrictive stance to bring inflation down to 2 percent. Forward-looking language indicates a continued commitment to tightening if needed, with no indication of easing.",
         "score": 0.25,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2009-09-23",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -21,49 +21,49 @@
             "paragraph_ref": "2009-09-23/policyAction/7"
           }
         ],
-        "rationale": "The minutes clearly state the Committee will maintain the federal funds rate at 0 to 1/4 percent and expect exceptionally low rates for an extended period, indicating a strong bias toward easing policy. No forward-looking tightening is mentioned.",
-        "score": -0.5,
+        "rationale": "The minutes clearly state the Committee held the rate at 0 to 1/4 percent and emphasized that economic conditions would warrant exceptionally low rates for an extended period. No forward-looking tightening bias is expressed.",
+        "score": 0,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }

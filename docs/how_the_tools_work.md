@@ -256,7 +256,7 @@ must quote the sentences behind its score, and code checks the quotes are really
 A score of +0.5 or more reads as "increase", −0.5 or less as "cut", anything between as "hold".
 When rates are already at zero, a lean to cuts reads as "hold", since the rate can't go lower.
 
-**The word rules (the fallback).** For the 8 of 150 meetings whose AI score failed its checks,
+**The word rules (the fallback).** For the 9 of 150 meetings whose AI score failed its checks,
 code reads the sentences about future rate moves and weighs them by how many held each view: "all
 participants" counts most, then "most", "many", "several", "a few", "one". The most widely held
 view that isn't conditional on the data gives the lean.
@@ -266,24 +266,31 @@ then tested unchanged on 2019 onward:
 
 | | 2008 to 2018 (87 meetings) | 2019 onward (62 meetings) |
 |---|---|---|
-| AI score (word rules where it failed) | 86% | 81% |
+| AI score (word rules where it failed) | 83% | 84% |
 | Word rules alone | 71% | 76% |
 | 6-month bill | 93% | 84% |
 | Always guess "hold" | 85% | 65% |
 
-From 2019 onward, of 22 moves, the AI caught 14 and called 4 that didn't happen; the word rules
+From 2019 onward, of 22 moves, the AI caught 17 and called 5 that didn't happen; the word rules
 caught 18 but called 11 that didn't; the bill caught 14 and called 2. So the AI beats the word
-rules mainly by calling far fewer moves that didn't happen. The bill is still best for the very
-next meeting, which is why the reading uses the minutes for direction and the bill for timing.
+rules mainly by calling fewer moves that didn't happen. It ties the bill from 2019 onward, but the
+bill calls fewer false moves and did better on 2008 to 2018, which is why the reading uses the
+minutes for direction and the bill for timing.
 
 **What could be wrong:**
 - **The score mixes this meeting's decision with what comes next.** The rubric puts a rate
-  increase at +0.75, above the +0.5 cutoff. So most meetings that raised read as "increase next",
-  partly saying "they just hiked, so they'll hike again".
+  increase at +0.5 to +1 and a cut at −0.5 to −1, at or past the cutoff, and the scorer is told the
+  decision. So every meeting that moved reads as another move next, partly saying "they just cut,
+  so they'll cut again". The October and December 2025 cuts read as "cut next", though the
+  minutes expected a pause.
 - **Hindsight.** The model was trained on text written after most of these meetings, and may know
   what the Fed did next. That would make its scores of older minutes look better than they are.
-- **Scores vary from run to run.** Of 15 meetings scored three times, 6 moved by 0.25, which
-  flipped the direction for 3 near the cutoff.
+- **Some scores fail a check that is too strict.** All 9 failures name a year the minutes
+  themselves gave in the Committee's guidance (such as "mid-2013" in 2011), which the check reads
+  as hindsight. Those meetings use the word rules.
+- **Scores used to vary from run to run.** At temperature 0.2, 6 of 15 meetings scored three times
+  moved by 0.25. The saved scores were made again on 2026-11-04 at temperature 0, which gives the
+  same score each time.
 - **The cutoff was chosen on few moves.** 2008 to 2018 had only 13 rate changes, most of that time
   at zero.
 

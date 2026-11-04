@@ -1,7 +1,7 @@
 {
   "meetingDate": "2008-08-05",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,7 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
-        "confidence": "medium",
+        "confidence": "high",
         "evidence": [
           {
             "quote": "Most members did not see the current stance of policy as particularly accommodative, given that many households and businesses were facing elevated borrowing costs and reduced credit availability due to the effects of financial market strains as well as macroeconomic",
@@ -25,49 +25,49 @@
             "paragraph_ref": "2008-08-05/policyAction/11"
           }
         ],
-        "rationale": "Participants expressed concern about inflation risks and a clear leaning toward future tightening, though the decision was to hold the rate. A few supported a rate increase, indicating a split view with a moderate tightening bias.",
+        "rationale": "The minutes show a clear consensus to hold the rate, with most participants expecting a future tightening. A minority advocated a rate increase to curb inflation risks, indicating a lean toward tighter policy in the near future.",
         "score": 0.25,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -83,7 +83,7 @@
       "2008-08-05/staffEconomy/11",
       "2008-08-05/staffEconomy/12",
       "2008-08-05/policyAction/1",
-      "2008-08-05/policyAction/3",
+      "2008-08-05/policyAction/5",
       "2008-08-05/policyAction/6",
       "2008-08-05/policyAction/11"
     ]

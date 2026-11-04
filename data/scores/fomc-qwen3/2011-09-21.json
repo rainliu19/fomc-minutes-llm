@@ -1,7 +1,7 @@
 {
   "meetingDate": "2011-09-21",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,60 +10,60 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
-        "confidence": "high",
+        "confidence": "medium",
         "evidence": [
           {
             "quote": "The Committee also decided to keep the target range for the federal funds rate at 0 to 1/4 percent and to reaffirm its anticipation that economic conditions--including low rates of resource utilization and a subdued outlook for inflation over the",
             "paragraph_ref": "2011-09-21/policyAction/3"
           },
           {
-            "quote": "In the discussion of monetary policy for the period ahead, most members agreed that the revisions to the economic outlook warranted some additional monetary policy accommodation to support a stronger recovery and to help ensure that inflation, over time, was",
-            "paragraph_ref": "2011-09-21/policyAction/1"
+            "quote": "A couple of members noted that they would prefer to change the Committee's forward guidance to provide greater clarity about the economic conditions that would be likely to warrant maintaining exceptionally low levels of the target federal funds rate, but",
+            "paragraph_ref": "2011-09-21/policyAction/3"
           }
         ],
-        "rationale": "The minutes state the rate was held at 0 to 1/4 percent with a commitment to keep it exceptionally low for the medium run, and most members supported additional accommodation. This reflects a clear dovish stance on the policy path, with forward guidance indicating sustained low rates.",
-        "score": -0.5,
+        "rationale": "The Committee held the rate at 0 to 1/4 percent and reaffirmed expectations of exceptionally low rates, with forward guidance pointing to prolonged low rates. No explicit shift in direction was made, and dissent existed on further easing, but the overall tone leaned toward maintaining low rates.",
+        "score": -0.25,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -77,7 +77,6 @@
       "2011-09-21/staffFinancial/13",
       "2011-09-21/policyAction/1",
       "2011-09-21/policyAction/3",
-      "2011-09-21/policyAction/10",
       "2011-09-21/policyAction/12",
       "2011-09-21/policyAction/16"
     ]

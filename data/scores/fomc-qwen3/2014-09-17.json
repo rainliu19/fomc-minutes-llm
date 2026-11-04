@@ -1,7 +1,7 @@
 {
   "meetingDate": "2014-09-17",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -21,49 +21,49 @@
             "paragraph_ref": "2014-09-17/participantsViews/13"
           }
         ],
-        "rationale": "Participants expressed concern that the forward guidance implied a longer period before rate increases and a more gradual path than they believed was appropriate, indicating a cautious, data-dependent stance. Some saw the current guidance as overly cautious, suggesting a lean toward patience and gradual tightening.",
+        "rationale": "Participants expressed concern that the forward guidance implied a longer period before rate increases than they believed was appropriate, indicating a cautious, data-dependent stance. Some saw the current guidance as overly conservative, suggesting a lean toward more gradual tightening.",
         "score": 0.25,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -81,7 +81,6 @@
       "2014-09-17/policyAction/13",
       "2014-09-17/policyAction/17",
       "2014-09-17/specialTopics/4",
-      "2014-09-17/specialTopics/5",
       "2014-09-17/specialTopics/8"
     ]
   }

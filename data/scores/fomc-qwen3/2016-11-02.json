@@ -1,7 +1,7 @@
 {
   "meetingDate": "2016-11-02",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -25,49 +25,49 @@
             "paragraph_ref": "2016-11-02/policyAction/5"
           }
         ],
-        "rationale": "Most participants saw a need for future rate increases, but a majority emphasized waiting for more data. The view was balanced, with some support for action and a clear preference for gradual, data-dependent moves.",
+        "rationale": "The minutes show a majority leaning toward future rate increases, with a cautious approach due to data dependence. Forward-looking language indicates a gradual path, not an immediate move, suggesting a balanced but slightly hawkish stance.",
         "score": 0.25,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -81,7 +81,7 @@
       "2016-11-02/policyAction/2",
       "2016-11-02/policyAction/4",
       "2016-11-02/policyAction/5",
-      "2016-11-02/policyAction/8",
+      "2016-11-02/policyAction/6",
       "2016-11-02/policyAction/13",
       "2016-11-02/policyAction/14",
       "2016-11-02/policyAction/19",

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2015-01-28",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -21,53 +21,53 @@
             "paragraph_ref": "2015-01-28/policyAction/3"
           },
           {
-            "quote": "Many participants indicated that their assessment of the balance of risks associated with the timing of the beginning of policy normalization had inclined them toward keeping the federal funds rate at its effective lower bound for a longer time.",
-            "paragraph_ref": "2015-01-28/specialTopics/17"
+            "quote": "However, if incoming information indicates faster progress toward the Committee's employment and inflation objectives than the Committee now expects, then increases in the target range for the federal funds rate are likely to occur sooner than currently anticipated.",
+            "paragraph_ref": "2015-01-28/policyAction/9"
           }
         ],
-        "rationale": "The minutes show a clear consensus to maintain the current rate and a cautious, data-dependent approach to future increases, with a strong emphasis on avoiding premature tightening. Participants leaned toward delaying firming due to risks to labor market and inflation progress.",
+        "rationale": "The minutes show a clear forward-looking bias toward gradual normalization, with a strong emphasis on data dependence and patience. No explicit push for immediate tightening or easing is present.",
         "score": 0.25,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }

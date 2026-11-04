@@ -1,7 +1,7 @@
 {
   "meetingDate": "2012-10-23",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -17,53 +17,53 @@
             "paragraph_ref": "2012-10-23/policyAction/10"
           },
           {
-            "quote": "Accordingly, all but one member judged that maintaining the current, highly accommodative stance of monetary policy was warranted in order to foster a stronger economic recovery in a context of price stability.",
-            "paragraph_ref": "2012-10-23/policyAction/2"
+            "quote": "To support continued progress toward maximum employment and price stability, the Committee expects that a highly accommodative stance of monetary policy will remain appropriate for a considerable time after the economic recovery strengthens.",
+            "paragraph_ref": "2012-10-23/policyAction/10"
           }
         ],
-        "rationale": "The minutes confirm the federal funds rate is held at 0 to 1/4 percent with exceptionally low levels expected to remain in place for a significant period, reflecting a clear commitment to easing policy. This forward guidance shows a strong bias toward easier policy, even though one member dissented.",
-        "score": -0.5,
+        "rationale": "The Committee held the rate at 0 to 1/4 percent and expects exceptionally low levels to remain for a considerable time, showing a clear commitment to easing policy. No tightening bias is expressed, and dissent is limited. The forward-looking language reflects a balanced view, not a direction.",
+        "score": 0,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }

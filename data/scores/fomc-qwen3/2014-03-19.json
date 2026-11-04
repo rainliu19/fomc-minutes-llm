@@ -1,7 +1,7 @@
 {
   "meetingDate": "2014-03-19",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -21,49 +21,49 @@
             "paragraph_ref": "2014-03-19/policyAction/12"
           }
         ],
-        "rationale": "Participants agreed to maintain the current 0 to 1/4 percent target range for a considerable time, with no indication of imminent rate increases or easing. The forward guidance emphasized continued accommodation, especially if inflation remains below 2 percent.",
+        "rationale": "The minutes indicate a clear commitment to maintaining the current 0 to 1/4 percent target range for a considerable time, with no indication of imminent rate increases or easing. Forward guidance emphasizes a prolonged period of accommodative policy, especially if inflation remains below target.",
         "score": 0,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }

@@ -1,14 +1,9 @@
 {
   "meetingDate": "2008-06-25",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
-  "ok": false,
-  "issues": [
-    "rate_path.score must be null when status is not_discussed.",
-    "rate_path.confidence must be null when status is not_discussed.",
-    "rate_path.evidence must be empty when status is not_discussed.",
-    "rate_path must be scored consistently with the meeting's actual hold."
-  ],
+  "scoredOn": "2026-11-04",
+  "ok": true,
+  "issues": [],
   "dimensionsScored": "rate_path",
   "score": {
     "meeting_date": "2008-06-25",
@@ -22,57 +17,53 @@
             "paragraph_ref": "2008-06-25/policyAction/1"
           },
           {
-            "quote": "Against this backdrop, most members judged that an unchanged federal funds rate at this meeting represented an appropriate balancing of the risks to the economic outlook and was consistent, for now, with a policy path that would support an eventual",
-            "paragraph_ref": "2008-06-25/policyAction/1"
-          },
-          {
             "quote": "\"The Federal Open Market Committee decided today to keep its target for the federal funds rate at 2 percent.",
             "paragraph_ref": "2008-06-25/policyAction/5"
           }
         ],
-        "rationale": "The Committee held the federal funds rate at 2 percent, and most members viewed this as appropriate to balance risks. While one member advocated tightening, the overall view leaned toward maintaining the rate due to uncertainty, with no clear push for easing or tightening. The decision was consistent with a forward-looking path that supports eventual decline in inflation and unemployment.",
-        "score": 0,
-        "status": "not_discussed"
+        "rationale": "The minutes indicate a clear leaning toward tightening policy due to rising inflation risks and inflation expectations, though the decision was to hold the rate. One member advocated a rate increase, and most saw future tightening as likely, despite uncertainty.",
+        "score": 0.25,
+        "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -85,7 +76,6 @@
       "2008-06-25/staffEconomy/11",
       "2008-06-25/staffEconomy/12",
       "2008-06-25/staffEconomy/13",
-      "2008-06-25/staffEconomy/15",
       "2008-06-25/policyAction/1",
       "2008-06-25/policyAction/3",
       "2008-06-25/policyAction/5",

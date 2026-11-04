@@ -1,7 +1,7 @@
 {
   "meetingDate": "2014-01-29",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,60 +10,60 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
-        "confidence": "medium",
+        "confidence": "high",
         "evidence": [
           {
-            "quote": "A few participants raised the possibility that it might be appropriate to increase the federal funds rate relatively soon.",
-            "paragraph_ref": "2014-01-29/participantsViews/10"
+            "quote": "In addition, the Committee decided to repeat the qualitative guidance, introduced in December, clarifying that a range of labor market indicators would be used when assessing the appropriate stance of policy once the unemployment rate threshold had been crossed.",
+            "paragraph_ref": "2014-01-29/policyAction/3"
           },
           {
             "quote": "The Committee continues to anticipate, based on its assessment of these factors, that it likely will be appropriate to maintain the current target range for the federal funds rate well past the time that the unemployment rate declines below 6-1/2",
             "paragraph_ref": "2014-01-29/policyAction/12"
           }
         ],
-        "rationale": "A few participants suggested raising the rate soon, but most emphasized maintaining the current rate range well past the 6-1/2% unemployment threshold. The view is balanced, with no strong consensus on tightening.",
-        "score": 0.25,
+        "rationale": "The minutes indicate a clear commitment to maintaining the current target range for the federal funds rate well beyond the 6-1/2 percent unemployment threshold, with no indication of a rate increase or easing. Forward guidance emphasizes continued accommodation, especially if inflation remains below target.",
+        "score": 0,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }

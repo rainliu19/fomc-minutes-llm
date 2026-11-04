@@ -1,9 +1,9 @@
 {
   "meetingDate": "2012-03-13",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
-  "ok": false,
-  "issues": "rate_path.rationale mentions year 2014, after the minutes release date 2012-04-03.",
+  "scoredOn": "2026-11-04",
+  "ok": true,
+  "issues": [],
   "dimensionsScored": "rate_path",
   "score": {
     "meeting_date": "2012-03-13",
@@ -21,49 +21,49 @@
             "paragraph_ref": "2012-03-13/policyAction/3"
           }
         ],
-        "rationale": "The forward guidance in the minutes references 'late 2014' and 'well before the end of 2014' as part of the policy outlook at the time of the meeting. These are within the context of the meeting's discussion and were released on 2012-04-03, so they are not post-release.",
-        "score": -0.25,
+        "rationale": "The minutes describe a balanced view on the policy rate path, with most participants supporting continued accommodation, while one member sees a need for earlier tightening. The forward guidance is conditional and not strongly directional, with no explicit commitment to a specific path beyond the medium term.",
+        "score": 0,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -75,7 +75,7 @@
       "2012-03-13/participantsViews/3",
       "2012-03-13/participantsViews/9",
       "2012-03-13/staffOutlook/1",
-      "2012-03-13/staffFinancial/2",
+      "2012-03-13/staffEconomy/7",
       "2012-03-13/policyAction/2",
       "2012-03-13/policyAction/3",
       "2012-03-13/policyAction/10",

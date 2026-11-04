@@ -1,7 +1,7 @@
 {
   "meetingDate": "2010-06-23",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -17,49 +17,49 @@
             "paragraph_ref": "2010-06-23/policyAction/1"
           }
         ],
-        "rationale": "The minutes state the Committee agreed to maintain the federal funds rate at 0 to 1/4 percent, with no indication of a future rate increase or cut. The discussion emphasized the need for continued low rates due to weak labor markets and subdued inflation, but one member dissented on the long-term communication of such low rates.",
+        "rationale": "The Committee held the policy rate at 0 to 1/4 percent, with no indication of future tightening or easing. Forward-looking language emphasized maintaining low rates for an extended period, though one member dissented on the messaging. The view was balanced, with no strong push for change.",
         "score": 0,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }

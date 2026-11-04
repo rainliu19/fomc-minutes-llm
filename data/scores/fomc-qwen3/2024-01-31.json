@@ -1,7 +1,7 @@
 {
   "meetingDate": "2024-01-31",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -21,49 +21,49 @@
             "paragraph_ref": "2024-01-31/policyAction/17"
           }
         ],
-        "rationale": "Participants viewed the policy rate as likely at its peak and emphasized a clear bias toward waiting for sustained inflation progress before easing. The view was widely shared and explicitly stated in the minutes.",
-        "score": 0.25,
+        "rationale": "The minutes indicate a clear view that the policy rate is at its peak and that easing is not expected until inflation shows sustained progress. This forward-looking language shows a strong bias toward holding, not easing, the rate.",
+        "score": 0,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -81,7 +81,6 @@
       "2024-01-31/staffFinancial/1",
       "2024-01-31/financialMarkets/2",
       "2024-01-31/policyAction/2",
-      "2024-01-31/policyAction/3",
       "2024-01-31/policyAction/4",
       "2024-01-31/policyAction/7",
       "2024-01-31/policyAction/17"

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2026-09-16",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -13,57 +13,57 @@
         "confidence": "high",
         "evidence": [
           {
-            "quote": "In support of the Committee's dual-mandate goals, all members agreed to raise the target range for the federal funds rate 1/4 percentage point to 3-3/4 to 4 percent and reaffirmed the FOMC's policy of maintaining ample reserves in the banking",
-            "paragraph_ref": "2026-09-16/policyAction/1"
-          },
-          {
             "quote": "With regard to the outlook for monetary policy beyond the current meeting, most participants assessed that another increase in the target range for the federal funds rate would likely be appropriate by year end.",
             "paragraph_ref": "2026-09-16/participantsViews/11"
+          },
+          {
+            "quote": "A number of participants viewed a higher path for the target range as necessary based on their modal outlooks rather than on risk-management grounds.",
+            "paragraph_ref": "2026-09-16/participantsViews/10"
           }
         ],
-        "rationale": "The minutes show a clear consensus to raise the rate and a forward-looking bias toward further increases, with most participants expecting another hike by year end.",
+        "rationale": "The minutes indicate a clear consensus that further rate increases are likely by year end, with many participants viewing a higher path as necessary. This reflects a strong tightening bias beyond the immediate decision.",
         "score": 0.75,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2008-10-29",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -21,49 +21,49 @@
             "paragraph_ref": "2008-10-29/policyAction/3"
           }
         ],
-        "rationale": "The minutes show a clear consensus on lowering the federal funds rate to 1 percent, with forward guidance indicating a path toward an average of 1 percent. This reflects a strong easing bias.",
+        "rationale": "The Committee lowered the rate to 1 percent, and participants agreed on a path to reduce it to around 1 percent, indicating a clear lean toward easing policy. The decision and forward guidance show a strong easing bias.",
         "score": -0.75,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -81,7 +81,7 @@
       "2008-10-29/policyAction/1",
       "2008-10-29/policyAction/3",
       "2008-10-29/policyAction/5",
-      "2008-10-29/policyAction/8"
+      "2008-10-29/specialTopics/7"
     ]
   }
 }

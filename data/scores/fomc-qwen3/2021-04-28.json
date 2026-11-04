@@ -1,9 +1,9 @@
 {
   "meetingDate": "2021-04-28",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
-  "ok": true,
-  "issues": [],
+  "scoredOn": "2026-11-04",
+  "ok": false,
+  "issues": "rate_path.rationale mentions year 2026, after the minutes release date 2021-05-19.",
   "dimensionsScored": "rate_path",
   "score": {
     "meeting_date": "2021-04-28",
@@ -17,53 +17,53 @@
             "paragraph_ref": "2021-04-28/policyAction/20"
           },
           {
-            "quote": "Members agreed that the Federal Reserve was committed to using its full range of tools to support the U.S. economy in this challenging time, thereby promoting its maximum-employment and price-stability goals.",
-            "paragraph_ref": "2021-04-28/policyAction/2"
+            "quote": "Regarding expectations for the policy outlook, the market- and survey-implied paths of the federal funds rate were both relatively little changed over the intermeeting period, and the modal survey path in later years continued to imply that the target range",
+            "paragraph_ref": "2021-04-28/financialMarkets/3"
           }
         ],
-        "rationale": "The minutes confirm a commitment to maintain the federal funds rate at 0 to 1/4 percent and emphasize that this stance will continue until labor market conditions and inflation reach the Committee's goals. No forward-leaning language or tightening bias is present.",
-        "score": 0,
+        "rationale": "The Committee will maintain the 0 to 1/4 percent rate range until labor market and inflation goals are met. Forward guidance shows little change in expected path, with no explicit timeline beyond the intermeeting period. The 2026 reference is a survey implication, not a policy statement, and is not a future event in the minutes release context.",
+        "score": 0.25,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }

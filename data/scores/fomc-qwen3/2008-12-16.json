@@ -1,7 +1,7 @@
 {
   "meetingDate": "2008-12-16",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -17,53 +17,53 @@
             "paragraph_ref": "2008-12-16/policyAction/7"
           },
           {
-            "quote": "In particular, the Committee anticipates that weak economic conditions are likely to warrant exceptionally low levels of the federal funds rate for some time.",
-            "paragraph_ref": "2008-12-16/policyAction/10"
+            "quote": "Maintaining that level of the federal funds rate implied a substantial further reduction in the target federal funds rate.",
+            "paragraph_ref": "2008-12-16/policyAction/1"
           }
         ],
-        "rationale": "The minutes confirm a decision to set the federal funds rate at 0 to 1/4 percent, which is a rate cut from previous levels, and state that weak conditions would warrant exceptionally low rates for some time, indicating a clear bias toward easing policy.",
-        "score": -0.25,
+        "rationale": "The Committee lowered the target range to 0 to 1/4 percent, indicating a substantial cut from previous levels. The minutes describe this as a necessary move given weak economic conditions and ongoing financial strains.",
+        "score": -0.75,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -77,8 +77,7 @@
       "2008-12-16/participantsViews/9",
       "2008-12-16/policyAction/1",
       "2008-12-16/policyAction/2",
-      "2008-12-16/policyAction/7",
-      "2008-12-16/policyAction/10"
+      "2008-12-16/policyAction/7"
     ]
   }
 }

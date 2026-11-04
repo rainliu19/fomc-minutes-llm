@@ -1,7 +1,7 @@
 {
   "meetingDate": "2008-03-18",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -13,57 +13,57 @@
         "confidence": "high",
         "evidence": [
           {
-            "quote": "\"The Federal Open Market Committee decided today to lower its target for the federal funds rate 75 basis points to 2-1/4 percent.",
-            "paragraph_ref": "2008-03-18/policyAction/6"
+            "quote": "The Committee's action at the January 30 meeting had been viewed by market participants as the most likely outcome, but near-term futures rates declined a few basis points as investors had placed some probability on a smaller policy move.",
+            "paragraph_ref": "2008-03-18/staffEconomy/17"
           },
           {
-            "quote": "In the Committee's discussion of monetary policy for the intermeeting period, most members judged that a substantial easing in the stance of monetary policy was warranted at this meeting.",
+            "quote": "All in all, members judged that a 75 basis point easing of policy at this meeting was appropriate to address the combination of risks of slowing economic growth, inflationary pressures, and financial market disruptions.",
             "paragraph_ref": "2008-03-18/policyAction/1"
           }
         ],
-        "rationale": "The minutes describe a 75 basis point cut to the federal funds rate to a target of 2-1/4 percent, with most members agreeing on the need for substantial easing. This reflects a clear, decisive move toward easier policy.",
+        "rationale": "The minutes describe a 75 basis point easing of the policy rate, with most members agreeing it was appropriate to address weakening growth, inflation risks, and financial market strains. This reflects a clear, decisive move toward easier policy.",
         "score": -0.75,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -76,10 +76,8 @@
       "2008-03-18/participantsViews/4",
       "2008-03-18/participantsViews/5",
       "2008-03-18/staffOutlook/1",
-      "2008-03-18/staffEconomy/15",
       "2008-03-18/staffEconomy/17",
       "2008-03-18/policyAction/1",
-      "2008-03-18/policyAction/6",
       "2008-03-18/policyAction/12"
     ]
   }

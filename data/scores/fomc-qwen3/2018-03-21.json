@@ -1,7 +1,7 @@
 {
   "meetingDate": "2018-03-21",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -25,49 +25,49 @@
             "paragraph_ref": "2018-03-21/policyAction/5"
           }
         ],
-        "rationale": "The minutes show near-unanimous agreement on raising the rate and a clear lean toward gradual further increases, with all participants seeing further firming as warranted. Forward-looking language emphasizes a gradual path and sustained economic expansion.",
+        "rationale": "The minutes show near-unanimous agreement on raising the rate and a clear forward-looking bias toward gradual increases, with most participants expecting further progress toward inflation and labor market goals.",
         "score": 0.75,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -77,7 +77,6 @@
     "rate_path": [
       "2018-03-21/participantsViews/1",
       "2018-03-21/participantsViews/8",
-      "2018-03-21/participantsViews/10",
       "2018-03-21/participantsViews/11",
       "2018-03-21/participantsViews/12",
       "2018-03-21/participantsViews/13",

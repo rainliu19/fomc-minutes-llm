@@ -149,7 +149,7 @@ classdef testEconomy < matlab.unittest.TestCase
             % The AI scored the rate path of the September minutes +0.75 (data/scores)
             tc.verifyEqual([r.minutes.directionSource, string(r.minutes.aiRatePathScore)], ["ai", "0.75"]);
             tc.verifySubstring(r.summary, "the AI scored the rate path +0.75 on its scale from -1 (dovish) to +1 (hawkish), a lean toward further increases.");
-            tc.verifySubstring(r.summary, "maintaining ample reserves in the banking..."" [2026-09-16/policyAction/1]");
+            tc.verifySubstring(r.summary, "as necessary based on their modal outlooks rather than on risk-management grounds."" [2026-09-16/participantsViews/10]");
             tc.verifySubstring(r.note, "the AI's score of their rate path");
             tc.verifySubstring(r.summary, "another increase in the target range for the federal funds rate would likely be appropriate by year end."" [2026-09-16/participantsViews/11]");
             tc.verifySubstring(r.summary, "revised its inflation forecast higher [2026-09-16/staffOutlook/1]");
@@ -164,13 +164,14 @@ classdef testEconomy < matlab.unittest.TestCase
         end
 
         function nearZeroALeanToCutsMeansMoreSupportAndALaterMeetingIsNamed(tc)
-            % October 2012: the range at 0 to 1/4 percent; the September 13 meeting has been
-            % held but its minutes come out on October 4
-            r = fomc.data.economyAssessment(tc.D, datetime(2012,10,1));
-            tc.verifyEqual(r.minutes.meetingDate, "2012-08-01");
+            % November 2012: the range at 0 to 1/4 percent; the October 23 meeting has been held
+            % but its minutes come out on November 14. The September minutes have no score that
+            % passed its checks, so their lean is the word rules'
+            r = fomc.data.economyAssessment(tc.D, datetime(2012,11,1));
+            tc.verifyEqual([r.minutes.meetingDate, r.minutes.directionSource], ["2012-09-13", "rules"]);
             tc.verifySubstring(r.summary, "lean toward more support for the economy, by means other than the rate");
-            tc.verifyEqual(r.minutes.laterMeeting, "2012-09-13");
-            tc.verifySubstring(r.summary, "minutes are not public until 2012-10-04");
+            tc.verifyEqual(r.minutes.laterMeeting, "2012-10-23");
+            tc.verifySubstring(r.summary, "minutes are not public until 2012-11-14");
         end
 
         function questionsAboutWherePolicyShouldGoGetIt(tc)
@@ -271,7 +272,7 @@ classdef testEconomy < matlab.unittest.TestCase
             r = fomc.data.economyAssessment(tc.D, datetime(2026,2,23));
             tc.verifyEqual([r.nextMeeting.minutesWay, r.nextMeeting.marketWay], ["hold", "hold"]);
             % Near zero a lean to cuts means support by other means: the rate itself holds
-            r = fomc.data.economyAssessment(tc.D, datetime(2012,10,1));
+            r = fomc.data.economyAssessment(tc.D, datetime(2012,11,1));
             tc.verifyEqual(r.nextMeeting.minutesWay, "hold");
             % The policy rules and the 2-year yield come last, as background
             tc.verifyLessThan(strfind(r.summary, "Background on where policy may go over the next year or two"), ...
@@ -286,7 +287,7 @@ classdef testEconomy < matlab.unittest.TestCase
             heldBy2008 = sum(tc.D.meetings.MeetingDate(2:end) <= datetime(2008,4,1));
             tc.verifyLessThanOrEqual(early.n, heldBy2008);
             tc.verifyGreaterThanOrEqual(late.n, late.raised + late.held + late.cut, "decisions read as unknown are not counted");
-            tc.verifyEqual([late.raised, late.held, late.cut], [15, 2, 0], "both up, October 2026");
+            tc.verifyEqual([late.raised, late.held, late.cut], [15, 1, 0], "both up, October 2026");
             r = fomc.data.economyAssessment(tc.D, datetime(2008,4,1));
             tc.verifySubstring(r.summary, "Too few earlier meetings in this data had this pattern to compare.");
         end

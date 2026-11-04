@@ -1,7 +1,7 @@
 {
   "meetingDate": "2025-10-29",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -19,55 +19,51 @@
           {
             "quote": "Most participants judged that further downward adjustments to the target range for the federal funds rate would likely be appropriate as the Committee moved to a more neutral policy stance over time, although several of these participants indicated that they",
             "paragraph_ref": "2025-10-29/participantsViews/11"
-          },
-          {
-            "quote": "In considering additional adjustments to the target range for the federal funds rate, the Committee will carefully assess incoming data, the evolving outlook, and the balance of risks.",
-            "paragraph_ref": "2025-10-29/policyAction/15"
           }
         ],
-        "rationale": "The decision was a rate cut, so the score must be negative. The minutes show a clear consensus on lowering the rate and a forward-looking bias toward further cuts, indicating a dovish stance despite the actual move being a reduction. The score is adjusted to -0.25 to reflect a slight lean toward easing policy, consistent with the decision and forward guidance.",
-        "score": -0.25,
+        "rationale": "The minutes show a clear majority supporting a 1/4 percentage point cut to 3-3/4 to 4 percent, with most participants expecting further downward adjustments in the future. This reflects a strong leaning toward easing policy despite risks.",
+        "score": -0.5,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -79,7 +75,6 @@
       "2025-10-29/participantsViews/11",
       "2025-10-29/participantsViews/12",
       "2025-10-29/financialMarkets/1",
-      "2025-10-29/policyAction/1",
       "2025-10-29/policyAction/2",
       "2025-10-29/policyAction/3",
       "2025-10-29/policyAction/6",

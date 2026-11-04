@@ -1,7 +1,7 @@
 {
   "meetingDate": "2011-01-26",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-04",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -13,57 +13,57 @@
         "confidence": "high",
         "evidence": [
           {
-            "quote": "Accordingly, the Committee agreed to continue to expand its holdings of longer-term Treasury securities as announced in November in order to promote a stronger pace of economic recovery and to help ensure that inflation, over time, is at levels consistent",
-            "paragraph_ref": "2011-01-26/policyAction/1"
-          },
-          {
             "quote": "The Committee will maintain the target range for the federal funds rate at 0 to 1/4 percent and continues to anticipate that economic conditions, including low rates of resource utilization, subdued inflation trends, and stable inflation expectations, are likely to",
             "paragraph_ref": "2011-01-26/policyAction/8"
+          },
+          {
+            "quote": "In their discussion of monetary policy for the period ahead, members agreed that no changes to the Committee's asset purchase program or to its target range for the federal funds rate were warranted at this meeting.",
+            "paragraph_ref": "2011-01-26/policyAction/1"
           }
         ],
-        "rationale": "The minutes state the Committee maintained the 0 to 1/4 percent target range and emphasized that economic conditions would warrant exceptionally low rates for an extended period. No forward-looking tightening bias is expressed.",
-        "score": -0.25,
+        "rationale": "The minutes state a hold on the policy rate and emphasize that economic conditions will warrant exceptionally low rates for an extended period. No forward-looking tightening bias is expressed.",
+        "score": 0,
         "status": "scored"
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
