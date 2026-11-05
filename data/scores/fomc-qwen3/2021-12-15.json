@@ -1,7 +1,7 @@
 {
   "meetingDate": "2021-12-15",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
-        "confidence": "high",
+        "status": "scored",
+        "score": -0.75,
+        "confidence": "medium",
+        "rationale": "The Committee held the rate and emphasized maintaining it until labor market conditions meet maximum employment. No forward-looking language supports tightening; instead, the minutes show a clear commitment to holding, not raising, the rate. This reflects a dovish stance on policy path.",
         "evidence": [
           {
             "quote": "In support of these goals, the Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent.",
@@ -24,10 +27,7 @@
             "quote": "In support of the Committee's goals of maximum employment and inflation at the rate of 2 percent over the longer run, participants judged that it would be appropriate for the Committee to keep the target range for the federal funds",
             "paragraph_ref": "2021-12-15/participantsViews/12"
           }
-        ],
-        "rationale": "The minutes state the Committee held the rate at 0 to 1/4 percent and emphasized maintaining it until labor market conditions meet maximum employment. Forward-looking language suggests a potential future increase, but no explicit tightening bias is stated.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -76,13 +76,14 @@
   "passages": {
     "rate_path": [
       "2021-12-15/participantsViews/1",
-      "2021-12-15/participantsViews/2",
+      "2021-12-15/participantsViews/4",
       "2021-12-15/participantsViews/12",
       "2021-12-15/participantsViews/14",
       "2021-12-15/financialMarkets/4",
       "2021-12-15/policyAction/1",
       "2021-12-15/policyAction/4",
       "2021-12-15/policyAction/6",
+      "2021-12-15/policyAction/9",
       "2021-12-15/policyAction/22",
       "2021-12-15/specialTopics/3",
       "2021-12-15/specialTopics/5"

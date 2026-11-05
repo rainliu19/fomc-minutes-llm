@@ -1,7 +1,7 @@
 {
   "meetingDate": "2018-06-13",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,20 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 1,
         "confidence": "high",
+        "rationale": "The minutes show a decision to raise the rate and a consensus on continuing gradual increases, with a clear forward-looking bias toward further tightening while maintaining an accommodative stance. The move is described as part of a gradual path, with no indication of finality or urgency.",
         "evidence": [
+          {
+            "quote": "They indicated that the stance of monetary policy remained accommodative, thereby supporting strong labor market conditions and a sustained return to 2 percent inflation.",
+            "paragraph_ref": "2018-06-13/policyAction/3"
+          },
           {
             "quote": "Based on their current assessments, almost all participants expressed the view that it would be appropriate for the Committee to continue its gradual approach to policy firming by raising the target range for the federal funds rate 25 basis points",
             "paragraph_ref": "2018-06-13/participantsViews/10"
           },
           {
-            "quote": "With regard to the medium-term outlook for monetary policy, participants generally judged that, with the economy already very strong and inflation expected to run at 2 percent on a sustained basis over the medium term, it would likely be appropriate",
-            "paragraph_ref": "2018-06-13/participantsViews/11"
+            "quote": "The Committee expects that further gradual increases in the target range for the federal funds rate will be consistent with sustained expansion of economic activity, strong labor market conditions, and inflation near the Committee's symmetric 2 percent objective over the",
+            "paragraph_ref": "2018-06-13/policyAction/12"
           }
-        ],
-        "rationale": "The minutes show near-unanimous agreement on a gradual rate increase and a forward-looking bias toward further hikes, with most participants expecting continued gradual tightening to support inflation and labor market conditions.",
-        "score": 0.75,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -80,11 +84,10 @@
       "2018-06-13/participantsViews/12",
       "2018-06-13/participantsViews/13",
       "2018-06-13/participantsViews/14",
-      "2018-06-13/staffEconomy/5",
       "2018-06-13/policyAction/2",
       "2018-06-13/policyAction/3",
-      "2018-06-13/policyAction/4",
       "2018-06-13/policyAction/7",
+      "2018-06-13/policyAction/12",
       "2018-06-13/policyAction/13"
     ]
   }

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2026-07-29",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 1,
         "confidence": "medium",
+        "rationale": "The minutes show a majority supporting a hold, with some advocating a 25 basis point increase and a few suggesting that tightening could delay future hikes. The forward-looking language indicates a bias toward future tightening, but no unanimous push for action.",
         "evidence": [
           {
             "quote": "In their consideration of monetary policy at this meeting, most participants supported maintaining the current target range for the federal funds rate.",
@@ -24,10 +27,7 @@
             "quote": "A few of the participants who favored raising the target range for the federal funds rate at this meeting judged that doing so would likely help forestall the need for a steeper and potentially more costly sequence of tightening moves",
             "paragraph_ref": "2026-07-29/participantsViews/12"
           }
-        ],
-        "rationale": "While most participants supported holding the rate, several favored a 25 basis point increase, and some saw tightening as necessary to meet inflation goals. The forward-looking language suggests a bias toward future tightening, but no clear consensus or urgency.",
-        "score": 0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2023-09-20",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,24 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 0.75,
         "confidence": "high",
+        "rationale": "The minutes show a hold on the rate with a majority expecting one more increase, and a shift to focusing on duration of restrictive policy, indicating a clear lean toward future tightening despite a hold today.",
         "evidence": [
+          {
+            "quote": "Amid these economic conditions, and in consideration of the significant cumulative tightening in the stance of monetary policy and the lags with which policy affects economic activity and inflation, almost all participants judged it appropriate to maintain the target range",
+            "paragraph_ref": "2023-09-20/participantsViews/8"
+          },
           {
             "quote": "A majority of participants judged that one more increase in the target federal funds rate at a future meeting would likely be appropriate, while some judged it likely that no further increases would be warranted.",
             "paragraph_ref": "2023-09-20/participantsViews/9"
           },
           {
-            "quote": "All participants agreed that it was appropriate to continue the process of reducing the Federal Reserve's securities holdings, as described in its previously announced Plans for Reducing the Size of the Federal Reserve's Balance Sheet.",
-            "paragraph_ref": "2023-09-20/participantsViews/8"
-          },
-          {
-            "quote": "Participants observed that the continuing process of reducing the size of the Federal Reserve's balance sheet was an important part of the overall approach to achieving their macroeconomic objectives.",
+            "quote": "Several participants commented that, with the policy rate likely at or near its peak, the focus of monetary policy decisions and communications should shift from how high to raise the policy rate to how long to hold the policy rate",
             "paragraph_ref": "2023-09-20/participantsViews/10"
           }
-        ],
-        "rationale": "The minutes show a majority expecting a future rate increase, with a balanced view on further tightening. The Committee held the rate, but emphasized a restrictive stance and data-dependent forward guidance, indicating a lean toward continued tightening.",
-        "score": 0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -84,7 +84,7 @@
       "2023-09-20/participantsViews/11",
       "2023-09-20/participantsViews/12",
       "2023-09-20/policyAction/3",
-      "2023-09-20/policyAction/4",
+      "2023-09-20/policyAction/7",
       "2023-09-20/policyAction/17"
     ]
   }

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2022-05-04",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 1,
         "confidence": "high",
+        "rationale": "The minutes show a clear consensus on raising the rate and expecting further increases, with strong forward guidance on continued tightening. The decision and views are consistent with a firm push toward tighter policy.",
         "evidence": [
           {
             "quote": "They further anticipated that ongoing increases in the target range for the federal funds rate would be warranted to achieve the Committee's objectives.",
@@ -24,10 +27,7 @@
             "quote": "In support of these goals, the Committee decided to raise the target range for the federal funds rate to 3/4 to 1 percent and anticipated that ongoing increases in the target range would be appropriate.",
             "paragraph_ref": "2022-05-04/policyAction/3"
           }
-        ],
-        "rationale": "Participants unanimously supported raising the rate and expected ongoing increases, with most anticipating 50 basis point hikes in the next few meetings. This shows a clear, forward-looking bias toward tighter policy.",
-        "score": 0.75,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -83,8 +83,6 @@
       "2022-05-04/participantsViews/12",
       "2022-05-04/financialMarkets/1",
       "2022-05-04/policyAction/3",
-      "2022-05-04/policyAction/12",
-      "2022-05-04/policyAction/19",
       "2022-05-04/policyAction/29"
     ]
   }

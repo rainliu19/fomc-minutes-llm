@@ -1,7 +1,7 @@
 {
   "meetingDate": "2014-10-29",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,20 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
-        "confidence": "high",
+        "status": "scored",
+        "score": 0,
+        "confidence": "medium",
+        "rationale": "The Committee held the rate and emphasized data dependence, with no strong push for tightening or easing. Forward guidance is conditional and balanced, with no unambiguous bias toward rate increases or cuts. The view is evenly split, with no majority leaning toward action.",
         "evidence": [
           {
-            "quote": "Most participants judged that it would be helpful to include new language in the Committee's forward guidance to clarify how the Committee's decision about when to begin the policy normalization process will depend on incoming information about the economy.",
-            "paragraph_ref": "2014-10-29/participantsViews/9"
+            "quote": "In addition, the Committee agreed to maintain the target range for the federal funds rate at 0 to 1/4 percent and to reaffirm the indication in the statement that the Committee's decision about how long to maintain the current target",
+            "paragraph_ref": "2014-10-29/policyAction/4"
           },
           {
-            "quote": "In particular, the statement would say that, if incoming information indicated faster progress toward the Committee's employment and inflation objectives than the Committee now expects, then increases in the target range for the federal funds rate would likely occur sooner",
-            "paragraph_ref": "2014-10-29/policyAction/4"
+            "quote": "The Committee anticipates, based on its current assessment, that it likely will be appropriate to maintain the 0 to 1/4 percent target range for the federal funds rate for a considerable time following the end of its asset purchase program",
+            "paragraph_ref": "2014-10-29/policyAction/11"
+          },
+          {
+            "quote": "However, if incoming information indicates faster progress toward the Committee's employment and inflation objectives than the Committee now expects, then increases in the target range for the federal funds rate are likely to occur sooner than currently anticipated.",
+            "paragraph_ref": "2014-10-29/policyAction/11"
           }
-        ],
-        "rationale": "The minutes show a clear forward-looking bias toward future rate increases, contingent on data. Most participants support a data-dependent path with potential for earlier hikes if progress is faster than expected. This indicates a lean toward tightening policy, despite a hold on the rate.",
-        "score": 0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -71,12 +75,12 @@
   },
   "passages": {
     "rate_path": [
-      "2014-10-29/participantsViews/8",
       "2014-10-29/participantsViews/9",
       "2014-10-29/staffOutlook/1",
       "2014-10-29/staffFinancial/2",
       "2014-10-29/policyAction/1",
       "2014-10-29/policyAction/4",
+      "2014-10-29/policyAction/9",
       "2014-10-29/policyAction/11",
       "2014-10-29/policyAction/12",
       "2014-10-29/policyAction/15"

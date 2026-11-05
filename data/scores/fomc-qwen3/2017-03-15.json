@@ -1,7 +1,7 @@
 {
   "meetingDate": "2017-03-15",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 0.75,
         "confidence": "high",
+        "rationale": "The minutes show near-unanimous agreement on a 25 bp rate increase, with a clear emphasis on a gradual pace of tightening and continued accommodative stance to support labor market strength and inflation. A few dissent, but the overall view is firmly aligned with a gradual, forward-looking path.",
         "evidence": [
           {
             "quote": "Almost all participants saw the incoming data as consistent with an increase of 25 basis points in the target range for the federal funds rate at this meeting.",
@@ -21,13 +24,10 @@
             "paragraph_ref": "2017-03-15/policyAction/4"
           },
           {
-            "quote": "Members also reiterated that they expected that economic conditions would evolve in a manner that would warrant gradual increases in the federal funds rate.",
-            "paragraph_ref": "2017-03-15/policyAction/6"
+            "quote": "The stance of monetary policy remains accommodative, thereby supporting some further strengthening in labor market conditions and a sustained return to 2 percent inflation.",
+            "paragraph_ref": "2017-03-15/policyAction/14"
           }
-        ],
-        "rationale": "The minutes show near-unanimous agreement on a 25 bp rate increase, with a clear emphasis on a gradual pace of tightening. Forward-looking language and consistent views on a gradual path support a positive score.",
-        "score": 0.5,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -82,7 +82,6 @@
       "2017-03-15/policyAction/4",
       "2017-03-15/policyAction/5",
       "2017-03-15/policyAction/6",
-      "2017-03-15/policyAction/7",
       "2017-03-15/policyAction/14",
       "2017-03-15/policyAction/15",
       "2017-03-15/policyAction/19",

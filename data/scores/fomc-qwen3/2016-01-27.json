@@ -1,7 +1,7 @@
 {
   "meetingDate": "2016-01-27",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 0,
         "confidence": "high",
+        "rationale": "The Committee held the rate and emphasized data dependence, gradual adjustments, and uncertainty. No strong bias toward tightening or easing; forward guidance is balanced and cautious, consistent with a neutral stance.",
         "evidence": [
           {
             "quote": "After assessing the outlook for economic activity, the labor market, and inflation, and after weighing the uncertainties associated with the outlook, members agreed to leave the target range for the federal funds rate unchanged at 1/4 to 1/2 percent.",
@@ -24,10 +27,7 @@
             "quote": "However, the actual path of the federal funds rate will depend on the economic outlook as informed by incoming data.",
             "paragraph_ref": "2016-01-27/policyAction/12"
           }
-        ],
-        "rationale": "The Committee held the rate and emphasized gradual increases, data dependence, and a path below longer-run levels. No strong push for tightening or easing was expressed.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -85,8 +85,7 @@
       "2016-01-27/policyAction/4",
       "2016-01-27/policyAction/6",
       "2016-01-27/policyAction/11",
-      "2016-01-27/policyAction/12",
-      "2016-01-27/policyAction/13"
+      "2016-01-27/policyAction/12"
     ]
   }
 }

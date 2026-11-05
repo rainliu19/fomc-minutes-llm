@@ -1,7 +1,7 @@
 {
   "meetingDate": "2014-01-29",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,20 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 0,
         "confidence": "high",
+        "rationale": "The minutes show a clear hold on the federal funds rate and forward guidance emphasizing continued accommodation, with no indication of tightening or easing. The discussion is balanced and data-dependent, with no push toward rate increases or cuts. The stance is correctly identified as balanced (0), not hawkish.",
         "evidence": [
           {
-            "quote": "In addition, the Committee decided to repeat the qualitative guidance, introduced in December, clarifying that a range of labor market indicators would be used when assessing the appropriate stance of policy once the unemployment rate threshold had been crossed.",
+            "quote": "The Committee also reaffirmed its expectation that the current exceptionally low target range for the federal funds rate of 0 to ¼ percent will be appropriate at least as long as the unemployment rate remains above 6-1/2 percent, inflation between",
+            "paragraph_ref": "2014-01-29/policyAction/12"
+          },
+          {
+            "quote": "Members also agreed to reiterate language indicating the Committee's anticipation, based on its current assessment of additional measures of labor market conditions, indicators of inflation pressures and inflation expectations, and readings on financial developments, that it would be appropriate to",
             "paragraph_ref": "2014-01-29/policyAction/3"
           },
           {
-            "quote": "The Committee continues to anticipate, based on its assessment of these factors, that it likely will be appropriate to maintain the current target range for the federal funds rate well past the time that the unemployment rate declines below 6-1/2",
-            "paragraph_ref": "2014-01-29/policyAction/12"
+            "quote": "In considering forward guidance about the target federal funds rate, all members agreed to retain the thresholds-based language employed in recent statements.",
+            "paragraph_ref": "2014-01-29/policyAction/3"
           }
-        ],
-        "rationale": "The minutes indicate a clear commitment to maintaining the current target range for the federal funds rate well beyond the 6-1/2 percent unemployment threshold, with no indication of a rate increase or easing. Forward guidance emphasizes continued accommodation, especially if inflation remains below target.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -72,7 +76,6 @@
   "passages": {
     "rate_path": [
       "2014-01-29/participantsViews/1",
-      "2014-01-29/participantsViews/2",
       "2014-01-29/participantsViews/5",
       "2014-01-29/participantsViews/9",
       "2014-01-29/participantsViews/10",

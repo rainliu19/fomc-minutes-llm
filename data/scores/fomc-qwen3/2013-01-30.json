@@ -1,7 +1,7 @@
 {
   "meetingDate": "2013-01-30",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,16 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "medium",
+        "rationale": "The Committee held the rate at 0 to 1/4 percent and emphasized a prolonged period of accommodative policy, with forward guidance tied to labor and inflation thresholds. A minority expressed concern about inflation risks, but no push for tightening or easing was evident.",
         "evidence": [
           {
             "quote": "In particular, the Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent and currently anticipates that this exceptionally low range for the federal funds rate will be appropriate at least as long",
             "paragraph_ref": "2013-01-30/policyAction/11"
+          },
+          {
+            "quote": "To support continued progress toward maximum employment and price stability, the Committee expects that a highly accommodative stance of monetary policy will remain appropriate for a considerable time after the asset purchase program ends and the economic recovery strengthens.",
+            "paragraph_ref": "2013-01-30/policyAction/11"
+          },
+          {
+            "quote": "One member dissented from the Committee's policy decision, expressing concern that the continued high level of monetary accommodation increased the risks of future economic and financial imbalances and, over time, could cause an increase in long-term inflation expectations.",
+            "paragraph_ref": "2013-01-30/policyAction/2"
           }
-        ],
-        "rationale": "The minutes state the Committee will maintain the rate at 0 to 1/4 percent for as long as key conditions are met, indicating a forward-looking hold with no stated tightening bias. A few participants expressed concern about overaccommodation, but no clear push for easing or tightening.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -67,12 +75,12 @@
   },
   "passages": {
     "rate_path": [
+      "2013-01-30/participantsViews/7",
       "2013-01-30/participantsViews/8",
       "2013-01-30/participantsViews/9",
       "2013-01-30/participantsViews/10",
       "2013-01-30/participantsViews/11",
       "2013-01-30/participantsViews/12",
-      "2013-01-30/policyAction/1",
       "2013-01-30/policyAction/2",
       "2013-01-30/policyAction/11",
       "2013-01-30/policyAction/14"

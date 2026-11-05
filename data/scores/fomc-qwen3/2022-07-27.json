@@ -1,7 +1,7 @@
 {
   "meetingDate": "2022-07-27",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 1,
         "confidence": "high",
+        "rationale": "The minutes confirm a 75 basis point rate hike and a clear consensus on continuing policy tightening to address elevated inflation, with participants agreeing that further increases are appropriate.",
         "evidence": [
           {
             "quote": "Against this backdrop, all participants agreed that it was appropriate to raise the target range for the federal funds rate 75 basis points at this meeting and to continue the process of reducing the Federal Reserve's securities holdings, as described",
@@ -24,10 +27,7 @@
             "quote": "In support of these goals, the Committee decided to raise the target range for the federal funds rate to 2-1/4 to 2-1/2 percent and anticipates that ongoing increases in the target range will be appropriate.",
             "paragraph_ref": "2022-07-27/policyAction/19"
           }
-        ],
-        "rationale": "The minutes show a clear consensus on raising the rate and a forward-looking view of continued increases to bring inflation down to 2%. The decision and participants' views align with a strong, sustained tightening bias.",
-        "score": 0.75,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -82,7 +82,6 @@
       "2022-07-27/participantsViews/14",
       "2022-07-27/participantsViews/15",
       "2022-07-27/financialMarkets/4",
-      "2022-07-27/financialMarkets/5",
       "2022-07-27/policyAction/3",
       "2022-07-27/policyAction/7",
       "2022-07-27/policyAction/19"

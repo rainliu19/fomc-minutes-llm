@@ -1,7 +1,7 @@
 {
   "meetingDate": "2016-12-14",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,8 +10,15 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 0.75,
         "confidence": "high",
+        "rationale": "The minutes confirm a rate increase and a clear preference for gradual, forward-looking adjustments, with no strong push for faster hikes or easing. The stance is balanced with a lean toward tighter policy but with hedging on future path.",
         "evidence": [
+          {
+            "quote": "In their consideration of economic conditions and monetary policy, participants agreed that sufficient evidence had accumulated of continued progress toward the Committee's objectives of maximum employment and 2 percent inflation to warrant an increase of 25 basis points in the",
+            "paragraph_ref": "2016-12-14/participantsViews/11"
+          },
           {
             "quote": "Most participants judged that a gradual pace of rate increases was likely to be appropriate to promote the Committee's objectives of maximum employment and 2 percent inflation.",
             "paragraph_ref": "2016-12-14/participantsViews/12"
@@ -20,10 +27,7 @@
             "quote": "The Committee expected that economic conditions would evolve in a manner that would warrant only gradual increases in the federal funds rate and that the federal funds rate was likely to remain, for some time, below levels that are expected",
             "paragraph_ref": "2016-12-14/policyAction/5"
           }
-        ],
-        "rationale": "The minutes describe a gradual pace of rate increases as appropriate and emphasize that the rate is likely to remain below longer-run levels, indicating a clear lean toward a gradual tightening path with no urgency or strong push for faster hikes.",
-        "score": 0.5,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -76,10 +80,10 @@
       "2016-12-14/participantsViews/13",
       "2016-12-14/participantsViews/14",
       "2016-12-14/staffFinancial/2",
-      "2016-12-14/staffFinancial/5",
       "2016-12-14/policyAction/2",
       "2016-12-14/policyAction/4",
       "2016-12-14/policyAction/5",
+      "2016-12-14/policyAction/6",
       "2016-12-14/policyAction/8",
       "2016-12-14/policyAction/13",
       "2016-12-14/policyAction/14"

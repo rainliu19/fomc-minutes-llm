@@ -1,7 +1,7 @@
 {
   "meetingDate": "2009-03-18",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,20 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The Committee held the federal funds rate at 0 to 1/4 percent and explicitly stated that rates would remain exceptionally low for an extended period, indicating a clear dovish stance with no forward guidance toward tightening.",
         "evidence": [
+          {
+            "quote": "Committee members decided to keep the target range for the federal funds rate at 0 to 1/4 percent and to communicate to the public the Committee's view that the federal funds rate was likely to remain exceptionally low for an",
+            "paragraph_ref": "2009-03-18/policyAction/1"
+          },
           {
             "quote": "The Committee will maintain the target range for the federal funds rate at 0 to 1/4 percent and anticipates that economic conditions are likely to warrant exceptionally low levels of the federal funds rate for an extended period.",
             "paragraph_ref": "2009-03-18/policyAction/7"
           },
           {
-            "quote": "To provide greater support to mortgage lending and housing markets, the Committee decided today to increase the size of the Federal Reserve's balance sheet further by purchasing up to an additional $750 billion of agency mortgage-backed securities, bringing its total",
-            "paragraph_ref": "2009-03-18/policyAction/7"
+            "quote": "Ultimately, members agreed to undertake additional purchases of agency MBS of up to $750 billion and of agency debt of up to $100 billion, and they also agreed to purchase up to $300 billion of longer-term Treasury securities.",
+            "paragraph_ref": "2009-03-18/policyAction/1"
           }
-        ],
-        "rationale": "The minutes state the Committee held the rate at 0 to 1/4 percent and expected exceptionally low rates to last for an extended period, with no indication of future tightening. Forward-looking language emphasizes prolonged low rates, indicating a clear bias toward easing, not tightening.",
-        "score": -0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",

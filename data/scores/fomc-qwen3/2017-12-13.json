@@ -1,7 +1,7 @@
 {
   "meetingDate": "2017-12-13",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,24 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 1,
         "confidence": "high",
+        "rationale": "The minutes show near-unanimous agreement to raise the rate, with a gradual path emphasized and risks to inflation and activity monitored. A few participants hedge on future increases, indicating cautious forward guidance.",
         "evidence": [
           {
-            "quote": "After assessing current conditions and the outlook for economic activity, the labor market, and inflation, nearly all members agreed to raise the target range for the federal funds rate to 1-1/4 to 1-1/2 percent.",
-            "paragraph_ref": "2017-12-13/policyAction/3"
+            "quote": "Based on their current assessments, almost all participants expressed the view that it would be appropriate for the Committee to raise the target range for the federal funds rate 25 basis points at this meeting.",
+            "paragraph_ref": "2017-12-13/participantsViews/13"
+          },
+          {
+            "quote": "Members agreed that the timing and size of future adjustments to the target range for the federal funds rate would depend on their assessments of realized and expected economic conditions relative to the Committee's objectives of maximum employment and 2",
+            "paragraph_ref": "2017-12-13/policyAction/4"
           },
           {
             "quote": "Most participants reiterated their support for continuing a gradual approach to raising the target range, noting that this approach helped to balance risks to the outlook for economic activity and inflation.",
             "paragraph_ref": "2017-12-13/participantsViews/14"
-          },
-          {
-            "quote": "However, the actual path of the federal funds rate will depend on the economic outlook as informed by incoming data.\"",
-            "paragraph_ref": "2017-12-13/policyAction/13"
           }
-        ],
-        "rationale": "The Committee raised the rate, with nearly all members supporting a gradual increase. A few expressed concern about inflation and the yield curve, but the overall view leaned toward tightening. The decision was not seen as final, and forward guidance emphasized data dependence.",
-        "score": 0.5,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -75,17 +75,16 @@
   },
   "passages": {
     "rate_path": [
-      "2017-12-13/participantsViews/1",
       "2017-12-13/participantsViews/11",
       "2017-12-13/participantsViews/13",
       "2017-12-13/participantsViews/14",
+      "2017-12-13/participantsViews/15",
       "2017-12-13/policyAction/2",
       "2017-12-13/policyAction/3",
       "2017-12-13/policyAction/4",
       "2017-12-13/policyAction/6",
       "2017-12-13/policyAction/12",
       "2017-12-13/policyAction/13",
-      "2017-12-13/policyAction/16",
       "2017-12-13/policyAction/18"
     ]
   }

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2024-03-20",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,20 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The minutes indicate a clear consensus that the policy rate is at its peak and that easing is likely, but only after greater confidence in sustained disinflation. Forward-looking language shows a lean toward easing, though with data dependence and caution.",
         "evidence": [
           {
             "quote": "In discussing the policy outlook, participants judged that the policy rate was likely at its peak for this tightening cycle, and almost all participants judged that it would be appropriate to move policy to a less restrictive stance at some",
             "paragraph_ref": "2024-03-20/participantsViews/9"
           },
           {
+            "quote": "Members concurred that, in considering any adjustments to the target range for the federal funds rate, they would carefully assess incoming data, the evolving outlook, and the balance of risks.",
+            "paragraph_ref": "2024-03-20/policyAction/2"
+          },
+          {
             "quote": "The Committee does not expect it will be appropriate to reduce the target range until it has gained greater confidence that inflation is moving sustainably toward 2 percent.",
             "paragraph_ref": "2024-03-20/policyAction/16"
           }
-        ],
-        "rationale": "The minutes indicate a clear consensus that the policy rate is at its peak and that easing is likely, though only after inflation shows sustainable progress. This forward-looking view supports a mild lean toward easing, despite no immediate rate cut.",
-        "score": 0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -77,10 +81,9 @@
       "2024-03-20/participantsViews/8",
       "2024-03-20/participantsViews/9",
       "2024-03-20/participantsViews/10",
-      "2024-03-20/staffFinancial/3",
       "2024-03-20/financialMarkets/2",
       "2024-03-20/policyAction/2",
-      "2024-03-20/policyAction/6",
+      "2024-03-20/policyAction/3",
       "2024-03-20/policyAction/16"
     ]
   }

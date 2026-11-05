@@ -1,7 +1,7 @@
 {
   "meetingDate": "2015-01-28",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,24 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The Committee held the rate and emphasized caution, with a clear preference for delaying tightening to avoid harming labor market progress. Participants stressed risks of premature rate hikes, supporting a dovish stance on future policy path.",
         "evidence": [
           {
             "quote": "The Committee agreed to maintain the target range for the federal funds rate at 0 to 1/4 percent and to reaffirm the indication in the statement that the Committee's decision about how long to maintain the current target range for",
             "paragraph_ref": "2015-01-28/policyAction/3"
           },
           {
-            "quote": "Members agreed to continue to include, in the forward guidance, language indicating that the Committee judges that it can be patient in beginning to normalize the stance of monetary policy.",
-            "paragraph_ref": "2015-01-28/policyAction/3"
+            "quote": "Many participants indicated that their assessment of the balance of risks associated with the timing of the beginning of policy normalization had inclined them toward keeping the federal funds rate at its effective lower bound for a longer time.",
+            "paragraph_ref": "2015-01-28/specialTopics/17"
           },
           {
-            "quote": "However, if incoming information indicates faster progress toward the Committee's employment and inflation objectives than the Committee now expects, then increases in the target range for the federal funds rate are likely to occur sooner than currently anticipated.",
-            "paragraph_ref": "2015-01-28/policyAction/9"
+            "quote": "In connection with the risks associated with an early start to policy normalization, many participants observed that a premature increase in rates might damp the apparent solid recovery in real activity and labor market conditions, undermining progress toward the Committee's",
+            "paragraph_ref": "2015-01-28/specialTopics/16"
           }
-        ],
-        "rationale": "The minutes show a clear forward-looking bias toward gradual normalization, with a strong emphasis on data dependence and patience. No explicit push for immediate tightening or easing is present.",
-        "score": 0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -76,7 +76,6 @@
   "passages": {
     "rate_path": [
       "2015-01-28/participantsViews/7",
-      "2015-01-28/staffFinancial/9",
       "2015-01-28/policyAction/1",
       "2015-01-28/policyAction/3",
       "2015-01-28/policyAction/9",

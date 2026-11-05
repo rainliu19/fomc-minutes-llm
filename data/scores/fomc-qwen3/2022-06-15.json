@@ -1,7 +1,7 @@
 {
   "meetingDate": "2022-06-15",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 1,
         "confidence": "high",
+        "rationale": "The minutes show a clear consensus on raising the rate and a forward-looking view of continued increases, with most participants agreeing on a 75 basis point hike and expecting further tightening. The decision and views are consistent with a firm push toward tighter policy.",
         "evidence": [
           {
             "quote": "Against this backdrop, almost all participants agreed that it was appropriate to raise the target range for the federal funds rate 75 basis points at this meeting.",
@@ -24,10 +27,7 @@
             "quote": "In support of these goals, the Committee decided to raise the target range for the federal funds rate to 1-1/2 to 1-3/4 percent and anticipates that ongoing increases in the target range will be appropriate.",
             "paragraph_ref": "2022-06-15/policyAction/18"
           }
-        ],
-        "rationale": "The minutes show near-unanimous agreement on raising the rate and a clear expectation of further increases, with strong forward guidance on continued tightening.",
-        "score": 0.75,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -85,9 +85,7 @@
       "2022-06-15/staffFinancial/2",
       "2022-06-15/financialMarkets/3",
       "2022-06-15/policyAction/3",
-      "2022-06-15/policyAction/8",
-      "2022-06-15/policyAction/18",
-      "2022-06-15/policyAction/23"
+      "2022-06-15/policyAction/18"
     ]
   }
 }

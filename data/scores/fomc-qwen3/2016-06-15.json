@@ -1,7 +1,7 @@
 {
   "meetingDate": "2016-06-15",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 0,
         "confidence": "high",
+        "rationale": "The minutes show a cautious, data-dependent view with no clear majority pushing for tightening. While some see gradual increases as appropriate, others highlight risks and uncertainty, and the overall tone is balanced with no strong bias toward easing or tightening. The stance is correctly identified as balanced, not hawkish.",
         "evidence": [
           {
             "quote": "Most participants judged that, in the absence of significant economic or financial shocks, raising the target range for the federal funds rate would be appropriate if incoming information confirmed that economic growth had picked up, that job gains were continuing",
@@ -24,10 +27,7 @@
             "quote": "In determining the timing and size of future adjustments to the target range for the federal funds rate, the Committee will assess realized and expected economic conditions relative to its objectives of maximum employment and 2 percent inflation.",
             "paragraph_ref": "2016-06-15/policyAction/15"
           }
-        ],
-        "rationale": "Most participants saw gradual rate increases as appropriate, with a clear bias toward a slow, data-dependent path. The Committee emphasized waiting for more data and maintaining an accommodative stance, indicating a cautious, forward-looking bias toward easing policy only if conditions improved.",
-        "score": 0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -76,13 +76,14 @@
   "passages": {
     "rate_path": [
       "2016-06-15/participantsViews/1",
-      "2016-06-15/participantsViews/10",
       "2016-06-15/participantsViews/12",
       "2016-06-15/participantsViews/13",
       "2016-06-15/participantsViews/14",
       "2016-06-15/participantsViews/15",
       "2016-06-15/policyAction/5",
       "2016-06-15/policyAction/6",
+      "2016-06-15/policyAction/7",
+      "2016-06-15/policyAction/9",
       "2016-06-15/policyAction/14",
       "2016-06-15/policyAction/15"
     ]

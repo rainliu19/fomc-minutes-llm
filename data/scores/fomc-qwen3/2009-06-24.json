@@ -1,7 +1,7 @@
 {
   "meetingDate": "2009-06-24",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,20 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The Committee held the rate at 0 to 1/4 percent and emphasized maintaining exceptionally low levels for an extended period, with no indication of future tightening. Forward-looking language shows a clear bias toward easing, not tightening.",
         "evidence": [
+          {
+            "quote": "Given the prospects for weak economic activity, substantial resource slack, and subdued inflation, the Committee agreed that it should maintain its target range for the federal funds rate at 0 to 1/4 percent.",
+            "paragraph_ref": "2009-06-24/policyAction/1"
+          },
           {
             "quote": "The future path of the federal funds rate would depend on the Committee's evolving expectations for the economy, but for now, members thought it most likely that the federal funds rate would need to be maintained at an exceptionally low",
             "paragraph_ref": "2009-06-24/policyAction/1"
           },
           {
-            "quote": "Given the prospects for weak economic activity, substantial resource slack, and subdued inflation, the Committee agreed that it should maintain its target range for the federal funds rate at 0 to 1/4 percent.",
+            "quote": "The Committee also agreed that changes to its program of asset purchases were not warranted at this time.",
             "paragraph_ref": "2009-06-24/policyAction/1"
           }
-        ],
-        "rationale": "The minutes state the rate will be held at 0 to 1/4 percent and that it would likely remain exceptionally low for an extended period due to weak activity and no inflation pressures. This forward-looking language shows a clear bias toward maintaining low rates, indicating a dovish stance.",
-        "score": -0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -74,8 +78,8 @@
       "2009-06-24/participantsViews/1",
       "2009-06-24/participantsViews/3",
       "2009-06-24/staffOutlook/2",
-      "2009-06-24/staffEconomy/6",
       "2009-06-24/staffFinancial/1",
+      "2009-06-24/staffFinancial/5",
       "2009-06-24/staffFinancial/11",
       "2009-06-24/financialMarkets/4",
       "2009-06-24/financialMarkets/5",

@@ -75,24 +75,22 @@ classdef testMinutesDirection < matlab.unittest.TestCase
 
         function aScoreIsUsedOnlyOnceItsMinutesArePublic(tc)
             % The September 2026 minutes came out on 2026-10-07: the day before, the reading is
-            % the July minutes' score (+0.25); that day, September's (+0.75)
+            % the July minutes' score (+1); that day, September's (+1)
             n = fomc.data.nextMeetingReading(tc.D, datetime(2026,10,6));
-            tc.verifyEqual([n.minutesSource, string(n.ratePathScore)], ["ai", "0.25"]);
+            tc.verifyEqual([n.minutesSource, string(n.ratePathScore)], ["ai", "1"]);
             n = fomc.data.nextMeetingReading(tc.D, datetime(2026,10,7));
-            tc.verifyEqual([n.minutesSource, string(n.ratePathScore)], ["ai", "0.75"]);
+            tc.verifyEqual([n.minutesSource, string(n.ratePathScore)], ["ai", "1"]);
             r = fomc.data.economyAssessment(tc.D, datetime(2026,10,6));
             tc.verifyEqual(r.minutes.meetingDate, "2026-07-29");
             tc.verifyFalse(contains(r.summary, "2026-09-16/"), "nothing from minutes not yet public");
         end
 
-        function theAIsDirectionMatchesAReadingByHandFor14Of18Meetings(tc)
+        function theAIsDirectionMatchesAReadingByHandFor16Of18Meetings(tc)
             % The 22 meetings read by hand for the word rules (testEconomy): every 2022 meeting and
             % every meeting since January 2025. Four are "depends on the data" or "divided", with no
-            % one direction. Of the other 18 the AI agrees on 14; the four it misses:
-            %   2025-06-18 +0.25 (hold): most expected some reduction that year
-            %   2025-10-29 -0.50 (down): a cut, scored -0.5 or below by the rubric; the minutes
-            %   2025-12-10 -0.50 (down):   expected a pause, but the score carries the decision
-            %   2026-07-29 +0.25 (hold): further increases were expected
+            % one direction. Of the other 18 the AI agrees on 16; the two it misses:
+            %   2025-10-29 -0.75 (down): cuts, scored -0.5 or below by the rubric; the minutes
+            %   2025-12-10 -0.75 (down):   expected a pause, but the score carries the decision
             hand = [
                 "2022-01-26", "up"; "2022-03-16", "up"; "2022-05-04", "up"; "2022-06-15", "up"
                 "2022-07-27", "up"; "2022-09-21", "up"; "2022-11-02", "up"; "2022-12-14", "up"
@@ -109,7 +107,7 @@ classdef testMinutesDirection < matlab.unittest.TestCase
                     missed(end+1) = hand(i, 1); %#ok<AGROW>
                 end
             end
-            tc.verifyEqual(missed, ["2025-06-18", "2025-10-29", "2025-12-10", "2026-07-29"]);
+            tc.verifyEqual(missed, ["2025-10-29", "2025-12-10"]);
         end
 
         function theBacktestMatchesWhatTheDocsReport(tc)
@@ -123,7 +121,7 @@ classdef testMinutesDirection < matlab.unittest.TestCase
             % Right, moves caught, and moves called that did not happen
             tc.verifyEqual(tally(train.ai, train.action), [72, 8, 10], "AI, 2008-2018");
             tc.verifyEqual(tally(train.rules, train.action), [62, 11, 23], "word rules, 2008-2018");
-            tc.verifyEqual(tally(test.ai, test.action), [52, 17, 5], "AI, 2019 on");
+            tc.verifyEqual(tally(test.ai, test.action), [49, 20, 11], "AI, 2019 on");
             tc.verifyEqual(tally(test.rules, test.action), [47, 18, 11], "word rules, 2019 on");
             tc.verifyEqual(tally(test.bill, test.action), [52, 14, 2], "6-month bill, 2019 on");
             tc.verifyEqual(sum(test.action == "hold"), 40, "a hold every time: 65%");
@@ -180,7 +178,7 @@ classdef testMinutesDirection < matlab.unittest.TestCase
             % The skill keeps quotes to 40 words; the October 2025 sentence on further cuts is longer
             r = fomc.data.economyAssessment(tc.D, datetime(2025,11,25));
             tc.verifySubstring(r.summary, "indicated that they..."" [2025-10-29/participantsViews/11]");
-            tc.verifySubstring(r.summary, "to 3-3/4 to 4 percent."" [2025-10-29/policyAction/2]");
+            tc.verifySubstring(r.summary, "to 3-3/4 to 4 percent."" [2025-10-29/policyAction/15]");
             tc.verifyFalse(contains(r.summary, "4 percent...."), "a whole sentence is not marked");
         end
 

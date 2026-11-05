@@ -1,7 +1,7 @@
 {
   "meetingDate": "2020-12-16",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,20 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 0,
         "confidence": "high",
+        "rationale": "The minutes show a clear hold on the rate with no indication of a push for tightening or easing. Forward guidance emphasizes maintaining accommodation until labor and inflation goals are met, indicating a balanced stance with no lean toward either policy direction.",
         "evidence": [
           {
-            "quote": "The Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent and expects it will be appropriate to maintain this target range until labor market conditions have reached levels consistent with the Committee's",
+            "quote": "All members agreed to maintain the target range for the federal funds rate at 0 to 1/4 percent, and they expected that it would be appropriate to maintain this target range until labor market conditions had reached levels consistent with",
+            "paragraph_ref": "2020-12-16/policyAction/3"
+          },
+          {
+            "quote": "The Committee expects to maintain an accommodative stance of monetary policy until these outcomes are achieved.",
             "paragraph_ref": "2020-12-16/policyAction/20"
           },
           {
-            "quote": "The expected path of the federal funds rate, based on a straight read of overnight index swap rates, remained close to the effective lower bound through mid-2023.",
-            "paragraph_ref": "2020-12-16/staffFinancial/3"
+            "quote": "Members agreed that, in assessing the appropriate stance of monetary policy, they would continue to monitor the implications of incoming information for the economic outlook and that they would be prepared to adjust the stance of monetary policy as appropriate",
+            "paragraph_ref": "2020-12-16/policyAction/5"
           }
-        ],
-        "rationale": "The minutes state the Committee will maintain the rate at 0 to 1/4 percent until labor market conditions improve and inflation reaches 2 percent, with expectations of moderate inflation above 2 percent. Market expectations show no tightening until 2024, indicating a clear hold with a forward-looking bias toward easing, not tightening.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -78,7 +82,6 @@
       "2020-12-16/participantsViews/11",
       "2020-12-16/participantsViews/13",
       "2020-12-16/staffOutlook/2",
-      "2020-12-16/staffFinancial/3",
       "2020-12-16/policyAction/3",
       "2020-12-16/policyAction/5",
       "2020-12-16/policyAction/8",

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2025-06-18",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,20 +10,20 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "medium",
+        "rationale": "The minutes show a balanced view with a clear majority supporting a potential reduction in the rate this year, while some see no reduction as appropriate. The forward-looking language indicates a lean toward easing, despite maintaining the current rate.",
         "evidence": [
           {
-            "quote": "A couple of participants noted that, if the data evolve in line with their expectations, they would be open to considering a reduction in the target range for the policy rate as soon as at the next meeting.",
-            "paragraph_ref": "2025-06-18/participantsViews/10"
+            "quote": "All participants viewed it as appropriate to maintain the target range for the federal funds rate at 4-1/4 to 4-1/2 percent.",
+            "paragraph_ref": "2025-06-18/participantsViews/9"
           },
           {
             "quote": "Several participants commented that the current target range for the federal funds rate may not be far above its neutral level.",
             "paragraph_ref": "2025-06-18/participantsViews/10"
           }
-        ],
-        "rationale": "Participants expressed a split view: most saw a likely reduction this year, while a few held a more cautious stance. The forward-looking language indicates a lean toward easing, though not unanimous.",
-        "score": 0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -82,7 +82,6 @@
       "2025-06-18/policyAction/6",
       "2025-06-18/policyAction/15",
       "2025-06-18/policyAction/16",
-      "2025-06-18/policyAction/19",
       "2025-06-18/specialTopics/1"
     ]
   }

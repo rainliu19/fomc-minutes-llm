@@ -1,7 +1,7 @@
 {
   "meetingDate": "2008-04-30",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,20 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The minutes show a majority supporting a 25 basis point easing, with a clear view that further easing is appropriate to balance risks to growth and inflation. A minority opposed, citing inflation concerns and potential feedback loops. The decision to ease is explicit and forward-looking.",
         "evidence": [
-          {
-            "quote": "To further its long-run objectives, the Committee in the immediate future seeks conditions in reserve markets consistent with reducing the federal funds rate to an average of around 2 percent.\" The vote encompassed approval of the statement below to be",
-            "paragraph_ref": "2008-04-30/policyAction/4"
-          },
           {
             "quote": "In the Committee's discussion of monetary policy for the intermeeeting period, most members judged that policy should be eased by 25 basis points at this meeting.",
             "paragraph_ref": "2008-04-30/policyAction/1"
+          },
+          {
+            "quote": "Nonetheless, most members agreed that a further, modest easing in the stance of policy was appropriate to balance better the risks to achieving the Committee's dual objectives of maximum employment and price stability over the medium run.",
+            "paragraph_ref": "2008-04-30/policyAction/1"
+          },
+          {
+            "quote": "Fisher and Plosser dissented because they preferred no change in the target federal funds rate at this meeting.",
+            "paragraph_ref": "2008-04-30/policyAction/11"
           }
-        ],
-        "rationale": "The minutes show a clear consensus among most members to ease policy by 25 basis points, with a forward-looking target of reducing the federal funds rate to around 2 percent. This reflects a strong leaning toward easier policy despite concerns about inflation.",
-        "score": -0.5,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -77,7 +81,6 @@
       "2008-04-30/staffEconomy/11",
       "2008-04-30/staffEconomy/15",
       "2008-04-30/policyAction/1",
-      "2008-04-30/policyAction/4",
       "2008-04-30/policyAction/8",
       "2008-04-30/policyAction/11",
       "2008-04-30/policyAction/12"

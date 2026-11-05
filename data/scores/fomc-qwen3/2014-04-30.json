@@ -1,7 +1,7 @@
 {
   "meetingDate": "2014-04-30",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,8 +10,15 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The minutes state the Committee held the federal funds rate target range at 0 to 1/4 percent and emphasized maintaining this rate for a considerable time due to persistent inflation below 2 percent and elevated unemployment. Forward guidance shows a clear bias toward holding rates low, with no indication of tightening or easing.",
         "evidence": [
+          {
+            "quote": "Beginning in May, the Committee will add to its holdings of agency mortgage-backed securities at a pace of $20 billion per month rather than $25 billion per month, and will add to its holdings of longer-term Treasury securities at a",
+            "paragraph_ref": "2014-04-30/policyAction/7"
+          },
           {
             "quote": "The Committee will closely monitor incoming information on economic and financial developments in coming months and will continue its purchases of Treasury and agency mortgage-backed securities, and employ its other policy tools as appropriate, until the outlook for the labor",
             "paragraph_ref": "2014-04-30/policyAction/7"
@@ -19,15 +26,8 @@
           {
             "quote": "The Committee continues to anticipate, based on its assessment of these factors, that it likely will be appropriate to maintain the current target range for the federal funds rate for a considerable time after the asset purchase program ends, especially",
             "paragraph_ref": "2014-04-30/policyAction/7"
-          },
-          {
-            "quote": "The Committee currently anticipates that, even after employment and inflation are near mandate-consistent levels, economic conditions may, for some time, warrant keeping the target federal funds rate below levels the Committee views as normal in the longer run.\"",
-            "paragraph_ref": "2014-04-30/policyAction/7"
           }
-        ],
-        "rationale": "The minutes emphasize maintaining the current 0 to 1/4 percent rate range for a considerable time, with no indication of a move toward tightening. Forward guidance stresses continued accommodation and a balanced approach, with no urgency for rate increases.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -80,7 +80,6 @@
       "2014-04-30/participantsViews/6",
       "2014-04-30/participantsViews/8",
       "2014-04-30/staffEconomy/10",
-      "2014-04-30/staffFinancial/2",
       "2014-04-30/policyAction/3",
       "2014-04-30/policyAction/7"
     ]

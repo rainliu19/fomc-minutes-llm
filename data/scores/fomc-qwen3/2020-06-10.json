@@ -1,7 +1,7 @@
 {
   "meetingDate": "2020-06-10",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 0,
         "confidence": "high",
+        "rationale": "The Committee held the rate at 0 to 1/4 percent with no indication of a strong bias toward tightening or easing. Forward guidance is conditional and data-dependent, reflecting a balanced view. No majority supports future tightening or easing; the discussion is centered on clarity, not direction.",
         "evidence": [
           {
             "quote": "Members noted that they expected to maintain this target range until they were confident that the economy had weathered recent events and was on track to achieve the Committee's maximum-employment and price-stability goals.",
@@ -19,11 +22,12 @@
           {
             "quote": "The Committee expects to maintain this target range until it is confident that the economy has weathered recent events and is on track to achieve its maximum employment and price stability goals.",
             "paragraph_ref": "2020-06-10/policyAction/17"
+          },
+          {
+            "quote": "Participants agreed that the current stance of monetary policy remained appropriate, but many noted that the Committee could, at upcoming meetings, further clarify its intentions with respect to its future monetary policy decisions as the economic outlook becomes clearer.",
+            "paragraph_ref": "2020-06-10/participantsViews/17"
           }
-        ],
-        "rationale": "The minutes state the Committee maintained the rate at 0 to 1/4 percent and emphasized maintaining this level until confidence in the economy's recovery is achieved. No forward-looking bias toward tightening or easing is expressed.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -80,7 +84,6 @@
       "2020-06-10/policyAction/2",
       "2020-06-10/policyAction/7",
       "2020-06-10/policyAction/17",
-      "2020-06-10/policyAction/22",
       "2020-06-10/specialTopics/1",
       "2020-06-10/specialTopics/3"
     ]

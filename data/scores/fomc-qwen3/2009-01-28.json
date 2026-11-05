@@ -1,7 +1,7 @@
 {
   "meetingDate": "2009-01-28",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The Committee held the rate at 0 to 1/4 percent and emphasized that weak economic conditions would warrant low rates for some time. No forward-looking tightening bias is expressed; the view is data-dependent and accommodative.",
         "evidence": [
           {
             "quote": "\"The Federal Open Market Committee decided today to keep its target range for the federal funds rate at 0 to 1/4 percent.",
@@ -19,11 +22,12 @@
           {
             "quote": "The Committee continues to anticipate that economic conditions are likely to warrant exceptionally low levels of the federal funds rate for some time.",
             "paragraph_ref": "2009-01-28/policyAction/5"
+          },
+          {
+            "quote": "Members further agreed that these programs were likely to maintain the size of the Federal Reserve's balance sheet at a high level.",
+            "paragraph_ref": "2009-01-28/policyAction/1"
           }
-        ],
-        "rationale": "The Committee held the rate at 0 to 1/4 percent and explicitly stated that weak economic conditions would warrant low rates for some time, indicating a clear bias toward easing policy. No forward-looking tightening bias is present.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",

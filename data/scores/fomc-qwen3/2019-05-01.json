@@ -1,7 +1,7 @@
 {
   "meetingDate": "2019-05-01",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,16 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 0,
         "confidence": "high",
+        "rationale": "The minutes describe a balanced, patient approach with no clear leaning toward tightening or easing. Forward-looking language is neutral, and no majority view supports a specific direction. The stance is correctly identified as balanced, not hawkish.",
         "evidence": [
           {
             "quote": "In light of global economic and financial developments as well as muted inflation pressures, participants generally agreed that a patient approach to determining future adjustments to the target range for the federal funds rate remained appropriate.",
             "paragraph_ref": "2019-05-01/participantsViews/10"
+          },
+          {
+            "quote": "In light of global economic and financial developments and muted inflation pressures, members concurred that the Committee could be patient as it determined what future adjustments to the target range for the federal funds rate may be appropriate to support",
+            "paragraph_ref": "2019-05-01/policyAction/2"
+          },
+          {
+            "quote": "Members agreed that in determining the timing and size of future adjustments to the target range for the federal funds rate, the Committee would assess realized and expected economic conditions relative to the Committee's maximum-employment and symmetric 2 percent inflation",
+            "paragraph_ref": "2019-05-01/policyAction/3"
           }
-        ],
-        "rationale": "The minutes emphasize a patient approach to future rate adjustments, with no indication of a tightening or easing bias. Forward-looking language consistently supports a hold with no direction.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -67,10 +75,10 @@
   },
   "passages": {
     "rate_path": [
-      "2019-05-01/participantsViews/2",
       "2019-05-01/participantsViews/10",
       "2019-05-01/staffFinancial/2",
       "2019-05-01/financialMarkets/1",
+      "2019-05-01/policyAction/2",
       "2019-05-01/policyAction/3",
       "2019-05-01/policyAction/7",
       "2019-05-01/policyAction/12",

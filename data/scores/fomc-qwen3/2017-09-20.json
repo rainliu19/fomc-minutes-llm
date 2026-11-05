@@ -1,7 +1,7 @@
 {
   "meetingDate": "2017-09-20",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,20 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 0,
         "confidence": "high",
+        "rationale": "The minutes describe a hold with a clear forward-looking bias toward gradual increases, but no strong push for tightening or easing. The view is balanced, not hawkish, as no unambiguous push for faster action or urgency is present. The score must reflect the actual tone, not a mismatched anchor.",
         "evidence": [
+          {
+            "quote": "Members agreed that the timing and size of future adjustments to the target range for the federal funds rate would depend on their assessment of realized and expected economic conditions relative to the Committee's objectives of maximum employment and 2",
+            "paragraph_ref": "2017-09-20/policyAction/4"
+          },
           {
             "quote": "Consistent with the expectation that a gradual rise in the federal funds rate would be appropriate, many participants thought that another increase in the target range later this year was likely to be warranted if the medium-term outlook remained broadly",
             "paragraph_ref": "2017-09-20/participantsViews/17"
           },
           {
-            "quote": "However, the actual path of the federal funds rate will depend on the economic outlook as informed by incoming data.",
+            "quote": "The Committee expects that economic conditions will evolve in a manner that will warrant gradual increases in the federal funds rate; the federal funds rate is likely to remain, for some time, below levels that are expected to prevail in",
             "paragraph_ref": "2017-09-20/policyAction/15"
           }
-        ],
-        "rationale": "The minutes show a clear consensus on a gradual path to higher rates, with 'nearly all' supporting a gradual increase and many expecting a rise later in the year. Forward-looking language emphasizes patience and data dependence, indicating a balanced but leaning toward tightening stance.",
-        "score": 0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -76,7 +80,6 @@
       "2017-09-20/participantsViews/14",
       "2017-09-20/participantsViews/16",
       "2017-09-20/participantsViews/17",
-      "2017-09-20/staffEconomy/5",
       "2017-09-20/staffFinancial/2",
       "2017-09-20/policyAction/3",
       "2017-09-20/policyAction/4",

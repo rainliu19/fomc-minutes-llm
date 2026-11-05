@@ -1,7 +1,7 @@
 {
   "meetingDate": "2013-03-20",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,16 +10,16 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
-        "confidence": "medium",
+        "status": "scored",
+        "score": -0.75,
+        "confidence": "high",
+        "rationale": "The Committee held the federal funds rate at 0 to 1/4 percent and explicitly stated this low range would remain in place for as long as key conditions are met, indicating a clear commitment to accommodative policy. No forward guidance toward tightening is present.",
         "evidence": [
           {
             "quote": "In particular, the Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent and currently anticipates that this exceptionally low range for the federal funds rate will be appropriate at least as long",
             "paragraph_ref": "2013-03-20/policyAction/11"
           }
-        ],
-        "rationale": "The minutes state the Committee held the rate at 0 to 1/4 percent and expect this low range to remain as long as key conditions are met, indicating a forward-looking bias toward maintaining accommodative policy. A single dissenting view does not shift the overall stance.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -71,12 +71,11 @@
       "2013-03-20/participantsViews/2",
       "2013-03-20/participantsViews/8",
       "2013-03-20/participantsViews/9",
-      "2013-03-20/staffFinancial/1",
       "2013-03-20/staffFinancial/2",
       "2013-03-20/policyAction/1",
       "2013-03-20/policyAction/2",
+      "2013-03-20/policyAction/8",
       "2013-03-20/policyAction/11",
-      "2013-03-20/policyAction/14",
       "2013-03-20/specialTopics/1"
     ]
   }

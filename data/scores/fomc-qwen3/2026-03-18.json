@@ -1,7 +1,7 @@
 {
   "meetingDate": "2026-03-18",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
-        "confidence": "high",
+        "status": "scored",
+        "score": 0,
+        "confidence": "medium",
+        "rationale": "The minutes show a hold with balanced views, some leaning toward future easing if inflation declines, and a clear emphasis on managing risks without a strong bias toward tightening or easing. No unambiguous push for either direction.",
         "evidence": [
           {
             "quote": "Against this backdrop, almost all participants supported maintaining the current target range for the federal funds rate at this meeting.",
@@ -21,13 +24,10 @@
             "paragraph_ref": "2026-03-18/participantsViews/10"
           },
           {
-            "quote": "In considering the extent and timing of additional adjustments to the target range for the federal funds rate, the Committee will carefully assess incoming data, the evolving outlook, and the balance of risks.",
-            "paragraph_ref": "2026-03-18/policyAction/15"
+            "quote": "With upside risks to inflation and downside risks to employment both elevated, some participants remarked that it was important that the Committee follow its balanced approach in promoting the Federal Reserve's employment and inflation goals, taking into account the extent",
+            "paragraph_ref": "2026-03-18/participantsViews/11"
           }
-        ],
-        "rationale": "The minutes show a clear consensus to hold the rate, with forward-looking language suggesting future easing if inflation declines. A few participants advocated a cut, but the majority emphasized monitoring risks and maintaining flexibility.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -76,11 +76,12 @@
   "passages": {
     "rate_path": [
       "2026-03-18/participantsViews/1",
-      "2026-03-18/participantsViews/4",
       "2026-03-18/participantsViews/9",
       "2026-03-18/participantsViews/10",
       "2026-03-18/participantsViews/11",
       "2026-03-18/participantsViews/12",
+      "2026-03-18/staffFinancial/1",
+      "2026-03-18/staffFinancial/5",
       "2026-03-18/financialMarkets/3",
       "2026-03-18/policyAction/3",
       "2026-03-18/policyAction/4",

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2015-07-29",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,24 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 0,
         "confidence": "medium",
+        "rationale": "The Committee held the rate and described a cautious, conditional path for future increases, with no strong push for tightening or easing. The view is balanced, not leaning toward either policy direction.",
         "evidence": [
           {
-            "quote": "Participants observed that the labor market had improved notably since early this year, but many saw scope for some further improvement.",
-            "paragraph_ref": "2015-07-29/participantsViews/11"
-          },
-          {
-            "quote": "It was also noted that a prompt start to normalization would likely convey the Committee's confidence in prospects for the economy.",
-            "paragraph_ref": "2015-07-29/participantsViews/12"
+            "quote": "The Committee agreed to maintain the target range for the federal funds rate at 0 to 1/4 percent and to reaffirm in the statement that the Committee's decision about how long to maintain the current target range for the federal",
+            "paragraph_ref": "2015-07-29/policyAction/6"
           },
           {
             "quote": "The Committee anticipates that it will be appropriate to raise the target range for the federal funds rate when it has seen some further improvement in the labor market and is reasonably confident that inflation will move back to its",
             "paragraph_ref": "2015-07-29/policyAction/13"
+          },
+          {
+            "quote": "In their discussion of the appropriate path for the federal funds rate and associated communications at and after the time of the first increase in the target range, participants expressed support for emphasizing that the course of policy would remain",
+            "paragraph_ref": "2015-07-29/participantsViews/13"
           }
-        ],
-        "rationale": "Participants expressed cautious optimism about labor market improvements and inflation, with a view that policy normalization could begin soon, though with data dependence. Forward-looking language suggests a mild tilt toward tightening, but no clear consensus or urgency.",
-        "score": 0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -83,7 +83,6 @@
       "2015-07-29/policyAction/4",
       "2015-07-29/policyAction/6",
       "2015-07-29/policyAction/13",
-      "2015-07-29/policyAction/14",
       "2015-07-29/specialTopics/1",
       "2015-07-29/specialTopics/2"
     ]

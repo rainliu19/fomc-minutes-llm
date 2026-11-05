@@ -1,7 +1,7 @@
 {
   "meetingDate": "2009-04-29",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,16 +10,16 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The minutes state the Committee held the rate at 0 to 1/4 percent and expect it to remain exceptionally low for an extended period, indicating a dovish stance with no forward guidance toward tightening.",
         "evidence": [
           {
             "quote": "The Committee will maintain the target range for the federal funds rate at 0 to 1/4 percent and anticipates that economic conditions are likely to warrant exceptionally low levels of the federal funds rate for an extended period.",
             "paragraph_ref": "2009-04-29/policyAction/7"
           }
-        ],
-        "rationale": "The minutes state the Committee will hold the rate at 0 to 1/4 percent and expect exceptionally low levels for an extended period, indicating a clear forward-looking bias toward easing policy. No indication of tightening or a shift in direction.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -72,7 +72,6 @@
       "2009-04-29/participantsViews/8",
       "2009-04-29/staffOutlook/1",
       "2009-04-29/staffFinancial/1",
-      "2009-04-29/staffFinancial/11",
       "2009-04-29/policyAction/1",
       "2009-04-29/policyAction/5",
       "2009-04-29/policyAction/6",

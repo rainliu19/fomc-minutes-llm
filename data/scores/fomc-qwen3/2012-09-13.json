@@ -1,7 +1,7 @@
 {
   "meetingDate": "2012-09-13",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,16 +10,16 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The Committee held the rate at 0 to 1/4 percent with no indication of future tightening, and explicitly anticipated exceptionally low levels through mid-2015, showing a clear commitment to easy policy. This reflects a dovish stance, not a hawkish one.",
         "evidence": [
           {
             "quote": "In particular, the Committee also decided today to keep the target range for the federal funds rate at 0 to 1/4 percent and currently anticipates that exceptionally low levels for the federal funds rate are likely to be warranted at",
             "paragraph_ref": "2012-09-13/policyAction/10"
           }
-        ],
-        "rationale": "The minutes state the Committee held the rate at 0 to 1/4 percent and expect exceptionally low levels to remain warranted through mid-2015, indicating a clear commitment to continued accommodation.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -68,7 +68,7 @@
   "passages": {
     "rate_path": [
       "2012-09-13/participantsViews/1",
-      "2012-09-13/participantsViews/8",
+      "2012-09-13/participantsViews/10",
       "2012-09-13/participantsViews/11",
       "2012-09-13/participantsViews/12",
       "2012-09-13/staffFinancial/1",

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2018-01-31",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,24 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 0.75,
         "confidence": "high",
+        "rationale": "Participants agreed on a gradual path to higher rates, with a clear expectation of further increases, despite holding the rate at 1-1/4 to 1-1/2 percent. Forward-looking language emphasizes a steady, upward trajectory.",
         "evidence": [
           {
-            "quote": "They judged that a gradual approach to raising the target range would sustain the economic expansion and balance the risks to the outlook for inflation and unemployment.",
+            "quote": "Participants agreed that a gradual approach to raising the target range for the federal funds rate remained appropriate and reaffirmed that adjustments to the policy path would depend on their assessments of how the economic outlook and risks to the",
+            "paragraph_ref": "2018-01-31/participantsViews/11"
+          },
+          {
+            "quote": "Members expected that economic conditions would evolve in a manner that would warrant further gradual increases in the federal funds rate.",
             "paragraph_ref": "2018-01-31/policyAction/5"
           },
           {
             "quote": "They therefore agreed to update the characterization of their expectation for the evolution of the federal funds rate in the postmeeting statement to point to \"further gradual increases\" while maintaining the target range at the current meeting.",
             "paragraph_ref": "2018-01-31/policyAction/5"
-          },
-          {
-            "quote": "Members expected that economic conditions would evolve in a manner that would warrant further gradual increases in the federal funds rate.",
-            "paragraph_ref": "2018-01-31/policyAction/5"
           }
-        ],
-        "rationale": "Participants agreed on a gradual path to higher rates, with a clear forward-looking bias toward further increases despite holding the current rate. The language emphasizes a sustained approach and growing likelihood of future hikes.",
-        "score": 0.5,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -85,8 +85,7 @@
       "2018-01-31/policyAction/5",
       "2018-01-31/policyAction/7",
       "2018-01-31/policyAction/13",
-      "2018-01-31/policyAction/14",
-      "2018-01-31/policyAction/17"
+      "2018-01-31/policyAction/14"
     ]
   }
 }

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2010-01-27",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "medium",
+        "rationale": "The Committee held the rate at 0 to 1/4 percent, with a minority arguing for a modest rate increase to avoid future imbalances. Forward-looking language suggests a potential shift toward tighter policy, though no explicit path is stated.",
         "evidence": [
           {
             "quote": "The Committee will maintain the target range for the federal funds rate at 0 to 1/4 percent and continues to anticipate that economic conditions, including low rates of resource utilization, subdued inflation trends, and stable inflation expectations, are likely to",
@@ -19,11 +22,12 @@
           {
             "quote": "Hoenig dissented because he believed it was no longer advisable to indicate that economic and financial conditions were likely to \"warrant exceptionally low levels of the federal funds rate for an extended period.\" In recent months, economic and financial conditions",
             "paragraph_ref": "2010-01-27/policyAction/12"
+          },
+          {
+            "quote": "He further believed that moving to a modestly higher federal funds rate soon would lower the risks of longer-run imbalances and an increase in long-run inflation expectations, while continuing to provide needed support to the economic recovery.",
+            "paragraph_ref": "2010-01-27/policyAction/12"
           }
-        ],
-        "rationale": "The Committee held the rate at 0 to 1/4 percent, with a balanced view on future path. Mr. Hoenig's dissent suggests a mild shift toward easing, but no clear majority for change. Forward guidance remains cautious, with no strong push for tightening or easing.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -71,7 +75,6 @@
   },
   "passages": {
     "rate_path": [
-      "2010-01-27/participantsViews/1",
       "2010-01-27/staffFinancial/1",
       "2010-01-27/financialMarkets/2",
       "2010-01-27/financialMarkets/5",

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2008-12-16",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The minutes confirm a decision to lower the federal funds rate to a range of 0 to 1/4 percent, with a clear emphasis on maintaining very low rates for some time due to weak economic conditions. This reflects a dovish stance on policy rate path.",
         "evidence": [
           {
             "quote": "\"The Federal Open Market Committee decided today to establish a target range for the federal funds rate of 0 to 1/4 percent.",
@@ -20,10 +23,7 @@
             "quote": "Maintaining that level of the federal funds rate implied a substantial further reduction in the target federal funds rate.",
             "paragraph_ref": "2008-12-16/policyAction/1"
           }
-        ],
-        "rationale": "The Committee lowered the target range to 0 to 1/4 percent, indicating a substantial cut from previous levels. The minutes describe this as a necessary move given weak economic conditions and ongoing financial strains.",
-        "score": -0.75,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -71,7 +71,8 @@
   },
   "passages": {
     "rate_path": [
-      "2008-12-16/participantsViews/1",
+      "2008-12-16/participantsViews/3",
+      "2008-12-16/participantsViews/4",
       "2008-12-16/participantsViews/7",
       "2008-12-16/participantsViews/8",
       "2008-12-16/participantsViews/9",

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2023-11-01",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 1,
         "confidence": "high",
+        "rationale": "The minutes confirm a hold on the policy rate with a clear emphasis on maintaining a restrictive stance and readiness for further tightening if inflation remains above target. Forward-looking language supports a bias toward future tightening, not easing.",
         "evidence": [
           {
             "quote": "Amid these economic conditions, all participants judged it appropriate to maintain the target range for the federal funds rate at 5¼ to 5½ percent at this meeting.",
@@ -21,13 +24,10 @@
             "paragraph_ref": "2023-11-01/participantsViews/10"
           },
           {
-            "quote": "All participants agreed that the Committee was in a position to proceed carefully and that policy decisions at every meeting would continue to be based on the totality of incoming information and its implications for the economic outlook as well",
+            "quote": "Participants noted that further tightening of monetary policy would be appropriate if incoming information indicated that progress toward the Committee's inflation objective was insufficient.",
             "paragraph_ref": "2023-11-01/participantsViews/10"
           }
-        ],
-        "rationale": "The minutes show a clear consensus to hold the rate at 5¼ to 5½ percent and emphasize a restrictive stance to bring inflation down to 2 percent. Forward-looking language indicates a continued commitment to tightening if needed, with no indication of easing.",
-        "score": 0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -76,12 +76,13 @@
   "passages": {
     "rate_path": [
       "2023-11-01/participantsViews/1",
-      "2023-11-01/participantsViews/3",
       "2023-11-01/participantsViews/6",
       "2023-11-01/participantsViews/9",
       "2023-11-01/participantsViews/10",
       "2023-11-01/participantsViews/11",
       "2023-11-01/participantsViews/12",
+      "2023-11-01/financialMarkets/4",
+      "2023-11-01/policyAction/1",
       "2023-11-01/policyAction/3",
       "2023-11-01/policyAction/7",
       "2023-11-01/policyAction/17"

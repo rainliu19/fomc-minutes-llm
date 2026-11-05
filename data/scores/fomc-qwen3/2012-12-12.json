@@ -1,7 +1,7 @@
 {
   "meetingDate": "2012-12-12",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,20 +10,20 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The Committee held the federal funds rate at 0 to 1/4 percent and emphasized a prolonged period of accommodative policy. No forward guidance suggests tightening or easing. The decision and language support a dovish stance, consistent with maintaining low rates for an extended period.",
         "evidence": [
-          {
-            "quote": "In particular, the Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent and currently anticipates that this exceptionally low range for the federal funds rate will be appropriate at least as long",
-            "paragraph_ref": "2012-12-12/policyAction/11"
-          },
           {
             "quote": "To support continued progress toward maximum employment and price stability, the Committee expects that a highly accommodative stance of monetary policy will remain appropriate for a considerable time after the asset purchase program ends and the economic recovery strengthens.",
             "paragraph_ref": "2012-12-12/policyAction/11"
+          },
+          {
+            "quote": "In determining how long to maintain a highly accommodative stance of monetary policy, the Committee will also consider other information, including additional measures of labor market conditions, indicators of inflation pressures and inflation expectations, and readings on financial developments.",
+            "paragraph_ref": "2012-12-12/policyAction/11"
           }
-        ],
-        "rationale": "The minutes state the Committee maintained the federal funds rate at 0 to 1/4 percent and linked its continued accommodation to labor market and inflation thresholds. No forward-looking shift toward tightening is mentioned.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -76,8 +76,7 @@
       "2012-12-12/participantsViews/12",
       "2012-12-12/policyAction/2",
       "2012-12-12/policyAction/3",
-      "2012-12-12/policyAction/11",
-      "2012-12-12/policyAction/14"
+      "2012-12-12/policyAction/11"
     ]
   }
 }

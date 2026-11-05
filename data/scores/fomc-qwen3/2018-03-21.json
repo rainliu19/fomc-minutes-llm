@@ -1,7 +1,7 @@
 {
   "meetingDate": "2018-03-21",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 0.75,
         "confidence": "high",
+        "rationale": "The minutes show near-unanimous agreement on raising the rate and a gradual path forward, with strong emphasis on maintaining strong labor markets and returning inflation to 2%. Forward guidance supports a steady, gradual tightening, with no indication of a final move or urgency.",
         "evidence": [
           {
             "quote": "Based on their current assessments, almost all participants expressed the view that it would be appropriate for the Committee to raise the target range for the federal funds rate 25 basis points at this meeting.",
@@ -21,13 +24,10 @@
             "paragraph_ref": "2018-03-21/participantsViews/13"
           },
           {
-            "quote": "Members agreed that the timing and size of future adjustments to the target range for the federal funds rate would depend on their assessments of realized and expected economic conditions relative to the Committee's objectives of maximum employment and 2",
+            "quote": "They judged that raising the target range gradually would balance the risks to the outlook for inflation and unemployment and was most likely to support continued economic expansion.",
             "paragraph_ref": "2018-03-21/policyAction/5"
           }
-        ],
-        "rationale": "The minutes show near-unanimous agreement on raising the rate and a clear forward-looking bias toward gradual increases, with most participants expecting further progress toward inflation and labor market goals.",
-        "score": 0.75,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -76,7 +76,6 @@
   "passages": {
     "rate_path": [
       "2018-03-21/participantsViews/1",
-      "2018-03-21/participantsViews/8",
       "2018-03-21/participantsViews/11",
       "2018-03-21/participantsViews/12",
       "2018-03-21/participantsViews/13",
@@ -85,7 +84,8 @@
       "2018-03-21/policyAction/5",
       "2018-03-21/policyAction/7",
       "2018-03-21/policyAction/13",
-      "2018-03-21/policyAction/14"
+      "2018-03-21/policyAction/14",
+      "2018-03-21/policyAction/17"
     ]
   }
 }

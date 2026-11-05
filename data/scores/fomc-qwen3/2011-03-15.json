@@ -1,7 +1,7 @@
 {
   "meetingDate": "2011-03-15",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,16 +10,16 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 0,
         "confidence": "high",
+        "rationale": "The Committee held the rate and explicitly stated that current conditions warrant exceptionally low rates for an extended period, showing a balanced view with no push toward tightening or easing.",
         "evidence": [
           {
             "quote": "The Committee will maintain the target range for the federal funds rate at 0 to 1/4 percent and continues to anticipate that economic conditions, including low rates of resource utilization, subdued inflation trends, and stable inflation expectations, are likely to",
             "paragraph_ref": "2011-03-15/policyAction/10"
           }
-        ],
-        "rationale": "The Committee held the rate at 0 to 1/4 percent and emphasized that current conditions would warrant exceptionally low rates for an extended period, indicating a clear bias toward maintaining low rates despite improving conditions.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -67,7 +67,7 @@
   },
   "passages": {
     "rate_path": [
-      "2011-03-15/participantsViews/2",
+      "2011-03-15/participantsViews/3",
       "2011-03-15/participantsViews/5",
       "2011-03-15/participantsViews/9",
       "2011-03-15/staffOutlook/1",

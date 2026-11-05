@@ -1,7 +1,7 @@
 {
   "meetingDate": "2011-08-09",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
-        "confidence": "high",
+        "status": "scored",
+        "score": 0,
+        "confidence": "medium",
+        "rationale": "The Committee held the rate and provided forward guidance without a clear push for tightening or easing. Most members supported a conditional path, with dissenters cautioning against overcommitting. The view is balanced, not leaning toward easing or tightening.",
         "evidence": [
           {
             "quote": "The Committee agreed to keep the target range for the federal funds rate at 0 to 1/4 percent and to state that economic conditions are likely to warrant exceptionally low levels for the federal funds rate at least through mid-2013.",
@@ -19,11 +22,12 @@
           {
             "quote": "Most members, however, agreed that stating a conditional expectation for the level of the federal funds rate through mid-2013 provided useful guidance to the public, with some noting that such an indication did not remove the Committee's flexibility to adjust",
             "paragraph_ref": "2011-08-09/policyAction/2"
+          },
+          {
+            "quote": "A few members felt that recent economic developments justified a more substantial move at this meeting, but they were willing to accept the stronger forward guidance as a step in the direction of additional accommodation.",
+            "paragraph_ref": "2011-08-09/policyAction/1"
           }
-        ],
-        "rationale": "The minutes state a forward-looking path of exceptionally low rates through mid-2013, with most members agreeing on the guidance. A few dissent, but the majority supports a continued hold with a clear expectation of low rates for a defined period.",
-        "score": 0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -72,7 +76,6 @@
   "passages": {
     "rate_path": [
       "2011-08-09/participantsViews/3",
-      "2011-08-09/participantsViews/7",
       "2011-08-09/participantsViews/9",
       "2011-08-09/staffFinancial/2",
       "2011-08-09/staffFinancial/11",

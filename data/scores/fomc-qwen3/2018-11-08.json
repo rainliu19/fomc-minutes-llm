@@ -1,7 +1,7 @@
 {
   "meetingDate": "2018-11-08",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 1,
         "confidence": "high",
+        "rationale": "The minutes show a clear consensus on maintaining the current rate range, with almost all participants supporting further gradual increases, though a few express uncertainty about timing. The forward-looking language indicates a bias toward tightening, despite data-dependent caution.",
         "evidence": [
           {
             "quote": "Almost all participants reaffirmed the view that further gradual increases in the target range for the federal funds rate would likely be consistent with sustaining the Committee's objectives of maximum employment and price stability.",
@@ -24,10 +27,7 @@
             "quote": "Participants emphasized that the Committee's approach to setting the stance of policy should be importantly guided by incoming data and their implications for the economic outlook.",
             "paragraph_ref": "2018-11-08/participantsViews/14"
           }
-        ],
-        "rationale": "The minutes show near-unanimous support for gradual rate increases, with most participants expecting further hikes soon. A few express uncertainty about timing, but overall sentiment is firmly tilted toward tightening policy.",
-        "score": 0.5,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -77,11 +77,11 @@
     "rate_path": [
       "2018-11-08/participantsViews/2",
       "2018-11-08/participantsViews/7",
-      "2018-11-08/participantsViews/8",
       "2018-11-08/participantsViews/12",
       "2018-11-08/participantsViews/13",
       "2018-11-08/participantsViews/14",
       "2018-11-08/staffFinancial/3",
+      "2018-11-08/staffFinancial/5",
       "2018-11-08/financialMarkets/2",
       "2018-11-08/financialMarkets/6",
       "2018-11-08/policyAction/2",

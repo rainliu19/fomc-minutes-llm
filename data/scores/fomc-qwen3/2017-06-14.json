@@ -1,7 +1,7 @@
 {
   "meetingDate": "2017-06-14",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,24 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 1,
         "confidence": "high",
+        "rationale": "The minutes show near-unanimous agreement to raise the rate, with forward-looking support for gradual increases and a focus on stabilizing inflation. A few participants expressed caution, but the overall view is strongly aligned with tightening policy.",
         "evidence": [
           {
             "quote": "Based on this assessment, almost all participants expressed the view that it would be appropriate for the Committee to raise the target range for the federal funds rate 25 basis points at this meeting.",
             "paragraph_ref": "2017-06-14/participantsViews/10"
           },
           {
-            "quote": "They expected that economic conditions would evolve in a manner that would warrant gradual increases in the federal funds rate, and they agreed that the federal funds rate was likely to remain, for some time, below levels that are expected",
-            "paragraph_ref": "2017-06-14/policyAction/5"
+            "quote": "Several participants expressed confidence that a series of further increases in the federal funds rate in coming years, along the lines implied by the medians of the projections for the federal funds rate in the June SEP, would contribute to",
+            "paragraph_ref": "2017-06-14/participantsViews/14"
           },
           {
-            "quote": "The Committee expects that economic conditions will evolve in a manner that will warrant gradual increases in the federal funds rate; the federal funds rate is likely to remain, for some time, below levels that are expected to prevail in",
-            "paragraph_ref": "2017-06-14/policyAction/14"
+            "quote": "In view of realized and expected labor market conditions and inflation, the Committee decided to raise the target range for the federal funds rate to 1 to 1-1/4 percent.",
+            "paragraph_ref": "2017-06-14/policyAction/13"
           }
-        ],
-        "rationale": "The minutes show near-unanimous support for a rate increase with a clear forward-looking bias toward gradual tightening, despite some dissent. The path is described as gradual and data-dependent, consistent with a moderate hawkish stance.",
-        "score": 0.5,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -80,14 +80,13 @@
       "2017-06-14/participantsViews/10",
       "2017-06-14/participantsViews/13",
       "2017-06-14/participantsViews/14",
-      "2017-06-14/staffFinancial/5",
-      "2017-06-14/policyAction/3",
       "2017-06-14/policyAction/4",
       "2017-06-14/policyAction/5",
       "2017-06-14/policyAction/8",
       "2017-06-14/policyAction/13",
       "2017-06-14/policyAction/14",
       "2017-06-14/policyAction/18",
+      "2017-06-14/policyAction/19",
       "2017-06-14/specialTopics/10"
     ]
   }

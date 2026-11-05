@@ -1,7 +1,7 @@
 {
   "meetingDate": "2021-03-17",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,16 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The minutes show a decision to hold the federal funds rate at 0 to 1/4 percent with no indication of tightening or easing. The forward-looking language emphasizes maintaining this range until labor market and inflation goals are met, reflecting a clear dovish stance. No participants advocate for rate increases or easing. The discussion is balanced and data-dependent, with no push for rate changes.",
         "evidence": [
+          {
+            "quote": "All members agreed to maintain the target range for the federal funds rate at 0 to 1/4 percent, and they expected that it would be appropriate to maintain this target range until labor market conditions had reached levels consistent with",
+            "paragraph_ref": "2021-03-17/policyAction/3"
+          },
           {
             "quote": "The Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent and expects it will be appropriate to maintain this target range until labor market conditions have reached levels consistent with the Committee's",
             "paragraph_ref": "2021-03-17/policyAction/20"
+          },
+          {
+            "quote": "Members agreed that the Federal Reserve was committed to using its full range of tools to support the U.S. economy in this challenging time, thereby promoting its maximum-employment and price-stability goals.",
+            "paragraph_ref": "2021-03-17/policyAction/2"
           }
-        ],
-        "rationale": "The minutes state the Committee will maintain the target range at 0 to 1/4 percent until labor market conditions and inflation reach goals, indicating a clear forward-looking bias toward holding rates, not tightening. No language suggests easing or a shift to a tighter path.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -79,8 +87,7 @@
       "2021-03-17/policyAction/4",
       "2021-03-17/policyAction/8",
       "2021-03-17/policyAction/20",
-      "2021-03-17/policyAction/21",
-      "2021-03-17/policyAction/24"
+      "2021-03-17/policyAction/21"
     ]
   }
 }

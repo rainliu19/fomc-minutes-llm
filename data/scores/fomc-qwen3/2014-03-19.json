@@ -1,7 +1,7 @@
 {
   "meetingDate": "2014-03-19",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The minutes show a clear commitment to maintaining the current 0 to 1/4 percent rate range for a considerable time, with no indication of tightening or forward guidance toward rate increases. The view that rates may remain below normal levels for a long time reflects a dovish stance, supporting easier policy. The score must be negative to match this direction.",
         "evidence": [
           {
             "quote": "In determining how long to maintain the current 0 to 1/4 percent target range for the federal funds rate, the Committee will assess progress--both realized and expected--toward its objectives of maximum employment and 2 percent inflation.",
@@ -19,11 +22,12 @@
           {
             "quote": "The Committee continues to anticipate, based on its assessment of these factors, that it likely will be appropriate to maintain the current target range for the federal funds rate for a considerable time after the asset purchase program ends, especially",
             "paragraph_ref": "2014-03-19/policyAction/12"
+          },
+          {
+            "quote": "The Committee currently anticipates that, even after employment and inflation are near mandate-consistent levels, economic conditions may, for some time, warrant keeping the target federal funds rate below levels the Committee views as normal in the longer run.",
+            "paragraph_ref": "2014-03-19/policyAction/13"
           }
-        ],
-        "rationale": "The minutes indicate a clear commitment to maintaining the current 0 to 1/4 percent target range for a considerable time, with no indication of imminent rate increases or easing. Forward guidance emphasizes a prolonged period of accommodative policy, especially if inflation remains below target.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -75,9 +79,9 @@
       "2014-03-19/participantsViews/9",
       "2014-03-19/participantsViews/10",
       "2014-03-19/policyAction/2",
-      "2014-03-19/policyAction/3",
       "2014-03-19/policyAction/4",
-      "2014-03-19/policyAction/12"
+      "2014-03-19/policyAction/12",
+      "2014-03-19/policyAction/13"
     ]
   }
 }

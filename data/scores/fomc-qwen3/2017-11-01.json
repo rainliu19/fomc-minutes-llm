@@ -1,7 +1,7 @@
 {
   "meetingDate": "2017-11-01",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 1,
         "confidence": "high",
+        "rationale": "The minutes show a clear consensus on a gradual path to higher rates, with most participants expecting further increases if data supports a stable inflation outlook. The stance is forward-looking and leans toward tightening, though with caution and data dependence.",
         "evidence": [
           {
             "quote": "Nearly all participants reaffirmed the view that a gradual approach to increasing the target range was likely to promote the Committee's objectives of maximum employment and price stability.",
@@ -24,10 +27,7 @@
             "quote": "The Committee expects that economic conditions will evolve in a manner that will warrant gradual increases in the federal funds rate; the federal funds rate is likely to remain, for some time, below levels that are expected to prevail in",
             "paragraph_ref": "2017-11-01/policyAction/14"
           }
-        ],
-        "rationale": "The minutes show a clear consensus on a gradual path for rate increases, with most participants expecting further hikes if inflation trends improve. The language emphasizes a gradual, data-dependent approach, indicating a lean toward tightening without urgency.",
-        "score": 0.5,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -76,7 +76,6 @@
   "passages": {
     "rate_path": [
       "2017-11-01/participantsViews/7",
-      "2017-11-01/participantsViews/11",
       "2017-11-01/participantsViews/13",
       "2017-11-01/participantsViews/14",
       "2017-11-01/participantsViews/15",
@@ -85,7 +84,8 @@
       "2017-11-01/policyAction/4",
       "2017-11-01/policyAction/7",
       "2017-11-01/policyAction/13",
-      "2017-11-01/policyAction/14"
+      "2017-11-01/policyAction/14",
+      "2017-11-01/policyAction/18"
     ]
   }
 }

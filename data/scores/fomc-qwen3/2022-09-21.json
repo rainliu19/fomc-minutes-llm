@@ -1,7 +1,7 @@
 {
   "meetingDate": "2022-09-21",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,11 +10,14 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 1,
         "confidence": "high",
+        "rationale": "The minutes confirm a decision to raise the rate and a clear consensus that further increases are appropriate to address persistent inflation and supply-demand imbalances. Participants emphasized a restrictive policy stance and a path of ongoing tightening, with a view to maintaining high rates until inflation shows clear progress.",
         "evidence": [
           {
-            "quote": "In discussing potential policy actions at upcoming meetings, participants continued to anticipate that ongoing increases in the target range for the federal funds rate would be appropriate to achieve the Committee's objectives.",
-            "paragraph_ref": "2022-09-21/participantsViews/15"
+            "quote": "In support of these goals, the Committee decided to raise the target range for the federal funds rate to 3 to 3-1/4 percent and anticipates that ongoing increases in the target range will be appropriate.",
+            "paragraph_ref": "2022-09-21/policyAction/17"
           },
           {
             "quote": "Many participants noted that, with inflation well above the Committee's 2 percent objective and showing little sign so far of abating, and with supply and demand imbalances in the economy continuing, they had raised their assessment of the path of",
@@ -24,10 +27,7 @@
             "quote": "Many participants indicated that, once the policy rate had reached a sufficiently restrictive level, it likely would be appropriate to maintain that level for some time until there was compelling evidence that inflation was on course to return to the",
             "paragraph_ref": "2022-09-21/participantsViews/15"
           }
-        ],
-        "rationale": "The minutes show a clear consensus that further rate increases are appropriate, with many participants emphasizing the need for ongoing tightening to bring inflation down. The discussion includes forward-looking language about sustained increases and a restrictive stance, indicating a strong bias toward tighter policy.",
-        "score": 0.75,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -76,14 +76,13 @@
   "passages": {
     "rate_path": [
       "2022-09-21/participantsViews/1",
-      "2022-09-21/participantsViews/10",
+      "2022-09-21/participantsViews/13",
       "2022-09-21/participantsViews/14",
       "2022-09-21/participantsViews/15",
       "2022-09-21/participantsViews/16",
       "2022-09-21/participantsViews/17",
       "2022-09-21/financialMarkets/2",
       "2022-09-21/policyAction/3",
-      "2022-09-21/policyAction/7",
       "2022-09-21/policyAction/17"
     ]
   }

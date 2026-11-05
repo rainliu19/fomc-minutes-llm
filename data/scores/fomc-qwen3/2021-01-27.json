@@ -1,7 +1,7 @@
 {
   "meetingDate": "2021-01-27",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,16 +10,20 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The minutes confirm a hold on the policy rate at 0 to 1/4 percent with a forward-looking view that it will remain accommodative until labor market conditions and inflation reach the Committee's goals. No indication of tightening or easing is present beyond this path.",
         "evidence": [
           {
             "quote": "All members agreed to maintain the target range for the federal funds rate at 0 to 1/4 percent, and they expected that it would be appropriate to maintain this target range until labor market conditions had reached levels consistent with",
             "paragraph_ref": "2021-01-27/policyAction/4"
+          },
+          {
+            "quote": "The Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent and expects it will be appropriate to maintain this target range until labor market conditions have reached levels consistent with the Committee's",
+            "paragraph_ref": "2021-01-27/policyAction/21"
           }
-        ],
-        "rationale": "The minutes state all participants supported maintaining the current rate range and emphasized an accommodative stance until labor market and inflation goals are met. No forward-looking tightening bias is expressed.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -78,8 +82,7 @@
       "2021-01-27/policyAction/4",
       "2021-01-27/policyAction/6",
       "2021-01-27/policyAction/9",
-      "2021-01-27/policyAction/21",
-      "2021-01-27/policyAction/25"
+      "2021-01-27/policyAction/21"
     ]
   }
 }

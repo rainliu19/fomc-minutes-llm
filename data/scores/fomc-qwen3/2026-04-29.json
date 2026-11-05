@@ -1,7 +1,7 @@
 {
   "meetingDate": "2026-04-29",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,24 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
-        "confidence": "high",
+        "status": "scored",
+        "score": 0,
+        "confidence": "medium",
+        "rationale": "The minutes describe a hold with balanced views, no strong push for tightening or easing, and forward guidance is data-dependent and cautious. No clear lean toward either easing or tightening.",
         "evidence": [
+          {
+            "quote": "Against this backdrop, almost all participants supported maintaining the current target range for the federal funds rate at this meeting.",
+            "paragraph_ref": "2026-04-29/participantsViews/9"
+          },
           {
             "quote": "Participants generally judged that the current policy rate was within the range of plausible estimates of its neutral level and that the Committee still remained well positioned to base the extent and timing of adjustments to the policy rate on",
             "paragraph_ref": "2026-04-29/participantsViews/9"
           },
           {
-            "quote": "Several participants highlighted that it would likely be appropriate to lower the target range for the federal funds rate once there are clear indications that disinflation is firmly back on track or if solid signs emerge of greater weakness in",
-            "paragraph_ref": "2026-04-29/participantsViews/10"
-          },
-          {
-            "quote": "A majority of participants highlighted, however, that some policy firming would likely become appropriate if inflation were to continue to run persistently above 2 percent.",
-            "paragraph_ref": "2026-04-29/participantsViews/10"
+            "quote": "In considering the extent and timing of additional adjustments to the target range for the federal funds rate, the Committee will carefully assess incoming data, the evolving outlook, and the balance of risks.",
+            "paragraph_ref": "2026-04-29/policyAction/14"
           }
-        ],
-        "rationale": "The minutes show a balanced view with a clear leaning toward potential future tightening if inflation remains elevated, despite a hold on the rate. Forward-looking language indicates cautious readiness for policy firming, not easing.",
-        "score": 0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -81,7 +81,6 @@
       "2026-04-29/participantsViews/11",
       "2026-04-29/participantsViews/12",
       "2026-04-29/staffFinancial/1",
-      "2026-04-29/staffFinancial/5",
       "2026-04-29/financialMarkets/4",
       "2026-04-29/policyAction/2",
       "2026-04-29/policyAction/3",

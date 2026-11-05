@@ -1,7 +1,7 @@
 {
   "meetingDate": "2012-04-25",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,20 +10,16 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The Committee held the federal funds rate at 0 to 1/4 percent and emphasized a highly accommodative stance, with most members expecting low rates through late 2014. A few members expressed concern about inflation risks, but the majority supported maintaining low rates.",
         "evidence": [
           {
-            "quote": "In particular, the Committee agreed to keep the target range for the federal funds rate at 0 to 1/4 percent, to continue the program of extending the average maturity of the Federal Reserve's holdings of securities as announced last September,",
-            "paragraph_ref": "2012-04-25/policyAction/2"
-          },
-          {
-            "quote": "With the economic outlook over the medium term not greatly changed, almost all of the members again agreed to indicate that the Committee expects to maintain a highly accommodative stance for monetary policy and currently anticipates that economic conditions--including low",
+            "quote": "Most members continued to anticipate that the unemployment rate would still be well above their estimates of its longer-run level, and inflation would be at or below the Committee's longer-run objective, in late 2014.",
             "paragraph_ref": "2012-04-25/policyAction/3"
           }
-        ],
-        "rationale": "The minutes state the Committee held the federal funds rate at 0 to 1/4 percent and emphasized a highly accommodative stance, with forward-looking language indicating continued low rates through late 2014. No tightening bias is expressed.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -74,12 +70,14 @@
       "2012-04-25/participantsViews/1",
       "2012-04-25/participantsViews/3",
       "2012-04-25/participantsViews/10",
-      "2012-04-25/participantsViews/11",
       "2012-04-25/participantsViews/12",
+      "2012-04-25/staffFinancial/1",
       "2012-04-25/policyAction/2",
       "2012-04-25/policyAction/3",
+      "2012-04-25/policyAction/5",
       "2012-04-25/policyAction/6",
-      "2012-04-25/policyAction/12"
+      "2012-04-25/policyAction/12",
+      "2012-04-25/policyAction/16"
     ]
   }
 }

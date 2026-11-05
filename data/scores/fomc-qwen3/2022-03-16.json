@@ -1,7 +1,7 @@
 {
   "meetingDate": "2022-03-16",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,24 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 1,
         "confidence": "high",
+        "rationale": "The minutes show a clear consensus on raising the rate and a strong view that ongoing increases are warranted, with many participants preferring a larger hike and a commitment to move toward a neutral stance expeditiously.",
         "evidence": [
+          {
+            "quote": "Against this backdrop, all participants agreed that it was appropriate to begin a process of removing policy accommodation by raising the target range for the federal funds rate at this meeting.",
+            "paragraph_ref": "2022-03-16/participantsViews/8"
+          },
           {
             "quote": "Many participants noted that—with inflation well above the Committee's objective, inflationary risks to the upside, and the federal funds rate well below participants' estimates of its longer-run level—they would have preferred a 50 basis point increase in the target range",
             "paragraph_ref": "2022-03-16/participantsViews/9"
           },
           {
-            "quote": "Many participants noted that one or more 50 basis point increases in the target range could be appropriate at future meetings, particularly if inflation pressures remained elevated or intensified.",
-            "paragraph_ref": "2022-03-16/participantsViews/9"
-          },
-          {
-            "quote": "In support of these goals, the Committee decided to raise the target range for the federal funds rate to 1/4 to 1/2 percent and anticipated that ongoing increases in the target range would be appropriate.",
-            "paragraph_ref": "2022-03-16/policyAction/3"
+            "quote": "Participants judged that it would be appropriate to move the stance of monetary policy toward a neutral posture expeditiously.",
+            "paragraph_ref": "2022-03-16/participantsViews/10"
           }
-        ],
-        "rationale": "The minutes show a clear consensus on raising the rate and a strong expectation of further increases, with many participants advocating for larger hikes and ongoing tightening. The decision to raise the rate and the anticipation of future increases align with a hawkish stance on the policy path.",
-        "score": 0.75,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -86,8 +86,7 @@
       "2022-03-16/policyAction/3",
       "2022-03-16/policyAction/4",
       "2022-03-16/policyAction/7",
-      "2022-03-16/policyAction/16",
-      "2022-03-16/policyAction/21"
+      "2022-03-16/policyAction/16"
     ]
   }
 }

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2014-07-30",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,20 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
-        "confidence": "medium",
+        "status": "scored",
+        "score": 0,
+        "confidence": "high",
+        "rationale": "The minutes show a hold on the federal funds rate with no clear lean toward tightening or easing. Forward guidance is data-dependent and balanced. No majority supports future rate increases or cuts. The stance is correctly identified as balanced (0), not hawkish. The evidence reflects a measured, cautious approach with no strong directional bias.",
         "evidence": [
           {
-            "quote": "Moreover, many participants noted that if convergence toward the Committee's objectives occurred more quickly than expected, it might become appropriate to begin removing monetary policy accommodation sooner than they currently anticipated.",
-            "paragraph_ref": "2014-07-30/participantsViews/10"
+            "quote": "Beginning in August, the Committee will add to its holdings of agency mortgage-backed securities at a pace of $10 billion per month rather than $15 billion per month, and will add to its holdings of longer-term Treasury securities at a",
+            "paragraph_ref": "2014-07-30/policyAction/10"
           },
           {
-            "quote": "The Committee currently anticipates that, even after employment and inflation are near mandate-consistent levels, economic conditions may, for some time, warrant keeping the target federal funds rate below levels the Committee views as normal in the longer run.\"",
-            "paragraph_ref": "2014-07-30/policyAction/13"
+            "quote": "The Committee currently judges that there is sufficient underlying strength in the broader economy to support ongoing improvement in labor market conditions.",
+            "paragraph_ref": "2014-07-30/policyAction/10"
+          },
+          {
+            "quote": "In determining how long to maintain the current 0 to 1/4 percent target range for the federal funds rate, the Committee will assess progress--both realized and expected--toward its objectives of maximum employment and 2 percent inflation.",
+            "paragraph_ref": "2014-07-30/policyAction/12"
           }
-        ],
-        "rationale": "Participants expressed a split view on when to reduce policy accommodation, with some advocating for earlier action and others emphasizing data dependence. The forward guidance suggests a cautious, data-dependent approach, not a clear push for tightening.",
-        "score": 0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -77,7 +81,6 @@
       "2014-07-30/policyAction/4",
       "2014-07-30/policyAction/10",
       "2014-07-30/policyAction/12",
-      "2014-07-30/policyAction/13",
       "2014-07-30/policyAction/16",
       "2014-07-30/specialTopics/2",
       "2014-07-30/specialTopics/4"

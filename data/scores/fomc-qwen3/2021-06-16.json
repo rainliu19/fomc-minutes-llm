@@ -1,7 +1,7 @@
 {
   "meetingDate": "2021-06-16",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,24 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
-        "confidence": "high",
+        "status": "scored",
+        "score": 0,
+        "confidence": "medium",
+        "rationale": "The minutes show a hold on the federal funds rate with no indication of tightening or easing. The forward guidance emphasizes maintaining an accommodative stance until labor market and inflation goals are met. There is no language supporting a move toward easier policy, only a commitment to maintain the current rate. The stance is therefore not dovish but balanced, as the discussion is consistent and no clear lean toward easing exists.",
         "evidence": [
+          {
+            "quote": "All members agreed to keep the target range for the federal funds rate at 0 to 1/4 percent, and they expected that it would be appropriate to maintain this target range until labor market conditions had reached levels consistent with",
+            "paragraph_ref": "2021-06-16/policyAction/3"
+          },
           {
             "quote": "The Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent and expects it will be appropriate to maintain this target range until labor market conditions have reached levels consistent with the Committee's",
             "paragraph_ref": "2021-06-16/policyAction/20"
           },
           {
-            "quote": "The Desk's survey measures of the expected path of the target federal funds rate were also fairly steady, and the median respondent continued to expect the first target rate increase to occur in the third quarter of 2023.",
-            "paragraph_ref": "2021-06-16/financialMarkets/3"
-          },
-          {
-            "quote": "In light of the incoming data and the implications for their economic outlooks, a few participants mentioned that they expected the economic conditions set out in the Committee's forward guidance for the federal funds rate to be met somewhat earlier",
-            "paragraph_ref": "2021-06-16/participantsViews/12"
+            "quote": "Members expected to maintain an accommodative stance of monetary policy until those outcomes were achieved.",
+            "paragraph_ref": "2021-06-16/policyAction/2"
           }
-        ],
-        "rationale": "The minutes indicate a commitment to holding the rate at 0-1/4 percent, with a forward-looking view that further increases may occur in the near term, but no specific timeline beyond the meeting is provided. The guidance is balanced, with no strong push for tightening or easing.",
-        "score": 0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -77,10 +77,10 @@
     "rate_path": [
       "2021-06-16/participantsViews/1",
       "2021-06-16/participantsViews/9",
+      "2021-06-16/participantsViews/11",
       "2021-06-16/participantsViews/12",
       "2021-06-16/participantsViews/15",
       "2021-06-16/staffFinancial/1",
-      "2021-06-16/financialMarkets/3",
       "2021-06-16/policyAction/1",
       "2021-06-16/policyAction/2",
       "2021-06-16/policyAction/3",

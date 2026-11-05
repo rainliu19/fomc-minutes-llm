@@ -1,7 +1,7 @@
 {
   "meetingDate": "2025-09-17",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The minutes show a clear consensus to reduce the rate by 1/4 percentage point, with most participants supporting further easing, though one member preferred a larger cut. The decision reflects a shift toward a more neutral stance due to rising employment risks.",
         "evidence": [
           {
             "quote": "Against this backdrop, almost all participants supported reducing the target range for the federal funds rate 1/4 percentage point at this meeting.",
@@ -21,13 +24,10 @@
             "paragraph_ref": "2025-09-17/participantsViews/8"
           },
           {
-            "quote": "In support of its goals and in light of the shift in the balance of risks, the Committee decided to lower the target range for the federal funds rate by 1/4 percentage point to 4 to 4-1/4 percent.",
-            "paragraph_ref": "2025-09-17/policyAction/15"
+            "quote": "One member voted against that decision, preferring to lower the target range 1/2 percentage point at this meeting.",
+            "paragraph_ref": "2025-09-17/policyAction/2"
           }
-        ],
-        "rationale": "The minutes show near-unanimous support for a rate cut and a clear forward-looking bias toward further easing, despite a few dissenting views. The decision aligns with a shift in balance of risks, emphasizing downside employment risks.",
-        "score": -0.5,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -80,10 +80,10 @@
       "2025-09-17/participantsViews/6",
       "2025-09-17/participantsViews/7",
       "2025-09-17/participantsViews/8",
-      "2025-09-17/participantsViews/9",
       "2025-09-17/participantsViews/10",
       "2025-09-17/financialMarkets/2",
       "2025-09-17/policyAction/2",
+      "2025-09-17/policyAction/3",
       "2025-09-17/policyAction/6",
       "2025-09-17/policyAction/15",
       "2025-09-17/policyAction/19"

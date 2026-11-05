@@ -1,7 +1,7 @@
 {
   "meetingDate": "2023-07-26",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 1,
         "confidence": "high",
+        "rationale": "The Committee raised the rate, with almost all participants supporting the move, though a few hedged. Forward guidance emphasized data-dependent decisions and continued tightening for inflation, indicating a clear lean toward further policy firming.",
         "evidence": [
           {
             "quote": "Amid these economic conditions, almost all participants judged it appropriate to raise the target range for the federal funds rate to 5-1/4 to 5-1/2 percent at this meeting.",
@@ -21,13 +24,10 @@
             "paragraph_ref": "2023-07-26/participantsViews/10"
           },
           {
-            "quote": "In discussing the policy outlook, participants continued to judge that it was critical that the stance of monetary policy be sufficiently restrictive to return inflation to the Committee's 2 percent objective over time.",
+            "quote": "Participants expected that the data arriving in coming months would help clarify the extent to which the disinflation process was continuing and product and labor markets were reaching a better balance between demand and supply.",
             "paragraph_ref": "2023-07-26/participantsViews/11"
           }
-        ],
-        "rationale": "The Committee raised the rate, and almost all participants supported the move. While a few hedged, the overall view emphasized continued tightening to reduce inflation. The decision aligns with a clear lean toward further policy firming.",
-        "score": 0.75,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -76,7 +76,6 @@
   "passages": {
     "rate_path": [
       "2023-07-26/participantsViews/2",
-      "2023-07-26/participantsViews/3",
       "2023-07-26/participantsViews/8",
       "2023-07-26/participantsViews/10",
       "2023-07-26/participantsViews/11",
@@ -84,6 +83,7 @@
       "2023-07-26/staffFinancial/1",
       "2023-07-26/financialMarkets/3",
       "2023-07-26/policyAction/3",
+      "2023-07-26/policyAction/4",
       "2023-07-26/policyAction/7",
       "2023-07-26/policyAction/17"
     ]

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2022-12-14",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,24 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 1,
         "confidence": "high",
+        "rationale": "The minutes show a clear consensus on raising the rate and maintaining a restrictive stance until inflation shows sustained downward momentum. All participants agree on the need for ongoing rate increases and a strong commitment to returning inflation to 2%. This reflects a firm, forward-looking bias toward tighter policy.",
         "evidence": [
+          {
+            "quote": "Against this backdrop, all participants agreed that it was appropriate to raise the target range for the federal funds rate 50 basis points at this meeting and to continue the process of reducing the Federal Reserve's securities holdings, as described",
+            "paragraph_ref": "2022-12-14/participantsViews/11"
+          },
           {
             "quote": "Participants generally observed that a restrictive policy stance would need to be maintained until the incoming data provided confidence that inflation was on a sustained downward path to 2 percent, which was likely to take some time.",
             "paragraph_ref": "2022-12-14/participantsViews/12"
           },
           {
-            "quote": "With inflation staying persistently above the Committee's 2 percent goal and the labor market remaining very tight, all participants had raised their assessment of the appropriate path of the federal funds rate relative to their assessment at the time of",
-            "paragraph_ref": "2022-12-14/participantsViews/12"
-          },
-          {
-            "quote": "In determining the pace of future increases in the target range, participants judged that it would be appropriate to take into account the cumulative tightening of monetary policy, the lags with which monetary policy affects economic activity and inflation, and",
-            "paragraph_ref": "2022-12-14/participantsViews/12"
+            "quote": "All members affirmed that the Committee is strongly committed to returning inflation to its 2 percent objective.",
+            "paragraph_ref": "2022-12-14/policyAction/3"
           }
-        ],
-        "rationale": "The minutes show a clear consensus on maintaining a restrictive policy stance, with all participants agreeing on a path of ongoing rate increases to return inflation to 2 percent. No one anticipated rate cuts in 2023, and forward guidance emphasizes continued tightening.",
-        "score": 0.75,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -83,7 +83,6 @@
       "2022-12-14/participantsViews/14",
       "2022-12-14/participantsViews/15",
       "2022-12-14/policyAction/3",
-      "2022-12-14/policyAction/7",
       "2022-12-14/policyAction/17"
     ]
   }

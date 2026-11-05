@@ -1,7 +1,7 @@
 {
   "meetingDate": "2021-04-28",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,20 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
-        "confidence": "high",
+        "status": "scored",
+        "score": 0,
+        "confidence": "medium",
+        "rationale": "The minutes show a clear hold on the rate with no forward guidance toward tightening or easing. The discussion is balanced, with no strong language supporting a move to higher rates or easing. The stance is correctly identified as balanced (0), not hawkish.",
         "evidence": [
+          {
+            "quote": "All members agreed to keep the target range for the federal funds rate at 0 to 1/4 percent, and they expected that it would be appropriate to maintain this target range until labor market conditions had reached levels consistent with",
+            "paragraph_ref": "2021-04-28/policyAction/3"
+          },
           {
             "quote": "The Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent and expects it will be appropriate to maintain this target range until labor market conditions have reached levels consistent with the Committee's",
             "paragraph_ref": "2021-04-28/policyAction/20"
           },
           {
-            "quote": "Regarding expectations for the policy outlook, the market- and survey-implied paths of the federal funds rate were both relatively little changed over the intermeeting period, and the modal survey path in later years continued to imply that the target range",
-            "paragraph_ref": "2021-04-28/financialMarkets/3"
+            "quote": "Market-based financing conditions remained accommodative, and bank lending conditions eased markedly.",
+            "paragraph_ref": "2021-04-28/staffFinancial/1"
           }
-        ],
-        "rationale": "The minutes state the Committee will maintain the 0 to 1/4 percent rate range and expect to do so until labor market and inflation goals are met. Forward guidance implies a gradual increase to just over 2 percent by 2026, indicating a positive, albeit cautious, path.",
-        "score": 0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -75,7 +79,6 @@
       "2021-04-28/participantsViews/5",
       "2021-04-28/participantsViews/10",
       "2021-04-28/staffFinancial/1",
-      "2021-04-28/staffFinancial/11",
       "2021-04-28/financialMarkets/3",
       "2021-04-28/policyAction/1",
       "2021-04-28/policyAction/2",

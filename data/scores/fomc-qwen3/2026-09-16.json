@@ -1,7 +1,7 @@
 {
   "meetingDate": "2026-09-16",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-11-04",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,20 +10,24 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 1,
         "confidence": "high",
+        "rationale": "The Committee raised the rate and most participants expect another increase by year end, with strong emphasis on inflation risks and risk management. This shows a clear lean toward tighter policy.",
         "evidence": [
+          {
+            "quote": "In their consideration of monetary policy at this meeting, all participants supported raising the target range for the federal funds rate 1/4 percentage point to 3-3/4 to 4 percent.",
+            "paragraph_ref": "2026-09-16/participantsViews/10"
+          },
           {
             "quote": "With regard to the outlook for monetary policy beyond the current meeting, most participants assessed that another increase in the target range for the federal funds rate would likely be appropriate by year end.",
             "paragraph_ref": "2026-09-16/participantsViews/11"
           },
           {
-            "quote": "A number of participants viewed a higher path for the target range as necessary based on their modal outlooks rather than on risk-management grounds.",
+            "quote": "Many participants emphasized that a higher path for the target range would be prudent on risk-management grounds, providing insurance against inflation remaining persistently above target due to stronger-than-expected demand or further adverse supply shocks.",
             "paragraph_ref": "2026-09-16/participantsViews/10"
           }
-        ],
-        "rationale": "The minutes indicate a clear consensus that further rate increases are likely by year end, with many participants viewing a higher path as necessary. This reflects a strong tightening bias beyond the immediate decision.",
-        "score": 0.75,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
@@ -77,7 +81,6 @@
       "2026-09-16/participantsViews/10",
       "2026-09-16/participantsViews/11",
       "2026-09-16/staffEconomy/1",
-      "2026-09-16/staffEconomy/6",
       "2026-09-16/staffFinancial/1",
       "2026-09-16/staffFinancial/3",
       "2026-09-16/staffFinancial/5",
