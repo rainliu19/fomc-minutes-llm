@@ -165,11 +165,13 @@ classdef testEconomy < matlab.unittest.TestCase
 
         function nearZeroALeanToCutsMeansMoreSupportAndALaterMeetingIsNamed(tc)
             % November 2012: the range at 0 to 1/4 percent; the October 23 meeting has been held
-            % but its minutes come out on November 14. The September minutes have no score that
-            % passed its checks, so their lean is the word rules'
+            % but its minutes come out on November 14. The word rules read the September minutes
+            % as a lean to cuts (kept as the baseline); the AI scored their rate path 0, which
+            % near zero is no lean the rate can follow
             r = fomc.data.economyAssessment(tc.D, datetime(2012,11,1));
-            tc.verifyEqual([r.minutes.meetingDate, r.minutes.directionSource], ["2012-09-13", "rules"]);
-            tc.verifySubstring(r.summary, "lean toward more support for the economy, by means other than the rate");
+            tc.verifyEqual([r.minutes.meetingDate, r.minutes.directionSource, r.minutes.lean], ...
+                ["2012-09-13", "ai", "cuts"]);
+            tc.verifySubstring(r.summary, "no lean the rate itself can follow, as it is already at its lowest");
             tc.verifyEqual(r.minutes.laterMeeting, "2012-10-23");
             tc.verifySubstring(r.summary, "minutes are not public until 2012-11-14");
         end

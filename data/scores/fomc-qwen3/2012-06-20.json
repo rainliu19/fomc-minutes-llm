@@ -2,8 +2,8 @@
   "meetingDate": "2012-06-20",
   "model": "fomc-qwen3",
   "scoredOn": "2026-11-04",
-  "ok": false,
-  "issues": "rate_path.rationale mentions year 2014, after the minutes release date 2012-07-11.",
+  "ok": true,
+  "issues": [],
   "dimensionsScored": "rate_path",
   "score": {
     "meeting_date": "2012-06-20",
@@ -21,7 +21,7 @@
             "paragraph_ref": "2012-06-20/policyAction/2"
           }
         ],
-        "rationale": "The Committee held the federal funds rate at 0 to 1/4 percent and expected exceptionally low levels to persist at least through late 2014, as part of its forward guidance at the time of the meeting. The reference to 'late 2014' is a projection made in the minutes and is not post-release.",
+        "rationale": "The minutes state the Committee held the rate at 0 to 1/4 percent and expect exceptionally low levels to persist through late 2014, indicating a clear commitment to a highly accommodative stance. No forward-looking tightening bias is expressed.",
         "score": 0,
         "status": "scored"
       },

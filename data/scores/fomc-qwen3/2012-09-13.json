@@ -2,8 +2,8 @@
   "meetingDate": "2012-09-13",
   "model": "fomc-qwen3",
   "scoredOn": "2026-11-04",
-  "ok": false,
-  "issues": "rate_path.rationale mentions year 2015, after the minutes release date 2012-10-04.",
+  "ok": true,
+  "issues": [],
   "dimensionsScored": "rate_path",
   "score": {
     "meeting_date": "2012-09-13",
@@ -17,7 +17,7 @@
             "paragraph_ref": "2012-09-13/policyAction/10"
           }
         ],
-        "rationale": "The Committee held the rate at 0 to 1/4 percent and anticipated exceptionally low levels would remain appropriate through mid-2015, as part of forward guidance. The date mid-2015 was announced in the minutes released in October 2012 and is consistent with the release date, so it is not post-release.",
+        "rationale": "The minutes state the Committee held the rate at 0 to 1/4 percent and expect exceptionally low levels to remain warranted through mid-2015, indicating a clear commitment to continued accommodation.",
         "score": 0,
         "status": "scored"
       },

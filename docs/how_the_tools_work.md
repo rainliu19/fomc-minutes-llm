@@ -256,8 +256,8 @@ must quote the sentences behind its score, and code checks the quotes are really
 A score of +0.5 or more reads as "increase", −0.5 or less as "cut", anything between as "hold".
 When rates are already at zero, a lean to cuts reads as "hold", since the rate can't go lower.
 
-**The word rules (the fallback).** For the 9 of 150 meetings whose AI score failed its checks,
-code reads the sentences about future rate moves and weighs them by how many held each view: "all
+**The word rules (the fallback).** For minutes whose AI score failed its checks (none of the 150
+saved scores now), code reads the sentences about future rate moves and weighs them by how many held each view: "all
 participants" counts most, then "most", "many", "several", "a few", "one". The most widely held
 view that isn't conditional on the data gives the lean.
 
@@ -285,9 +285,9 @@ minutes for direction and the bill for timing.
   minutes expected a pause.
 - **Hindsight.** The model was trained on text written after most of these meetings, and may know
   what the Fed did next. That would make its scores of older minutes look better than they are.
-- **Some scores fail a check that is too strict.** All 9 failures name a year the minutes
-  themselves gave in the Committee's guidance (such as "mid-2013" in 2011), which the check reads
-  as hindsight. Those meetings use the word rules.
+- **Guidance near zero can read as slightly hawkish.** Several 2011 meetings score +0.25 though
+  the minutes kept rates "exceptionally low ... through mid-2013". +0.25 is below the cutoff, so
+  they still read as a hold.
 - **Scores used to vary from run to run.** At temperature 0.2, 6 of 15 meetings scored three times
   moved by 0.25. The saved scores were made again on 2026-11-04 at temperature 0, which gives the
   same score each time.

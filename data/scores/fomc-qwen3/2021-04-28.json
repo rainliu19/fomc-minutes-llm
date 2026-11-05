@@ -2,8 +2,8 @@
   "meetingDate": "2021-04-28",
   "model": "fomc-qwen3",
   "scoredOn": "2026-11-04",
-  "ok": false,
-  "issues": "rate_path.rationale mentions year 2026, after the minutes release date 2021-05-19.",
+  "ok": true,
+  "issues": [],
   "dimensionsScored": "rate_path",
   "score": {
     "meeting_date": "2021-04-28",
@@ -21,7 +21,7 @@
             "paragraph_ref": "2021-04-28/financialMarkets/3"
           }
         ],
-        "rationale": "The Committee will maintain the 0 to 1/4 percent rate range until labor market and inflation goals are met. Forward guidance shows little change in expected path, with no explicit timeline beyond the intermeeting period. The 2026 reference is a survey implication, not a policy statement, and is not a future event in the minutes release context.",
+        "rationale": "The minutes state the Committee will maintain the 0 to 1/4 percent rate range and expect to do so until labor market and inflation goals are met. Forward guidance implies a gradual increase to just over 2 percent by 2026, indicating a positive, albeit cautious, path.",
         "score": 0.25,
         "status": "scored"
       },

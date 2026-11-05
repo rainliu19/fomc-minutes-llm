@@ -2,8 +2,8 @@
   "meetingDate": "2012-01-25",
   "model": "fomc-qwen3",
   "scoredOn": "2026-11-04",
-  "ok": false,
-  "issues": "rate_path.rationale mentions year 2014, after the minutes release date 2012-02-15.",
+  "ok": true,
+  "issues": [],
   "dimensionsScored": "rate_path",
   "score": {
     "meeting_date": "2012-01-25",
@@ -21,7 +21,7 @@
             "paragraph_ref": "2012-01-25/policyAction/3"
           }
         ],
-        "rationale": "The minutes indicate a forward-looking view of maintaining low rates through late 2014, based on expected weak labor markets and subdued inflation. This reflects a balanced, accommodative stance with no strong push for tightening or easing, consistent with a neutral score.",
+        "rationale": "The minutes indicate a clear forward-looking bias toward maintaining low rates through late 2014, with most participants expecting prolonged low rates due to weak labor markets and subdued inflation. A few dissent, suggesting possible tightening, but the overall view is accommodative.",
         "score": 0,
         "status": "scored"
       },

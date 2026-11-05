@@ -2,8 +2,8 @@
   "meetingDate": "2011-08-09",
   "model": "fomc-qwen3",
   "scoredOn": "2026-11-04",
-  "ok": false,
-  "issues": "rate_path.rationale mentions year 2013, after the minutes release date 2011-08-30.",
+  "ok": true,
+  "issues": [],
   "dimensionsScored": "rate_path",
   "score": {
     "meeting_date": "2011-08-09",
@@ -21,7 +21,7 @@
             "paragraph_ref": "2011-08-09/policyAction/2"
           }
         ],
-        "rationale": "The forward guidance in the minutes, stating that exceptionally low rates are likely through mid-2013, was part of the official statement released on August 30, 2011. The year 2013 is a future date at the time of release and is not post-release. It is a valid forward-looking statement within the minutes' content and context.",
+        "rationale": "The minutes state a forward-looking path of exceptionally low rates through mid-2013, with most members agreeing on the guidance. A few dissent, but the majority supports a continued hold with a clear expectation of low rates for a defined period.",
         "score": 0.25,
         "status": "scored"
       },

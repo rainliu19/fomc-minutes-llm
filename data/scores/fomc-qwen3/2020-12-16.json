@@ -2,8 +2,8 @@
   "meetingDate": "2020-12-16",
   "model": "fomc-qwen3",
   "scoredOn": "2026-11-04",
-  "ok": false,
-  "issues": "rate_path.rationale mentions year 2023, after the minutes release date 2021-01-06.",
+  "ok": true,
+  "issues": [],
   "dimensionsScored": "rate_path",
   "score": {
     "meeting_date": "2020-12-16",
@@ -21,7 +21,7 @@
             "paragraph_ref": "2020-12-16/staffFinancial/3"
           }
         ],
-        "rationale": "The minutes state the Committee will maintain the rate at 0 to 1/4 percent until labor market conditions improve and inflation reaches 2 percent. The path remains near the lower bound through mid-2023, with no mention of future tightening or easing beyond that point. All forward guidance is conditional and tied to economic progress, not specific dates.",
+        "rationale": "The minutes state the Committee will maintain the rate at 0 to 1/4 percent until labor market conditions improve and inflation reaches 2 percent, with expectations of moderate inflation above 2 percent. Market expectations show no tightening until 2024, indicating a clear hold with a forward-looking bias toward easing, not tightening.",
         "score": 0,
         "status": "scored"
       },

@@ -138,6 +138,21 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
             tc.verifyTrue(any(contains(issues, "2021-01-01")));
         end
 
+        function rationaleMayUseAYearTheMinutesGive(tc)
+            % The 2011-2012 minutes gave the Committee's guidance as a later year; naming it is
+            % not hindsight, but a year the minutes do not give still is
+            result = validScore(tc.meetingDate);
+            result.dimensions.rate_path.rationale = "Rates are expected to stay low at least through mid-2013.";
+            result.dimensions.inflation.rationale = "Inflation picked up in 2014.";
+            minutes = "Members expected low levels for the federal funds rate at least through mid-2013.";
+
+            issues = fomc.guard.checkAsOf(result, datetime(2011,8,30), minutes);
+
+            tc.verifyFalse(any(startsWith(issues, "rate_path")), strjoin(issues, " "));
+            tc.verifyTrue(any(startsWith(issues, "inflation.rationale mentions year 2014")));
+            tc.verifyNotEmpty(fomc.guard.checkAsOf(result, datetime(2011,8,30)), "without the minutes, any later year");
+        end
+
         function generationRetriesValidationFailures(tc)
             invalid = validScore(tc.meetingDate);
             invalid.dimensions.inflation.evidence = {struct("quote", "fabricated text", "paragraph_ref", "p1")};

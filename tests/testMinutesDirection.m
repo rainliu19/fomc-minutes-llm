@@ -57,28 +57,20 @@ classdef testMinutesDirection < matlab.unittest.TestCase
             end
         end
 
-        function nineScoresFailedTheirChecksAndUseTheWordRules(tc)
-            % Every one fails the same check: the rationale names a year the minutes themselves gave
-            % in the Committee's guidance (2013, 2014 or 2015 in 2011-2012; 2023 and 2026 in
-            % 2020-2021), and the check reads any later year as a leak. At temperature 0 each retry
-            % repeats the rationale
-            failed = ["2011-08-09", "2011-11-02", "2011-12-13", "2012-01-25", "2012-04-25", ...
-                "2012-06-20", "2012-09-13", "2020-12-16", "2021-04-28"];
+        function everySavedScorePassedItsChecks(tc)
+            % The nine that failed named a year the minutes themselves gave in the Committee's
+            % guidance (2013 to 2015 in 2011-2012, 2023 and 2026 in 2020-2021), which the hindsight
+            % check now allows (fomc.guard.checkAsOf). A failed score would use the word rules
+            % (aScoreThatCannotBeTrustedFallsBackToTheWordRules)
             M = tc.D.meetings;
             got = strings(1, 0);
             for k = 1:height(M)
                 meeting = fomc.util.fmtDate(M.MeetingDate(k));
                 if ~fomc.skills.scoreCache("read", tc.model, meeting).ok
                     got(end+1) = meeting; %#ok<AGROW>
-                    [~, levels] = fomc.data.ratePath(tc.D, M.ReleaseDate(k));
-                    tc.verifyEqual(fomc.data.minutesDirection(tc.D, k, levels(end, :)).source, "rules", meeting);
                 end
             end
-            tc.verifyEqual(got, failed);
-            r = fomc.data.economyAssessment(tc.D, datetime(2012,11,1));
-            tc.verifyEqual(r.minutes.directionSource, "rules");
-            tc.verifyFalse(contains(r.summary, "the AI scored"));
-            tc.verifySubstring(r.note, "read by code from their wording");
+            tc.verifyEmpty(got);
         end
 
         function aScoreIsUsedOnlyOnceItsMinutesArePublic(tc)
@@ -127,7 +119,7 @@ classdef testMinutesDirection < matlab.unittest.TestCase
             train = T(T.next < datetime(2019,1,1), :);
             test = T(T.next >= datetime(2019,1,1), :);
             tc.verifyEqual([height(train), height(test), sum(test.action ~= "hold")], [87, 62, 22]);
-            tc.verifyEqual(sum(train.source == "ai"), 80, "7 failed scores use the word rules");
+            tc.verifyEqual(sum(train.source == "ai"), 87, "every score passed its checks");
             % Right, moves caught, and moves called that did not happen
             tc.verifyEqual(tally(train.ai, train.action), [72, 8, 10], "AI, 2008-2018");
             tc.verifyEqual(tally(train.rules, train.action), [62, 11, 23], "word rules, 2008-2018");

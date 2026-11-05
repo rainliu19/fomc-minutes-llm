@@ -2,8 +2,8 @@
   "meetingDate": "2011-12-13",
   "model": "fomc-qwen3",
   "scoredOn": "2026-11-04",
-  "ok": false,
-  "issues": "rate_path.rationale mentions year 2013, after the minutes release date 2012-01-03.",
+  "ok": true,
+  "issues": [],
   "dimensionsScored": "rate_path",
   "score": {
     "meeting_date": "2011-12-13",
@@ -21,7 +21,7 @@
             "paragraph_ref": "2011-12-13/policyAction/2"
           }
         ],
-        "rationale": "The minutes describe a hold on the policy rate with a forward-looking view of continued accommodation, citing medium-run economic conditions and a subdued inflation outlook. The reference to mid-2013 is part of the forward guidance and was published at the meeting's release, not after.",
+        "rationale": "The minutes indicate a hold on the policy rate with a forward-looking bias toward continued accommodation, driven by weak labor markets and subdued inflation. A few members supported further easing, but most emphasized monitoring conditions and maintaining low rates through mid-2013.",
         "score": 0.25,
         "status": "scored"
       },
