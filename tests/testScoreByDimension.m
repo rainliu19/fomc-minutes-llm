@@ -94,6 +94,69 @@ classdef testScoreByDimension < matlab.unittest.TestCase
             tc.verifyEqual(model.Index, 2, "spending and the cut");
         end
 
+        function theScoreIsTheAnchorsAndACutOffersOnlyDovishRows(tc)
+            % The model names a row of the rubric's Anchors table; the score is that row's
+            model = EchoScoreModel();
+            output = fomc.skills.scoreByDimension(struct("ctx", tc.ctx, "llm", @model.call), "2020-03-18", ...
+                Dimensions="rate_path");
+            tc.verifyEqual(output.score.dimensions.rate_path.score, -0.5);
+            tc.verifyEqual(string(output.score.dimensions.rate_path.status), "scored");
+            rows = string(jsondecode(model.Formats(1)).properties.stance_anchor.enum(1:end-1));
+            tc.verifyEqual(rows(1), "Hold; some mention that easing may become appropriate (-0.25)");
+            tc.verifyTrue(all(contains(rows, "(-")), "a cut offers only rows below 0");
+        end
+
+        function aNullAnchorIsNotDiscussed(tc)
+            model = fomc.llm.Mock({struct("content", ...
+                "{""evidence"": [], ""rationale"": ""Nothing on this."", ""stance"": null, ""stance_anchor"": null, ""score_confidence"": null}")});
+            output = fomc.skills.scoreByDimension(struct("ctx", tc.ctx, "llm", @model.call), tc.meetingDate, ...
+                Dimensions="inflation");
+            d = output.score.dimensions.inflation;
+            tc.verifyFalse(any(contains(output.issues, "inflation")), strjoin(output.issues, " "));
+            tc.verifyEqual(output.calls, 1);
+            tc.verifyEqual(string(d.status), "not_discussed");
+            tc.verifyEmpty(d.score);
+            tc.verifyEmpty(d.confidence);
+        end
+
+        function aRowOnTheOtherSideOfTheStanceIsRetried(tc)
+            % Inflation below target: the stance is dovish but the first row chosen is hawkish
+            reply = @(row) struct("content", "{""evidence"": [{""quote"": ""Participants agreed that " + ...
+                "SYNTHETIC inflation was running below target.""}], ""rationale"": ""Inflation is below " + ...
+                "target."", ""stance"": ""dovish"", ""stance_anchor"": """ + row + """, ""stance_confidence"": ""high""}");
+            model = fomc.llm.Mock({reply("Inflation well above target and persistent; most see upside risk " + ...
+                "and a need for restrictive policy (+0.75)"), reply("Inflation below target or falling fast; " + ...
+                "many note risk of persistent undershoot (-0.75)")});
+            output = fomc.skills.scoreByDimension(struct("ctx", tc.ctx, "llm", @model.call), tc.meetingDate, ...
+                Dimensions="inflation");
+            tc.verifyEqual(output.calls, 2);
+            tc.verifyEqual(output.score.dimensions.inflation.score, -0.75);
+            tc.verifyFalse(any(contains(output.issues, "inflation")), strjoin(output.issues, " "));
+        end
+
+        function newPurchasesAndEndedRunoffOfferOnlyDovishRows(tc)
+            % Real minutes: 2020-03-15 directs purchases that 2020-01-29 did not; 2020-04-29
+            % continues them, so it gets every row and no note
+            D = fomc.data.load();
+            ctx = fomc.context(datetime(2026,10,27), fomc.config(verbose=false), D, tracePath=string(tempname) + ".jsonl");
+            model = EchoScoreModel();
+            s = struct("ctx", ctx, "llm", @model.call);
+            out = fomc.skills.scoreByDimension(s, "2020-03-15", Dimensions="balance_sheet");
+            rows = string(jsondecode(model.Formats(1)).properties.stance_anchor.enum(1:end-1));
+            tc.verifyEqual(numel(rows), 4);
+            tc.verifyTrue(all(contains(rows, "(-")));
+            tc.verifyLessThan(out.score.dimensions.balance_sheet.score, 0);
+            tc.verifyFalse(any(contains(out.passages.balance_sheet, "participantsViews/4")), ...
+                "households' balance sheets are not the Federal Reserve's");
+            fomc.skills.scoreByDimension(s, "2020-04-29", Dimensions="balance_sheet");
+            rows = string(jsondecode(model.Formats(end)).properties.stance_anchor.enum(1:end-1));
+            tc.verifyEqual(numel(rows), 9);
+            % 2019-07-31 ends runoff two months early: dovish rows only
+            fomc.skills.scoreByDimension(s, "2019-07-31", Dimensions="balance_sheet");
+            rows = string(jsondecode(model.Formats(end)).properties.stance_anchor.enum(1:end-1));
+            tc.verifyEqual(numel(rows), 4);
+        end
+
         function savedScoresAreKeptAndMerged(tc)
             % Scoring the rate path, then inflation, keeps both in one saved file
             model = EchoScoreModel();

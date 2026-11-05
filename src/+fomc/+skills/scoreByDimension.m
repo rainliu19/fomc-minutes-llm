@@ -28,6 +28,12 @@ function output = scoreByDimension(s, meetingDate, nvp)
 %   model reads, judges and picks the evidence; code picks what it reads and checks what it
 %   returns (fomc.guard.validateScores). A dimension no paragraph mentions is not_discussed
 %   without a model call.
+%
+%   The model does not write a score: it names the stance (dovish, balanced, hawkish) and the row
+%   of the rubric's Anchors table that the minutes match, and code takes the score from that row
+%   (requestSchema, fromAnchor). Asked for a number, Qwen3 4B tended to give the mildest score
+%   of the right sign. What code reads from the minutes narrows the rows: the rate decision for
+%   the rate path, new purchases or the end of runoff for the balance sheet.
 
 arguments
     s (1,1) struct
@@ -65,7 +71,6 @@ P = ctx.D.paras(ctx.D.paras.meetingIdx == row, :);
 minutesText = string(M.Body(row)) + newline + strjoin(string(P.text), newline);
 scale = fomc.skills.read("fomc-score", "rubric/00_scale.md");
 rules = rulesOf(fomc.skills.read("fomc-score"));
-dimSchema = dimensionSchema(fomc.skills.read("fomc-score", "schema.json"));
 systemChars = strlength(fomc.systemPrompt());
 if isfield(s, "systemPrompt")
     systemChars = strlength(s.systemPrompt);
@@ -92,15 +97,39 @@ calls = 0;
 for i = 1:height(dims)
     key = dims.key(i);
     rubric = fomc.skills.read("fomc-score", "rubric/" + dims.rubric(i));
+    anchors = anchorsOf(rubric);
+    if key == "rate_path"
+        % A cut can only match a dovish row, an increase a hawkish one
+        move = decisionSign(ctx.D, row);
+        if move ~= 0
+            anchors = anchors(anchors.score * move > 0, :);
+        end
+    end
+    note = "";
+    if key == "rate_path"
+        note = decisionNote(ctx.D, row);
+    elseif key == "balance_sheet"
+        % New purchases, or runoff slowed or ended, can only match a dovish row
+        note = balanceSheetNote(ctx.D, row);
+        if strlength(note) > 0
+            anchors = anchors(anchors.score < 0, :);
+        end
+    end
+    dimSchema = requestSchema(anchors.label);
     task = "Score one dimension of the FOMC minutes of the meeting that ended " + meetingDate + ...
         " (released " + releaseDate + "): " + dims.title(i) + ". Use only the passages below, which " + ...
         "code selected from these minutes as the ones about this topic, and no later knowledge. Return " + ...
-        "only a JSON object for this one dimension that matches the supplied schema: status, score (-1 " + ...
-        "to 1 in steps of 0.25, or null when not_discussed), confidence (null when not_discussed), a " + ...
-        "rationale of one or two short sentences (under 60 words) about the minutes, and evidence: 1 to 3 quotes of sentences from the passages that justify the score (none " + ...
-        "when not_discussed).";
-    if key == "rate_path"
-        task = task + " " + decisionNote(ctx.D, row);
+        "only a JSON object for this one dimension that matches the supplied schema: evidence: 1 to 3 " + ...
+        "quotes of sentences from the passages that show what was decided or argued; a rationale of " + ...
+        "one or two short sentences (under 60 words) about the minutes; the stance these minutes " + ...
+        "support on this topic: dovish (toward easier policy, below 0), balanced (0) or hawkish " + ...
+        "(toward tighter policy, above 0); the row of the rubric's Anchors table whose description " + ...
+        "matches these minutes, copied with its score and on the side of the stance " + ...
+        "(stance_anchor); and stance_confidence. Pick the anchor by what the minutes say was done or urged, not by the mildest " + ...
+        "row with the right sign: the score is the anchor's, in brackets. Only if the passages do not discuss this " + ...
+        "topic, return no evidence and null stance, stance_anchor and stance_confidence (not_discussed).";
+    if strlength(note) > 0
+        task = task + " " + note;
     end
     fixed = task + "SCALE" + scale + "RULES" + rules + "RUBRIC" + rubric;
     % What is left of the window for passages, keeping room for two answers and a retry note
@@ -121,7 +150,9 @@ for i = 1:height(dims)
         calls = calls + 1;
         content = strtrim(string(reply));
         try
-            [candidate, unknown] = withQuotes(jsondecode(content), sentences);
+            [candidate, offRubric] = fromAnchor(jsondecode(content), anchors);
+            [candidate, unknown] = withQuotes(candidate, sentences);
+            unknown = [offRubric; unknown];
             trial = score;
             trial.dimensions.(key) = candidate;
             failures = [fomc.guard.validateScores(trial, minutesText, meetingDate, ctx.D); ...
@@ -136,6 +167,7 @@ for i = 1:height(dims)
         end
         fomc.trace.logEvent(ctx, "skill_score_validation", struct("meetingDate", meetingDate, ...
             "releaseDate", releaseDate, "dimension", key, "attempt", attempt, "ok", isempty(failures), ...
+            "score", candidateScore(candidate), "reply", extractBefore(content, min(strlength(content), 800) + 1), ...
             "issues", failures, "passages", ids, "ms", round(toc(t0) * 1000), "stats", stats));
         if isstruct(candidate) && ~isempty(fieldnames(candidate))
             score.dimensions.(key) = candidate;
@@ -162,7 +194,9 @@ end
 
 function T = dimensionList()
 % Each dimension: its key, rubric file, title, the words that mark a paragraph about it, and
-% the sections that state the Committee's view of it (read first)
+% the sections that state the Committee's view of it (read first). The balance sheet's words are
+% phrases: "balance sheet", "purchases" and "mortgage-backed" alone matched the paragraphs of
+% 2020-03-15 on households' balance sheets, consumers' purchases and mortgage payments.
 key = ["rate_path"; "inflation"; "labor_market"; "economic_activity"; "financial_conditions"; ...
     "balance_sheet"; "risk_balance"];
 rubric = ["ratePath.md"; "inflation.md"; "laborMarket.md"; "economicActivity.md"; ...
@@ -176,7 +210,7 @@ words = ["target range|federal funds rate|policy rate|monetary policy|firming|ti
     "labor|employment|unemployment|jobs|job gains|payroll|wage|hiring"
     "gdp|economic activity|growth|spending|investment|output|housing|production|consumer"
     "financial conditions|credit|equity|stock|spread|yield|lending|financial stability|borrowing|dollar"
-    "balance sheet|securities holdings|asset purchases|purchases|runoff|reinvest|reserves|soma|mortgage-backed"
+    "the balance sheet|federal reserve's balance sheet|balance sheet measures|securities holdings|holdings of treasury|holdings of agency|asset purchases|securities purchases|purchases of treasury|purchases of agency|treasury securities|agency mortgage-backed|agency mbs|runoff|redemption|reinvest|reserves|soma"
     "risk|uncertain|upside|downside|tilted|balanced"];
 sections = ["participantsViews|policyAction"; "participantsViews"; "participantsViews"; "participantsViews"; ...
     "participantsViews|financialMarkets"; "participantsViews|policyAction"; "participantsViews"];
@@ -235,6 +269,17 @@ end
 text = strjoin(blocks, string(newline) + newline);
 end
 
+function v = decisionSign(D, row)
+% +1 for an increase, -1 for a cut, 0 for a hold or a decision code could not read
+v = 0;
+switch string(D.cards.action(row))
+    case "raise"
+        v = 1;
+    case "cut"
+        v = -1;
+end
+end
+
 function note = decisionNote(D, row)
 % The meeting's decision as read by code (fomc.data.decisionCards), and the rubric's scores for
 % that kind of move. The rubric tells the model to look up the decision, which it cannot do
@@ -261,6 +306,146 @@ switch action
     otherwise
         note = "";
 end
+end
+
+function T = anchorsOf(rubric)
+% The rows of a rubric's Anchors table: score and label ("New purchases or large expansion
+% announced or strongly urged (-1.00)"), the label as the model must copy it. The description
+% comes first: with labels that began with the score ("0.00: ..."), Qwen3 4B chose the 0.00 row
+% for nearly every dimension of June 2022 and March 2020, its rationale saying "hawkish" or
+% "dovish" all the same.
+tok = regexp(char(rubric), "(?m)^\|\s*([+-]?\d\.\d\d)\s*\|\s*(.*?)\s*\|\s*$", "tokens");
+score = cellfun(@(t) str2double(t{1}), tok(:));
+label = cellfun(@(t) string(t{2}) + " (" + string(t{1}) + ")", tok(:));
+T = table(score, label);
+end
+
+function out = requestSchema(labels)
+% The schema the model fills for one dimension: the skill's dimension (schema.json) with the
+% score replaced by an anchor, one of the rubric's rows, and no status (a null anchor is
+% not_discussed). The model writes the fields in alphabetical order, whatever the schema's order,
+% so they are named to be written in the order it should think: what the minutes say (evidence),
+% why (rationale), which side (stance), which row (stance_anchor), how sure (stance_confidence).
+% Named "anchor", the row came first, before any quote, and Qwen3 4B chose "0.00" for nearly every
+% dimension of June 2022. Without the stance it chose rows of the wrong side with the right size:
+% +0.75 for the labor market of 2008-12-16, its rationale "weakness that supports easier policy".
+% fromAnchor turns the answer back into the skill's dimension object.
+anchor = strjoin("""" + replace(labels, """", "\""") + """", ", ");
+out = "{""type"": ""object"", ""required"": [""evidence"", ""rationale"", ""stance"", ""stance_anchor"", ""stance_confidence""], " + ...
+    """additionalProperties"": false, ""properties"": {" + ...
+    """evidence"": {""type"": ""array"", ""maxItems"": 3, ""items"": {""type"": ""object"", ""required"": [""quote""], " + ...
+        """additionalProperties"": false, ""properties"": {""quote"": {""type"": ""string""}}}}, " + ...
+    """rationale"": {""type"": ""string"", ""maxLength"": 500}, " + ...
+    """stance"": {""type"": [""string"", ""null""], ""enum"": [""dovish"", ""balanced"", ""hawkish"", null]}, " + ...
+    """stance_anchor"": {""type"": [""string"", ""null""], ""enum"": [" + anchor + ", null]}, " + ...
+    """stance_confidence"": {""type"": [""string"", ""null""], ""enum"": [""high"", ""medium"", ""low"", null]}}}";
+end
+
+function [d, issues] = fromAnchor(reply, anchors)
+% The skill's dimension object from the model's answer: the score is the chosen anchor's, and a
+% null anchor is not_discussed (no score, confidence or evidence). An answer with a status and
+% score instead of an anchor keeps them (the stand-in models of the tests).
+issues = strings(0, 1);
+field = @(name, default) pickField(reply, name, default);
+score = field("score", []);
+status = field("status", "");
+anchor = field("stance_anchor", []);
+confidence = field("stance_confidence", field("confidence", []));
+hasAnchor = (ischar(anchor) || isstring(anchor)) && strlength(string(anchor)) > 0;
+if isfield(reply, "stance_anchor") && ~hasAnchor
+    d = struct("status", "not_discussed", "score", [], "confidence", [], ...
+        "rationale", field("rationale", ""), "evidence", {{}});
+    return
+end
+if hasAnchor
+    status = "scored";
+    k = find(anchors.label == strtrim(string(anchor)), 1);
+    if isempty(k)
+        % Copied with small changes: match it by its score
+        v = str2double(regexp(string(anchor), "[+-]?\d\.\d+(?=\)\s*$)", "match", "once"));
+        k = find(anchors.score == v, 1);
+    end
+    if isempty(k)
+        issues(end+1, 1) = "the anchor """ + string(anchor) + """ is not a row of the rubric's Anchors table: " + ...
+            "copy one of them: " + strjoin(anchors.label, "; ") + ".";
+    else
+        score = anchors.score(k);
+        stance = string(field("stance", ""));
+        side = (stance == "hawkish") - (stance == "dovish");
+        if any(stance == ["dovish", "balanced", "hawkish"]) && sign(score) ~= side
+            issues(end+1, 1) = "the stance is " + stance + " but the row """ + anchors.label(k) + ...
+                """ is " + sideOf(score) + ": choose the row on the " + sideOf(side) + ...
+                " side that matches the minutes, or correct the stance.";
+        end
+    end
+end
+d = struct("status", status, "score", score, "confidence", confidence, ...
+    "rationale", field("rationale", ""), "evidence", {field("evidence", {})});
+end
+
+function t = sideOf(v)
+names = ["dovish (below 0)", "balanced (0)", "hawkish (above 0)"];
+t = names(sign(v) + 2);
+end
+
+function v = candidateScore(d)
+% The score of an answer, for the trace: NaN when there is none
+v = NaN;
+if isstruct(d) && isfield(d, "score") && isnumeric(d.score) && isscalar(d.score)
+    v = d.score;
+end
+end
+
+function v = pickField(s, name, default)
+v = default;
+if isstruct(s) && isfield(s, name)
+    v = s.(name);
+end
+end
+
+function note = balanceSheetNote(D, row)
+% What code reads from the policy actions about the size of the balance sheet, for the balance
+% sheet call: new purchases (holdings increased where the previous meeting's were not), or runoff
+% slowed or ended. Told the rubric only, Qwen3 4B scored the purchases of at least $700 billion of
+% 2020-03-15 at -0.25 and, with the anchor rows written before its quotes, at 0 ("no mention of
+% runoff ... balanced"); it scored the end of runoff of 2019-07-31 +1 ("a faster balance sheet
+% runoff"). "" when neither: continuing purchases and runoff are scored from the discussion.
+note = "";
+now = policyActionText(D, row);
+if row > 1 && increasesHoldings(now) && ~increasesHoldings(policyActionText(D, row - 1))
+    note = "Code read from the Committee's policy actions in these minutes that it directed the " + ...
+        "Desk to increase the System's securities holdings (asset purchases), which the minutes of " + ...
+        "the previous meeting (" + fomc.util.fmtDate(D.meetings.MeetingDate(row - 1)) + ") did " + ...
+        "not: new purchases. Under the rubric's anchors new purchases or a large expansion " + ...
+        "announced score -1, whatever their stated purpose; -0.75 or -0.5 only if the minutes " + ...
+        "describe them as small or temporary.";
+elseif easesRunoff(now)
+    note = "Code read from the Committee's policy actions in these minutes that it decided to " + ...
+        "slow or end the decline of its securities holdings (runoff), which keeps the balance " + ...
+        "sheet larger than planned: dovish. Under the rubric's anchors runoff slowed or ended " + ...
+        "scores -0.75, -1 if purchases are also urged, -0.5 if the minutes stress that it is " + ...
+        "technical.";
+end
+end
+
+function t = policyActionText(D, row)
+P = D.paras(D.paras.meetingIdx == row & string(D.paras.section) == "policyAction", :);
+t = lower(strjoin(string(P.text), newline));
+end
+
+function tf = increasesHoldings(t)
+% "increase or reduce the pace of its purchases" (2013) is a statement of options, not a purchase
+t = erase(t, "increase or reduce");
+tf = ~isempty(regexp(t, "(increase|expand)[a-z ,]{0,80}(holdings|purchases)|" + ...
+    "additional purchases|(begin|initiate)[a-z ,]{0,30}purchas", "once"));
+end
+
+function tf = easesRunoff(t)
+% Runoff slowed or ended, in a meeting that does not begin it (May 2022's plan to "slow and
+% then stop the decline" is the start of runoff)
+tf = ~isempty(regexp(t, "(conclude|end|ending|stop|slow)[a-z ,]{0,40}(reduction|runoff|decline)" + ...
+    "[a-z ,]{0,40}(holdings|securities|balance sheet)|(reduce|lower)[a-z ,]{0,40}redemption cap", "once")) && ...
+    isempty(regexp(t, "begin[a-z ,]{0,40}(reduc|runoff)", "once"));
 end
 
 function [d, unknown] = withQuotes(d, sentences)
@@ -319,22 +504,6 @@ if isempty(r)
     r = "";
 end
 r = strtrim(string(r(1)));
-end
-
-function out = dimensionSchema(schemaText)
-% The schema of one dimension, cut from the skill's full schema as text (decoding and encoding
-% it again would turn the null in its enum into an empty array)
-schemaText = char(schemaText);
-start = strfind(schemaText, '"dimension":');
-open = find(schemaText(start:end) == '{', 1) + start - 1;
-depth = 0;
-for k = open:numel(schemaText)
-    depth = depth + (schemaText(k) == '{') - (schemaText(k) == '}');
-    if depth == 0
-        break
-    end
-end
-out = string(schemaText(open:k));
 end
 
 function dimensions = dimensionsInFailures(issues)
