@@ -22,7 +22,7 @@ Open http://localhost:8787. It starts Ollama and MATLAB, checks memory first, an
 
 **Without the browser:** in MATLAB, from the repo root, run `setup` then `fomc.chat()`.
 
-**Test it:** `buildtool test` in MATLAB (about 2 minutes, no model needed) and `uv run python -m unittest tests/test_runtime.py tests/test_chats.py`. The scoring tests against the real model are opt-in and slow (about 30 minutes, Ollama running): `setenv("FOMC_LIVE", "1"); runtests("tests/testSkillScoreLive.m")`.
+**Test it:** `buildtool test` in MATLAB (about 2 minutes, no model needed) and `uv run python -m unittest tests/test_runtime.py tests/test_chats.py`. The scoring tests against the real model are opt-in and slow (about 35 minutes, Ollama running): `setenv("FOMC_LIVE", "1"); runtests("tests/testSkillScoreLive.m")`.
 
 ## What it does
 
@@ -60,11 +60,17 @@ date rather than a score of some other meeting. Chat scores each meeting with
 `fomc.skills.scoreByDimension`, one dimension per model call: each call gets the
 skill's scale and rules, that dimension's rubric, and the paragraphs of the
 minutes about it, so every prompt fits the local models' 8,192-token window.
-The model's quotes are matched to the closest sentence of those paragraphs, so
-they are word for word. Each dimension is then validated for schema shape, score
-range and confidence, exact minutes quotes of at most 40 words, rate-path
-consistency with the coded decision, and future dates in rationales. Failed
-checks are sent back for correction for up to three total attempts. If
+The model does not write the score: it names the stance (dovish, balanced or
+hawkish) and the row of the rubric's Anchors table the minutes match, and code
+takes the score from that row. The rate path call is told the decision code read
+from the minutes, and these calls run at temperature 0, so the same minutes get
+the same score. The model's quotes are matched to the closest sentence of those
+paragraphs, so they are word for word. Each dimension is then validated for
+schema shape, score range and confidence, exact minutes quotes of at most 40
+words, rate-path consistency with the coded decision, a rationale whose
+"dovish" or "hawkish" matches the score's sign, and dates after the release
+(other than those the minutes give). Failed checks are sent back for correction
+for up to three total attempts. If
 validation still fails, the result is marked unvalidated with its issues and
 failed dimensions; do not rely on it as verified.
 
@@ -128,7 +134,7 @@ result.attempts    % the most attempts any dimension needed, one to three
 | `+data/` | Loads the data, works out what was known on a given date, and reads each meeting's decision, the staff's forecast revisions, participants' views on future meetings, and which way the minutes point (the AI's saved score, else word rules). |
 | `+focus/` | Picks which minutes a question is about and looks up the first facts before the model starts, including the path of rates, how the economy compares with the Fed's goals and what the latest minutes say about future meetings, and the evidence on what the rate path may mean ahead. |
 | `+retrieve/` | Finds the paragraphs that best match a question. |
-| `+guard/` | The checks: no future dates, real citations, correct figures, plain wording, and the AI's scores (schema, score range, quotes word for word, the rate path against the decision). |
+| `+guard/` | The checks: no future dates, real citations, correct figures, plain wording, and the AI's scores (schema, score range, quotes word for word, the rate path against the decision, the rationale's sign). |
 | `+analysis/` | The structured analysis (the High effort level). |
 | `+skills/` | Discovers and loads skill instructions and runs the validated structured scoring workflow: one dimension per call for the local models (`scoreByDimension`, used by chat and the saved scores) or in one call (`scoreMeeting`), writes scores as schema-shaped JSON (`forJson`), and saves them (`scoreCache`). |
 | `+llm/` | Talks to the local model (and a fake model for tests). |

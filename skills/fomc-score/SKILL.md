@@ -6,8 +6,12 @@ description: Score, rate, grade, quantify, or measure FOMC minutes on a -1 (dovi
 # FOMC Minutes Scoring
 
 Turn one meeting's minutes into a structured set of scores in [-1, +1], each backed by quotes from the text.
-The agent's dedicated scoring workflow supplies the complete minutes text, all rubric files, and the output schema
-to one model call at a time; it does not use a minutes retrieval tool while scoring.
+The agent's dedicated scoring workflow supplies the minutes, the rubrics and the output schema to the model; it does
+not use a minutes retrieval tool while scoring. Chat and the saved scores score one dimension per call
+(`fomc.skills.scoreByDimension`): the scale, the rules below, that dimension's rubric and the paragraphs of the minutes
+about it, with the model naming the stance and the rubric's anchor row, from which code takes the score. The one-call
+scorer (`fomc.skills.scoreMeeting`) supplies the complete minutes and all rubric files at once, for models with a
+window larger than the local models' 8,192 tokens.
 
 ## Scale (same for every dimension)
 
@@ -21,8 +25,8 @@ Scores measure what the *minutes say*, not what you think the Fed should do and 
 
 - A meeting date (YYYY-MM-DD) or "latest". The agent resolves this against its meeting data and only scores minutes
   released by the session's anchor date.
-- The scoring workflow evaluates all seven dimensions. It loads the full meeting text and all rubric reference files
-  before asking the model to score.
+- The scoring workflow evaluates all seven dimensions (the saved scores only `rate_path`). It loads the minutes and
+  the rubric reference files before asking the model to score.
 
 If the minutes for the requested date are not available by the anchor date, report that rather than scoring from memory.
 

@@ -250,14 +250,15 @@ participants lean toward raising, cutting or holding?
 
 **The AI's score.** Ahead of time, Qwen3 4B reads the paragraphs of each set of minutes about the
 rate path (code picks them, since the full minutes don't fit the model's window) and scores it from
-−1 (lean to cuts) to +1 (lean to increases), using the rubric in the `fomc-score` skill. It
-must quote the sentences behind its score, and code checks the quotes are really in the minutes.
+−1 (lean to cuts) to +1 (lean to increases), using the rubric in the `fomc-score` skill: it picks
+the rubric's row that matches the minutes, and code takes the score from that row. It must quote
+the sentences behind its score, and code checks the quotes are really in the minutes.
 A score of +0.5 or more reads as "increase", −0.5 or less as "cut", anything between as "hold".
 When rates are already at zero, a lean to cuts reads as "hold", since the rate can't go lower.
 
 **The word rules (the fallback).** For minutes whose AI score failed its checks (none of the 150
-saved scores now), code reads the sentences about future rate moves and weighs them by how many held each view: "all
-participants" counts most, then "most", "many", "several", "a few", "one". The most widely held
+saved scores now), code reads the sentences about future rate moves and weighs them by how many
+held each view: "all participants" counts most, then "most", "many", "several", "a few", "one". The most widely held
 view that isn't conditional on the data gives the lean.
 
 **How well each did.** Right about the next decision, with cutoffs chosen on 2008 to 2018 and
@@ -286,10 +287,10 @@ Calling a move only when both point the same way was right 85% from 2019 onward 
 - **Hindsight.** The model was trained on text written after most of these meetings, and may know
   what the Fed did next. That would make its scores of older minutes look better than they are.
 - **The scores are coarse.** The model picks a row of the rubric rather than writing a number,
-  and for the rate path it mostly picks the strongest rows: a hold with a lean scores −0.75 or +1,
-  so a hold that says little either way and one that all but promises a move score the same.
-  The holds near zero from 2009 to 2014 mostly score −0.75 (any lean to cuts there reads as a
-  hold, since the rate can't go lower).
+  and the 150 rate-path scores use only five rows: −0.75 (56), 0 (62), +0.5 (3), +0.75 (8) and
+  +1 (21). None is −1, −0.5, −0.25 or +0.25, so a hold with any lean reads as a coming move, and
+  even March 2020's emergency cut scores −0.75. Of the 48 meetings from 2009 to 2014, 29 score
+  −0.75 (near zero a lean to cuts reads as a hold, since the rate can't go lower).
 - **Scores used to vary from run to run.** At temperature 0.2, 6 of 15 meetings scored three times
   moved by 0.25. The saved scores were made again on 2026-11-05 at temperature 0, which gives the
   same score each time.

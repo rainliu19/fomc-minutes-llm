@@ -21,13 +21,12 @@ function output = scoreByDimension(s, meetingDate, nvp)
 %   Participants' Views first, and keeps the best that fit. The model quotes the sentences that
 %   justify its score; code matches each quote to the closest sentence of the passages (by
 %   shared words) and uses that sentence, cut to 40 words, so every quote is word for word from
-%   the minutes. Asked to copy
-%   quotes exactly, Qwen3 4B reworded them in 4 of 7 dimensions of the September 2026 minutes
-%   and repeated the same text on each retry; asked instead to name numbered sentences, it chose
-%   poorly (a labor market sentence for inflation) and once wrote "S1999..." without end. The
-%   model reads, judges and picks the evidence; code picks what it reads and checks what it
-%   returns (fomc.guard.validateScores). A dimension no paragraph mentions is not_discussed
-%   without a model call.
+%   the minutes. Asked to copy quotes exactly, Qwen3 4B reworded them in 4 of 7 dimensions of
+%   the September 2026 minutes and repeated the same text on each retry; asked instead to name
+%   numbered sentences, it chose poorly (a labor market sentence for inflation) and once wrote
+%   "S1999..." without end. The model reads, judges and picks the evidence; code picks what it
+%   reads and checks what it returns (fomc.guard.validateScores, and fomc.guard.checkRationaleSign
+%   for the retries). A dimension no paragraph mentions is not_discussed without a model call.
 %
 %   The model does not write a score: it names the stance (dovish, balanced, hawkish) and the row
 %   of the rubric's Anchors table that the minutes match, and code takes the score from that row
