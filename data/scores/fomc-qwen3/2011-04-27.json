@@ -1,7 +1,7 @@
 {
   "meetingDate": "2011-04-27",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,60 +10,60 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "medium",
+        "rationale": "The Committee held the rate and emphasized exceptionally low levels for an extended period. A few members suggested earlier tightening, but no majority or urgency. The stance is dovish due to the emphasis on prolonged low rates and subdued inflation, not a push for rate hikes.",
         "evidence": [
+          {
+            "quote": "The Committee will maintain the target range for the federal funds rate at 0 to 1/4 percent and continues to anticipate that economic conditions, including low rates of resource utilization, subdued inflation trends, and stable inflation expectations, are likely to",
+            "paragraph_ref": "2011-04-27/policyAction/10"
+          },
           {
             "quote": "That said, a few members viewed the increase in inflation risks as suggesting that economic conditions might well evolve in a way that would warrant the Committee taking steps toward less-accommodative policy sooner than currently anticipated.",
             "paragraph_ref": "2011-04-27/policyAction/1"
-          },
-          {
-            "quote": "Most participants indicated that once asset sales became appropriate, such sales should be put on a largely predetermined and preannounced path; however, many of those participants noted that the pace of sales could nonetheless be adjusted in response to material",
-            "paragraph_ref": "2011-04-27/financialMarkets/6"
           }
-        ],
-        "rationale": "Some participants suggested earlier tightening, but no clear majority or urgency. The view was cautious and data-dependent, with a slight lean toward future tightening but no decisive action or consensus.",
-        "score": 0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -75,7 +75,6 @@
       "2011-04-27/financialMarkets/3",
       "2011-04-27/financialMarkets/4",
       "2011-04-27/financialMarkets/6",
-      "2011-04-27/financialMarkets/8",
       "2011-04-27/policyAction/1",
       "2011-04-27/policyAction/10"
     ]

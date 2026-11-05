@@ -102,11 +102,55 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
             tc.verifyEmpty(issues);
         end
 
+        function rationaleSignMustMatchTheScore(tc)
+            % The March 2020 slip: "dovish" in the rationale, a positive score
+            result = validScore(tc.meetingDate);
+            result.dimensions.balance_sheet.score = 0.25;
+            result.dimensions.balance_sheet.rationale = "A clear expansion, so it reflects a dovish stance.";
+            result.dimensions.inflation.score = -0.5;
+            result.dimensions.inflation.rationale = "Participants sounded hawkish on prices.";
+
+            issues = fomc.guard.checkRationaleSign(result);
+
+            tc.verifyNumElements(issues, 2);
+            tc.verifyTrue(any(startsWith(issues, "balance_sheet: the rationale calls it dovish")));
+            tc.verifyTrue(any(startsWith(issues, "inflation: the rationale calls it hawkish")));
+        end
+
+        function rationaleSignAllowsComparisonsAndMatchingScores(tc)
+            result = validScore(tc.meetingDate);
+            result.dimensions.balance_sheet.score = 0.25;
+            result.dimensions.balance_sheet.rationale = "Runoff continued; the stance was not dovish.";
+            result.dimensions.inflation.score = -0.25;
+            result.dimensions.inflation.rationale = "Less hawkish than before: inflation was easing.";
+            result.dimensions.rate_path.score = 0.75;
+            result.dimensions.rate_path.rationale = "A hawkish increase with more expected.";
+            result.dimensions.labor_market.score = 0.25;
+            result.dimensions.labor_market.rationale = "Mixed: some hawkish and some dovish views.";
+
+            tc.verifyEmpty(fomc.guard.checkRationaleSign(result));
+        end
+
         function rationaleCannotUseDatesAfterRelease(tc)
             result = validScore(tc.meetingDate);
             result.dimensions.inflation.rationale = "Later conditions in 2021-01-01 confirmed the trend.";
             issues = fomc.guard.checkAsOf(result, tc.D.meetings.ReleaseDate(1));
             tc.verifyTrue(any(contains(issues, "2021-01-01")));
+        end
+
+        function rationaleMayUseAYearTheMinutesGive(tc)
+            % The 2011-2012 minutes gave the Committee's guidance as a later year; naming it is
+            % not hindsight, but a year the minutes do not give still is
+            result = validScore(tc.meetingDate);
+            result.dimensions.rate_path.rationale = "Rates are expected to stay low at least through mid-2013.";
+            result.dimensions.inflation.rationale = "Inflation picked up in 2014.";
+            minutes = "Members expected low levels for the federal funds rate at least through mid-2013.";
+
+            issues = fomc.guard.checkAsOf(result, datetime(2011,8,30), minutes);
+
+            tc.verifyFalse(any(startsWith(issues, "rate_path")), strjoin(issues, " "));
+            tc.verifyTrue(any(startsWith(issues, "inflation.rationale mentions year 2014")));
+            tc.verifyNotEmpty(fomc.guard.checkAsOf(result, datetime(2011,8,30)), "without the minutes, any later year");
         end
 
         function generationRetriesValidationFailures(tc)
@@ -139,10 +183,9 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
         end
 
         function runTurnRoutesScoringRequestsThroughTheSkill(tc)
-            valid = validScore(tc.meetingDate);
-            model = fomc.llm.Mock({struct("content", jsonencode(valid))});
-            s = struct("ctx", tc.ctx, "llm", @model.call, "history", messageHistory, ...
-                "systemPrompt", fomc.systemPrompt(), "known", strings(0, 1));
+            % Chat scores one dimension per call (scoreByDimension); FakeScorer answers each
+            model = FakeScorer(tc.D);
+            s = tc.chatSession(model);
 
             [s, answer, structured, calls] = fomc.runTurn(s, ...
                 "Score the FOMC minutes for 2020-01-29.", Format="chat");
@@ -151,42 +194,54 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
             tc.verifyEqual(structured.skill, "fomc-score");
             tc.verifySubstring(answer, """meeting_date"":""2020-01-29""");
             tc.verifyEmpty(calls);
-            tc.verifyEqual(model.Index, 1);
+            tc.verifyEqual(model.Dates, "2020-01-29");
+            tc.verifyGreaterThanOrEqual(model.Calls, 1);
             tc.verifyEqual(numel(s.history.Messages), 2);
         end
 
+        function monthAndYearScoresTheMeetingThatMonth(tc)
+            model = FakeScorer(tc.D);
+            s = tc.chatSession(model);
+
+            [~, ~, structured] = fomc.runTurn(s, "Score the Jan. 2020 meeting.");
+
+            tc.verifyTrue(structured.ok, strjoin(structured.issues, " "));
+            tc.verifyEqual(model.Dates, "2020-01-29");
+        end
+
+        function monthWithoutAMeetingAsksForTheDate(tc)
+            % There was no meeting in February 2020: ask for the date, do not score the latest
+            model = FakeScorer(tc.D);
+            s = tc.chatSession(model);
+
+            [~, answer, structured] = fomc.runTurn(s, "Score the February 2020 meeting.");
+
+            tc.verifyFalse(structured.ok);
+            tc.verifySubstring(answer, "no FOMC meeting in February 2020");
+            tc.verifyEqual(model.Calls, 0);
+        end
+
         function comparisonWithoutDatesRequestsDatesInsteadOfScoringLatest(tc)
-            model = fomc.llm.Mock({struct("content", jsonencode(validScore(tc.meetingDate)))});
-            s = struct("ctx", tc.ctx, "llm", @model.call, "history", messageHistory, ...
-                "systemPrompt", fomc.systemPrompt(), "known", strings(0, 1));
+            model = FakeScorer(tc.D);
+            s = tc.chatSession(model);
 
             [~, answer, structured] = fomc.runTurn(s, "Compare FOMC stance numerically across meetings.");
 
             tc.verifyFalse(structured.ok);
             tc.verifySubstring(answer, "include at least two distinct meeting dates");
-            tc.verifyEqual(model.Index, 0);
+            tc.verifyEqual(model.Calls, 0);
         end
 
         function comparisonAcceptsLatestAndReturnsSchemaScoresSeparately(tc)
-            january = validScore("2020-01-29");
-            march = validScore("2020-03-18");
-            march.dimensions.rate_path.score = -0.25;
-            for dim = string(fieldnames(march.dimensions))'
-                march.dimensions.(dim).evidence = {struct("quote", ...
-                    "The Committee decided to lower the target range by 50 basis points.", ...
-                    "paragraph_ref", "2020-03-18/policyAction/1")};
-            end
-            model = fomc.llm.Mock({struct("content", jsonencode(january)), ...
-                struct("content", jsonencode(march))});
-            s = struct("ctx", tc.ctx, "llm", @model.call, "history", messageHistory, ...
-                "systemPrompt", fomc.systemPrompt(), "known", strings(0, 1));
+            model = FakeScorer(tc.D);
+            s = tc.chatSession(model);
 
             [~, answer, structured] = fomc.runTurn(s, ...
                 "Compare the score for 2020-01-29 with the latest meeting.");
             decoded = jsondecode(answer);
 
-            tc.verifyTrue(structured.ok);
-            tc.verifyEqual(model.Index, 2);
+            tc.verifyTrue(structured.ok, strjoin(structured.issues, " "));
+            tc.verifyEqual(model.Dates, ["2020-01-29"; "2020-03-18"]);
             tc.verifyEqual(numel(structured.scores), 2);
             tc.verifyEqual(string(structured.scores{1}.meeting_date), "2020-01-29");
             tc.verifyEqual(string(structured.scores{2}.meeting_date), "2020-03-18");
@@ -196,6 +251,14 @@ classdef testSkillScoreGuards < matlab.unittest.TestCase
             tc.verifyFalse(isfield(decoded.scores, "ok"));
             tc.verifyEqual(sort(string(fieldnames(structured.scores{1}))), ...
                 sort(["meeting_date"; "scale"; "dimensions"]));
+        end
+    end
+
+    methods
+        function s = chatSession(tc, model)
+            % A chat session at the test anchor whose model is model.call
+            s = struct("ctx", tc.ctx, "llm", @model.call, "history", messageHistory, ...
+                "systemPrompt", fomc.systemPrompt(), "known", strings(0, 1));
         end
     end
 end

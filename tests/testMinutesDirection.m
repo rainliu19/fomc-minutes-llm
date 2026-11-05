@@ -57,36 +57,29 @@ classdef testMinutesDirection < matlab.unittest.TestCase
             end
         end
 
-        function eightScoresFailedTheirChecksAndUseTheWordRules(tc)
-            % Four said "not discussed" with a score, one had no quotes, and three rationales named
-            % 2014 or 2013, which the 2011-2012 minutes themselves gave as the date in the
-            % Committee's guidance; the check reads any later year as a leak
-            failed = ["2008-06-25", "2010-08-10", "2011-06-22", "2011-08-09", "2012-03-13", ...
-                "2012-04-25", "2012-06-20", "2012-08-01"];
+        function everySavedScorePassedItsChecks(tc)
+            % The nine that failed named a year the minutes themselves gave in the Committee's
+            % guidance (2013 to 2015 in 2011-2012, 2023 and 2026 in 2020-2021), which the hindsight
+            % check now allows (fomc.guard.checkAsOf). A failed score would use the word rules
+            % (aScoreThatCannotBeTrustedFallsBackToTheWordRules)
             M = tc.D.meetings;
             got = strings(1, 0);
             for k = 1:height(M)
                 meeting = fomc.util.fmtDate(M.MeetingDate(k));
                 if ~fomc.skills.scoreCache("read", tc.model, meeting).ok
                     got(end+1) = meeting; %#ok<AGROW>
-                    [~, levels] = fomc.data.ratePath(tc.D, M.ReleaseDate(k));
-                    tc.verifyEqual(fomc.data.minutesDirection(tc.D, k, levels(end, :)).source, "rules", meeting);
                 end
             end
-            tc.verifyEqual(got, failed);
-            r = fomc.data.economyAssessment(tc.D, datetime(2012,10,1));
-            tc.verifyEqual(r.minutes.directionSource, "rules");
-            tc.verifyFalse(contains(r.summary, "the AI scored"));
-            tc.verifySubstring(r.note, "read by code from their wording");
+            tc.verifyEmpty(got);
         end
 
         function aScoreIsUsedOnlyOnceItsMinutesArePublic(tc)
             % The September 2026 minutes came out on 2026-10-07: the day before, the reading is
-            % the July minutes' score (+0.50); that day, September's (+0.75)
+            % the July minutes' score (+1); that day, September's (+1)
             n = fomc.data.nextMeetingReading(tc.D, datetime(2026,10,6));
-            tc.verifyEqual([n.minutesSource, string(n.ratePathScore)], ["ai", "0.5"]);
+            tc.verifyEqual([n.minutesSource, string(n.ratePathScore)], ["ai", "1"]);
             n = fomc.data.nextMeetingReading(tc.D, datetime(2026,10,7));
-            tc.verifyEqual([n.minutesSource, string(n.ratePathScore)], ["ai", "0.75"]);
+            tc.verifyEqual([n.minutesSource, string(n.ratePathScore)], ["ai", "1"]);
             r = fomc.data.economyAssessment(tc.D, datetime(2026,10,6));
             tc.verifyEqual(r.minutes.meetingDate, "2026-07-29");
             tc.verifyFalse(contains(r.summary, "2026-09-16/"), "nothing from minutes not yet public");
@@ -96,8 +89,8 @@ classdef testMinutesDirection < matlab.unittest.TestCase
             % The 22 meetings read by hand for the word rules (testEconomy): every 2022 meeting and
             % every meeting since January 2025. Four are "depends on the data" or "divided", with no
             % one direction. Of the other 18 the AI agrees on 16; the two it misses:
-            %   2022-11-02 +0.25 (hold): "ongoing increases" were expected
-            %   2025-06-18 +0.25 (hold): most expected some reduction that year
+            %   2025-10-29 -0.75 (down): cuts, scored -0.5 or below by the rubric; the minutes
+            %   2025-12-10 -0.75 (down):   expected a pause, but the score carries the decision
             hand = [
                 "2022-01-26", "up"; "2022-03-16", "up"; "2022-05-04", "up"; "2022-06-15", "up"
                 "2022-07-27", "up"; "2022-09-21", "up"; "2022-11-02", "up"; "2022-12-14", "up"
@@ -114,7 +107,7 @@ classdef testMinutesDirection < matlab.unittest.TestCase
                     missed(end+1) = hand(i, 1); %#ok<AGROW>
                 end
             end
-            tc.verifyEqual(missed, ["2022-11-02", "2025-06-18"]);
+            tc.verifyEqual(missed, ["2025-10-29", "2025-12-10"]);
         end
 
         function theBacktestMatchesWhatTheDocsReport(tc)
@@ -124,11 +117,11 @@ classdef testMinutesDirection < matlab.unittest.TestCase
             train = T(T.next < datetime(2019,1,1), :);
             test = T(T.next >= datetime(2019,1,1), :);
             tc.verifyEqual([height(train), height(test), sum(test.action ~= "hold")], [87, 62, 22]);
-            tc.verifyEqual(sum(train.source == "ai"), 79, "8 failed scores use the word rules");
+            tc.verifyEqual(sum(train.source == "ai"), 87, "every score passed its checks");
             % Right, moves caught, and moves called that did not happen
-            tc.verifyEqual(tally(train.ai, train.action), [75, 9, 8], "AI, 2008-2018");
+            tc.verifyEqual(tally(train.ai, train.action), [72, 8, 10], "AI, 2008-2018");
             tc.verifyEqual(tally(train.rules, train.action), [62, 11, 23], "word rules, 2008-2018");
-            tc.verifyEqual(tally(test.ai, test.action), [50, 14, 4], "AI, 2019 on");
+            tc.verifyEqual(tally(test.ai, test.action), [49, 20, 11], "AI, 2019 on");
             tc.verifyEqual(tally(test.rules, test.action), [47, 18, 11], "word rules, 2019 on");
             tc.verifyEqual(tally(test.bill, test.action), [52, 14, 2], "6-month bill, 2019 on");
             tc.verifyEqual(sum(test.action == "hold"), 40, "a hold every time: 65%");
@@ -182,11 +175,11 @@ classdef testMinutesDirection < matlab.unittest.TestCase
         end
 
         function aCutQuoteIsMarkedInTheAssessment(tc)
-            % The skill keeps quotes to 40 words; the September 2026 decision sentence is longer
-            r = fomc.data.economyAssessment(tc.D, datetime(2026,10,7));
-            tc.verifySubstring(r.summary, "in the banking..."" [2026-09-16/policyAction/1]");
-            tc.verifySubstring(r.summary, "by year end."" [2026-09-16/participantsViews/11]");
-            tc.verifyFalse(contains(r.summary, "year end...."), "a whole sentence is not marked");
+            % The skill keeps quotes to 40 words; the October 2025 sentence on further cuts is longer
+            r = fomc.data.economyAssessment(tc.D, datetime(2025,11,25));
+            tc.verifySubstring(r.summary, "indicated that they..."" [2025-10-29/participantsViews/11]");
+            tc.verifySubstring(r.summary, "to 3-3/4 to 4 percent."" [2025-10-29/policyAction/15]");
+            tc.verifyFalse(contains(r.summary, "4 percent...."), "a whole sentence is not marked");
         end
 
         function theMemoryGuardStopsOnlyWhenMemoryIsShort(tc)

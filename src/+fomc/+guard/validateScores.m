@@ -28,7 +28,7 @@ if ~isnat(d)
     end
 end
 if ~isnat(releaseDate)
-    issues = [issues; fomc.guard.checkAsOf(result, releaseDate)];
+    issues = [issues; fomc.guard.checkAsOf(result, releaseDate, minutesText)];
 end
 
 issues = unique(issues(strlength(issues) > 0), "stable");

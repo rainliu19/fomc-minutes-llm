@@ -132,26 +132,25 @@ The direction the minutes point, with up to two quoted sentences, and whether th
 revised its inflation and growth forecasts up or down at that meeting.
 
 **Example 1, as of August 25, 2024** (the September 2024 cut came next):
-- **Minutes:** the AI scored the July 2024 minutes 0.00, a lean toward holding. Quote: "All
-  participants supported maintaining the target range..."
+- **Minutes:** the AI scored the July 2024 minutes −0.75, a lean toward cuts. Quote: "The vast
+  majority observed that ... it would likely be appropriate to ease policy at the next meeting."
 - **Market:** the 6-month bill was 4.9%, 0.4 point below the fed funds rate of 5.3%, so markets
   expected a cut soon.
-- **Reading:** "participants expected to hold for now, but the 6-month bill suggests markets expect
-  a cut over the next few meetings."
+- **Reading:** "the minutes and the 6-month bill both point to a cut over the next few meetings."
 - **Economy:** core inflation 2.6% and falling, unemployment 4.3% and rising, job gains 170,000 a
   month.
 - **Rules:** 4.0% to 6.0%, against an actual range of 5-1/4 to 5-1/2: one rule above it, one within
   it, two below.
 
-The market had it right here. The minutes described views at the end of July; by late August the
-market expected a cut, and the Fed cut at the next meeting.
+Both had it right here: the Fed cut at the next meeting. (Before the scorer picked a rubric row,
+the AI scored these minutes 0.00, a hold, and only the market pointed to the cut.)
 
 **Example 2, as of October 7, 2026:**
-- **Minutes:** the AI scored the September 2026 minutes +0.75, a lean toward further increases.
+- **Minutes:** the AI scored the September 2026 minutes +1, a lean toward further increases.
   Quote: "most participants assessed that another increase ... would likely be appropriate by year end."
 - **Market:** the bill was 0.4 point above the fed funds rate, so an increase soon.
 - **Reading:** both point to an increase. After earlier minutes with the same pattern, the next
-  meeting raised 15 times and held twice (of 17).
+  meeting raised 16 times and held twice (of 18).
 - **Rules:** 4.7% to 6.9%, all four above the actual 3-3/4 to 4.
 
 **What could be wrong:**
@@ -251,14 +250,15 @@ participants lean toward raising, cutting or holding?
 
 **The AI's score.** Ahead of time, Qwen3 4B reads the paragraphs of each set of minutes about the
 rate path (code picks them, since the full minutes don't fit the model's window) and scores it from
-−1 (lean to cuts) to +1 (lean to increases), using the rubric in the `fomc-score` skill. It
-must quote the sentences behind its score, and code checks the quotes are really in the minutes.
+−1 (lean to cuts) to +1 (lean to increases), using the rubric in the `fomc-score` skill: it picks
+the rubric's row that matches the minutes, and code takes the score from that row. It must quote
+the sentences behind its score, and code checks the quotes are really in the minutes.
 A score of +0.5 or more reads as "increase", −0.5 or less as "cut", anything between as "hold".
 When rates are already at zero, a lean to cuts reads as "hold", since the rate can't go lower.
 
-**The word rules (the fallback).** For the 8 of 150 meetings whose AI score failed its checks,
-code reads the sentences about future rate moves and weighs them by how many held each view: "all
-participants" counts most, then "most", "many", "several", "a few", "one". The most widely held
+**The word rules (the fallback).** For minutes whose AI score failed its checks (none of the 150
+saved scores now), code reads the sentences about future rate moves and weighs them by how many
+held each view: "all participants" counts most, then "most", "many", "several", "a few", "one". The most widely held
 view that isn't conditional on the data gives the lean.
 
 **How well each did.** Right about the next decision, with cutoffs chosen on 2008 to 2018 and
@@ -266,24 +266,34 @@ then tested unchanged on 2019 onward:
 
 | | 2008 to 2018 (87 meetings) | 2019 onward (62 meetings) |
 |---|---|---|
-| AI score (word rules where it failed) | 86% | 81% |
+| AI score (word rules where it failed) | 83% | 79% |
 | Word rules alone | 71% | 76% |
 | 6-month bill | 93% | 84% |
 | Always guess "hold" | 85% | 65% |
 
-From 2019 onward, of 22 moves, the AI caught 14 and called 4 that didn't happen; the word rules
-caught 18 but called 11 that didn't; the bill caught 14 and called 2. So the AI beats the word
-rules mainly by calling far fewer moves that didn't happen. The bill is still best for the very
+From 2019 onward, of 22 moves, the AI caught 20 and called 11 that didn't happen; the word rules
+caught 18 and also called 11 that didn't; the bill caught 14 and called 2. So the AI catches the
+most moves but calls as many that didn't happen as the word rules. The bill is best for the very
 next meeting, which is why the reading uses the minutes for direction and the bill for timing.
+Calling a move only when both point the same way was right 85% from 2019 onward (14 caught,
+1 false).
 
 **What could be wrong:**
 - **The score mixes this meeting's decision with what comes next.** The rubric puts a rate
-  increase at +0.75, above the +0.5 cutoff. So most meetings that raised read as "increase next",
-  partly saying "they just hiked, so they'll hike again".
+  increase at +0.5 to +1 and a cut at −0.5 to −1, at or past the cutoff, and the scorer is told the
+  decision. So every meeting that moved reads as another move next, partly saying "they just cut,
+  so they'll cut again". The October and December 2025 cuts read as "cut next", though the
+  minutes expected a pause.
 - **Hindsight.** The model was trained on text written after most of these meetings, and may know
   what the Fed did next. That would make its scores of older minutes look better than they are.
-- **Scores vary from run to run.** Of 15 meetings scored three times, 6 moved by 0.25, which
-  flipped the direction for 3 near the cutoff.
+- **The scores are coarse.** The model picks a row of the rubric rather than writing a number,
+  and the 150 rate-path scores use only five rows: −0.75 (56), 0 (62), +0.5 (3), +0.75 (8) and
+  +1 (21). None is −1, −0.5, −0.25 or +0.25, so a hold with any lean reads as a coming move, and
+  even March 2020's emergency cut scores −0.75. Of the 48 meetings from 2009 to 2014, 29 score
+  −0.75 (near zero a lean to cuts reads as a hold, since the rate can't go lower).
+- **Scores used to vary from run to run.** At temperature 0.2, 6 of 15 meetings scored three times
+  moved by 0.25. The saved scores were made again on 2026-11-05 at temperature 0, which gives the
+  same score each time.
 - **The cutoff was chosen on few moves.** 2008 to 2018 had only 13 rate changes, most of that time
   at zero.
 

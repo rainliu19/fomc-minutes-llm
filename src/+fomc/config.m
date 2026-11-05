@@ -18,6 +18,9 @@ function cfg = config(nvp)
 %   prefetch           The harness looks up decision cards or passages itself (fomc.focus.prefetch).
 %   prefetchHits       Passages the harness looks up before the model starts (see fomc.effort).
 %   temperature        Model randomness; low keeps tool use steady.
+%   structuredTemperature  Randomness of the JSON calls (skill scores, the structured analysis);
+%                      0, so the same minutes get the same score (at 0.2 one dimension of the
+%                      June 2022 minutes scored 0.25, 0.5 and 0 in three runs).
 %   scorerModel        Model for the rubric scorer, independent of the agent.
 %   verbose            Print each tool call as it runs.
 
@@ -36,6 +39,7 @@ arguments
     nvp.prefetch (1,1) logical = true
     nvp.prefetchHits (1,1) double = 3
     nvp.temperature (1,1) double = 0.2
+    nvp.structuredTemperature (1,1) double = 0
     nvp.maxTokens (1,1) double = 450
     nvp.maxTokensAnalysis (1,1) double = 700
     nvp.compactAtTokens (1,1) double = 5500

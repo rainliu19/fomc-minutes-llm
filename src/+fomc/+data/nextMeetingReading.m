@@ -5,7 +5,7 @@ function n = nextMeetingReading(D, asOf)
 %   rate-path score where the minutes have been scored, else the word rules of
 %   fomc.data.policyViews); the 6-month bill against the effective fed funds rate gives the
 %   timing (fomc.data.billSignal). On the 62 meetings from 2019 on, the AI's direction was right
-%   about the next decision 81% of the time, the word rules 76% and the bill 84%: participants
+%   about the next decision 79% of the time, the word rules 76% and the bill 84%: participants
 %   often expect further moves and hold first (docs/agent_interface.md). So the reading says what each
 %   points to and how they combine, and how often the next meeting raised, held or cut after
 %   earlier minutes with the same pattern, counting only meetings held by asOf.

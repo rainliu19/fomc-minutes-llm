@@ -1,7 +1,7 @@
 {
   "meetingDate": "2008-10-29",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,60 +10,56 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The minutes confirm a 50 basis point cut to the federal funds rate target range, from 2% to 1%, with participants agreeing that further easing might be appropriate due to weak economic conditions and financial turmoil.",
         "evidence": [
           {
             "quote": "\"The Federal Open Market Committee decided today to lower its target for the federal funds rate 50 basis points to 1 percent.",
             "paragraph_ref": "2008-10-29/policyAction/5"
-          },
-          {
-            "quote": "To further its long-run objectives, the Committee in the immediate future seeks conditions in reserve markets consistent with reducing the federal funds rate to an average of around 1 percent.\"",
-            "paragraph_ref": "2008-10-29/policyAction/3"
           }
-        ],
-        "rationale": "The minutes show a clear consensus on lowering the federal funds rate to 1 percent, with forward guidance indicating a path toward an average of 1 percent. This reflects a strong easing bias.",
-        "score": -0.75,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -79,9 +75,7 @@
       "2008-10-29/staffEconomy/23",
       "2008-10-29/financialMarkets/2",
       "2008-10-29/policyAction/1",
-      "2008-10-29/policyAction/3",
-      "2008-10-29/policyAction/5",
-      "2008-10-29/policyAction/8"
+      "2008-10-29/policyAction/5"
     ]
   }
 }

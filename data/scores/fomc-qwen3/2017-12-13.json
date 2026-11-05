@@ -1,7 +1,7 @@
 {
   "meetingDate": "2017-12-13",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,64 +10,64 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 1,
         "confidence": "high",
+        "rationale": "The minutes show near-unanimous agreement to raise the rate, with a gradual path emphasized and risks to inflation and activity monitored. A few participants hedge on future increases, indicating cautious forward guidance.",
         "evidence": [
           {
-            "quote": "After assessing current conditions and the outlook for economic activity, the labor market, and inflation, nearly all members agreed to raise the target range for the federal funds rate to 1-1/4 to 1-1/2 percent.",
-            "paragraph_ref": "2017-12-13/policyAction/3"
+            "quote": "Based on their current assessments, almost all participants expressed the view that it would be appropriate for the Committee to raise the target range for the federal funds rate 25 basis points at this meeting.",
+            "paragraph_ref": "2017-12-13/participantsViews/13"
+          },
+          {
+            "quote": "Members agreed that the timing and size of future adjustments to the target range for the federal funds rate would depend on their assessments of realized and expected economic conditions relative to the Committee's objectives of maximum employment and 2",
+            "paragraph_ref": "2017-12-13/policyAction/4"
           },
           {
             "quote": "Most participants reiterated their support for continuing a gradual approach to raising the target range, noting that this approach helped to balance risks to the outlook for economic activity and inflation.",
             "paragraph_ref": "2017-12-13/participantsViews/14"
-          },
-          {
-            "quote": "The Committee expects that economic conditions will evolve in a manner that will warrant gradual increases in the federal funds rate; the federal funds rate is likely to remain, for some time, below levels that are expected to prevail in",
-            "paragraph_ref": "2017-12-13/policyAction/13"
           }
-        ],
-        "rationale": "The minutes show near-unanimous agreement to raise the rate and a clear bias toward gradual increases, with most participants supporting a path of tightening. A few dissent, but the overall view is firmly hawkish on the rate path.",
-        "score": 0.75,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -75,7 +75,6 @@
   },
   "passages": {
     "rate_path": [
-      "2017-12-13/participantsViews/1",
       "2017-12-13/participantsViews/11",
       "2017-12-13/participantsViews/13",
       "2017-12-13/participantsViews/14",
@@ -86,7 +85,6 @@
       "2017-12-13/policyAction/6",
       "2017-12-13/policyAction/12",
       "2017-12-13/policyAction/13",
-      "2017-12-13/policyAction/16",
       "2017-12-13/policyAction/18"
     ]
   }

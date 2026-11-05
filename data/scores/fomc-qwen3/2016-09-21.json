@@ -1,7 +1,7 @@
 {
   "meetingDate": "2016-09-21",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,64 +10,64 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 0,
         "confidence": "medium",
+        "rationale": "The minutes describe a clear majority supporting a hold with a balanced view, emphasizing data dependence and caution. No strong push for tightening or easing; forward guidance is neutral and accommodative, consistent with a balanced stance.",
         "evidence": [
           {
-            "quote": "With inflation continuing to run below the Committee's 2 percent objective and few signs of increased pressure on wages and prices, most of these participants thought it would be appropriate to await further evidence of continued progress toward the Committee's",
-            "paragraph_ref": "2016-09-21/participantsViews/13"
+            "quote": "The Committee judges that the case for an increase in the federal funds rate has strengthened but decided, for the time being, to wait for further evidence of continued progress toward its objectives.",
+            "paragraph_ref": "2016-09-21/policyAction/14"
           },
           {
             "quote": "But, with some slack likely remaining in the labor market and inflation continuing to run below the Committee's objective, a majority of members judged that the Committee should, for the time being, await further evidence of progress toward its objectives",
             "paragraph_ref": "2016-09-21/policyAction/5"
           },
           {
-            "quote": "Several members judged that it would be appropriate to increase the target range for the federal funds rate relatively soon if economic developments unfolded about as the Committee expected; they saw the new sentence in the third paragraph of the",
-            "paragraph_ref": "2016-09-21/policyAction/6"
+            "quote": "The stance of monetary policy remains accommodative, thereby supporting further improvement in labor market conditions and a return to 2 percent inflation.",
+            "paragraph_ref": "2016-09-21/policyAction/14"
           }
-        ],
-        "rationale": "Participants acknowledged a strengthened case for rate increases but agreed to wait for more labor market and inflation data. A majority favored caution, with some pushing for a quicker move, indicating a balanced but leaning cautious stance on future rate hikes.",
-        "score": 0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -75,7 +75,6 @@
   },
   "passages": {
     "rate_path": [
-      "2016-09-21/participantsViews/1",
       "2016-09-21/participantsViews/10",
       "2016-09-21/participantsViews/12",
       "2016-09-21/participantsViews/13",
@@ -83,7 +82,8 @@
       "2016-09-21/policyAction/5",
       "2016-09-21/policyAction/6",
       "2016-09-21/policyAction/14",
-      "2016-09-21/policyAction/15"
+      "2016-09-21/policyAction/15",
+      "2016-09-21/policyAction/19"
     ]
   }
 }

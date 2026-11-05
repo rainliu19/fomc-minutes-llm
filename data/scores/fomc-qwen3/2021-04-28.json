@@ -1,7 +1,7 @@
 {
   "meetingDate": "2021-04-28",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,60 +10,64 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
-        "confidence": "high",
+        "status": "scored",
+        "score": 0,
+        "confidence": "medium",
+        "rationale": "The minutes show a clear hold on the rate with no forward guidance toward tightening or easing. The discussion is balanced, with no strong language supporting a move to higher rates or easing. The stance is correctly identified as balanced (0), not hawkish.",
         "evidence": [
+          {
+            "quote": "All members agreed to keep the target range for the federal funds rate at 0 to 1/4 percent, and they expected that it would be appropriate to maintain this target range until labor market conditions had reached levels consistent with",
+            "paragraph_ref": "2021-04-28/policyAction/3"
+          },
           {
             "quote": "The Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent and expects it will be appropriate to maintain this target range until labor market conditions have reached levels consistent with the Committee's",
             "paragraph_ref": "2021-04-28/policyAction/20"
           },
           {
-            "quote": "Members agreed that the Federal Reserve was committed to using its full range of tools to support the U.S. economy in this challenging time, thereby promoting its maximum-employment and price-stability goals.",
-            "paragraph_ref": "2021-04-28/policyAction/2"
+            "quote": "Market-based financing conditions remained accommodative, and bank lending conditions eased markedly.",
+            "paragraph_ref": "2021-04-28/staffFinancial/1"
           }
-        ],
-        "rationale": "The minutes confirm a commitment to maintain the federal funds rate at 0 to 1/4 percent and emphasize that this stance will continue until labor market conditions and inflation reach the Committee's goals. No forward-leaning language or tightening bias is present.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -75,7 +79,6 @@
       "2021-04-28/participantsViews/5",
       "2021-04-28/participantsViews/10",
       "2021-04-28/staffFinancial/1",
-      "2021-04-28/staffFinancial/11",
       "2021-04-28/financialMarkets/3",
       "2021-04-28/policyAction/1",
       "2021-04-28/policyAction/2",

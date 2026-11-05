@@ -1,7 +1,7 @@
 {
   "meetingDate": "2023-06-14",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,8 +10,15 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 0.75,
         "confidence": "high",
+        "rationale": "The minutes show a consensus to hold the rate, with a clear lean toward future increases and a moderation in tightening pace, indicating a balanced stance with a slight forward bias toward tighter policy.",
         "evidence": [
+          {
+            "quote": "Against this backdrop, and in consideration of the significant cumulative tightening in the stance of monetary policy and the lags with which policy affects economic activity and inflation, almost all participants judged it appropriate or acceptable to maintain the target",
+            "paragraph_ref": "2023-06-14/participantsViews/11"
+          },
           {
             "quote": "Almost all participants noted that in their economic projections that they judged that additional increases in the target federal funds rate during 2023 would be appropriate.",
             "paragraph_ref": "2023-06-14/participantsViews/12"
@@ -19,55 +26,48 @@
           {
             "quote": "Many also noted that, after rapidly tightening the stance of monetary policy last year, the Committee had slowed the pace of tightening and that a further moderation in the pace of policy firming was appropriate in order to provide additional",
             "paragraph_ref": "2023-06-14/participantsViews/12"
-          },
-          {
-            "quote": "Most participants observed that uncertainty about the outlook for the economy and inflation remained elevated and that additional information would be valuable for considering the appropriate stance of monetary policy.",
-            "paragraph_ref": "2023-06-14/participantsViews/12"
           }
-        ],
-        "rationale": "Participants agreed to hold the rate steady but saw further increases in 2023 as appropriate, with a clear lean toward gradual tightening despite slowing the pace of policy firming. The view was balanced but forward-looking, with most supporting future increases.",
-        "score": 0.5,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -83,7 +83,6 @@
       "2023-06-14/participantsViews/12",
       "2023-06-14/financialMarkets/2",
       "2023-06-14/policyAction/3",
-      "2023-06-14/policyAction/4",
       "2023-06-14/policyAction/7",
       "2023-06-14/policyAction/17"
     ]

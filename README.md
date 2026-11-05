@@ -22,7 +22,7 @@ Open http://localhost:8787. It starts Ollama and MATLAB, checks memory first, an
 
 **Without the browser:** in MATLAB, from the repo root, run `setup` then `fomc.chat()`.
 
-**Test it:** `buildtool test` in MATLAB (about 2 minutes, no model needed) and `uv run python -m unittest tests/test_runtime.py tests/test_chats.py`.
+**Test it:** `buildtool test` in MATLAB (about 2 minutes, no model needed) and `uv run python -m unittest tests/test_runtime.py tests/test_chats.py`. The scoring tests against the real model are opt-in and slow (about 35 minutes, Ollama running): `setenv("FOMC_LIVE", "1"); runtests("tests/testSkillScoreLive.m")`.
 
 ## What it does
 
@@ -53,23 +53,32 @@ discussed is represented with `status: "not_discussed"` and null score and
 confidence values.
 
 The agent resolves a requested meeting against its data and session anchor, and
-uses only minutes released by the meeting's release date. The dedicated scorer
-supplies the complete minutes, the skill instructions, all rubric files, and
-the schema to the model. It then validates the result for schema shape, score
-range and confidence, exact minutes quotes of at most 40 words, rate-path
-consistency with the coded decision, and future dates in rationales. Failed
-checks are sent back for correction for up to three total attempts. If
+uses only minutes released by the meeting's release date. A meeting can be named
+by its date (YYYY-MM-DD) or by month and year ("the December 2015 meeting"); a
+month with no meeting, or with more than one, gets a question asking for the
+date rather than a score of some other meeting. Chat scores each meeting with
+`fomc.skills.scoreByDimension`, one dimension per model call: each call gets the
+skill's scale and rules, that dimension's rubric, and the paragraphs of the
+minutes about it, so every prompt fits the local models' 8,192-token window.
+The model does not write the score: it names the stance (dovish, balanced or
+hawkish) and the row of the rubric's Anchors table the minutes match, and code
+takes the score from that row. The rate path call is told the decision code read
+from the minutes, and these calls run at temperature 0, so the same minutes get
+the same score. The model's quotes are matched to the closest sentence of those
+paragraphs, so they are word for word. Each dimension is then validated for
+schema shape, score range and confidence, exact minutes quotes of at most 40
+words, rate-path consistency with the coded decision, a rationale whose
+"dovish" or "hawkish" matches the score's sign, and dates after the release
+(other than those the minutes give). Failed checks are sent back for correction
+for up to three total attempts. If
 validation still fails, the result is marked unvalidated with its issues and
 failed dimensions; do not rely on it as verified.
 
-On the local models this one-call scorer does not fit: the instructions, rubrics
-and minutes come to about 17,000 tokens and the models read 8,192, so Ollama cuts
-the prompt. `fomc.skills.scoreByDimension` scores the same skill one dimension per
-call, with only the paragraphs about that dimension, and matches the model's
-quotes to the closest sentence so they are word for word. It is a separate file
-so this scorer is unchanged; see `docs/agent_interface.md`. Scoring requests in
-chat still go to the one-call scorer, so on the local models their prompt is cut;
-the tools use the scores saved by `scoreByDimension` instead.
+`fomc.skills.scoreMeeting` scores the whole meeting in one call, with the complete
+minutes, the skill instructions and all rubric files. That prompt comes to about
+11,000 to 17,000 tokens, more than the local models' 8,192, so Ollama refuses it or
+cuts it; it is kept for models with a larger window. Chat and the saved scores the
+tools read both use `scoreByDimension`, so they agree; see `docs/agent_interface.md`.
 
 `pipeline/score_minutes.m` scores the rate path of every released set of minutes
 once and saves the scores in `data/scores/<model>/`. `assessEconomy` and the
@@ -77,7 +86,7 @@ next-meeting reading take the minutes' direction from those scores
 (`fomc.data.minutesDirection`), falling back to the word rules of
 `fomc.data.policyViews`, which are kept as the baseline. Tested on the 62
 meetings from 2019 on with a cutoff chosen on 2008 to 2018, the AI's direction
-was right about the next decision 81% of the time and the word rules 76%;
+was right about the next decision 79% of the time and the word rules 76%;
 the 6-month bill was right 84%, so it still gives the timing.
 
 For comparisons, each score object independently matches `schema.json`. The
@@ -90,11 +99,11 @@ In MATLAB, the scorer can also be called directly:
 
 ```matlab
 s = fomc.newSession(fomc.latestAnchor(), fomc.config());
-result = fomc.skills.scoreMeeting(s, "2020-01-29"); % omit the date for latest
-result.score       % schema-shaped score object
+result = fomc.skills.scoreByDimension(s, "2020-01-29"); % omit the date for latest
+result.score       % score object (encode with fomc.skills.forJson for schema-shaped JSON)
 result.ok          % whether all checks passed
 result.issues      % validation issues after the final attempt
-result.attempts    % one to three model attempts
+result.attempts    % the most attempts any dimension needed, one to three
 ```
 
 ## What each folder is
@@ -110,7 +119,7 @@ result.attempts    % one to three model attempts
 | `data/` | The collected data: CSVs, one text file per set of minutes in `data/minutes/`, and the AI's saved scores of each set in `data/scores/<model>/`. The agent reads these. |
 | `tests/` | Automated checks: MATLAB tests (`buildtool test`), Python tests, and the live model evaluation (`bench_live.py`, `bench_baseline.py`, `make_key.py`, `measure_memory.py`, `export_evals.py`). |
 | `evals/` | The answer key (50 questions drawn from the decision cards and 7 forward-looking ones written by hand) and each model's saved results. The Evaluation page (`/evaluation`) reads them. |
-| `docs/` | Guides: agent interface, data, performance, MATLAB gaps. |
+| `docs/` | Guides: agent interface, how the policy tools work, data, performance, MATLAB gaps. |
 | `models/` | The local models you can pick on the page: one folder per model with its Ollama `Modelfile`, plus `models.json`, the list the page shows. |
 | `logs/` | Created when you run the agent: one trace file per session, and your saved chats in `logs/chats/` (private to each browser). Not in git. |
 | `setup.m`, `buildfile.m` | MATLAB helpers: add `src/` to the path; run the checks and tests (`buildtool`). |
@@ -125,9 +134,9 @@ result.attempts    % one to three model attempts
 | `+data/` | Loads the data, works out what was known on a given date, and reads each meeting's decision, the staff's forecast revisions, participants' views on future meetings, and which way the minutes point (the AI's saved score, else word rules). |
 | `+focus/` | Picks which minutes a question is about and looks up the first facts before the model starts, including the path of rates, how the economy compares with the Fed's goals and what the latest minutes say about future meetings, and the evidence on what the rate path may mean ahead. |
 | `+retrieve/` | Finds the paragraphs that best match a question. |
-| `+guard/` | The checks: no future dates, real citations, correct figures, plain wording, and the AI's scores (schema, score range, quotes word for word, the rate path against the decision). |
+| `+guard/` | The checks: no future dates, real citations, correct figures, plain wording, and the AI's scores (schema, score range, quotes word for word, the rate path against the decision, the rationale's sign). |
 | `+analysis/` | The structured analysis (the High effort level). |
-| `+skills/` | Discovers and loads skill instructions and runs the validated structured scoring workflow: in one call (`scoreMeeting`) or one dimension per call for the local models (`scoreByDimension`), and saves the scores (`scoreCache`). |
+| `+skills/` | Discovers and loads skill instructions and runs the validated structured scoring workflow: one dimension per call for the local models (`scoreByDimension`, used by chat and the saved scores) or in one call (`scoreMeeting`), writes scores as schema-shaped JSON (`forJson`), and saves them (`scoreCache`). |
 | `+llm/` | Talks to the local model (and a fake model for tests). |
 | `+history/` | Keeps the conversation short enough for the model. |
 | `+trace/` | Writes the log of everything the agent did. |
@@ -139,6 +148,7 @@ result.attempts    % one to three model attempts
 ## Docs
 
 - [docs/agent_interface.md](docs/agent_interface.md): tools, trace format, plugging in the scorer and consumer agent
+- [docs/how_the_tools_work.md](docs/how_the_tools_work.md): how `getPolicyPath`, `assessEconomy` and `getOutlook` reach their answers, in plain terms
 - [docs/data.md](docs/data.md): series, caveats, rebuilding the data
 - [docs/performance.md](docs/performance.md): measured speed, memory, and the model comparison (also at `/evaluation` and in `data/model_evaluation_*.csv`)
 - [docs/MATLAB_GAPS.md](docs/MATLAB_GAPS.md): what MATLAB or its LLM add-on could not do

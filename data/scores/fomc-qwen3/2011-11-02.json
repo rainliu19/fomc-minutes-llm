@@ -1,7 +1,7 @@
 {
   "meetingDate": "2011-11-02",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,64 +10,64 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "medium",
+        "rationale": "The Committee held the rate at 0 to 1/4 percent and emphasized that economic conditions would warrant exceptionally low rates through mid-2013, with a few members suggesting additional accommodation. This reflects a balanced stance with a slight lean toward easing, consistent with a dovish bias on the rate path.",
         "evidence": [
           {
-            "quote": "The Committee also decided to keep the target range for the federal funds rate at 0 to 1/4 percent and currently anticipates that economic conditions--including low rates of resource utilization and a subdued outlook for inflation over the medium run--are",
-            "paragraph_ref": "2011-11-02/policyAction/8"
+            "quote": "In addition, the Committee agreed to keep the target range for the federal funds rate at 0 to 1/4 percent and to reiterate its expectation that economic conditions--including low rates of resource utilization and a subdued outlook for inflation over",
+            "paragraph_ref": "2011-11-02/policyAction/1"
           },
           {
             "quote": "A few members expressed interest in using language specifying a period of time during which the federal funds rate was expected to remain exceptionally low, rather than a calendar date, arguing that such language might be better to indicate a",
             "paragraph_ref": "2011-11-02/policyAction/1"
           },
           {
-            "quote": "One member dissented from the policy decision on the grounds that additional monetary policy accommodation was warranted at this time.",
+            "quote": "A few members indicated that they believed the economic outlook might warrant additional policy accommodation.",
             "paragraph_ref": "2011-11-02/policyAction/1"
           }
-        ],
-        "rationale": "The minutes indicate a commitment to maintain the federal funds rate at 0 to 1/4 percent with forward guidance of exceptionally low levels for the medium run. A few members supported additional easing, but most upheld the current stance. No explicit direction beyond holding is given.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -80,8 +80,8 @@
       "2011-11-02/policyAction/1",
       "2011-11-02/policyAction/8",
       "2011-11-02/policyAction/12",
-      "2011-11-02/specialTopics/1",
-      "2011-11-02/specialTopics/2"
+      "2011-11-02/specialTopics/2",
+      "2011-11-02/specialTopics/3"
     ]
   }
 }

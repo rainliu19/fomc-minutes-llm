@@ -146,10 +146,10 @@ classdef testEconomy < matlab.unittest.TestCase
             r = fomc.data.economyAssessment(tc.D, datetime(2026,10,7));
             tc.verifyEqual([r.minutes.meetingDate, r.minutes.releaseDate, r.minutes.lean], ...
                 ["2026-09-16", "2026-10-07", "increases"]);
-            % The AI scored the rate path of the September minutes +0.75 (data/scores)
-            tc.verifyEqual([r.minutes.directionSource, string(r.minutes.aiRatePathScore)], ["ai", "0.75"]);
-            tc.verifySubstring(r.summary, "the AI scored the rate path +0.75 on its scale from -1 (dovish) to +1 (hawkish), a lean toward further increases.");
-            tc.verifySubstring(r.summary, "maintaining ample reserves in the banking..."" [2026-09-16/policyAction/1]");
+            % The AI scored the rate path of the September minutes +1 (data/scores)
+            tc.verifyEqual([r.minutes.directionSource, string(r.minutes.aiRatePathScore)], ["ai", "1"]);
+            tc.verifySubstring(r.summary, "the AI scored the rate path +1.00 on its scale from -1 (dovish) to +1 (hawkish), a lean toward further increases.");
+            tc.verifySubstring(r.summary, "all participants supported raising the target range for the federal funds rate 1/4 percentage point to 3-3/4 to 4 percent."" [2026-09-16/participantsViews/10]");
             tc.verifySubstring(r.note, "the AI's score of their rate path");
             tc.verifySubstring(r.summary, "another increase in the target range for the federal funds rate would likely be appropriate by year end."" [2026-09-16/participantsViews/11]");
             tc.verifySubstring(r.summary, "revised its inflation forecast higher [2026-09-16/staffOutlook/1]");
@@ -164,13 +164,16 @@ classdef testEconomy < matlab.unittest.TestCase
         end
 
         function nearZeroALeanToCutsMeansMoreSupportAndALaterMeetingIsNamed(tc)
-            % October 2012: the range at 0 to 1/4 percent; the September 13 meeting has been
-            % held but its minutes come out on October 4
-            r = fomc.data.economyAssessment(tc.D, datetime(2012,10,1));
-            tc.verifyEqual(r.minutes.meetingDate, "2012-08-01");
-            tc.verifySubstring(r.summary, "lean toward more support for the economy, by means other than the rate");
-            tc.verifyEqual(r.minutes.laterMeeting, "2012-09-13");
-            tc.verifySubstring(r.summary, "minutes are not public until 2012-10-04");
+            % November 2012: the range at 0 to 1/4 percent; the October 23 meeting has been held
+            % but its minutes come out on November 14. The word rules read the September minutes
+            % as a lean to cuts (kept as the baseline); the AI scored their rate path 0, which
+            % near zero is no lean the rate can follow
+            r = fomc.data.economyAssessment(tc.D, datetime(2012,11,1));
+            tc.verifyEqual([r.minutes.meetingDate, r.minutes.directionSource, r.minutes.lean], ...
+                ["2012-09-13", "ai", "cuts"]);
+            tc.verifySubstring(r.summary, "no lean the rate itself can follow, as it is already at its lowest");
+            tc.verifyEqual(r.minutes.laterMeeting, "2012-10-23");
+            tc.verifySubstring(r.summary, "minutes are not public until 2012-11-14");
         end
 
         function questionsAboutWherePolicyShouldGoGetIt(tc)
@@ -249,7 +252,7 @@ classdef testEconomy < matlab.unittest.TestCase
             % Qwen3 4B answered "What could happen at the next Fed meeting?" in February 2026 from
             % the quotes without citing them, when the ask was only at the start
             text = fomc.focus.economyPrefetch(context(tc, datetime(2026,2,23)), "What could happen at the next Fed meeting?");
-            tc.verifyTrue(endsWith(text, "cite the minutes you use with their ids, such as [2026-01-28/participantsViews/9], " + ...
+            tc.verifyTrue(endsWith(text, "cite the minutes you use with their ids, such as [2026-01-28/policyAction/1], " + ...
                 "and say what participants expected, not what the Fed should or will do.]"));
         end
 
@@ -261,17 +264,21 @@ classdef testEconomy < matlab.unittest.TestCase
             r = fomc.data.economyAssessment(tc.D, datetime(2026,10,7));
             tc.verifyEqual([r.nextMeeting.minutesWay, r.nextMeeting.marketWay], ["up", "up"]);
             tc.verifyTrue(startsWith(r.summary, "Next meeting: the minutes and the 6-month bill both point to an increase over the next few meetings."));
-            % The word rules read the July minutes' lean to cuts; the AI scored their rate path 0.00,
-            % a hold, so the reading says participants expected to hold and markets a cut. The
-            % AI missed this one: the next meeting cut.
+            % The word rules and the AI (-0.75) both read the July minutes as a lean to cuts, and
+            % the next meeting cut
             r = fomc.data.economyAssessment(tc.D, datetime(2024,8,25));
-            tc.verifyEqual([r.nextMeeting.minutesWay, r.nextMeeting.marketWay, r.nextMeeting.ruleWay], ["hold", "down", "down"]);
-            tc.verifySubstring(r.summary, "participants expected to hold for now, but the 6-month bill suggests markets expect a cut");
+            tc.verifyEqual([r.nextMeeting.minutesWay, r.nextMeeting.marketWay, r.nextMeeting.ruleWay], ["down", "down", "down"]);
+            tc.verifySubstring(r.summary, "the minutes and the 6-month bill both point to a cut");
+            % July 2026: the AI scored the June minutes 0, a hold, and the bill points up; the
+            % next meeting raised
+            r = fomc.data.economyAssessment(tc.D, datetime(2026,7,15));
+            tc.verifyEqual([r.nextMeeting.minutesWay, r.nextMeeting.marketWay], ["hold", "up"]);
+            tc.verifySubstring(r.summary, "participants expected to hold for now, but the 6-month bill suggests markets expect an increase");
             % February 2026: both point to no change
             r = fomc.data.economyAssessment(tc.D, datetime(2026,2,23));
             tc.verifyEqual([r.nextMeeting.minutesWay, r.nextMeeting.marketWay], ["hold", "hold"]);
             % Near zero a lean to cuts means support by other means: the rate itself holds
-            r = fomc.data.economyAssessment(tc.D, datetime(2012,10,1));
+            r = fomc.data.economyAssessment(tc.D, datetime(2012,11,1));
             tc.verifyEqual(r.nextMeeting.minutesWay, "hold");
             % The policy rules and the 2-year yield come last, as background
             tc.verifyLessThan(strfind(r.summary, "Background on where policy may go over the next year or two"), ...
@@ -286,7 +293,7 @@ classdef testEconomy < matlab.unittest.TestCase
             heldBy2008 = sum(tc.D.meetings.MeetingDate(2:end) <= datetime(2008,4,1));
             tc.verifyLessThanOrEqual(early.n, heldBy2008);
             tc.verifyGreaterThanOrEqual(late.n, late.raised + late.held + late.cut, "decisions read as unknown are not counted");
-            tc.verifyEqual([late.raised, late.held, late.cut], [15, 2, 0], "both up, October 2026");
+            tc.verifyEqual([late.raised, late.held, late.cut], [16, 2, 0], "both up, October 2026");
             r = fomc.data.economyAssessment(tc.D, datetime(2008,4,1));
             tc.verifySubstring(r.summary, "Too few earlier meetings in this data had this pattern to compare.");
         end
@@ -296,8 +303,11 @@ classdef testEconomy < matlab.unittest.TestCase
             % told then to answer from the minutes alone, it was right, but the minutes' lean is
             % right about the next decision only 69% of the time
             text = fomc.focus.economyPrefetch(context(tc, datetime(2024,8,25)), "Is the Fed likely to cut rates at its next meeting?");
+            tc.verifySubstring(text, "answer from the next-meeting reading: the minutes and the 6-month bill both point to a cut");
+            % July 2026: the minutes and the bill disagree, and the reading says so
+            text = fomc.focus.economyPrefetch(context(tc, datetime(2026,7,15)), "Is the Fed likely to raise rates at its next meeting?");
             tc.verifySubstring(text, "answer from the next-meeting reading: participants expected to hold for now, " + ...
-                "but the 6-month bill suggests markets expect a cut");
+                "but the 6-month bill suggests markets expect an increase");
             tc.verifyFalse(contains(text, "answer it first from the minutes"));
             % October 2026: Qwen3 4B cited the September decision as the next one and used the 2-year
             % yield for the next meeting, so the ending says which is which

@@ -1,7 +1,7 @@
 {
   "meetingDate": "2023-12-13",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,64 +10,64 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 0,
         "confidence": "high",
+        "rationale": "The minutes show a hold with no push for further tightening or easing. Participants agree the rate is at or near its peak, but emphasize data dependence and caution. This reflects a balanced stance, not a hawkish one. The correct anchor is the balanced (0) side of the rubric.",
         "evidence": [
+          {
+            "quote": "In light of current economic conditions and their implications for the outlook for economic activity and inflation, as well as the balance of risks, all participants judged it appropriate to maintain the target range for the federal funds rate at",
+            "paragraph_ref": "2023-12-13/participantsViews/11"
+          },
           {
             "quote": "In discussing the policy outlook, participants viewed the policy rate as likely at or near its peak for this tightening cycle, though they noted that the actual policy path will depend on how the economy evolves.",
             "paragraph_ref": "2023-12-13/participantsViews/13"
           },
           {
-            "quote": "In their submitted projections, almost all participants indicated that, reflecting the improvements in their inflation outlooks, their baseline projections implied that a lower target range for the federal funds rate would be appropriate by the end of 2024.",
-            "paragraph_ref": "2023-12-13/participantsViews/14"
-          },
-          {
-            "quote": "In determining the extent of any additional policy firming that may be appropriate to return inflation to 2 percent over time, members concurred that they would take into account the cumulative tightening of monetary policy, the lags with which monetary",
-            "paragraph_ref": "2023-12-13/policyAction/3"
+            "quote": "The Committee will continue to assess additional information and its implications for monetary policy.",
+            "paragraph_ref": "2023-12-13/policyAction/18"
           }
-        ],
-        "rationale": "Participants saw the policy rate at or near its peak and expected a lower target range by end-2024, with a data-dependent approach to future tightening. The view was broadly shared, with strong consensus on a peak and a softening path.",
-        "score": 0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -76,10 +76,9 @@
   "passages": {
     "rate_path": [
       "2023-12-13/participantsViews/1",
-      "2023-12-13/participantsViews/3",
       "2023-12-13/participantsViews/5",
       "2023-12-13/participantsViews/9",
-      "2023-12-13/participantsViews/12",
+      "2023-12-13/participantsViews/11",
       "2023-12-13/participantsViews/13",
       "2023-12-13/participantsViews/14",
       "2023-12-13/participantsViews/15",

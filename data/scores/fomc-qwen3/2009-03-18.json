@@ -1,7 +1,7 @@
 {
   "meetingDate": "2009-03-18",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,60 +10,64 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The Committee held the federal funds rate at 0 to 1/4 percent and explicitly stated that rates would remain exceptionally low for an extended period, indicating a clear dovish stance with no forward guidance toward tightening.",
         "evidence": [
+          {
+            "quote": "Committee members decided to keep the target range for the federal funds rate at 0 to 1/4 percent and to communicate to the public the Committee's view that the federal funds rate was likely to remain exceptionally low for an",
+            "paragraph_ref": "2009-03-18/policyAction/1"
+          },
           {
             "quote": "The Committee will maintain the target range for the federal funds rate at 0 to 1/4 percent and anticipates that economic conditions are likely to warrant exceptionally low levels of the federal funds rate for an extended period.",
             "paragraph_ref": "2009-03-18/policyAction/7"
           },
           {
-            "quote": "The Committee believed that purchases of these amounts would help to promote a return to economic growth and price stability.",
+            "quote": "Ultimately, members agreed to undertake additional purchases of agency MBS of up to $750 billion and of agency debt of up to $100 billion, and they also agreed to purchase up to $300 billion of longer-term Treasury securities.",
             "paragraph_ref": "2009-03-18/policyAction/1"
           }
-        ],
-        "rationale": "The minutes state the Committee will maintain the federal funds rate at 0 to 1/4 percent and expect it to remain exceptionally low for an extended period, indicating a clear commitment to easy policy. No forward-looking tightening bias is expressed.",
-        "score": -0.5,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }

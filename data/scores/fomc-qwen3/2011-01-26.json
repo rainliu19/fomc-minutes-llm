@@ -1,7 +1,7 @@
 {
   "meetingDate": "2011-01-26",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,60 +10,60 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The Committee held the policy rate at 0 to 1/4 percent and emphasized that economic conditions would warrant exceptionally low rates for an extended period, indicating a clear bias toward maintaining accommodative policy.",
         "evidence": [
           {
-            "quote": "Accordingly, the Committee agreed to continue to expand its holdings of longer-term Treasury securities as announced in November in order to promote a stronger pace of economic recovery and to help ensure that inflation, over time, is at levels consistent",
+            "quote": "The Committee decided to maintain its existing policy of reinvesting principal payments from its securities holdings and reaffirmed its intention to purchase $600 billion of longer-term Treasury securities by the end of the second quarter of 2011.",
             "paragraph_ref": "2011-01-26/policyAction/1"
           },
           {
             "quote": "The Committee will maintain the target range for the federal funds rate at 0 to 1/4 percent and continues to anticipate that economic conditions, including low rates of resource utilization, subdued inflation trends, and stable inflation expectations, are likely to",
             "paragraph_ref": "2011-01-26/policyAction/8"
           }
-        ],
-        "rationale": "The minutes state the Committee maintained the 0 to 1/4 percent target range and emphasized that economic conditions would warrant exceptionally low rates for an extended period. No forward-looking tightening bias is expressed.",
-        "score": -0.25,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -78,8 +78,7 @@
       "2011-01-26/staffFinancial/1",
       "2011-01-26/staffFinancial/10",
       "2011-01-26/policyAction/1",
-      "2011-01-26/policyAction/8",
-      "2011-01-26/policyAction/12"
+      "2011-01-26/policyAction/8"
     ]
   }
 }

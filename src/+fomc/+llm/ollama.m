@@ -14,20 +14,25 @@ arguments
     systemPrompt (1,1) string
 end
 
-% Two chat objects: one offered the tools, one without (for the structured analysis)
+% Three chat objects: one offered the tools, one without, and one for JSON that fits a schema
+% (skill scores, the structured analysis) at cfg.structuredTemperature
 reg = fomc.tools.registry();
 tools = [reg([reg.expose]).tool];
 withTools = ollamaChat(cfg.model, systemPrompt, Tools=tools, ...
     TimeOut=cfg.timeoutSec, Endpoint=cfg.endpoint, Temperature=cfg.temperature);
 plain = ollamaChat(cfg.model, systemPrompt, TimeOut=cfg.timeoutSec, Endpoint=cfg.endpoint, Temperature=cfg.temperature);
+structured = ollamaChat(cfg.model, systemPrompt, TimeOut=cfg.timeoutSec, Endpoint=cfg.endpoint, ...
+    Temperature=cfg.structuredTemperature);
 
 % Return a function the agent loop calls for each model request
-f = @(history, useTools, format) send(withTools, plain, cfg, history, useTools, format);
+f = @(history, useTools, format) send(withTools, plain, structured, cfg, history, useTools, format);
 end
 
-function [text, out, stats] = send(withTools, plain, cfg, history, useTools, format)
+function [text, out, stats] = send(withTools, plain, structured, cfg, history, useTools, format)
 % Choose the chat object, then ask for plain text or for JSON that fits the schema
-if useTools
+if ~isempty(format)
+    chat = structured;
+elseif useTools
     chat = withTools;
 else
     chat = plain;

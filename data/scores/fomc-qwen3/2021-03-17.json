@@ -1,7 +1,7 @@
 {
   "meetingDate": "2021-03-17",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": -0.75,
         "confidence": "high",
+        "rationale": "The minutes show a decision to hold the federal funds rate at 0 to 1/4 percent with no indication of tightening or easing. The forward-looking language emphasizes maintaining this range until labor market and inflation goals are met, reflecting a clear dovish stance. No participants advocate for rate increases or easing. The discussion is balanced and data-dependent, with no push for rate changes.",
         "evidence": [
           {
             "quote": "All members agreed to maintain the target range for the federal funds rate at 0 to 1/4 percent, and they expected that it would be appropriate to maintain this target range until labor market conditions had reached levels consistent with",
@@ -19,51 +22,52 @@
           {
             "quote": "The Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent and expects it will be appropriate to maintain this target range until labor market conditions have reached levels consistent with the Committee's",
             "paragraph_ref": "2021-03-17/policyAction/20"
+          },
+          {
+            "quote": "Members agreed that the Federal Reserve was committed to using its full range of tools to support the U.S. economy in this challenging time, thereby promoting its maximum-employment and price-stability goals.",
+            "paragraph_ref": "2021-03-17/policyAction/2"
           }
-        ],
-        "rationale": "The minutes state a clear commitment to maintaining the federal funds rate at 0 to 1/4 percent and emphasize that this stance will continue until labor market conditions meet maximum employment and inflation targets. No forward-looking tightening bias is expressed.",
-        "score": 0,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -77,15 +81,13 @@
       "2021-03-17/participantsViews/14",
       "2021-03-17/staffOutlook/1",
       "2021-03-17/financialMarkets/2",
-      "2021-03-17/financialMarkets/9",
       "2021-03-17/policyAction/1",
       "2021-03-17/policyAction/2",
       "2021-03-17/policyAction/3",
       "2021-03-17/policyAction/4",
       "2021-03-17/policyAction/8",
       "2021-03-17/policyAction/20",
-      "2021-03-17/policyAction/21",
-      "2021-03-17/policyAction/24"
+      "2021-03-17/policyAction/21"
     ]
   }
 }

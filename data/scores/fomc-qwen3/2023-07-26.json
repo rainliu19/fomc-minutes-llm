@@ -1,7 +1,7 @@
 {
   "meetingDate": "2023-07-26",
   "model": "fomc-qwen3",
-  "scoredOn": "2026-10-28",
+  "scoredOn": "2026-11-05",
   "ok": true,
   "issues": [],
   "dimensionsScored": "rate_path",
@@ -10,7 +10,10 @@
     "scale": "hawkish_positive",
     "dimensions": {
       "rate_path": {
+        "status": "scored",
+        "score": 1,
         "confidence": "high",
+        "rationale": "The Committee raised the rate, with almost all participants supporting the move, though a few hedged. Forward guidance emphasized data-dependent decisions and continued tightening for inflation, indicating a clear lean toward further policy firming.",
         "evidence": [
           {
             "quote": "Amid these economic conditions, almost all participants judged it appropriate to raise the target range for the federal funds rate to 5-1/4 to 5-1/2 percent at this meeting.",
@@ -21,53 +24,50 @@
             "paragraph_ref": "2023-07-26/participantsViews/10"
           },
           {
-            "quote": "In discussing the policy outlook, participants continued to judge that it was critical that the stance of monetary policy be sufficiently restrictive to return inflation to the Committee's 2 percent objective over time.",
+            "quote": "Participants expected that the data arriving in coming months would help clarify the extent to which the disinflation process was continuing and product and labor markets were reaching a better balance between demand and supply.",
             "paragraph_ref": "2023-07-26/participantsViews/11"
           }
-        ],
-        "rationale": "The minutes show near-unanimous agreement to raise rates, with a strong emphasis on maintaining restrictive policy to reduce inflation. A few participants hedged, but the overall view is firmly hawkish.",
-        "score": 0.75,
-        "status": "scored"
+        ]
       },
       "inflation": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "labor_market": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "economic_activity": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "financial_conditions": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "balance_sheet": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       },
       "risk_balance": {
         "status": "not_discussed",
-        "score": [],
-        "confidence": [],
+        "score": null,
+        "confidence": null,
         "rationale": "Not scored in this run.",
         "evidence": []
       }
@@ -76,7 +76,6 @@
   "passages": {
     "rate_path": [
       "2023-07-26/participantsViews/2",
-      "2023-07-26/participantsViews/3",
       "2023-07-26/participantsViews/8",
       "2023-07-26/participantsViews/10",
       "2023-07-26/participantsViews/11",
@@ -85,6 +84,7 @@
       "2023-07-26/financialMarkets/3",
       "2023-07-26/policyAction/3",
       "2023-07-26/policyAction/4",
+      "2023-07-26/policyAction/7",
       "2023-07-26/policyAction/17"
     ]
   }
