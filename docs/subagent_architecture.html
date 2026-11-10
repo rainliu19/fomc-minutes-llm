@@ -128,6 +128,8 @@ svg text{font-family:var(--font);fill:var(--ink)}
 .ah-indirect{fill:var(--a-ind)}
 .alabel{font:600 11.5px var(--font);paint-order:stroke;stroke:var(--surface);stroke-width:5px;stroke-linejoin:round}
 .legend svg{display:block}
+.plus circle{fill:var(--surface);stroke:var(--ink);stroke-width:2}
+.plus text{font:700 20px var(--font);fill:var(--ink)}
 
 /* Option cards */
 .optbar{display:flex;gap:8px;margin:8px 0}
@@ -237,7 +239,7 @@ meta:{
 cards:[
  {title:"What we want to build", items:[
    "An **organizer and critic** that splits each question into jobs and checks the result before it answers.",
-   "Four specialists under it: a **Minutes retriever**, a **Market and econ data retriever**, a **Rubric scorer** and a **Consumer view**. Each gets a short prompt and few tools.",
+   "Four specialists under it: a **Minutes retriever**, a **Market and econ data retriever**, a **Rubric scorer** and a **Consumer view**. Each gets a short prompt and few tools. They run in order: the two retrievers first, then the scorer, then the consumer view.",
    "A **lookback-bias test suite**, and a tuning loop that edits prompts and skill text until the measured leak is inside a range the group agrees on."
  ]},
  {title:"Where it stands", items:[
@@ -253,6 +255,7 @@ glossary:{
   head:["Term","What it means here"],
   rows:[
    ["Agent","A program that asks a language model what to do, runs the tools it asks for, and repeats until it can answer."],
+   ["Retriever","A specialist that fetches facts from one data source: the minutes, or the numbers."],
    ["Subagent","A smaller agent with its own short instructions and few tools. An organizer starts it for one job."],
    ["Organizer and critic","The agent that splits a question into jobs, merges the replies, and checks the result before it answers."],
    ["Anchor date","The date a question is asked as of. The agent may use nothing dated after it."],
@@ -301,11 +304,11 @@ tabs:[
   B("gate",4,1,"rule","Date gate and checks","blocks later dates, checks ids",
    {i:"Plain code that blocks and verifies. It never calls the model. [2]",
     t:[["checkToolInput","Refuses a call that names a later date"],["checkToolOutput","Withholds a result that holds a later date"],["citations","Marks a paragraph id verified only if a tool returned it"],["checkGrounding","Checks ids and figures in High-effort answers"],["plainEnglish","Rewrites series codes into plain words"]]}),
-  B("mtools",0,3,"exists","Minutes tools","search, list, read minutes",
+  B("mtools",1,3,"exists","Minutes tools","search, list, read minutes",
    {i:"Four of the 11 tools work on the minutes. [12]",
     t:[["searchMinutes","Finds the paragraphs that match a question"],["listMeetings","Lists meetings"],["getDecision","Reads a meeting's decision, vote and dissent"],["readMinutes","Reads a meeting's paragraphs"]],
     b:["150 meetings, 2008 to 2026. Every paragraph has an id. [10]"]}),
-  B("dtools",1,3,"exists","Data and policy tools","rate path, economy, series",
+  B("dtools",0,3,"exists","Data and policy tools","rate path, economy, series",
    {i:"Five of the 11 tools work on numbers. Code does the arithmetic. [4][12]",
     t:[["getPolicyPath","How the rate target moved"],["assessEconomy","Economy against the Fed's goals"],["getOutlook","What recent rate moves may mean ahead"],["getSeries, describeSeries","Reads and explains a data series"]],
     b:["56 data series from FRED, Yahoo Finance, Shiller and the Treasury. [10]"]}),
@@ -332,8 +335,8 @@ tabs:[
 
 /* ----------------------------------------------------- 2. WHAT WE ADD */
 {id:"add", label:"2. What we add", title:"What we add: an organizer on top, four specialists below",
- intro:"Same grid as Today, so you can flip between the two. The one agent becomes a tree. The organizer and critic sits at the top. It briefs four specialists one after another on the same loaded model, merges their short reports and checks the result. This follows the router and deep research layouts in the course deck. [16] Amber is new. Purple is a rule. The date gate stays and covers every specialist. [Inference]",
- callout:"**Three pitfalls from the course deck, and our answer.** [16] Over-splitting: we split only where the 8,192-token window forces it, and keep a specialist as plain code when it needs no model. Untested routing: the organizer's routing gets its own eval cases. Hidden specialist errors: the organizer says so when a specialist fails, and never fills the gap quietly. [Inference]",
+ intro:"Same grid as Today, so you can flip between the two. The organizer and critic sits at the top and briefs all four specialists. They run one after another on the one loaded model, in three stages. Stage 1: the two retrievers, joined by a plus sign because neither needs the other. Stage 2: the rubric scorer, which needs the minutes. Stage 3: the consumer view, which needs the figures and the score. The last report goes to the critic. This follows the router and deep research layouts in the course deck. [16] Amber is new. Purple is a rule. [Inference]",
+ callout:"**Four pitfalls from the course deck, and our answer.** [16] Over-splitting: we split only where the 8,192-token window forces it, and keep a specialist as plain code when it needs no model. Untested routing: the organizer's routing gets its own eval cases. Untyped shared state: every hand-off is a short report with fixed fields, such as date, figure and paragraph id. Hidden specialist errors: the organizer says so when a specialist fails, and never fills the gap quietly. [Inference]",
  boxes:[
   B("q",2,0,"exists","Question and date","user asks as of a date",
    {i:"Unchanged. Every question still carries an anchor date. [2]"}),
@@ -345,27 +348,33 @@ tabs:[
   B("gate",4,1,"rule","Date gate and checks","blocks later dates, checks ids",
    {i:"The same code as today. It now sits between every specialist and the organizer. [2]",
     b:["A specialist that reports a later date is stopped, as a tool is today.","Every claim still needs a paragraph id that a tool returned."]}),
-  B("minr",0,3,"new","Minutes retriever","code finds, model summarizes",
-   {i:"Answers from the minutes. Plain code finds the best paragraph ids, then the model summarizes only those paragraphs with quotes and ids.",
-    b:["Wraps searchMinutes, readMinutes, getDecision, policyViews, forecastRevisions, the ranking code and the focus window. [2]","One retriever per data source, as in the course deck. [16]"]}),
-  B("mdata",1,3,"new","Market and econ data","plain code does the math",
-   {i:"Answers from the numbers. Returns dated figures. MATLAB does the arithmetic; the model only phrases the result.",
-    b:["Wraps getSeries, getPolicyPath, assessEconomy and getOutlook. [2][4]"]}),
+  B("mdata",0,3,"new","Market and econ data","plain code does the math",
+   {i:"Stage 1. Answers from the numbers. Returns dated figures. MATLAB does the arithmetic; the model only phrases the result. Its figures go straight to the consumer view.",
+    b:["Wraps getSeries, getPolicyPath, assessEconomy and getOutlook. [2][4]","One retriever per data source, as in the course deck. [16]"]}),
+  B("minr",1,3,"new","Minutes retriever","code finds, model summarizes",
+   {i:"Stage 1. Answers from the minutes. Plain code finds the best paragraph ids, then the model summarizes only those paragraphs with quotes and ids. It tells the scorer which meeting the question is about. [Inference]",
+    b:["Wraps searchMinutes, readMinutes, getDecision, policyViews, forecastRevisions, the ranking code and the focus window. [2]","The plus sign means the two retrievers are independent. Order does not matter. [Inference]"]}),
   B("scorer",3,3,"new","Rubric scorer","reads saved rubric scores",
-   {i:"Not a retriever. Gives the AI score of a meeting's rate path. Most scores are made ahead of time and saved, so questions do not wait on the model. [2]",
+   {i:"Stage 2. Not a retriever. It needs only the minutes, not the market figures: today's scorer takes a meeting date and picks its own paragraphs. [2] Most scores are made ahead of time and saved, so this stage is usually a lookup. Its direction goes on to the consumer view. [Inference]",
     b:["Wraps scoreByDimension, scoreCache and the fomc-score skill. [15]"]}),
   B("cons",4,3,"new","Consumer view","what it means for households",
-   {i:"New. Turns borrowing costs, spending and prices into a household view. Calls the model.",
-    b:["Builds on getOutlook and the consumer series. The rubric is still open. [2]"]})
+   {i:"Stage 3, the last. It takes the figures from the market retriever and the direction from the scorer, and turns them into a household view. Calls the model. [Inference]",
+    b:["Builds on getOutlook and the consumer series. The rubric is still open. [2]","Its report goes to the critic, which checks it before the answer."]})
  ],
+ plus:[["mdata","minr"]],
+ padBottom:50,
  arrows:[
   A("q","bottom","org","top","main"),
   A("org","left","ans","right","main",{label:"answer"}),
   A("org","right","gate","left","exists",{label:"checked by"}),
-  A("org","bottom","minr","top","newLink"),
   A("org","bottom","mdata","top","newLink"),
+  A("org","bottom","minr","top","newLink"),
   A("org","bottom","scorer","top","newLink"),
-  A("org","bottom","cons","top","newLink")
+  A("org","bottom","cons","top","newLink"),
+  A("minr","right","scorer","left","main",{label:"which meeting"}),
+  A("scorer","right","cons","left","main"),
+  A("mdata","bottom","cons","bottom","main",{label:"figures go straight to the consumer view"}),
+  A("cons","top","org","bottom","main",{label:"last report to critic",fa:0.38,ta:0.8})
  ],
  tables:["mapping"],
  options:[
@@ -405,7 +414,7 @@ tabs:[
 
 /* ----------------------------------------------- 3a. ORGANIZER AND CRITIC */
 {id:"organizer", label:"3a. Organizer", title:"Organizer and critic: plan, brief, merge, check",
- intro:"The organizer is the root of the tree. It never reads the whole minutes. Its four steps run in order, numbered below. Amber is new; purple is a rule. [Inference]",
+ intro:"The organizer is the root of the tree. It never reads the whole minutes. Its four steps run in order, numbered below. It calls only the specialists a question needs, and the specialists run in three stages. Amber is new; purple is a rule. [Inference]",
  boxes:[
   B("org",2,0,"new","Organizer and critic","routes, merges, then checks",
    {i:"One agent that briefs the specialists, merges their short reports, and has the critic check the draft. The four steps below run in order.",
@@ -414,12 +423,12 @@ tabs:[
    {i:"The answer is cleaned into plain words by plainEnglish before the reader sees it. [2]"}),
   B("plan",0,2,"new","1. Plan routing","word rules first, model second",
    {i:"Decide which specialists to call. Code rules go first; the model decides only when the rules cannot. The rules are the ones that trigger today's lookups. [2]",
-    t:[["Rules","Scoring, rate path, economy and outlook word rules in the focus folder [2]"],["Model","Used only for questions the rules cannot place [Inference]"]]}),
+    t:[["Rules","Scoring, rate path, economy and outlook word rules in the focus folder [2]"],["Model","Used only for questions the rules cannot place [Inference]"],["A minutes question","Minutes retriever only [Inference]"],["A numbers question","Market and econ data only [Inference]"],["A score question","Minutes retriever, then rubric scorer [Inference]"],["A household question","All four, in three stages [Inference]"]]}),
   B("brief",1,2,"new","2. Brief specialists","short brief plus anchor date",
-   {i:"Each specialist gets only what it needs, in a short written brief.",
-    t:[["Brief","The question, the anchor date and the paragraph ids it may read"],["Tools","Only the tools for its job, which keeps its prompt small"]]}),
+   {i:"Each specialist gets only what it needs, in a short written brief. The specialists run in three stages. [Inference]",
+    t:[["Stage 1","Minutes retriever and Market and econ data. Independent, so either can go first"],["Stage 2","Rubric scorer, which needs the meeting the minutes retriever found"],["Stage 3","Consumer view, which needs the figures and the scorer's direction"],["Brief","The question, the anchor date and the paragraph ids it may read"],["Tools","Only the tools for its job, which keeps its prompt small"]]}),
   B("merge",3,2,"new","3. Merge reports","organizer writes the answer",
-   {i:"Each specialist returns a short report of dated facts and paragraph ids, capped in size like a tool result today. [13] The organizer merges them into one short answer in plain words. [9]",
+   {i:"Each specialist returns a short report of dated facts and paragraph ids, capped in size like a tool result today. [13] The last report in the chain, and the earlier ones it builds on, come back here. The organizer merges them into one short answer in plain words. [9]",
     b:["Reports pass through the date gate before the organizer sees them.","[Inference] If a specialist fails, the answer says so. The organizer does not quietly fill the gap. [16]"]}),
   B("critic",4,2,"rule","4. Critic checks","ids, figures, dates",
    {i:"Reruns checks that exist today. It does not call the model. [2][14]",
@@ -446,7 +455,7 @@ tabs:[
 
 /* ------------------------------------------ 3b. MINUTES RETRIEVER */
 {id:"minutes", label:"3b. Minutes", title:"Minutes retriever: ids are the contract",
- intro:"This retriever answers from the minutes. It finds paragraph ids with plain code, then the model summarizes only those paragraphs. A paragraph id is the link between the two steps, and the citation check accepts an id only if a tool returned it. [2][16]",
+ intro:"This retriever answers from the minutes. It is a stage 1 specialist, independent of the market retriever. It finds paragraph ids with plain code, then the model summarizes only those paragraphs. A paragraph id is the link between the two steps, and the citation check accepts an id only if a tool returned it. [2][16]",
  boxes:[
   B("root",2,0,"new","Minutes retriever","code finds, model summarizes",
    {i:"One specialist for one data source, the minutes. It follows the course deck's idea of a retriever per source. [16] It wraps today's minutes tools. [2]",
@@ -461,6 +470,8 @@ tabs:[
   B("read",3,2,"new","Read and summarize","short summary with quotes",
    {i:"Reads the returned paragraphs and writes a short summary. Calls the model, but its prompt holds only a few paragraphs.",
     b:["Wraps readMinutes and getDecision. [2]","Quotes are checked against the real paragraph. [2]"]}),
+  B("next",4,2,"new","Rubric scorer","next stage in the chain",
+   {i:"Stage 2. The retriever tells the scorer which meeting the question is about. The scorer then returns that meeting's saved score. [2][Inference]"}),
   B("weak",3,3,"gap","Early minutes weak","word rules weaker before 2015",
    {i:"The word rules that read participants' views were tuned on 2022 and 2025 to 2026. They are less reliable earlier. [2]",
     b:["19 of 150 meetings give no lean; 11 of them are from 2008 to 2014. [2]","Before about 2015 the minutes put the policy discussion in other words."]})
@@ -471,13 +482,14 @@ tabs:[
   A("root","bottom","find","top","newLink"),
   A("root","bottom","read","top","newLink"),
   A("find","right","read","left","newLink",{label:"paragraph ids"}),
+  A("read","right","next","left","main"),
   A("weak","top","read","bottom","gap")
  ]
 },
 
 /* ------------------------------------------------ 3c. MARKET AND ECON DATA */
 {id:"market", label:"3c. Market data", title:"Market and economic data retriever",
- intro:"The second retriever answers from numbers. It is mostly code that already exists. Code reads the data and does the arithmetic, and the model only phrases the result. [2][4][16]",
+ intro:"The second retriever answers from numbers. It is a stage 1 specialist, independent of the minutes retriever. It is mostly code that already exists. Code reads the data and does the arithmetic, and the model only phrases the result. [2][4][16]",
  boxes:[
   B("root",2,0,"new","Market and econ data","code does the math",
    {i:"One specialist for the numbers. It calls the policy tools and passes on a short report of dated figures. Each figure names its series and the date it became public. The model phrases the result. [4]"}),
@@ -490,6 +502,8 @@ tabs:[
   B("store",3,2,"exists","Data series","56 series, real-time vintages",
    {i:"56 series from FRED, Yahoo Finance, Shiller and the Treasury. [10]",
     b:["Read with getSeries and describeSeries. [12]"]}),
+  B("cons",4,2,"new","Consumer view","last stage in the chain",
+   {i:"Stage 3. The figures from this retriever go straight to the consumer view, which also takes the scorer's direction. [Inference]"}),
   B("lags",3,3,"gap","Lags not verified","some release lags assumed",
    {i:"For series without vintage history the as-of rule uses a publication lag. [2]",
     b:["The lags are conservative assumptions, not all checked against release calendars. [2]"]})
@@ -499,17 +513,21 @@ tabs:[
   A("root","bottom","tools","top","newLink"),
   A("root","bottom","store","top","newLink"),
   A("tools","right","store","left","exists",{label:"reads"}),
+  A("store","right","cons","left","main"),
   A("lags","top","store","bottom","gap")
  ]
 },
 
 /* ------------------------------------------------------ 3d. SCORER */
 {id:"scorer", label:"3d. Scorer", title:"Rubric scorer: scores made ahead of time",
- intro:"The scorer is a different kind of agent. It is not a retriever. It runs ahead of time, so a question never waits on it, and the saved scores feed the minutes direction. [2][4]",
+ intro:"The scorer is a different kind of agent. It is not a retriever. It is stage 2: it needs the meeting the minutes retriever found, and its direction goes on to the consumer view. It runs ahead of time, so a question never waits on it. [2][4]",
  boxes:[
   B("root",2,0,"new","Rubric scorer","one rubric dimension per call",
    {i:"Scores a meeting one rubric dimension per model call, so each prompt fits the window. The model picks a rubric row; code takes the score from it. [2]",
     b:["Seven dimensions: rate path, inflation, labor market, economic activity, financial conditions, balance sheet, risk balance. [1][15]","Wraps scoreByDimension, scoreCache and the fomc-score skill. [15]"]}),
+  B("minr",0,0,"new","Minutes retriever","first stage, finds the meeting",
+   {i:"Stage 1. Tells the scorer which meeting the question is about. [Inference]",
+    b:["Today the scorer takes a meeting date and picks its own paragraphs from the minutes. It does not use market data. [2]"]}),
   B("checks",4,0,"rule","Score checks","schema, quotes, rate path",
    {i:"Code validates every score. A failed check is sent back for correction, up to three attempts. [1]",
     b:["Schema, score range, exact quotes of at most 40 words, and consistency with the coded rate decision.","The rationale's wording must match the score's sign, and later dates are flagged. [2]"]}),
@@ -518,22 +536,26 @@ tabs:[
   B("dir",3,2,"exists","Minutes direction","up, down or hold",
    {i:"Turns a saved score into a direction for the next meeting: up at +0.5 or more, down at -0.5 or less, else hold. [4]",
     t:[["AI score, 2019 on","Right 79% on the next decision"],["6-month Treasury bill","Right 84%, so it gives the timing"],["Always guess hold","Right 65%"]]}),
+  B("cons",4,2,"new","Consumer view","last stage in the chain",
+   {i:"Stage 3. Takes the scorer's direction together with the figures from the market retriever. [Inference]"}),
   B("coarse",3,3,"gap","Coarse scores","five rubric rows only",
    {i:"The model picks a rubric row, so scores are coarse. [4]",
     b:["The 150 rate-path scores use only five rows: -0.75 (56), 0 (62), +0.5 (3), +0.75 (8), +1 (21). [4]","A decision at the meeting is mixed into the score, so a meeting that moved reads as another move next. [4]"]})
  ],
  arrows:[
+  A("minr","right","root","left","main",{label:"which meeting"}),
   A("root","right","checks","left","exists",{label:"validated by"}),
   A("root","bottom","cache","top","newLink"),
   A("root","bottom","dir","top","newLink"),
   A("cache","right","dir","left","exists",{label:"read as"}),
+  A("dir","right","cons","left","main"),
   A("coarse","top","dir","bottom","gap")
  ]
 },
 
 /* ------------------------------------------------------ 3e. CONSUMER */
 {id:"consumer", label:"3e. Consumer", title:"Consumer view: what rate moves mean for households",
- intro:"The new specialist looks at the U.S. consumer. Most inputs already exist in the data. The rubric that turns them into a score is still open. [2]",
+ intro:"The new specialist looks at the U.S. consumer. It is stage 3, the last: it takes the figures from the market retriever and the direction from the scorer. Most inputs already exist. The rubric that turns them into a score is still open. [2]",
  boxes:[
   B("root",2,0,"new","Consumer view","household view from evidence",
    {i:"Reads the evidence and writes what it shows so far. It calls the model. It builds on getOutlook, which already gathers these steps. [2]"}),
@@ -543,8 +565,11 @@ tabs:[
    {i:"A short report with dated figures and the earlier runs of rate moves it compares with. [4]",
     b:["It shows evidence and never says what to do. System prompt rule 7: no investment advice. [9]","getOutlook already says what the evidence shows, never what will happen. [4]"]}),
   B("evid",1,2,"exists","Household evidence","rates, spending, mood series",
-   {i:"Three groups of series already in the data. [4][10]",
+   {i:"Three groups of series already in the data. They arrive through the market and econ retriever. [4][10]",
     t:[["Borrowing costs","30-year mortgage rate (MORTGAGE30US) and the extra yield on Baa company bonds over the 10-year Treasury (BAA10Y)"],["Spending, prices","Real consumer spending (PCEC96) and core PCE inflation (PCEPILFE): prices of what households buy, without food and energy"],["Consumer mood","Consumer sentiment (UMCSENT) and expected inflation in a year (MICH)"]]}),
+  B("dir",2,2,"exists","Minutes direction","from the rubric scorer",
+   {i:"Stage 2 output. The saved score of the minutes, read as up, down or hold for the next meeting. [4][Inference]",
+    b:["assessEconomy already takes the minutes direction from the saved scores. [1]"]}),
   B("rubric",3,2,"open","Which rubric?","who decides: Rain and Aarya",
    {i:"Open question. What should a consumer-impact score measure, and on what scale?",
     b:["The plug-in point exists: {{fomc.rubric.scoreMinutes}}. [2]","Keep the structure fixed and test how steady the score is across repeated runs. [2]"]},
@@ -557,6 +582,7 @@ tabs:[
   A("stub","right","root","left","gap",{label:"replaced by"}),
   A("root","right","rep","left","newLink",{label:"writes"}),
   A("root","bottom","evid","top","exists"),
+  A("root","bottom","dir","top","exists"),
   A("root","bottom","rubric","top","indirect"),
   A("miss","top","evid","bottom","gap")
  ]
@@ -657,13 +683,13 @@ tabs:[
 
 tableDefs:{
   mapping:{title:"What each agent does, and which course pattern it follows",
-   note:"Pattern names come from the course deck [16]. Which pattern fits which agent is my reading. [Inference]",
+   note:"Pattern names come from the course deck [16]. Which pattern fits which agent, and the three stages, are my reading. [Inference]",
    head:["Agent","Job, and the code it wraps","Pattern","Calls the model?"],rows:[
     ["Organizer and critic","Routes the question, briefs the specialists, merges reports, reruns today's checks. Wraps the lookup triggers in the focus folder and the guard folder.","Router, and Critic (the Lead)","Only when the code rules cannot place a question [Inference]"],
-    ["Minutes retriever","Finds paragraph ids with code, then summarizes them with quotes. Wraps searchMinutes, the ranking code, the focus window, readMinutes, getDecision, decisionCards, policyViews, forecastRevisions.","Specialist, a retriever for one source (the minutes)","Yes, to summarize. Finding is code"],
-    ["Market and econ data","Returns dated figures. Wraps getSeries, getSnapshot, getPolicyPath, assessEconomy, getOutlook, the as-of data code.","Specialist, a retriever for one source (the numbers)","Mostly code. The model only phrases the result"],
-    ["Rubric scorer","Scores a meeting one rubric dimension per call. Wraps scoreByDimension, scoreCache, the fomc-score skill, the score checks.","Specialist (Generator), run ahead of time, not a retriever","Yes, ahead of time by pipeline/score_minutes.m"],
-    ["Consumer view","New. Builds on getOutlook, the spending, price and sentiment series, and the planned rubric.","Specialist (Generator)","Yes"]
+    ["Minutes retriever","Finds paragraph ids with code, then summarizes them with quotes. Wraps searchMinutes, the ranking code, the focus window, readMinutes, getDecision, decisionCards, policyViews, forecastRevisions.","Specialist, a retriever for one source (the minutes). Stage 1","Yes, to summarize. Finding is code"],
+    ["Market and econ data","Returns dated figures. Wraps getSeries, getSnapshot, getPolicyPath, assessEconomy, getOutlook, the as-of data code.","Specialist, a retriever for one source (the numbers). Stage 1","Mostly code. The model only phrases the result"],
+    ["Rubric scorer","Scores a meeting one rubric dimension per call. Wraps scoreByDimension, scoreCache, the fomc-score skill, the score checks.","Specialist (Generator), not a retriever. Stage 2, in sequence","Yes, ahead of time by pipeline/score_minutes.m"],
+    ["Consumer view","New. Builds on getOutlook, the spending, price and sentiment series, the scorer's direction and the planned rubric.","Specialist (Generator). Stage 3, in sequence","Yes"]
   ]},
   tests:{title:"The planned tests at a glance",head:["Test","Question it answers","Built from"],rows:[
     ["Cutoff probe","Where does the model's knowledge end?","New script. Sets cfg.modelCutoff"],
@@ -690,7 +716,8 @@ next:{
     ["3","How do we probe the model's training cutoff?","Alex Tung"],
     ["4","Does the organizer route with code rules, the model, or both?","The project group"],
     ["5","Which specialists stay plain code?","The project group"],
-    ["6","Should chat answers, not only scores, fail on later-dated mentions?","Professor Robbins and the group"]
+    ["6","Should chat answers, not only scores, fail on later-dated mentions?","Professor Robbins and the group"],
+    ["7","Is the three-stage order right: the two retrievers, then the rubric scorer, then the consumer view? [Inference]","The project group"]
   ],
   datesHead:["Target date","What","Who"],
   dates:[
@@ -842,7 +869,7 @@ function buildDiagram(tab){
     if(b.style==='open'&&!b.confirm){warn(id+'/'+b.id+': open question does not name who confirms');}
   });
   var maxRow=0; boxes.forEach(function(b){if(b.row>maxRow){maxRow=b.row;}});
-  var H=40+110*maxRow+BH+40;
+  var H=40+110*maxRow+BH+40+(tab.padBottom||0);
   var svgId='svg-'+id;
 
   var wrapEl=document.createElement('div');
@@ -920,6 +947,18 @@ function buildDiagram(tab){
     }
   });
 
+  /* plus signs: two boxes side by side that are independent of each other */
+  (tab.plus||[]).forEach(function(pr){
+    var a=byId[pr[0]], b=byId[pr[1]];
+    if(!a||!b){warn(id+': plus sign names a box that does not exist');return;}
+    var pa=boxPos(a), pb=boxPos(b);
+    if(pa.y!==pb.y||Math.abs(a.col-b.col)!==1){warn(id+': plus sign needs two boxes side by side');return;}
+    var lft=pa.x<pb.x?pa:pb, cx=lft.x+BW+(COLX[1]-COLX[0]-BW)/2, cy=lft.y+BH/2;
+    var pg2=el('g',{'class':'plus','aria-hidden':'true'},svg);
+    el('circle',{cx:cx,cy:cy,r:13},pg2);
+    var ptx=el('text',{x:cx,y:cy+7,'text-anchor':'middle'},pg2); ptx.textContent='+';
+  });
+
   /* legend, built only from the styles this diagram uses */
   var legend=document.createElement('ul'); legend.className='legend'; legend.setAttribute('aria-label','Legend for this diagram');
   Object.keys(BOX_STYLES).forEach(function(st){
@@ -932,6 +971,12 @@ function buildDiagram(tab){
     var li=document.createElement('li'); li.appendChild(legendSwatchArrow(st));
     li.appendChild(document.createTextNode('Arrow: '+ARROW_STYLES[st].label)); legend.appendChild(li);
   });
+  if((tab.plus||[]).length){
+    var lp=document.createElement('li'), sp=el('svg',{width:26,height:26,viewBox:'0 0 26 26','aria-hidden':'true'});
+    var gp2=el('g',{'class':'plus'},sp); el('circle',{cx:13,cy:13,r:11},gp2);
+    var tp2=el('text',{x:13,y:20,'text-anchor':'middle'},gp2); tp2.textContent='+';
+    lp.appendChild(sp); lp.appendChild(document.createTextNode('Plus: independent, run in any order')); legend.appendChild(lp);
+  }
   wrapEl.appendChild(legend);
 
   var hint=document.createElement('p'); hint.className='hint';
