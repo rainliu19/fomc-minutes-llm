@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Subagent Architecture</title>
+<meta name="description" content="Proposal to split the FOMC minutes analyst into an organizer and critic plus small specialist subagents, with a plan to test and reduce lookback bias.">
+<style>
+:root{
+  --font:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --bg:#f3f5f8; --surface:#ffffff; --ink:#14212f; --muted:#4f5e6e; --line:#cfd8e3;
+  --hdr:#12395c; --hdr-ink:#ffffff; --accent:#b8913a; --link:#0b5cad; --focus:#0b5cad; --sel:#0b5cad;
+  --exists-bg:#e2edfa; --exists-bd:#2b6cb0;
+  --new-bg:#fff2d1; --new-bd:#b7791f; --new-ink:#ffffff;
+  --fav-bg:#e0f3e4; --fav-bd:#2f855a;
+  --gap-bg:#fde8e8; --gap-bd:#c53030;
+  --unk-bg:#eceff2; --unk-bd:#718096;
+  --rule-bg:#ece4f9; --rule-bd:#6b46c1;
+  --a-exists:#5f6b7a; --a-new:#b7791f; --a-gap:#c53030; --a-ind:#718096;
+}
+@media screen and (prefers-color-scheme:dark){
+  :root{
+    --bg:#0e151d; --surface:#16202b; --ink:#e7eef6; --muted:#a3b3c4; --line:#2c3b4c;
+    --hdr:#0a2640; --accent:#d4ad5a; --link:#7db8f5; --focus:#7db8f5; --sel:#7db8f5;
+    --exists-bg:#17304d; --exists-bd:#63a4ec;
+    --new-bg:#3c2e0d; --new-bd:#e0a93b; --new-ink:#1b1403;
+    --fav-bg:#12372a; --fav-bd:#48bb78;
+    --gap-bg:#451d1d; --gap-bd:#f26b6b;
+    --unk-bg:#222b35; --unk-bd:#8a99ab;
+    --rule-bg:#2e2350; --rule-bd:#a78bfa;
+    --a-exists:#a3b3c4; --a-new:#e0a93b; --a-gap:#f26b6b; --a-ind:#8a99ab;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:70px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5}
+a{color:var(--link)}
+code{font-family:var(--mono);font-size:.88em;background:color-mix(in srgb,var(--line) 55%,transparent);padding:1px 4px;border-radius:4px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 16px}
+
+/* Header, styled after the Federal Reserve header: deep navy with a thin gold rule */
+.hdr{background:var(--hdr);color:var(--hdr-ink);border-bottom:4px solid var(--accent)}
+.hdr .wrap{padding-top:22px;padding-bottom:20px}
+.kicker{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;opacity:.85;margin:0 0 6px}
+.hdr h1{margin:0;font-size:2rem;line-height:1.15;font-weight:700}
+.hdr .sub{margin:6px 0 0;font-size:1.05rem;opacity:.95}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 8px;padding:0;list-style:none}
+.badges li{font-size:.75rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;padding:3px 10px;border:1px solid rgba(255,255,255,.55);border-radius:999px}
+.byline{margin:0;font-size:.9rem;opacity:.9}
+
+/* Summary cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:20px 0}
+.card{background:var(--surface);border:1px solid var(--line);border-top:4px solid var(--accent);border-radius:8px;padding:14px 18px}
+.card h2{margin:0 0 6px;font-size:1.1rem}
+.card ul{margin:0;padding-left:20px}
+.card li{margin:4px 0}
+
+/* Sticky tab bar */
+.tabbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+[role=tablist]{display:flex;gap:4px;overflow-x:auto;padding:8px 0 0;scrollbar-width:thin}
+[role=tab]{flex:0 0 auto;font:inherit;font-size:.93rem;color:var(--muted);background:transparent;border:1px solid transparent;border-bottom:none;border-radius:8px 8px 0 0;padding:8px 12px;cursor:pointer;white-space:nowrap}
+[role=tab]:hover{color:var(--ink);background:color-mix(in srgb,var(--surface) 70%,transparent)}
+[role=tab][aria-selected=true]{color:var(--ink);font-weight:700;background:var(--surface);border-color:var(--line);box-shadow:inset 0 3px 0 var(--accent)}
+[role=tab]:focus-visible{outline:3px solid var(--focus);outline-offset:-3px}
+
+/* Panels */
+.panel{padding:20px 0 40px}
+.panel h2.ptitle{margin:0 0 6px;font-size:1.35rem}
+.panel .intro{margin:0 0 14px;max-width:80ch;color:var(--ink)}
+.panel h3{margin:26px 0 8px;font-size:1.05rem}
+.diagram-scroll{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
+.diagram-scroll svg{display:block;min-width:960px;width:960px;height:auto}
+.hint{margin:6px 2px 0;font-size:.85rem;color:var(--muted)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;list-style:none;margin:10px 0 0;padding:0;font-size:.85rem;color:var(--muted)}
+.legend li{display:flex;align-items:center;gap:6px}
+.detail{margin-top:12px;background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--exists-bd);border-radius:8px;padding:12px 16px;min-height:96px}
+.detail h3{margin:0;font-size:1.05rem}
+.detail .status{margin:2px 0 8px;font-size:.82rem;color:var(--muted)}
+.detail p{margin:6px 0}
+.detail ul{margin:6px 0;padding-left:20px}
+.detail .placeholder{color:var(--muted);margin:0}
+.detail .confirm{padding:6px 10px;background:var(--fav-bg);border-left:4px solid var(--fav-bd);border-radius:4px}
+.tip-table,.dtable{border-collapse:collapse;width:100%;margin:8px 0;font-size:.92rem}
+.tip-table th,.tip-table td,.dtable th,.dtable td{border:1px solid var(--line);padding:5px 9px;text-align:left;vertical-align:top}
+.tip-table th{width:34%;background:color-mix(in srgb,var(--line) 35%,transparent);font-weight:600}
+.dtable thead th{background:color-mix(in srgb,var(--line) 45%,transparent)}
+.tablewrap{overflow-x:auto}
+.callout{margin:14px 0;padding:10px 14px;background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--rule-bd);border-radius:6px;max-width:90ch}
+
+/* Diagram drawing */
+svg text{font-family:var(--font);fill:var(--ink)}
+.t-title{font:700 13.5px var(--font)}
+.t-sub{font:400 11.5px var(--font)}
+.measurer{position:absolute;left:-9999px;top:0;width:10px;height:10px;visibility:hidden}
+.box{cursor:pointer;outline:none}
+.box .body{stroke-width:2}
+.box .halo{fill:none;stroke:var(--sel);stroke-width:3;opacity:0}
+.box:focus-visible .halo{opacity:1;stroke:var(--focus);stroke-dasharray:none}
+.box.sel .halo{opacity:1}
+.box.sel .body{stroke-width:3}
+.s-exists .body{fill:var(--exists-bg);stroke:var(--exists-bd)}
+.s-new .body{fill:var(--new-bg);stroke:var(--new-bd);stroke-dasharray:7 4}
+.s-favored .body{fill:var(--fav-bg);stroke:var(--fav-bd)}
+.s-open .body{fill:var(--fav-bg);stroke:var(--fav-bd)}
+.s-gap .body{fill:var(--gap-bg);stroke:var(--gap-bd)}
+.s-unknown .body{fill:var(--unk-bg);stroke:var(--unk-bd);stroke-dasharray:7 4}
+.s-rule .body{fill:var(--rule-bg);stroke:var(--rule-bd)}
+.pill rect{fill:var(--new-bd)}
+.pill text{fill:var(--new-ink);font:700 9px var(--font);letter-spacing:.06em}
+.qbadge circle{fill:var(--fav-bd)}
+.qbadge text{fill:#fff;font:700 13px var(--font)}
+.arrow{fill:none;stroke-linecap:round}
+.a-exists{stroke:var(--a-exists);stroke-width:2}
+.a-new{stroke:var(--a-new);stroke-width:2.4;stroke-dasharray:1 6}
+.a-main{stroke:var(--a-new);stroke-width:4.5}
+.a-gap{stroke:var(--a-gap);stroke-width:2.4;stroke-dasharray:1 6}
+.a-risky{stroke:var(--a-gap);stroke-width:2.2;stroke-dasharray:8 5;stroke-linecap:butt}
+.a-indirect{stroke:var(--a-ind);stroke-width:2;stroke-dasharray:7 5;stroke-linecap:butt}
+.ah-exists{fill:var(--a-exists)}
+.ah-new,.ah-main{fill:var(--a-new)}
+.ah-gap,.ah-risky{fill:var(--a-gap)}
+.ah-indirect{fill:var(--a-ind)}
+.alabel{font:600 11.5px var(--font);paint-order:stroke;stroke:var(--surface);stroke-width:5px;stroke-linejoin:round}
+.legend svg{display:block}
+
+/* Option cards */
+.optbar{display:flex;gap:8px;margin:8px 0}
+.btn{font:inherit;font-size:.85rem;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:4px 12px;cursor:pointer}
+.btn:hover{border-color:var(--link)}
+.btn:focus-visible{outline:3px solid var(--focus);outline-offset:1px}
+details.opt{background:var(--surface);border:1px solid var(--line);border-left:6px solid var(--unk-bd);border-radius:8px;margin:10px 0;padding:0}
+details.opt.favored{border-left-color:var(--fav-bd)}
+details.opt.rejected{border-left-color:var(--gap-bd)}
+details.opt>summary{cursor:pointer;padding:10px 14px;font-weight:600;list-style-position:inside}
+details.opt>summary:focus-visible{outline:3px solid var(--focus);outline-offset:-3px}
+details.opt .badge{margin-left:8px;font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:2px 8px;border-radius:999px;border:1px solid currentColor}
+details.opt.favored .badge{color:var(--fav-bd)}
+details.opt.rejected .badge{color:var(--gap-bd)}
+details.opt.rejected .oname{text-decoration:line-through;text-decoration-thickness:2px}
+details.opt .obody{padding:0 16px 12px}
+details.opt h4{margin:12px 0 4px;font-size:.9rem}
+details.opt ul{margin:4px 0;padding-left:20px}
+.credit{color:var(--muted);font-size:.88em}
+.why{padding:6px 10px;background:var(--gap-bg);border-left:4px solid var(--gap-bd);border-radius:4px;margin:8px 0}
+.recon{padding:6px 10px;background:var(--unk-bg);border-left:4px solid var(--unk-bd);border-radius:4px;margin:8px 0}
+
+/* Next steps */
+.bigq{font-size:1.1rem;max-width:80ch}
+.fine{color:var(--muted);font-size:.9rem}
+.sources li{margin:6px 0}
+.sources li.flash{animation:flash 1.6s ease-out}
+@keyframes flash{from{background:color-mix(in srgb,var(--accent) 45%,transparent)}to{background:transparent}}
+.foot{margin:30px 0;font-size:.85rem;color:var(--muted)}
+
+/* Print-only Box | Detail tables */
+.boxtable{display:none}
+.noscript{padding:16px;background:var(--gap-bg);border:1px solid var(--gap-bd);border-radius:8px;margin:20px 0}
+
+@media (max-width:600px){
+  .hdr h1{font-size:1.6rem}
+  .wrap{padding:0 16px}
+}
+@media print{
+  :root{--bg:#fff}
+  body{background:#fff;font-size:11pt}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .tabbar,.optbar,.hint,.detail,.legend-hint{display:none!important}
+  .panel,.panel[hidden]{display:block!important;padding:10px 0 0;break-before:page}
+  .panel:first-of-type{break-before:auto}
+  .diagram-scroll{overflow:visible}
+  .diagram-scroll svg{min-width:0;width:100%}
+  .boxtable{display:table;width:100%;border-collapse:collapse;margin:10px 0;font-size:9.5pt}
+  .boxtable th,.boxtable td{border:1px solid #999;padding:3px 6px;text-align:left;vertical-align:top}
+  .boxtable tr{break-inside:avoid}
+  details.opt{break-inside:avoid}
+  a{color:inherit}
+}
+</style>
+</head>
+<body>
+<header class="hdr">
+  <div class="wrap">
+    <p class="kicker" id="kicker"></p>
+    <h1 id="title"></h1>
+    <p class="sub" id="subtitle"></p>
+    <ul class="badges" id="badges" aria-label="Document status"></ul>
+    <p class="byline" id="byline"></p>
+  </div>
+</header>
+
+<div class="wrap">
+  <noscript><div class="noscript">This page draws its diagrams with JavaScript. Turn JavaScript on, or read the Sources list in the repository docs folder.</div></noscript>
+  <section class="cards" id="cards" aria-label="Summary"></section>
+</div>
+
+<div class="tabbar">
+  <div class="wrap"><div role="tablist" id="tablist" aria-label="Sections of this proposal"></div></div>
+</div>
+
+<main class="wrap" id="panels"></main>
+
+<div class="wrap"><p class="foot" id="foot"></p></div>
+<div id="warn" hidden data-warnings="0"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ================================================================
+   ALL CONTENT LIVES IN THIS ONE OBJECT. The engine below only draws it.
+   Box helper:   B(id, col, row, style, title, subtitle, tip, confirm)
+   Arrow helper: A(from, fromSide, to, toSide, style, {label, fa, ta})
+   Tip helper:   {i: intro line, t: [[key, value]...] table, b: [bullet...]}
+   Inline marks: {{code}}  **bold**  [n] = link to Sources item n
+   ================================================================ */
+function B(id,col,row,style,title,sub,tip,confirm){return {id:id,col:col,row:row,style:style,title:title,sub:sub,tip:tip,confirm:confirm||null};}
+function A(from,fs,to,ts,style,o){o=o||{};return {from:from,fs:fs,to:to,ts:ts,style:style,label:o.label||null,fa:o.fa,ta:o.ta};}
+
+var DATA = {
+meta:{
+  kicker:"FOMC Minutes Analyst - design proposal",
+  title:"Subagent Architecture",
+  subtitle:"Splitting one overloaded local agent into an organizer and critic plus small specialists, and testing it for lookback bias.",
+  badges:["Draft","Proposal","Nothing built yet"],
+  byline:"Prepared by Alex Tung for Professor Robbins and the project group. 2026-11-10.",
+  foot:"All numbers on this page come from the repository files listed under Next steps, Sources. Opinions are marked [Inference]."
+},
+
+cards:[
+ {title:"What we want to build", items:[
+   "An **organizer and critic** that splits each question into jobs and checks the result before it answers.",
+   "Five small specialists: **Minutes reader**, **Retrieval**, **Market and econ data**, **Scorer** and **Consumer view**. Each gets a short prompt and few tools.",
+   "A **lookback-bias test suite**, and a tuning loop that edits prompts and skill text until the measured leak is inside a range the group agrees on."
+ ]},
+ {title:"Where it stands", items:[
+   "One agent does every job today: 11 tools, one scoring skill, and an 8,192-token window. [1][2]",
+   "The scorer already works one rubric dimension per call, which is the pattern this proposal extends. [2]",
+   "The consumer score is a stub, and the model's training cutoff is not verified. [2][13]",
+   "**Nothing in this design is built yet.** This page is a proposal for review."
+ ]}
+],
+
+glossary:{
+  title:"Plain words",
+  head:["Term","What it means here"],
+  rows:[
+   ["Agent","A program that asks a language model what to do, runs the tools it asks for, and repeats until it can answer."],
+   ["Subagent","A smaller agent with its own short instructions and few tools. An organizer starts it for one job."],
+   ["Organizer and critic","The agent that splits a question into jobs, merges the replies, and checks the result before it answers."],
+   ["Anchor date","The date a question is asked as of. The agent may use nothing dated after it."],
+   ["Token","A chunk of text, about three-quarters of a word. Model limits are counted in tokens."],
+   ["Context window","How many tokens the model can read at once. Ours is 8,192."],
+   ["Prompt","The written instructions given to the model."],
+   ["Tool","A function the model can ask the program to run, such as searching the minutes."],
+   ["Skill","A folder of written instructions and scoring guides the model loads for one kind of task."],
+   ["Rubric","A scoring guide. Each row describes what a score looks like, from -1 (dovish, favors lower rates) to +1 (hawkish, favors higher rates)."],
+   ["Vintage","A data value as first published, before later revisions."],
+   ["Lookback bias","Hindsight. An answer that uses knowledge of events after the date it claims to be written."],
+   ["Training cutoff","The last date of text the model learned from."],
+   ["Bare model","The same model asked a question with no tools, minutes or data."],
+   ["Leak gap","[Inference] How much better the model does when it can recognize a meeting than when it cannot. A planned measure."],
+   ["Hill-climbing","Change one thing, test it, keep the change only if the score improves, then repeat."]
+  ]
+},
+
+tabs:[
+/* ---------------------------------------------------------- 1. TODAY */
+{id:"today", label:"Today", title:"Today: one agent does everything",
+ intro:"One small model runs on this laptop. It reads the question, picks tools, reads the results and writes the answer, all inside one 8,192-token window. Red boxes mark the gaps this proposal targets. Click any box for detail. [1][2]",
+ boxes:[
+  B("q",0,1,"exists","Question and date","user asks as of a date",
+   {i:"Every session has an anchor date: the day the question is asked as of. [2]",
+    b:["Nothing dated after the anchor may reach the model.","Minutes count only after their release, about three weeks after a meeting. [4]"]}),
+  B("look",1,1,"exists","Harness lookups","code fetches facts first",
+   {i:"Plain code runs some lookups before the model starts, because a small model often skips tools. [2]",
+    t:[["Decision card","Minutes questions"],["Rate path","How rates moved"],["Economy","Where policy may go"],["Outlook","What rate moves may mean"],["Data figures","Up to 6 data topics"]]}),
+  B("agent",2,1,"exists","One agent","one small model, every job",
+   {i:"A 4-billion-parameter model (Qwen3 4B) that runs locally through Ollama. It picks tools, reads results and writes the answer. [2][11]",
+    t:[["Context window","8,192 tokens [11]"],["Fixed prompt and tools","About 2,350 tokens; budget 2,375 [5]"],["Speed","Reads about 140 tokens a second, writes 10 to 17 [2]"]]}),
+  B("guard",3,1,"rule","Date gate and checks","blocks later dates, checks ids",
+   {i:"Plain code that blocks and verifies. It never calls the model. [2]",
+    t:[["checkToolInput","Refuses a call that names a later date"],["checkToolOutput","Withholds a result that holds a later date"],["citations","Marks a paragraph id verified only if a tool returned it"],["checkGrounding","Checks ids and figures in High-effort answers"],["plainEnglish","Rewrites series codes into plain words"]]}),
+  B("ans",4,1,"exists","Final answer","short, cited, plain words",
+   {i:"Under 120 words unless asked for more. Each claim about the minutes cites a paragraph id in brackets. [9]"}),
+  B("tools",2,0,"exists","Tools and skill","eleven tools, one skill",
+   {i:"The model is offered 11 tools. A tool is a function it can ask the program to run. [12]",
+    t:[["Minutes","listMeetings, getDecision, searchMinutes, readMinutes"],["Policy","getPolicyPath, assessEconomy, getOutlook"],["Data","getSeries, describeSeries"],["Other","scoreConsumerImpact (a stub), readSkill"],["Skill","fomc-score: seven rubrics, one per scoring dimension [15]"]]}),
+  B("data",3,0,"exists","Minutes and data","150 minutes, 56 series",
+   {i:"Everything the tools read. All of it is public information. [10]",
+    t:[["Minutes","150 meetings, 2008 to 2026, every paragraph has an id"],["Series","56 data series from FRED, Yahoo Finance, Shiller and the Treasury"],["Saved scores","150 AI scores of each meeting's rate path [2]"]]}),
+  B("stub",1,0,"gap","Consumer score stub","returns no real score",
+   {i:"scoreConsumerImpact calls a placeholder. The tool tells the model not to report a score. [12]",
+    b:["The rubric scorer (Aarya) and the consumer agent (Rain) are not plugged in yet. [2]"]}),
+  B("crowd",2,2,"gap","Crowded window","everything shares 8,192 tokens",
+   {i:"Prompt, tool descriptions, lookups and chat history all compete for one window. [2][3]",
+    t:[["Fixed prompt and tools","About 2,350 tokens [5]"],["App input per question","2,300 to 4,200 tokens [3]"],["Whole minutes for scoring","11,000 to 17,000 tokens: too big, so scoring splits by dimension [2]"],["Old tool results","Shrunk to stubs past 5,500 tokens [13]"]]}),
+  B("cutoff",3,2,"gap","Training hindsight","model cutoff not verified",
+   {i:"The date gate hides future data. It cannot hide what the model learned in training. [2][7]",
+    b:["The setting {{cfg.modelCutoff}} is unset, so no meeting can be called clean. [13]","Professor Robbins raised this risk (relayed by Alex Tung, 2026-11-10).","Saved scores of older minutes may look better than they are. [4]"]})
+ ],
+ arrows:[
+  A("q","right","look","left","exists"),
+  A("look","right","agent","left","exists"),
+  A("agent","right","guard","left","exists"),
+  A("guard","right","ans","left","exists"),
+  A("agent","top","tools","bottom","exists"),
+  A("tools","right","data","left","exists"),
+  A("stub","right","tools","left","gap"),
+  A("crowd","top","agent","bottom","gap"),
+  A("cutoff","top","guard","bottom","gap")
+ ],
+ tables:["glossary"]
+},
+
+/* ----------------------------------------------------- 2. WHAT WE ADD */
+{id:"add", label:"What we add", title:"What we add: an organizer and five specialists",
+ intro:"Same layout as Today, so you can flip between the two tabs. The single agent becomes an organizer and critic that calls specialists one after another on the same loaded model. Amber is new. Purple is a rule. The date gate stays and now covers every specialist. [Inference]",
+ boxes:[
+  B("q",0,1,"exists","Question and date","user asks as of a date",
+   {i:"Unchanged. Every question still carries an anchor date. [2]"}),
+  B("router",1,1,"new","Code router","reuses today's lookup triggers",
+   {i:"Plain code picks which specialists to call. It reuses the word rules that trigger today's lookups. [2]",
+    b:["Code is fast and never skips a step, unlike a small model. [2]","A model can decide only when the code rules cannot. [Inference]"]}),
+  B("org",2,1,"new","Organizer and critic","plans, merges, then checks",
+   {i:"One agent in the middle. It writes a short brief for each specialist, merges their short reports, and has the critic check the draft.",
+    t:[["Plans","Chooses which specialists to call"],["Briefs","Sends each one the question, the anchor date and its tools"],["Merges","Combines the reports; each is capped in size [13]"],["Critic","Reruns today's checks before it answers [14]"]]}),
+  B("gate",3,1,"rule","Date gate and checks","blocks later dates, checks ids",
+   {i:"The same code as today. It now sits between every specialist and the answer. [2]",
+    b:["A specialist that reports a later date is stopped, as a tool is today.","Every claim still needs a paragraph id that a tool returned."]}),
+  B("ans",4,1,"exists","Final answer","short, cited, plain words",
+   {i:"Unchanged in form: short, cited, plain words. [9]"}),
+  B("reader",1,0,"new","Minutes reader","summarizes passages with ids",
+   {i:"Reads only the passages it is handed and writes a short summary with quotes and paragraph ids. Calls the model.",
+    b:["Wraps readMinutes, getDecision, policyViews and forecastRevisions. [2]"]}),
+  B("retr",2,0,"new","Retrieval subagent","plain code, no model call",
+   {i:"Finds the best paragraphs for a question and returns their ids. Plain code, so it adds no model call.",
+    b:["Wraps searchMinutes, the ranking code and the focus window. [2]"]}),
+  B("mdata",3,0,"new","Market and econ data","plain code does the math",
+   {i:"Returns dated figures. MATLAB does the arithmetic; the model only phrases the result.",
+    b:["Wraps getSeries, getPolicyPath, assessEconomy and getOutlook. [2][4]"]}),
+  B("scorer",2,2,"new","Rubric scorer","reads saved rubric scores",
+   {i:"Gives the AI score of a meeting's rate path. Most scores are made ahead of time and saved, so questions do not wait on the model. [2]",
+    b:["Wraps scoreByDimension, scoreCache and the fomc-score skill. [15]"]}),
+  B("cons",3,2,"new","Consumer view","what it means for households",
+   {i:"New. Turns borrowing costs, spending and prices into a household view. Calls the model.",
+    b:["Builds on getOutlook and the consumer series. The rubric is still open. [2]"]})
+ ],
+ arrows:[
+  A("q","right","router","left","main"),
+  A("router","right","org","left","main"),
+  A("org","right","gate","left","main"),
+  A("gate","right","ans","left","main"),
+  A("org","top","reader","bottom","newLink",{fa:0.3}),
+  A("org","top","retr","bottom","newLink",{fa:0.5}),
+  A("org","top","mdata","bottom","newLink",{fa:0.7}),
+  A("org","bottom","scorer","top","newLink",{fa:0.5}),
+  A("org","bottom","cons","top","newLink",{fa:0.8,ta:0.4})
+ ],
+ tables:["mapping"],
+ options:[
+  {name:"A. Call specialists one after another on the one loaded model", status:"favored",
+   pros:[
+    ["It fits one loaded model on an 8 GB Mac, so no extra memory is needed.","Project docs, performance.md",3],
+    ["Every prompt stays small enough for the window. The scorer already works this way.","Project docs, agent_interface.md",2]],
+   cons:[
+    ["More model calls per question, so answers take longer. Time is mostly the length of what the model writes.","Project docs, performance.md",3],
+    ["With one model slot, alternating prompts may force the model to re-read each prompt start. [Inference]","Alex Tung, inference",5],
+    ["Mitigation: keep the specialists that are plain code as code, so only two or three need the model. [Inference]","Alex Tung, inference",null]]},
+  {name:"B. Run specialists in parallel, each on its own model", status:"rejected",
+   pros:[["Faster in principle, because specialists run at the same time. [Inference]","Alex Tung, inference",null]],
+   cons:[
+    ["One 4B model takes about 3 GB and the hidden MATLAB about 1 GB on an 8 GB machine.","Project docs, performance.md",3],
+    ["The app pins one loaded model and one request at a time.","Project code, server/runtime.py",6]],
+   why:"The memory does not fit. Two models would push the laptop into heavy swap.",
+   reconsider:"The group runs on a machine with 16 GB or more, or on a remote graphics card."},
+  {name:"C. Keep one agent and give it a bigger window or model", status:"rejected",
+   pros:[["No new design. The code stays as it is.","Alex Tung, inference",null]],
+   cons:[
+    ["A bigger window or model needs more memory and slows every call. [Inference]","Alex Tung, inference",null],
+    ["The prompt still grows with every new tool, and the tool budget is almost used.","Project tests, testBudgets.m",5]],
+   why:"It repeats the crowding problem at a larger size and costs memory we do not have.",
+   reconsider:"A small model with a long window passes the live benchmark at a similar speed."},
+  {name:"D. Send the work to a cloud model", status:"rejected",
+   pros:[
+    ["Large windows and strong models are available.","Alex Tung, inference",null]],
+   cons:[
+    ["The project promises that nothing leaves the machine.","Project docs, README.md",1],
+    ["It costs money: about $7.60 per 1,000 questions at Claude Sonnet 5.5 prices (an estimate).","Project docs, performance.md",3],
+    ["The minutes and series are public, so the privacy gain is about users' questions, not the data. [Inference]","Alex Tung, inference",null]],
+   why:"It breaks the local-only promise and adds a running cost.",
+   reconsider:"The group decides that privacy of questions no longer matters, and a budget exists."}
+ ]
+},
+
+/* ----------------------------------------------- 3. ORGANIZER AND CRITIC */
+{id:"organizer", label:"Organizer", title:"Organizer and critic: plan, brief, merge, check",
+ intro:"The organizer never reads the whole minutes. It routes, briefs, merges short reports, and lets the critic check the draft with code that already exists. Amber is new; purple is a rule. [Inference]",
+ boxes:[
+  B("q",0,0,"exists","Question and date","user asks as of a date",
+   {i:"The question and the anchor date, as today. [2]"}),
+  B("plan",1,0,"new","Plan the routing","word rules first, model second",
+   {i:"Decide which specialists to call. Code rules go first; the model decides only when the rules cannot.",
+    t:[["Rules","Reuse the word rules in the focus folder: scoring, rate path, economy, outlook [2]"],["Model","Used only for questions the rules cannot place [Inference]"]]}),
+  B("brief",2,0,"new","Brief subagents","short brief plus anchor date",
+   {i:"Each specialist gets only what it needs.",
+    t:[["Brief","The question, the anchor date and the paragraph ids it may read"],["Tools","Only the tools for its job, which keeps its prompt small"]]}),
+  B("reports",3,0,"new","Short reports","facts, dates, paragraph ids",
+   {i:"Each specialist returns a short report, capped in size like a tool result today. [13]",
+    b:["Every fact carries a date and, for the minutes, a paragraph id.","Reports pass through the date gate before the organizer sees them."]}),
+  B("merge",4,0,"new","Merge and draft","organizer writes the answer",
+   {i:"The organizer combines the reports into one short answer in plain words. [9]"}),
+  B("openq",1,1,"open","Code or model?","who routes: the group decides",
+   {i:"Open question. Should the organizer pick specialists with code rules, with the model, or with both?",
+    b:["Code is faster and steadier. A model copes with odd wording. [Inference]"]},
+   "The project group"),
+  B("retry",2,1,"rule","Retry once","name the problem, resend",
+   {i:"If the critic finds a problem, the organizer sends the draft back once with the problem named. This is how High effort works today. [2]",
+    b:["A second failure marks the answer unverified instead of looping."]}),
+  B("critic",4,1,"rule","Critic checks","ids, figures, dates",
+   {i:"Reruns checks that exist today. It does not call the model. [2][14]",
+    t:[["citations","Each id must have been returned by a tool"],["checkGrounding","Figures must match the data"],["Date gate","Nothing dated after the anchor"],["Date words","[Inference] New: flag later events in the answer text"]]}),
+  B("ans",4,2,"exists","Final answer","short, cited, plain words",
+   {i:"The answer is cleaned into plain words by plainEnglish before the reader sees it. [2]"})
+ ],
+ arrows:[
+  A("q","right","plan","left","main"),
+  A("plan","right","brief","left","main"),
+  A("brief","right","reports","left","main"),
+  A("reports","right","merge","left","main"),
+  A("merge","bottom","critic","top","main"),
+  A("critic","bottom","ans","top","main"),
+  A("critic","left","retry","right","newLink",{label:"fails: send back once"}),
+  A("retry","top","brief","bottom","newLink"),
+  A("plan","bottom","openq","top","indirect")
+ ]
+},
+
+/* ------------------------------------------ 4. MINUTES AND RETRIEVAL */
+{id:"minutes", label:"Minutes", title:"Minutes reader and retrieval: ids are the contract",
+ intro:"Retrieval is plain code that finds paragraph ids. The reader summarizes only those paragraphs. A paragraph id is the link between them, and the citation check accepts an id only if a tool returned it. [2]",
+ boxes:[
+  B("org",0,0,"new","Organizer brief","question, dates, section",
+   {i:"The organizer says what to find: the question, the date range and the kind of passage."}),
+  B("retr",1,0,"new","Retrieval subagent","plain code, no model call",
+   {i:"Ranks paragraphs by how well they match the question and returns the best ids. No model call. [2]",
+    t:[["Today's code","searchMinutes, the ranking code, the focus window"],["Focus window","A relevance default: the last 3 years, or the years the question names. The anchor date is the hard limit. [2]"]]}),
+  B("read",2,0,"new","Minutes reader","short summary with quotes",
+   {i:"Reads the returned paragraphs and writes a short summary. Calls the model, but its prompt holds only a few paragraphs.",
+    b:["Wraps readMinutes and getDecision. [2]","Quotes are checked against the real paragraph. [2]"]}),
+  B("rep",3,0,"new","Cited report","claims tied to paragraph ids",
+   {i:"A paragraph id looks like {{2020-03-15/policyAction/12}}. Every claim carries one. [2]"}),
+  B("cite",4,0,"rule","Citation check","id must come from a tool",
+   {i:"{{fomc.guard.citations}} marks a paragraph verified only if its minutes were public at the anchor date and a tool returned that id in this session. [2]"}),
+  B("gate",1,1,"rule","Release-date gate","hides unreleased minutes",
+   {i:"Minutes are visible only if released on or before the anchor date. A question about a meeting not yet public is answered by the app itself, without the model. [2][3]"}),
+  B("cards",2,1,"exists","Decision cards","code reads each decision",
+   {i:"Code reads the decision, vote and dissent from the text. It does not use the model.",
+    b:["Checked against the real rate change for all 150 meetings. [2]"]}),
+  B("store",1,2,"exists","Minutes store","150 meetings, ids per paragraph",
+   {i:"One text file per meeting, split into sections and paragraphs. [10]"}),
+  B("weak",2,2,"gap","Early minutes weak","word rules weaker before 2015",
+   {i:"The word rules that read participants' views were tuned on 2022 and 2025 to 2026. They are less reliable earlier. [2]",
+    b:["19 of 150 meetings give no lean; 11 of them are from 2008 to 2014. [2]","Before about 2015 the minutes put the policy discussion in other words."]})
+ ],
+ arrows:[
+  A("org","right","retr","left","newLink"),
+  A("retr","right","read","left","newLink"),
+  A("read","right","rep","left","newLink"),
+  A("rep","right","cite","left","exists"),
+  A("store","top","gate","bottom","exists"),
+  A("gate","top","retr","bottom","exists"),
+  A("cards","top","read","bottom","exists"),
+  A("weak","top","cards","bottom","gap")
+ ]
+},
+
+/* ------------------------------------------------ 5. DATA AND SCORER */
+{id:"datascore", label:"Data and scorer", title:"Market and economic data, and the scorer",
+ intro:"Both specialists are mostly code that already exists. Code does the arithmetic, and the model only phrases results. The scorer runs ahead of time, so a question never waits on it. [2][4]",
+ boxes:[
+  B("org",0,0,"new","Organizer brief","question and anchor date",
+   {i:"The organizer says which figures it needs and as of when."}),
+  B("mdata",1,0,"new","Market and econ data","wraps three policy tools",
+   {i:"Calls the policy tools and passes on dated figures. The model phrases the result. [4]"}),
+  B("tools",2,0,"exists","Policy tools","rate path, economy, outlook",
+   {i:"Three tools written in plain MATLAB. Code reads the data, does the arithmetic and writes the sentences. [4]",
+    t:[["getPolicyPath","How the rate target moved, runs of changes, holds, dissents"],["assessEconomy","Economy against the Fed's goals, policy rules, market pricing, minutes direction"],["getOutlook","Staff forecast changes, borrowing costs, spending, prices, earlier cycles"]]}),
+  B("facts",3,0,"new","Dated facts","figures with their dates",
+   {i:"A short report of figures. Each one names its series and the date it became public."}),
+  B("store",1,1,"exists","Data store","56 series, real-time vintages",
+   {i:"A vintage is a value as first published, before later revisions. 17 revised series keep their full vintage history. [2][10]"}),
+  B("asof",2,1,"rule","As-of rule","value as first published",
+   {i:"Each value is read as known on the anchor date. Revised series use the vintage then; other series use a publication lag. [2]",
+    b:["Example: GDP is read as first published, not as revised years later.","The lags are conservative assumptions, not all checked against release calendars. [2]"]}),
+  B("scorer",1,2,"new","Rubric scorer","one rubric dimension per call",
+   {i:"Scores a meeting one rubric dimension per model call, so each prompt fits the window. The model picks a rubric row; code takes the score from it. [2]",
+    b:["Seven dimensions: rate path, inflation, labor market, economic activity, financial conditions, balance sheet, risk balance. [1]"]}),
+  B("cache",2,2,"exists","Saved scores","150 meetings, checked",
+   {i:"Scores are saved ahead of time by {{pipeline/score_minutes.m}}. All 150 pass their checks: schema, score range, exact quotes, the coded rate decision, and later dates. [2]"}),
+  B("dir",3,2,"exists","Minutes direction","up, down or hold",
+   {i:"Turns a saved score into a direction for the next meeting: up at +0.5 or more, down at -0.5 or less, else hold. [4]",
+    t:[["AI score, 2019 on","Right 79% on the next decision"],["6-month Treasury bill","Right 84%, so it gives the timing"],["Always guess hold","Right 65%"]]}),
+  B("coarse",3,1,"gap","Coarse scores","five rubric rows only",
+   {i:"The model picks a rubric row, so scores are coarse. [4]",
+    b:["The 150 rate-path scores use only five rows: -0.75 (56), 0 (62), +0.5 (3), +0.75 (8), +1 (21). [4]","A decision at the meeting is mixed into the score, so a meeting that moved reads as another move next. [4]"]})
+ ],
+ arrows:[
+  A("org","right","mdata","left","newLink"),
+  A("mdata","right","tools","left","newLink"),
+  A("tools","right","facts","left","newLink"),
+  A("mdata","bottom","store","top","exists"),
+  A("store","right","asof","left","exists"),
+  A("asof","top","tools","bottom","exists"),
+  A("scorer","right","cache","left","newLink"),
+  A("cache","right","dir","left","exists"),
+  A("coarse","bottom","dir","top","gap")
+ ]
+},
+
+/* ------------------------------------------------------ 6. CONSUMER */
+{id:"consumer", label:"Consumer", title:"Consumer view: what rate moves mean for households",
+ intro:"The new specialist looks at the U.S. consumer. Most inputs already exist in the data. The rubric that turns them into a score is still open. [2]",
+ boxes:[
+  B("borrow",1,0,"exists","Borrowing costs","mortgage rate, Baa spread",
+   {i:"The 30-year mortgage rate and the extra yield on Baa-rated company bonds over the 10-year Treasury. [4]",
+    b:["Series: MORTGAGE30US and BAA10Y. [10]"]}),
+  B("spend",2,0,"exists","Spending, prices","consumer spending, core PCE",
+   {i:"Real consumer spending growth and core PCE inflation (prices of what households buy, without food and energy). [4]",
+    b:["Series: PCEC96 and PCEPILFE. [10]"]}),
+  B("mood",3,0,"exists","Consumer mood","sentiment, expected inflation",
+   {i:"How consumers feel and what inflation they expect in a year. [4]",
+    b:["Series: UMCSENT and MICH. [10]"]}),
+  B("org",1,1,"new","Organizer brief","question and anchor date",
+   {i:"The organizer asks for the household view as of the anchor date."}),
+  B("cons",2,1,"new","Consumer subagent","household view from evidence",
+   {i:"Reads the three evidence groups and writes what they show so far. It calls the model.",
+    b:["It builds on getOutlook, which already gathers these steps. [2]"]}),
+  B("out",3,1,"new","Household report","plain words, dated figures",
+   {i:"A short report with dated figures and the earlier runs of rate moves it compares with. [4]"}),
+  B("noadv",4,1,"rule","No advice rule","evidence, never advice",
+   {i:"The answer shows evidence and never says what to do. System prompt rule 7: no investment advice. [9]",
+    b:["getOutlook already says what the evidence shows, never what will happen. [4]"]}),
+  B("stub",1,2,"gap","Today's stub","placeholder score only",
+   {i:"scoreConsumerImpact is a stub today. [12]"}),
+  B("rubric",2,2,"open","Which rubric?","who decides: Rain and Aarya",
+   {i:"Open question. What should a consumer-impact score measure, and on what scale?",
+    b:["The plug-in point exists: {{fomc.rubric.scoreMinutes}}. [2]","Keep the structure fixed and test how steady the score is across repeated runs. [2]"]},
+   "Rain and Aarya"),
+  B("miss",3,2,"gap","Missing data","no card or car rates",
+   {i:"Some household costs are not in the data. [2]",
+    b:["Credit card and car loan rates are missing, and so is total interest on federal debt.","The agent is told to say so instead of guessing."]})
+ ],
+ arrows:[
+  A("borrow","bottom","cons","top","exists",{ta:0.35}),
+  A("spend","bottom","cons","top","exists",{ta:0.55}),
+  A("mood","bottom","cons","top","exists",{ta:0.8}),
+  A("org","right","cons","left","newLink"),
+  A("cons","right","out","left","newLink"),
+  A("out","right","noadv","left","newLink"),
+  A("stub","right","rubric","left","gap"),
+  A("rubric","top","cons","bottom","indirect"),
+  A("miss","top","out","bottom","gap")
+ ]
+},
+
+/* -------------------------------------------------- 7. LOOKBACK BIAS */
+{id:"lookback", label:"Lookback bias", title:"Lookback bias: what we stop, what we cannot, how we test",
+ intro:"Professor Robbins worries that a model may have been trained on events after the date it is asked about. The date gate stops future data. It cannot stop what the model remembers. These planned tests measure that memory. [2][7]",
+ callout:"**A prompt cannot erase what a model learned.** Edits to prompts and skill text can only lower how much an answer leans on that memory. The tests below measure the lean. [Inference]",
+ boxes:[
+  B("gate",0,0,"rule","Date gate","blocks later dates and data",
+   {i:"Refuses a tool call that names a later date, and withholds a result that holds one. Minutes count only after release. [2]"}),
+  B("vint",1,0,"exists","Point-in-time data","values as first published",
+   {i:"A vintage is a value as first published, before later revisions. 17 revised series use the vintage known on the anchor date. [2]"}),
+  B("checks",2,0,"exists","Hindsight checks","score years, prompt rule 8",
+   {i:"Two small guards. Neither reads the model's final answer for later events. [Inference]",
+    t:[["checkAsOf","Flags a score rationale that names a year or date after the minutes release, unless the minutes name it. It runs only inside validateScores. [8][14]"],["Prompt rule 8","Tells the model to use only what the tools and the first message show, never memory of later events. [9]"]]}),
+  B("cutoff",0,1,"gap","Cutoff unverified","training cutoff is unknown",
+   {i:"The training cutoff is the last date of text the model learned from. We do not know it for our model. [7][13]",
+    b:["{{cfg.modelCutoff}} is unset, so {{cutoffLabel}} marks every meeting unverified. [7]","The docs say only meetings after the cutoff are clean. [2]","Professor Robbins raised the risk (relayed by Alex Tung, 2026-11-10)."]}),
+  B("probe",1,1,"new","Cutoff probe","find where memory ends",
+   {i:"[Inference] Ask the bare model about dated public events and see where its answers turn from specific to vague. A bare model gets no tools, minutes or data.",
+    t:[["Step 1","Pick dated public events, such as Fed decisions, from each quarter"],["Step 2","Ask the bare model, with no tools and no data"],["Step 3","Mark each answer right, vague or wrong"],["Step 4","Set cfg.modelCutoff where right answers stop"]]}),
+  B("split",2,1,"new","Before-after split","report each side apart",
+   {i:"Report every accuracy number twice: for meetings before the cutoff and after it. {{cutoffLabel}} already sorts meetings into before, near and after. [7]",
+    b:["[Inference] Few meetings fall after the cutoff, so that side has little statistical power."]}),
+  B("target",3,1,"open","Leak gap target","how small must it be?",
+   {i:"Open question. How small must the leak gap be? [Inference] A starting proposal: 5 percentage points or less on next-meeting accuracy.",
+    b:["The leak gap is how much better the model does when it can recognize a meeting than when it cannot."]},
+   "Professor Robbins"),
+  B("mask",1,2,"new","Masked minutes","hide dates, years, names",
+   {i:"[Inference] Strip dates, years and member names from the minutes, then score again.",
+    t:[["Compare","Next-meeting accuracy on the original text and on the masked text"],["Reading","A bigger drop before the cutoff than after it suggests memory"],["Why next meeting","The rate-path scorer is told the decision, so test the next-meeting reading, not this meeting's score [2]"]]}),
+  B("flip",2,2,"new","Flipped minutes","swap the policy sentences",
+   {i:"[Inference] Edit the minutes so the policy sentences say the opposite, for example swap raise and lower, then score.",
+    b:["If the score follows the text, the model is reading.","If it stays near what really happened, the model is remembering."]}),
+  B("future",3,2,"new","Later-event check","flag later events in answers",
+   {i:"Extend checkAsOf from score rationales to chat answers. [8]",
+    b:["Add eval cases that tempt hindsight, such as asking as of February 2020 whether a pandemic will hit.","An answer that names an event after the anchor date fails the case."]})
+ ],
+ arrows:[
+  A("gate","right","vint","left","exists"),
+  A("vint","right","checks","left","exists"),
+  A("gate","bottom","cutoff","top","gap"),
+  A("cutoff","right","probe","left","newLink"),
+  A("probe","right","split","left","newLink"),
+  A("split","right","target","left","newLink"),
+  A("probe","bottom","mask","top","newLink"),
+  A("mask","right","flip","left","newLink"),
+  A("flip","right","future","left","newLink"),
+  A("future","top","target","bottom","newLink")
+ ],
+ tables:["tests"]
+},
+
+/* --------------------------------------------------- 8. HILL-CLIMB */
+{id:"hill", label:"Hill-climb", title:"Hill-climb loop: tune prompts against the tests",
+ intro:"Hill-climbing means: change one thing, test it, keep the change only if the score improves, then repeat. We apply it to prompt and skill text, scored by the lookback tests. This is Alex Tung's proposal of 2026-11-10; the details are [Inference].",
+ boxes:[
+  B("run",0,0,"new","Run both suites","leak gap, then 57 cases",
+   {i:"Record two sets of numbers before touching anything.",
+    t:[["Lookback suite","The planned tests, giving the leak gap"],["Eval suite","The 57-case answer key in evals/key.json [3]"]]}),
+  B("change",1,0,"new","Change one line","prompt or skill text only",
+   {i:"Edit one line of a specialist's prompt or a skill file. One change at a time shows which edit helped.",
+    b:["Prompt budgets in testBudgets.m still apply. [5]"]}),
+  B("rerun",2,0,"new","Rerun both suites","same questions, same settings",
+   {i:"Use the same questions and the same settings. Scores run at temperature 0 (no randomness), so repeat runs agree. [2]"}),
+  B("keep",3,0,"rule","Keep or undo?","three tests must pass",
+   {i:"Keep the edit only if all three hold.",
+    t:[["Leak gap","Must shrink"],["57-case eval","Must not drop from the last kept version"],["Refusal rate","Must not rise. This stops the model from passing by refusing everything."]]}),
+  B("stop",4,0,"open","Stop at target","gap inside the agreed range",
+   {i:"Stop when the leak gap sits inside the range the group agrees on. [Inference] The proposal is 5 percentage points or less.",
+    b:["Report what the loop could not fix. A prompt lowers reliance on memory but cannot remove it. [Inference]"]},
+   "Professor Robbins"),
+  B("undo",1,1,"new","Undo the edit","back to last good text",
+   {i:"Restore the last kept version of the text, then try a different edit."}),
+  B("tune",0,1,"rule","Tune early, judge late","2008 to 2018, then 2019 on",
+   {i:"Tune on meetings from 2008 to 2018. Judge on 2019 onward. The repo already uses this split for its cutoffs. [4]",
+    b:["[Inference] Meetings after the training cutoff are the cleanest judge, once the cutoff is known."]}),
+  B("log",4,1,"rule","Log every edit","tests never edited to pass",
+   {i:"Write down each edit and its result. We never change a test to make it pass.",
+    b:["The log is what we show Professor Robbins when the loop stops. [Inference]"]})
+ ],
+ arrows:[
+  A("run","right","change","left","newLink"),
+  A("change","right","rerun","left","newLink"),
+  A("rerun","right","keep","left","newLink"),
+  A("keep","right","stop","left","newLink"),
+  A("keep","bottom","undo","right","newLink",{label:"worse: undo"}),
+  A("undo","top","change","bottom","newLink"),
+  A("tune","top","run","bottom","indirect"),
+  A("log","top","stop","bottom","indirect")
+ ],
+ tables:["keeprules"]
+},
+
+/* --------------------------------------------------- 9. NEXT STEPS */
+{id:"next", label:"Next steps", title:"Next steps", next:true}
+],
+
+tableDefs:{
+  mapping:{title:"What each specialist wraps",head:["Specialist","Wraps today's code","Calls the model?"],rows:[
+    ["Minutes reader","readMinutes, getDecision, decisionCards, policyViews, forecastRevisions","Yes, to summarize passages"],
+    ["Retrieval subagent","searchMinutes, the ranking code, the focus window, the harness lookups","No. It is plain code"],
+    ["Market and econ data","getSeries, getSnapshot, getPolicyPath, assessEconomy, getOutlook, the as-of data code","Mostly code. The model only phrases the result"],
+    ["Rubric scorer","scoreByDimension, scoreCache, the fomc-score skill, the score checks","Yes, but run ahead of time by pipeline/score_minutes.m"],
+    ["Consumer view","New. Builds on getOutlook, the spending, price and sentiment series, and the planned rubric","Yes"]
+  ]},
+  tests:{title:"The planned tests at a glance",head:["Test","Question it answers","Built from"],rows:[
+    ["Cutoff probe","Where does the model's knowledge end?","New script. Sets cfg.modelCutoff"],
+    ["Before-after split","Does accuracy differ across the cutoff?","cutoffLabel [7]"],
+    ["Masked minutes","Does the model need to recognize a meeting to score it?","New"],
+    ["Flipped minutes","Does a score follow the text or the model's memory?","New"],
+    ["Later-event check","Does an answer mention events after the anchor date?","Extends checkAsOf [8]"]
+  ]},
+  keeprules:{title:"Rules for keeping an edit",head:["Check","Rule"],rows:[
+    ["Leak gap","Must shrink against the last kept version"],
+    ["57-case eval","Must not drop. Run with tests/bench_live.py [3]"],
+    ["Refusal rate","Must not rise"],
+    ["Prompt budgets","Stay inside the limits in testBudgets.m [5]"],
+    ["Tests","Never edited to pass. Every edit is logged"]
+  ]}
+},
+
+next:{
+  question:"Do we adopt option A and build the lookback test suite before we build any specialist?",
+  head:["#","Question","Needed from"],
+  rows:[
+    ["1","How small must the leak gap be? (A starting proposal: 5 points or less.)","Professor Robbins"],
+    ["2","Which rubric should the consumer view use?","Rain and Aarya"],
+    ["3","How do we probe the model's training cutoff?","Alex Tung"],
+    ["4","Does the organizer route with code rules, the model, or both?","The project group"],
+    ["5","Which specialists stay plain code?","The project group"],
+    ["6","Should chat answers, not only scores, fail on later-dated mentions?","Professor Robbins and the group"]
+  ],
+  datesHead:["Target date","What","Who"],
+  dates:[
+    ["2026-11-17","Group reviews this design","Project group"],
+    ["2026-11-24","Test plan and leak-gap target agreed","Professor Robbins and Alex Tung"],
+    ["2026-12-08","Lookback suite runs on today's single agent, giving a baseline leak gap","Alex Tung"],
+    ["2026-12-15","First hill-climb round reported","Alex Tung"],
+    ["2027-01-12","First specialist (Retrieval) split out","Project group"]
+  ],
+  datesNote:"These target dates are proposals. [Inference] Every date can move."
+},
+
+sources:[
+ {n:1,path:"../README.md",label:"README.md",note:"What the app does, the folders, the limits"},
+ {n:2,path:"../docs/agent_interface.md",label:"docs/agent_interface.md",note:"Tools, anchor date, lookups, scoring, trace"},
+ {n:3,path:"../docs/performance.md",label:"docs/performance.md",note:"Speed, memory, the 50-question evaluation, token cost"},
+ {n:4,path:"../docs/how_the_tools_work.md",label:"docs/how_the_tools_work.md",note:"How the three policy tools and the minutes direction work, with caveats"},
+ {n:5,path:"../tests/testBudgets.m",label:"tests/testBudgets.m",note:"Size budgets for the prompt and tool descriptions"},
+ {n:6,path:"../server/runtime.py",label:"server/runtime.py",note:"Ollama settings: one loaded model, one request at a time"},
+ {n:7,path:"../src/+fomc/+leak/cutoffLabel.m",label:"src/+fomc/+leak/cutoffLabel.m",note:"Labels meetings before, near or after the training cutoff"},
+ {n:8,path:"../src/+fomc/+guard/checkAsOf.m",label:"src/+fomc/+guard/checkAsOf.m",note:"Flags later years and dates in score rationales"},
+ {n:9,path:"../src/+fomc/systemPrompt.m",label:"src/+fomc/systemPrompt.m",note:"The fixed prompt, including rule 8 on later events"},
+ {n:10,path:"../docs/data.md",label:"docs/data.md",note:"Series, caveats, how the data is built"},
+ {n:11,path:"../models/qwen3/Modelfile",label:"models/qwen3/Modelfile",note:"The 8,192-token window"},
+ {n:12,path:"../src/+fomc/+tools/registry.m",label:"src/+fomc/+tools/registry.m",note:"The 11 tools offered to the model"},
+ {n:13,path:"../src/+fomc/config.m",label:"src/+fomc/config.m",note:"Settings, including modelCutoff and compactAtTokens"},
+ {n:14,path:"../src/+fomc/+guard/validateScores.m",label:"src/+fomc/+guard/validateScores.m",note:"Where checkAsOf runs"},
+ {n:15,path:"../skills/fomc-score/SKILL.md",label:"skills/fomc-score/SKILL.md",note:"The scoring skill"}
+]
+};
+
+/* ================================================================
+   ENGINE. Draws everything above. No box or arrow is hand-written.
+   ================================================================ */
+var NS='http://www.w3.org/2000/svg';
+var COLX=[20,212,404,596,788], BW=160, BH=72;
+var BOX_STYLES={
+  exists:{label:'Exists today',cls:'s-exists'},
+  'new':{label:'New or proposed',cls:'s-new',pill:'NEW'},
+  favored:{label:'Favored',cls:'s-favored'},
+  open:{label:'Open question (names who confirms)',cls:'s-open',badge:'?'},
+  gap:{label:'Gap, opposed or rejected',cls:'s-gap'},
+  unknown:{label:'Unknown or out of scope',cls:'s-unknown'},
+  rule:{label:'Rule or decision',cls:'s-rule'}
+};
+var ARROW_STYLES={
+  exists:{label:'Exists',cls:'a-exists',head:11},
+  newLink:{label:'New connection',cls:'a-new',head:11,ah:'ah-new'},
+  main:{label:'New main path',cls:'a-main',head:17,ah:'ah-main'},
+  gap:{label:'Gap',cls:'a-gap',head:11,ah:'ah-gap'},
+  risky:{label:'Outbound or risky call',cls:'a-risky',head:11,ah:'ah-risky'},
+  indirect:{label:'Indirect',cls:'a-indirect',head:11,ah:'ah-indirect'}
+};
+var warnings=[];
+function warn(m){warnings.push(m);}
+
+function el(name,attrs,parent){
+  var e=document.createElementNS(NS,name);
+  if(attrs){for(var k in attrs){if(attrs[k]!==null&&attrs[k]!==undefined){e.setAttribute(k,attrs[k]);}}}
+  if(parent){parent.appendChild(e);}
+  return e;
+}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function fmt(s){
+  return esc(s)
+    .replace(/\{\{(.+?)\}\}/g,'<code>$1</code>')
+    .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\[(\d+)\]/g,'<a href="#src-$1" class="cite" aria-label="Source $1">[$1]</a>');
+}
+function plain(s){return String(s).replace(/\{\{(.+?)\}\}/g,'$1').replace(/\*\*(.+?)\*\*/g,'$1');}
+
+/* Measure text in an off-screen SVG so wrapping works even inside hidden tabs */
+var meas=el('svg',{'class':'measurer','aria-hidden':'true'});
+var measText=el('text',{},meas);
+document.body.appendChild(meas);
+function tw(s,cls){measText.setAttribute('class',cls);measText.textContent=s;return measText.getComputedTextLength();}
+function wrap(text,cls,maxW,where){
+  var words=String(text).split(/\s+/), lines=[], cur='';
+  words.forEach(function(w){
+    var t=cur?cur+' '+w:w;
+    if(tw(t,cls)<=maxW||!cur){cur=t;}else{lines.push(cur);cur=w;}
+  });
+  if(cur){lines.push(cur);}
+  lines.forEach(function(l){if(tw(l,cls)>maxW+0.5){warn(where+': a word does not fit the box width: '+l);}});
+  return lines;
+}
+
+function boxPos(b){return {x:COLX[b.col],y:40+110*b.row};}
+function anchor(b,side,f){
+  var p=boxPos(b); f=(f===undefined||f===null)?0.5:f;
+  if(side==='top'){return {x:p.x+BW*f,y:p.y,dx:0,dy:-1};}
+  if(side==='bottom'){return {x:p.x+BW*f,y:p.y+BH,dx:0,dy:1};}
+  if(side==='left'){return {x:p.x,y:p.y+BH*f,dx:-1,dy:0};}
+  return {x:p.x+BW,y:p.y+BH*f,dx:1,dy:0};
+}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
+function bez(p0,c0,c1,p1,t){
+  var u=1-t;
+  return {x:u*u*u*p0.x+3*u*u*t*c0.x+3*u*t*t*c1.x+t*t*t*p1.x,
+          y:u*u*u*p0.y+3*u*u*t*c0.y+3*u*t*t*c1.y+t*t*t*p1.y};
+}
+
+function flatTip(tip){
+  if(typeof tip==='string'){return plain(tip);}
+  var s=plain(tip.i);
+  if(tip.t){s+=' '+tip.t.map(function(r){return plain(r[0])+': '+plain(r[1])+'.';}).join(' ');}
+  if(tip.b){s+=' '+tip.b.map(plain).join(' ');}
+  return s;
+}
+function renderTip(tip){
+  if(typeof tip==='string'){return '<p>'+fmt(tip)+'</p>';}
+  var h='<p>'+fmt(tip.i)+'</p>';
+  if(tip.t){h+='<table class="tip-table"><tbody>'+tip.t.map(function(r){return '<tr><th scope="row">'+fmt(r[0])+'</th><td>'+fmt(r[1])+'</td></tr>';}).join('')+'</tbody></table>';}
+  if(tip.b){h+='<ul>'+tip.b.map(function(x){return '<li>'+fmt(x)+'</li>';}).join('')+'</ul>';}
+  return h;
+}
+
+function legendSwatchBox(style){
+  var s=el('svg',{width:34,height:20,viewBox:'0 0 34 20','aria-hidden':'true'});
+  var g=el('g',{'class':'box '+BOX_STYLES[style].cls},s);
+  el('rect',{'class':'body',x:2,y:3,width:30,height:14,rx:4},g);
+  return s;
+}
+function legendSwatchArrow(style){
+  var s=el('svg',{width:44,height:20,viewBox:'0 0 44 20','aria-hidden':'true'});
+  var d=(style==='main')?'M3,10 L41,10':'M3,10 L41,10';
+  el('path',{'class':'arrow '+ARROW_STYLES[style].cls,d:d},s);
+  return s;
+}
+
+/* Build one diagram: SVG, legend, detail panel, print table. Everything is found by its own id. */
+function buildDiagram(tab){
+  var id=tab.id, boxes=tab.boxes, arrows=tab.arrows||[];
+  var byId={}, cells={};
+  if(boxes.length>10){warn(id+': more than 10 boxes ('+boxes.length+')');}
+  boxes.forEach(function(b){
+    if(byId[b.id]){warn(id+': duplicate box id '+b.id);}
+    byId[b.id]=b;
+    var key=b.col+','+b.row;
+    if(cells[key]){warn(id+': two boxes share the cell '+key+' ('+cells[key]+', '+b.id+')');}
+    cells[key]=b.id;
+    if(!BOX_STYLES[b.style]){warn(id+'/'+b.id+': unknown box style '+b.style);}
+    if(!b.tip||(typeof b.tip==='string'&&!b.tip.trim())||(typeof b.tip==='object'&&!(b.tip.i||'').trim())){warn(id+'/'+b.id+': empty tip');}
+    var tw1=b.title.split(/\s+/).length, sw1=b.sub.split(/\s+/).length;
+    if(tw1<2||tw1>4){warn(id+'/'+b.id+': title should be 2 to 4 words');}
+    if(sw1<3||sw1>6){warn(id+'/'+b.id+': subtitle should be 3 to 6 words');}
+    if(/^[A-Z]/.test(b.sub)){warn(id+'/'+b.id+': subtitle should be lowercase');}
+    if(b.style==='open'&&!b.confirm){warn(id+'/'+b.id+': open question does not name who confirms');}
+  });
+  var maxRow=0; boxes.forEach(function(b){if(b.row>maxRow){maxRow=b.row;}});
+  var H=40+110*maxRow+BH+40;
+  var svgId='svg-'+id;
+
+  var wrapEl=document.createElement('div');
+  var scroll=document.createElement('div'); scroll.className='diagram-scroll'; scroll.tabIndex=-1;
+  scroll.setAttribute('role','region'); scroll.setAttribute('aria-label','Diagram: '+tab.title+'. Scrolls sideways on narrow screens.');
+  scroll.tabIndex=0;
+  wrapEl.appendChild(scroll);
+  var svg=el('svg',{id:svgId,viewBox:'0 0 960 '+H,width:960,height:H,role:'group','aria-label':'Diagram: '+tab.title+'. Each box opens its detail below when you press Enter or Space.'});
+  scroll.appendChild(svg);
+
+  /* arrowhead markers: unique ids per diagram */
+  var defs=el('defs',{},svg);
+  var usedArrow={}, usedBox={};
+  arrows.forEach(function(a){usedArrow[a.style]=true;});
+  boxes.forEach(function(b){usedBox[b.style]=true;});
+  Object.keys(usedArrow).forEach(function(st){
+    var S=ARROW_STYLES[st]; if(!S){warn(id+': unknown arrow style '+st);return;}
+    var hs=S.head;
+    var m=el('marker',{id:svgId+'-ah-'+st,markerUnits:'userSpaceOnUse',markerWidth:hs,markerHeight:hs*1.2,refX:hs*0.7,refY:hs*0.6,orient:'auto-start-reverse'},defs);
+    el('path',{'class':'ah '+(S.ah||'ah-exists'),d:'M0,0 L'+hs+','+(hs*0.6)+' L0,'+(hs*1.2)+' z'},m);
+  });
+
+  /* arrows first, so boxes sit on top */
+  var gA=el('g',{'class':'arrows'},svg);
+  arrows.forEach(function(a,i){
+    var f=byId[a.from], t=byId[a.to];
+    if(!f||!t){warn(id+': arrow '+i+' points at a box that does not exist ('+a.from+' to '+a.to+')');return;}
+    var S=ARROW_STYLES[a.style]; if(!S){return;}
+    var p0=anchor(f,a.fs,a.fa), p1=anchor(t,a.ts,a.ta);
+    var inset=S.head*0.3;
+    var e1={x:p1.x+p1.dx*inset,y:p1.y+p1.dy*inset,dx:p1.dx,dy:p1.dy};
+    var sep0=(p1.x-p0.x)*p0.dx+(p1.y-p0.y)*p0.dy;
+    var sep1=(p0.x-p1.x)*p1.dx+(p0.y-p1.y)*p1.dy;
+    var k0=sep0>0?clamp(sep0*0.5,12,90):50, k1=sep1>0?clamp(sep1*0.5,12,90):50;
+    var c0={x:p0.x+p0.dx*k0,y:p0.y+p0.dy*k0}, c1={x:p1.x+p1.dx*k1,y:p1.y+p1.dy*k1};
+    var d='M'+p0.x+','+p0.y+' C'+c0.x+','+c0.y+' '+c1.x+','+c1.y+' '+e1.x+','+e1.y;
+    el('path',{'class':'arrow '+S.cls,d:d,'marker-end':'url(#'+svgId+'-ah-'+a.style+')','data-from':a.from,'data-to':a.to},gA);
+    var dist=Math.hypot(p1.x-p0.x,p1.y-p0.y);
+    if(a.label){
+      if(dist<90){warn(id+': arrow label "'+a.label+'" skipped; the arrow is only '+Math.round(dist)+' px long');}
+      else{
+        var mid=bez(p0,c0,c1,e1,0.5);
+        var lt=el('text',{'class':'alabel',x:mid.x,y:mid.y-7,'text-anchor':'middle'},gA);
+        lt.textContent=a.label;
+      }
+    }
+  });
+
+  /* boxes */
+  var gB=el('g',{'class':'boxes'},svg);
+  boxes.forEach(function(b){
+    var S=BOX_STYLES[b.style]||BOX_STYLES.exists, p=boxPos(b);
+    var g=el('g',{'class':'box '+S.cls,tabindex:0,role:'button','aria-pressed':'false','data-box':b.id,
+      'aria-label':b.title+'. '+b.sub+'. '+S.label+'. Press Enter for detail.'},gB);
+    el('rect',{'class':'halo',x:p.x-4,y:p.y-4,width:BW+8,height:BH+8,rx:13},g);
+    el('rect',{'class':'body',x:p.x,y:p.y,width:BW,height:BH,rx:10},g);
+    var tl=wrap(b.title,'t-title',BW-16,id+'/'+b.id+' title');
+    var sl=wrap(b.sub,'t-sub',BW-16,id+'/'+b.id+' subtitle');
+    if(tl.length>2){warn(id+'/'+b.id+': title needs '+tl.length+' lines');}
+    if(sl.length>2){warn(id+'/'+b.id+': subtitle needs '+sl.length+' lines');}
+    var total=tl.length*16+sl.length*14+5;
+    if(total>BH-6){warn(id+'/'+b.id+': text is '+total+' px tall and does not fit a '+BH+' px box');}
+    var y0=p.y+(BH-total)/2;
+    tl.forEach(function(line,i){var t=el('text',{'class':'t-title',x:p.x+BW/2,y:y0+12+16*i,'text-anchor':'middle'},g);t.textContent=line;});
+    sl.forEach(function(line,j){var t=el('text',{'class':'t-sub',x:p.x+BW/2,y:y0+tl.length*16+5+11+14*j,'text-anchor':'middle'},g);t.textContent=line;});
+    if(S.pill){
+      var pg=el('g',{'class':'pill'},g);
+      el('rect',{x:p.x+6,y:p.y-10,width:34,height:15,rx:7.5},pg);
+      var pt=el('text',{x:p.x+23,y:p.y+1,'text-anchor':'middle'},pg); pt.textContent=S.pill;
+    }
+    if(S.badge){
+      var qg=el('g',{'class':'qbadge'},g);
+      el('circle',{cx:p.x+BW-10,cy:p.y,r:10},qg);
+      var qt=el('text',{x:p.x+BW-10,y:p.y+4.5,'text-anchor':'middle'},qg); qt.textContent=S.badge;
+    }
+  });
+
+  /* legend, built only from the styles this diagram uses */
+  var legend=document.createElement('ul'); legend.className='legend'; legend.setAttribute('aria-label','Legend for this diagram');
+  Object.keys(BOX_STYLES).forEach(function(st){
+    if(!usedBox[st]){return;}
+    var li=document.createElement('li'); li.appendChild(legendSwatchBox(st));
+    li.appendChild(document.createTextNode(BOX_STYLES[st].label)); legend.appendChild(li);
+  });
+  Object.keys(ARROW_STYLES).forEach(function(st){
+    if(!usedArrow[st]){return;}
+    var li=document.createElement('li'); li.appendChild(legendSwatchArrow(st));
+    li.appendChild(document.createTextNode('Arrow: '+ARROW_STYLES[st].label)); legend.appendChild(li);
+  });
+  wrapEl.appendChild(legend);
+
+  var hint=document.createElement('p'); hint.className='hint';
+  hint.textContent='Click a box, or focus it and press Enter or Space, to read its detail.';
+  wrapEl.appendChild(hint);
+
+  var detail=document.createElement('div'); detail.className='detail'; detail.id='detail-'+id;
+  detail.setAttribute('aria-live','polite'); detail.setAttribute('role','region'); detail.setAttribute('aria-label','Box detail');
+  detail.innerHTML='<p class="placeholder">No box selected. Click a box above to read what it is, what it wraps and where the numbers come from.</p>';
+  wrapEl.appendChild(detail);
+
+  /* print-only Box | Detail table */
+  var tbl=document.createElement('table'); tbl.className='boxtable';
+  var rows='<thead><tr><th>Box</th><th>Detail</th></tr></thead><tbody>';
+  boxes.forEach(function(b){
+    rows+='<tr><td><strong>'+esc(b.title)+'</strong><br>'+esc(b.sub)+'</td><td>'+esc(flatTip(b.tip))+(b.confirm?' Who confirms: '+esc(b.confirm)+'.':'')+'</td></tr>';
+  });
+  tbl.innerHTML=rows+'</tbody>';
+  wrapEl.appendChild(tbl);
+
+  /* interaction, wired by the diagram's own ids */
+  var current=null;
+  function select(bid){
+    var b=byId[bid]; if(!b){return;}
+    var svgEl=document.getElementById(svgId), det=document.getElementById('detail-'+id);
+    Array.prototype.forEach.call(svgEl.querySelectorAll('.box'),function(g){
+      var on=g.getAttribute('data-box')===bid; g.classList.toggle('sel',on); g.setAttribute('aria-pressed',on?'true':'false');
+    });
+    current=bid;
+    var S=BOX_STYLES[b.style];
+    var colorVar={exists:'--exists-bd','new':'--new-bd',favored:'--fav-bd',open:'--fav-bd',gap:'--gap-bd',unknown:'--unk-bd',rule:'--rule-bd'}[b.style];
+    det.style.borderLeftColor='var('+colorVar+')';
+    det.innerHTML='<h3>'+esc(b.title)+'</h3><p class="status">'+esc(b.sub)+' - '+esc(S.label)+'</p>'+renderTip(b.tip)+
+      (b.confirm?'<p class="confirm"><strong>Who confirms:</strong> '+esc(b.confirm)+'</p>':'');
+  }
+  svg.addEventListener('click',function(ev){
+    var g=ev.target.closest?ev.target.closest('.box'):null; if(g){select(g.getAttribute('data-box'));}
+  });
+  svg.addEventListener('keydown',function(ev){
+    if(ev.key==='Enter'||ev.key===' '||ev.key==='Spacebar'){
+      var g=ev.target.closest?ev.target.closest('.box'):null;
+      if(g){ev.preventDefault();select(g.getAttribute('data-box'));}
+    }
+  });
+  return wrapEl;
+}
+
+function buildTable(def){
+  var h='<h3>'+esc(def.title)+'</h3><div class="tablewrap"><table class="dtable"><thead><tr>'+def.head.map(function(x){return '<th scope="col">'+esc(x)+'</th>';}).join('')+'</tr></thead><tbody>';
+  def.rows.forEach(function(r){h+='<tr>'+r.map(function(c,i){return (i===0?'<th scope="row">':'<td>')+fmt(c)+(i===0?'</th>':'</td>');}).join('')+'</tr>';});
+  return h+'</tbody></table></div>';
+}
+
+function buildOptions(tab){
+  var box=document.createElement('div');
+  var head=document.createElement('h3'); head.textContent='Options considered'; box.appendChild(head);
+  var bar=document.createElement('div'); bar.className='optbar';
+  var be=document.createElement('button'); be.type='button'; be.className='btn'; be.textContent='Expand all';
+  var bc=document.createElement('button'); bc.type='button'; bc.className='btn'; bc.textContent='Collapse all';
+  bar.appendChild(be); bar.appendChild(bc); box.appendChild(bar);
+  var list=document.createElement('div'); box.appendChild(list);
+  function credit(item){
+    var h=fmt(item[0])+' <span class="credit">('+esc(item[1])+(item[2]?', ['+item[2]+']':'')+')</span>';
+    return '<li>'+h.replace(/<span class="credit">\((.+?), \[(\d+)\]\)<\/span>/,'<span class="credit">($1) <a href="#src-$2" class="cite">[$2]</a></span>')+'</li>';
+  }
+  tab.options.forEach(function(o){
+    var d=document.createElement('details'); d.className='opt '+o.status;
+    var badge=o.status==='favored'?'Favored':'Rejected';
+    var body='<div class="obody"><h4>Pros</h4><ul>'+o.pros.map(credit).join('')+'</ul><h4>Cons</h4><ul>'+o.cons.map(credit).join('')+'</ul>';
+    if(o.status==='rejected'){
+      body+='<p class="why"><strong>Why rejected:</strong> '+fmt(o.why)+'</p><p class="recon"><strong>Would reconsider if:</strong> '+fmt(o.reconsider)+'</p>';
+    }
+    body+='</div>';
+    d.innerHTML='<summary><span class="oname">'+esc(o.name)+'</span><span class="badge">'+badge+'</span></summary>'+body;
+    if(o.status==='favored'){d.open=true;}
+    list.appendChild(d);
+  });
+  be.addEventListener('click',function(){Array.prototype.forEach.call(list.querySelectorAll('details'),function(d){d.open=true;});});
+  bc.addEventListener('click',function(){Array.prototype.forEach.call(list.querySelectorAll('details'),function(d){d.open=false;});});
+  return box;
+}
+
+function buildNext(tab){
+  var N=DATA.next, h='<h2 class="ptitle">'+esc(tab.title)+'</h2>';
+  h+='<p class="bigq"><strong>Question for the group: '+esc(N.question)+'</strong></p>';
+  h+='<div class="tablewrap"><table class="dtable"><thead><tr>'+N.head.map(function(x){return '<th scope="col">'+esc(x)+'</th>';}).join('')+'</tr></thead><tbody>'+
+     N.rows.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+fmt(c)+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>';
+  h+='<h3>Target dates</h3><div class="tablewrap"><table class="dtable"><thead><tr>'+N.datesHead.map(function(x){return '<th scope="col">'+esc(x)+'</th>';}).join('')+'</tr></thead><tbody>'+
+     N.dates.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+fmt(c)+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>';
+  h+='<p class="fine"><strong>'+fmt(N.datesNote)+'</strong></p>';
+  h+='<h3 id="sources-h">Sources</h3><ol class="sources" aria-labelledby="sources-h">'+
+     DATA.sources.map(function(s){return '<li id="src-'+s.n+'" value="'+s.n+'"><a href="'+esc(s.path)+'">'+esc(s.label)+'</a> - '+esc(s.note)+'</li>';}).join('')+'</ol>';
+  return h;
+}
+
+/* Tabs and panels */
+var tablist=document.getElementById('tablist'), panelsEl=document.getElementById('panels');
+var tabEls={}, panelEls={};
+function buildPage(){
+  var M=DATA.meta;
+  document.getElementById('kicker').textContent=M.kicker;
+  document.getElementById('title').textContent=M.title;
+  document.getElementById('subtitle').textContent=M.subtitle;
+  document.getElementById('byline').textContent=M.byline;
+  document.getElementById('foot').textContent=M.foot;
+  document.getElementById('badges').innerHTML=M.badges.map(function(b){return '<li>'+esc(b)+'</li>';}).join('');
+  document.getElementById('cards').innerHTML=DATA.cards.map(function(c){
+    return '<article class="card"><h2>'+esc(c.title)+'</h2><ul>'+c.items.map(function(i){return '<li>'+fmt(i)+'</li>';}).join('')+'</ul></article>';
+  }).join('');
+
+  DATA.tabs.forEach(function(tab,i){
+    var tb=document.createElement('button'); tb.type='button'; tb.id='tab-'+tab.id; tb.setAttribute('role','tab');
+    tb.setAttribute('aria-controls','panel-'+tab.id); tb.setAttribute('aria-selected','false'); tb.tabIndex=-1; tb.textContent=tab.label;
+    tb.setAttribute('data-tab',tab.id);
+    tablist.appendChild(tb); tabEls[tab.id]=tb;
+
+    var p=document.createElement('section'); p.id='panel-'+tab.id; p.className='panel'; p.setAttribute('role','tabpanel');
+    p.setAttribute('aria-labelledby','tab-'+tab.id); p.hidden=true;
+    if(tab.next){p.innerHTML=buildNext(tab);}
+    else{
+      var hd=document.createElement('h2'); hd.className='ptitle'; hd.textContent=tab.title; p.appendChild(hd);
+      var intro=document.createElement('p'); intro.className='intro'; intro.innerHTML=fmt(tab.intro); p.appendChild(intro);
+      if(tab.callout){var c=document.createElement('div'); c.className='callout'; c.innerHTML=fmt(tab.callout); p.appendChild(c);}
+      p.appendChild(buildDiagram(tab));
+      (tab.tables||[]).forEach(function(k){
+        var def=(k==='glossary')?DATA.glossary:DATA.tableDefs[k];
+        var d=document.createElement('div'); d.innerHTML=buildTable(def); p.appendChild(d);
+      });
+      if(tab.options){p.appendChild(buildOptions(tab));}
+    }
+    panelsEl.appendChild(p); panelEls[tab.id]=p;
+  });
+}
+
+function activate(id,focusTab,setHash){
+  if(!tabEls[id]){id=DATA.tabs[0].id;}
+  DATA.tabs.forEach(function(t){
+    var on=t.id===id, tb=tabEls[t.id];
+    tb.setAttribute('aria-selected',on?'true':'false'); tb.tabIndex=on?0:-1; panelEls[t.id].hidden=!on;
+  });
+  if(focusTab){tabEls[id].focus();}
+  if(setHash!==false&&location.hash!=='#'+id){try{history.replaceState(null,'','#'+id);}catch(e){location.hash=id;}}
+}
+tablist.addEventListener('click',function(ev){var b=ev.target.closest('[role=tab]'); if(b){activate(b.getAttribute('data-tab'),false);}});
+tablist.addEventListener('keydown',function(ev){
+  var ids=DATA.tabs.map(function(t){return t.id;}), cur=document.activeElement&&document.activeElement.getAttribute('data-tab');
+  var i=ids.indexOf(cur); if(i<0){return;}
+  var n=null;
+  if(ev.key==='ArrowRight'){n=(i+1)%ids.length;}
+  else if(ev.key==='ArrowLeft'){n=(i-1+ids.length)%ids.length;}
+  else if(ev.key==='Home'){n=0;}
+  else if(ev.key==='End'){n=ids.length-1;}
+  if(n!==null){ev.preventDefault();activate(ids[n],true);}
+});
+
+/* A citation link such as #src-3 opens the Next steps tab and scrolls to that source */
+function goSource(hash){
+  var m=/^#?(src-\d+)$/.exec(hash); if(!m){return false;}
+  activate('next',false);
+  var li=document.getElementById(m[1]);
+  if(li){li.scrollIntoView({block:'center'});li.classList.remove('flash');void li.offsetWidth;li.classList.add('flash');}
+  return true;
+}
+document.addEventListener('click',function(ev){
+  var a=ev.target.closest&&ev.target.closest('a[href^="#src-"]');
+  if(a){ev.preventDefault();goSource(a.getAttribute('href'));}
+});
+function fromHash(){
+  var h=location.hash.replace(/^#/,'');
+  if(tabEls[h]){activate(h,false,false);}
+  else if(!goSource(location.hash)){activate(DATA.tabs[0].id,false,false);}
+}
+window.addEventListener('hashchange',fromHash);
+
+/* Print: open every option card, then restore */
+var openBefore=[];
+window.addEventListener('beforeprint',function(){
+  openBefore=[]; Array.prototype.forEach.call(document.querySelectorAll('details.opt'),function(d){openBefore.push(d.open);d.open=true;});
+});
+window.addEventListener('afterprint',function(){
+  Array.prototype.forEach.call(document.querySelectorAll('details.opt'),function(d,i){d.open=!!openBefore[i];});
+});
+
+/* Check the data, write problems to the hidden #warn element */
+function validateData(){
+  DATA.tabs.forEach(function(t){
+    if(t.next){return;}
+    if(!t.boxes||!t.boxes.length){warn(t.id+': no boxes');}
+    (t.tables||[]).forEach(function(k){if(k!=='glossary'&&!DATA.tableDefs[k]){warn(t.id+': unknown table '+k);}});
+  });
+  var cited={};
+  var all=JSON.stringify(DATA);
+  (all.match(/\[(\d+)\]/g)||[]).forEach(function(m){cited[m.slice(1,-1)]=true;});
+  Object.keys(cited).forEach(function(n){
+    if(!DATA.sources.some(function(s){return String(s.n)===n;})){warn('citation ['+n+'] has no matching source');}
+  });
+}
+
+buildPage();
+validateData();
+fromHash();
+if(!tabEls[location.hash.replace(/^#/,'')]&&!/^#src-\d+$/.test(location.hash)){activate(DATA.tabs[0].id,false,true);}
+var w=document.getElementById('warn');
+w.setAttribute('data-warnings',String(warnings.length));
+w.textContent=warnings.join('\n');
+if(warnings.length&&window.console){console.warn('Diagram warnings ('+warnings.length+'):\n'+warnings.join('\n'));}
+})();
+</script>
+</body>
+</html>
