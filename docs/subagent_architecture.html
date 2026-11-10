@@ -33,7 +33,7 @@
   }
 }
 *{box-sizing:border-box}
-html{scroll-padding-top:70px}
+html{scroll-padding-top:110px}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5}
 a{color:var(--link)}
 code{font-family:var(--mono);font-size:.88em;background:color-mix(in srgb,var(--line) 55%,transparent);padding:1px 4px;border-radius:4px}
@@ -59,16 +59,21 @@ code{font-family:var(--mono);font-size:.88em;background:color-mix(in srgb,var(--
 /* Sticky tab bar */
 .tabbar{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
 [role=tablist]{display:flex;gap:4px;overflow-x:auto;padding:8px 0 0;scrollbar-width:thin}
-[role=tab]{flex:0 0 auto;font:inherit;font-size:.93rem;color:var(--muted);background:transparent;border:1px solid transparent;border-bottom:none;border-radius:8px 8px 0 0;padding:8px 12px;cursor:pointer;white-space:nowrap}
+[role=tab]{flex:0 0 auto;font:inherit;font-size:.95rem;color:var(--muted);background:transparent;border:1px solid transparent;border-bottom:none;border-radius:8px 8px 0 0;padding:8px 12px;cursor:pointer;white-space:nowrap}
 [role=tab]:hover{color:var(--ink);background:color-mix(in srgb,var(--surface) 70%,transparent)}
 [role=tab][aria-selected=true]{color:var(--ink);font-weight:700;background:var(--surface);border-color:var(--line);box-shadow:inset 0 3px 0 var(--accent)}
 [role=tab]:focus-visible{outline:3px solid var(--focus);outline-offset:-3px}
 
-/* Panels */
-.panel{padding:20px 0 40px}
-.panel h2.ptitle{margin:0 0 6px;font-size:1.35rem}
-.panel .intro{margin:0 0 14px;max-width:80ch;color:var(--ink)}
-.panel h3{margin:26px 0 8px;font-size:1.05rem}
+/* Panels. A group page holds one or more leaf pages; a group with several leaves gets a second tab row. */
+.gpanel{padding:0 0 40px}
+.sublist{display:flex;gap:6px;overflow-x:auto;padding:10px 0 0;margin:0 0 14px;border-bottom:1px solid var(--line);position:sticky;top:var(--tbh,50px);z-index:15;background:var(--bg)}
+.sublist [role=tab]{font-size:.88rem;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--surface);margin-bottom:10px}
+.sublist [role=tab][aria-selected=true]{background:var(--hdr);color:var(--hdr-ink);border-color:var(--hdr);box-shadow:none}
+.gpanel>.leaf:first-child{padding-top:20px}
+.leaf{padding:0}
+.leaf h2.ptitle{margin:0 0 6px;font-size:1.35rem}
+.leaf .intro{margin:0 0 14px;max-width:80ch;color:var(--ink)}
+.leaf h3{margin:26px 0 8px;font-size:1.05rem}
 .diagram-scroll{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:8px}
 .diagram-scroll svg{display:block;min-width:960px;width:960px;height:auto}
 .hint{margin:6px 2px 0;font-size:.85rem;color:var(--muted)}
@@ -166,8 +171,10 @@ details.opt ul{margin:4px 0;padding-left:20px}
   body{background:#fff;font-size:11pt}
   *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
   .tabbar,.optbar,.hint,.detail,.legend-hint{display:none!important}
-  .panel,.panel[hidden]{display:block!important;padding:10px 0 0;break-before:page}
-  .panel:first-of-type{break-before:auto}
+  .gpanel,.gpanel[hidden],.leaf,.leaf[hidden]{display:block!important;padding:10px 0 0}
+  .leaf{break-before:page}
+  #panels>.gpanel:first-child>.leaf{break-before:auto}
+  .sublist{display:none!important}
   .diagram-scroll{overflow:visible}
   .diagram-scroll svg{min-width:0;width:100%}
   .boxtable{display:table;width:100%;border-collapse:collapse;margin:10px 0;font-size:9.5pt}
@@ -224,7 +231,7 @@ meta:{
   subtitle:"Splitting one overloaded local agent into an organizer and critic plus small specialists, and testing it for lookback bias.",
   badges:["Draft","Proposal","Nothing built yet"],
   byline:"Prepared by Alex Tung for Professor Robbins and the project group. 2026-11-10.",
-  foot:"All numbers on this page come from the repository files listed under Next steps, Sources. Opinions are marked [Inference]."
+  foot:"All numbers on this page come from the repository files listed under Next steps, Sources. Pattern names come from the course slides listed there too. Opinions are marked [Inference]."
 },
 
 cards:[
@@ -264,9 +271,17 @@ glossary:{
   ]
 },
 
+groups:[
+  {id:"today", label:"1. Today", tabs:["today"]},
+  {id:"add", label:"2. What we add", tabs:["add"]},
+  {id:"agents", label:"3. Agents", tabs:["organizer","minutes","datascore","consumer"]},
+  {id:"eval", label:"4. Evaluation", tabs:["lookback","hill"]},
+  {id:"nextg", label:"5. Next steps", tabs:["next"]}
+],
+
 tabs:[
 /* ---------------------------------------------------------- 1. TODAY */
-{id:"today", label:"Today", title:"Today: one agent does everything",
+{id:"today", label:"1. Today", title:"Today: one agent does everything",
  intro:"One small model runs on this laptop. It reads the question, picks tools, reads the results and writes the answer, all inside one 8,192-token window. Red boxes mark the gaps this proposal targets. Click any box for detail. [1][2]",
  boxes:[
   B("q",0,1,"exists","Question and date","user asks as of a date",
@@ -314,48 +329,45 @@ tabs:[
 },
 
 /* ----------------------------------------------------- 2. WHAT WE ADD */
-{id:"add", label:"What we add", title:"What we add: an organizer and five specialists",
- intro:"Same layout as Today, so you can flip between the two tabs. The single agent becomes an organizer and critic that calls specialists one after another on the same loaded model. Amber is new. Purple is a rule. The date gate stays and now covers every specialist. [Inference]",
+{id:"add", label:"2. What we add", title:"What we add: an organizer on top, five specialists below",
+ intro:"The single agent becomes a tree. The organizer and critic sits at the top. It briefs five specialists one after another on the same loaded model, merges their short reports and checks the result. This follows the router and deep research layouts in the course deck. [16] Amber is new. Purple is a rule. The date gate stays and covers every specialist. [Inference]",
+ callout:"**Three pitfalls from the course deck, and our answer.** [16] Over-splitting: we split only where the 8,192-token window forces it, and keep a specialist as plain code when it needs no model. Untested routing: the organizer's routing gets its own eval cases. Hidden specialist errors: the organizer says so when a specialist fails, and never fills the gap quietly. [Inference]",
  boxes:[
-  B("q",0,1,"exists","Question and date","user asks as of a date",
+  B("q",2,0,"exists","Question and date","user asks as of a date",
    {i:"Unchanged. Every question still carries an anchor date. [2]"}),
-  B("router",1,1,"new","Code router","reuses today's lookup triggers",
-   {i:"Plain code picks which specialists to call. It reuses the word rules that trigger today's lookups. [2]",
-    b:["Code is fast and never skips a step, unlike a small model. [2]","A model can decide only when the code rules cannot. [Inference]"]}),
-  B("org",2,1,"new","Organizer and critic","plans, merges, then checks",
-   {i:"One agent in the middle. It writes a short brief for each specialist, merges their short reports, and has the critic check the draft.",
-    t:[["Plans","Chooses which specialists to call"],["Briefs","Sends each one the question, the anchor date and its tools"],["Merges","Combines the reports; each is capped in size [13]"],["Critic","Reruns today's checks before it answers [14]"]]}),
-  B("gate",3,1,"rule","Date gate and checks","blocks later dates, checks ids",
-   {i:"The same code as today. It now sits between every specialist and the answer. [2]",
-    b:["A specialist that reports a later date is stopped, as a tool is today.","Every claim still needs a paragraph id that a tool returned."]}),
-  B("ans",4,1,"exists","Final answer","short, cited, plain words",
+  B("org",2,1,"new","Organizer and critic","routes, merges, then checks",
+   {i:"The root of the tree. One agent that briefs the specialists, merges their short reports, and has the critic check the draft.",
+    t:[["Routes","Code rules pick the specialists first. These are today's lookup triggers. A model decides only when the rules cannot. [2][Inference]"],["Briefs","Sends each specialist the question, the anchor date and its tools"],["Merges","Combines the reports; each is capped in size [13]"],["Critic","Reruns today's checks before it answers [14]"]]}),
+  B("ans",0,1,"exists","Final answer","short, cited, plain words",
    {i:"Unchanged in form: short, cited, plain words. [9]"}),
-  B("reader",1,0,"new","Minutes reader","summarizes passages with ids",
-   {i:"Reads only the passages it is handed and writes a short summary with quotes and paragraph ids. Calls the model.",
-    b:["Wraps readMinutes, getDecision, policyViews and forecastRevisions. [2]"]}),
-  B("retr",2,0,"new","Retrieval subagent","plain code, no model call",
+  B("gate",4,1,"rule","Date gate and checks","blocks later dates, checks ids",
+   {i:"The same code as today. It now sits between every specialist and the organizer. [2]",
+    b:["A specialist that reports a later date is stopped, as a tool is today.","Every claim still needs a paragraph id that a tool returned."]}),
+  B("retr",0,3,"new","Retrieval subagent","plain code, no model call",
    {i:"Finds the best paragraphs for a question and returns their ids. Plain code, so it adds no model call.",
     b:["Wraps searchMinutes, the ranking code and the focus window. [2]"]}),
-  B("mdata",3,0,"new","Market and econ data","plain code does the math",
+  B("reader",1,3,"new","Minutes reader","summarizes passages with ids",
+   {i:"Reads only the passages it is handed and writes a short summary with quotes and paragraph ids. Calls the model.",
+    b:["Wraps readMinutes, getDecision, policyViews and forecastRevisions. [2]"]}),
+  B("mdata",2,3,"new","Market and econ data","plain code does the math",
    {i:"Returns dated figures. MATLAB does the arithmetic; the model only phrases the result.",
     b:["Wraps getSeries, getPolicyPath, assessEconomy and getOutlook. [2][4]"]}),
-  B("scorer",2,2,"new","Rubric scorer","reads saved rubric scores",
+  B("scorer",3,3,"new","Rubric scorer","reads saved rubric scores",
    {i:"Gives the AI score of a meeting's rate path. Most scores are made ahead of time and saved, so questions do not wait on the model. [2]",
     b:["Wraps scoreByDimension, scoreCache and the fomc-score skill. [15]"]}),
-  B("cons",3,2,"new","Consumer view","what it means for households",
+  B("cons",4,3,"new","Consumer view","what it means for households",
    {i:"New. Turns borrowing costs, spending and prices into a household view. Calls the model.",
     b:["Builds on getOutlook and the consumer series. The rubric is still open. [2]"]})
  ],
  arrows:[
-  A("q","right","router","left","main"),
-  A("router","right","org","left","main"),
-  A("org","right","gate","left","main"),
-  A("gate","right","ans","left","main"),
-  A("org","top","reader","bottom","newLink",{fa:0.3}),
-  A("org","top","retr","bottom","newLink",{fa:0.5}),
-  A("org","top","mdata","bottom","newLink",{fa:0.7}),
-  A("org","bottom","scorer","top","newLink",{fa:0.5}),
-  A("org","bottom","cons","top","newLink",{fa:0.8,ta:0.4})
+  A("q","bottom","org","top","main"),
+  A("org","left","ans","right","main",{label:"answer"}),
+  A("org","right","gate","left","exists",{label:"checked by"}),
+  A("org","bottom","retr","top","newLink"),
+  A("org","bottom","reader","top","newLink"),
+  A("org","bottom","mdata","top","newLink"),
+  A("org","bottom","scorer","top","newLink"),
+  A("org","bottom","cons","top","newLink")
  ],
  tables:["mapping"],
  options:[
@@ -393,112 +405,90 @@ tabs:[
  ]
 },
 
-/* ----------------------------------------------- 3. ORGANIZER AND CRITIC */
-{id:"organizer", label:"Organizer", title:"Organizer and critic: plan, brief, merge, check",
+/* ----------------------------------------------- 3a. ORGANIZER AND CRITIC */
+{id:"organizer", label:"3a. Organizer", title:"Organizer and critic: plan, brief, merge, check",
  intro:"The organizer never reads the whole minutes. It routes, briefs, merges short reports, and lets the critic check the draft with code that already exists. Amber is new; purple is a rule. [Inference]",
  boxes:[
-  B("q",0,0,"exists","Question and date","user asks as of a date",
-   {i:"The question and the anchor date, as today. [2]"}),
-  B("plan",1,0,"new","Plan the routing","word rules first, model second",
-   {i:"Decide which specialists to call. Code rules go first; the model decides only when the rules cannot.",
-    t:[["Rules","Reuse the word rules in the focus folder: scoring, rate path, economy, outlook [2]"],["Model","Used only for questions the rules cannot place [Inference]"]]}),
-  B("brief",2,0,"new","Brief subagents","short brief plus anchor date",
-   {i:"Each specialist gets only what it needs.",
+  B("plan",0,0,"new","Plan the routing","word rules first, model second",
+   {i:"Decide which specialists to call. Code rules go first; the model decides only when the rules cannot. The rules are the ones that trigger today's lookups. [2]",
+    t:[["Rules","Scoring, rate path, economy and outlook word rules in the focus folder [2]"],["Model","Used only for questions the rules cannot place [Inference]"]]}),
+  B("brief",1,0,"new","Brief specialists","short brief plus anchor date",
+   {i:"Each specialist gets only what it needs, in a short written brief.",
     t:[["Brief","The question, the anchor date and the paragraph ids it may read"],["Tools","Only the tools for its job, which keeps its prompt small"]]}),
-  B("reports",3,0,"new","Short reports","facts, dates, paragraph ids",
-   {i:"Each specialist returns a short report, capped in size like a tool result today. [13]",
-    b:["Every fact carries a date and, for the minutes, a paragraph id.","Reports pass through the date gate before the organizer sees them."]}),
-  B("merge",4,0,"new","Merge and draft","organizer writes the answer",
-   {i:"The organizer combines the reports into one short answer in plain words. [9]"}),
-  B("openq",1,1,"open","Code or model?","who routes: the group decides",
-   {i:"Open question. Should the organizer pick specialists with code rules, with the model, or with both?",
-    b:["Code is faster and steadier. A model copes with odd wording. [Inference]"]},
-   "The project group"),
-  B("retry",2,1,"rule","Retry once","name the problem, resend",
-   {i:"If the critic finds a problem, the organizer sends the draft back once with the problem named. This is how High effort works today. [2]",
-    b:["A second failure marks the answer unverified instead of looping."]}),
-  B("critic",4,1,"rule","Critic checks","ids, figures, dates",
+  B("merge",2,0,"new","Merge reports","organizer writes the answer",
+   {i:"Each specialist returns a short report of dated facts and paragraph ids, capped in size like a tool result today. [13] The organizer merges them into one short answer in plain words. [9]",
+    b:["Reports pass through the date gate before the organizer sees them.","[Inference] If a specialist fails, the answer says so. The organizer does not quietly fill the gap. [16]"]}),
+  B("critic",3,0,"rule","Critic checks","ids, figures, dates",
    {i:"Reruns checks that exist today. It does not call the model. [2][14]",
     t:[["citations","Each id must have been returned by a tool"],["checkGrounding","Figures must match the data"],["Date gate","Nothing dated after the anchor"],["Date words","[Inference] New: flag later events in the answer text"]]}),
-  B("ans",4,2,"exists","Final answer","short, cited, plain words",
-   {i:"The answer is cleaned into plain words by plainEnglish before the reader sees it. [2]"})
+  B("ans",4,0,"exists","Final answer","short, cited, plain words",
+   {i:"The answer is cleaned into plain words by plainEnglish before the reader sees it. [2]"}),
+  B("openq",0,1,"open","Code or model?","who routes: the group decides",
+   {i:"Open question. Should the organizer pick specialists with code rules, with the model, or with both?",
+    b:["Code is faster and steadier. A model copes with odd wording. [Inference]","The course deck warns that a router is an easily overlooked prompt. It needs its own tests. [16]"]},
+   "The project group"),
+  B("retry",3,1,"rule","Retry once","name the problem, resend",
+   {i:"If the critic finds a problem, the organizer sends the draft back once with the problem named. This is how High effort works today. [2]",
+    b:["A second failure marks the answer unverified instead of looping."]})
  ],
  arrows:[
-  A("q","right","plan","left","main"),
   A("plan","right","brief","left","main"),
-  A("brief","right","reports","left","main"),
-  A("reports","right","merge","left","main"),
-  A("merge","bottom","critic","top","main"),
-  A("critic","bottom","ans","top","main"),
-  A("critic","left","retry","right","newLink",{label:"fails: send back once"}),
-  A("retry","top","brief","bottom","newLink"),
+  A("brief","right","merge","left","main"),
+  A("merge","right","critic","left","main"),
+  A("critic","right","ans","left","main"),
+  A("critic","bottom","retry","top","newLink"),
+  A("retry","left","brief","bottom","newLink",{label:"fails: send back once"}),
   A("plan","bottom","openq","top","indirect")
  ]
 },
 
-/* ------------------------------------------ 4. MINUTES AND RETRIEVAL */
-{id:"minutes", label:"Minutes", title:"Minutes reader and retrieval: ids are the contract",
+/* ------------------------------------------ 3b. MINUTES AND RETRIEVAL */
+{id:"minutes", label:"3b. Minutes", title:"Minutes reader and retrieval: ids are the contract",
  intro:"Retrieval is plain code that finds paragraph ids. The reader summarizes only those paragraphs. A paragraph id is the link between them, and the citation check accepts an id only if a tool returned it. [2]",
  boxes:[
-  B("org",0,0,"new","Organizer brief","question, dates, section",
-   {i:"The organizer says what to find: the question, the date range and the kind of passage."}),
-  B("retr",1,0,"new","Retrieval subagent","plain code, no model call",
+  B("retr",0,0,"new","Retrieval subagent","plain code, no model call",
    {i:"Ranks paragraphs by how well they match the question and returns the best ids. No model call. [2]",
-    t:[["Today's code","searchMinutes, the ranking code, the focus window"],["Focus window","A relevance default: the last 3 years, or the years the question names. The anchor date is the hard limit. [2]"]]}),
-  B("read",2,0,"new","Minutes reader","short summary with quotes",
+    t:[["Today's code","searchMinutes, the ranking code, the focus window"],["Focus window","A relevance default: the last 3 years, or the years the question names. The anchor date is the hard limit. [2]"],["Store","One text file per meeting, 150 meetings, an id on every paragraph [10]"]]}),
+  B("read",1,0,"new","Minutes reader","short summary with quotes",
    {i:"Reads the returned paragraphs and writes a short summary. Calls the model, but its prompt holds only a few paragraphs.",
-    b:["Wraps readMinutes and getDecision. [2]","Quotes are checked against the real paragraph. [2]"]}),
-  B("rep",3,0,"new","Cited report","claims tied to paragraph ids",
+    b:["Wraps readMinutes and getDecision. [2]","Decision cards stay code: they read the decision, vote and dissent from the text, checked against the real rate change for all 150 meetings. [2]","Quotes are checked against the real paragraph. [2]"]}),
+  B("rep",2,0,"new","Cited report","claims tied to paragraph ids",
    {i:"A paragraph id looks like {{2020-03-15/policyAction/12}}. Every claim carries one. [2]"}),
-  B("cite",4,0,"rule","Citation check","id must come from a tool",
+  B("cite",3,0,"rule","Citation check","id must come from a tool",
    {i:"{{fomc.guard.citations}} marks a paragraph verified only if its minutes were public at the anchor date and a tool returned that id in this session. [2]"}),
-  B("gate",1,1,"rule","Release-date gate","hides unreleased minutes",
+  B("gate",0,1,"rule","Release-date gate","hides unreleased minutes",
    {i:"Minutes are visible only if released on or before the anchor date. A question about a meeting not yet public is answered by the app itself, without the model. [2][3]"}),
-  B("cards",2,1,"exists","Decision cards","code reads each decision",
-   {i:"Code reads the decision, vote and dissent from the text. It does not use the model.",
-    b:["Checked against the real rate change for all 150 meetings. [2]"]}),
-  B("store",1,2,"exists","Minutes store","150 meetings, ids per paragraph",
-   {i:"One text file per meeting, split into sections and paragraphs. [10]"}),
-  B("weak",2,2,"gap","Early minutes weak","word rules weaker before 2015",
+  B("weak",1,1,"gap","Early minutes weak","word rules weaker before 2015",
    {i:"The word rules that read participants' views were tuned on 2022 and 2025 to 2026. They are less reliable earlier. [2]",
     b:["19 of 150 meetings give no lean; 11 of them are from 2008 to 2014. [2]","Before about 2015 the minutes put the policy discussion in other words."]})
  ],
  arrows:[
-  A("org","right","retr","left","newLink"),
   A("retr","right","read","left","newLink"),
   A("read","right","rep","left","newLink"),
   A("rep","right","cite","left","exists"),
-  A("store","top","gate","bottom","exists"),
   A("gate","top","retr","bottom","exists"),
-  A("cards","top","read","bottom","exists"),
-  A("weak","top","cards","bottom","gap")
+  A("weak","top","read","bottom","gap")
  ]
 },
 
-/* ------------------------------------------------ 5. DATA AND SCORER */
-{id:"datascore", label:"Data and scorer", title:"Market and economic data, and the scorer",
+/* ------------------------------------------------ 3c. DATA AND SCORER */
+{id:"datascore", label:"3c. Data and scorer", title:"Market and economic data, and the scorer",
  intro:"Both specialists are mostly code that already exists. Code does the arithmetic, and the model only phrases results. The scorer runs ahead of time, so a question never waits on it. [2][4]",
  boxes:[
-  B("org",0,0,"new","Organizer brief","question and anchor date",
-   {i:"The organizer says which figures it needs and as of when."}),
-  B("mdata",1,0,"new","Market and econ data","wraps three policy tools",
-   {i:"Calls the policy tools and passes on dated figures. The model phrases the result. [4]"}),
-  B("tools",2,0,"exists","Policy tools","rate path, economy, outlook",
+  B("mdata",0,0,"new","Market and econ data","wraps three policy tools",
+   {i:"Calls the policy tools and passes on a short report of dated figures. Each figure names its series and the date it became public. The model phrases the result. [4]"}),
+  B("tools",1,0,"exists","Policy tools","rate path, economy, outlook",
    {i:"Three tools written in plain MATLAB. Code reads the data, does the arithmetic and writes the sentences. [4]",
     t:[["getPolicyPath","How the rate target moved, runs of changes, holds, dissents"],["assessEconomy","Economy against the Fed's goals, policy rules, market pricing, minutes direction"],["getOutlook","Staff forecast changes, borrowing costs, spending, prices, earlier cycles"]]}),
-  B("facts",3,0,"new","Dated facts","figures with their dates",
-   {i:"A short report of figures. Each one names its series and the date it became public."}),
-  B("store",1,1,"exists","Data store","56 series, real-time vintages",
-   {i:"A vintage is a value as first published, before later revisions. 17 revised series keep their full vintage history. [2][10]"}),
-  B("asof",2,1,"rule","As-of rule","value as first published",
-   {i:"Each value is read as known on the anchor date. Revised series use the vintage then; other series use a publication lag. [2]",
-    b:["Example: GDP is read as first published, not as revised years later.","The lags are conservative assumptions, not all checked against release calendars. [2]"]}),
-  B("scorer",1,2,"new","Rubric scorer","one rubric dimension per call",
+  B("asof",2,0,"rule","As-of rule","value as first published",
+   {i:"Each value is read as known on the anchor date. A vintage is a value as first published, before later revisions. [2][10]",
+    b:["17 revised series keep their full vintage history; other series use a publication lag. [2]","Example: GDP is read as first published, not as revised years later.","The lags are conservative assumptions, not all checked against release calendars. [2]"]}),
+  B("scorer",0,1,"new","Rubric scorer","one rubric dimension per call",
    {i:"Scores a meeting one rubric dimension per model call, so each prompt fits the window. The model picks a rubric row; code takes the score from it. [2]",
     b:["Seven dimensions: rate path, inflation, labor market, economic activity, financial conditions, balance sheet, risk balance. [1]"]}),
-  B("cache",2,2,"exists","Saved scores","150 meetings, checked",
+  B("cache",1,1,"exists","Saved scores","150 meetings, checked",
    {i:"Scores are saved ahead of time by {{pipeline/score_minutes.m}}. All 150 pass their checks: schema, score range, exact quotes, the coded rate decision, and later dates. [2]"}),
-  B("dir",3,2,"exists","Minutes direction","up, down or hold",
+  B("dir",2,1,"exists","Minutes direction","up, down or hold",
    {i:"Turns a saved score into a direction for the next meeting: up at +0.5 or more, down at -0.5 or less, else hold. [4]",
     t:[["AI score, 2019 on","Right 79% on the next decision"],["6-month Treasury bill","Right 84%, so it gives the timing"],["Always guess hold","Right 65%"]]}),
   B("coarse",3,1,"gap","Coarse scores","five rubric rows only",
@@ -506,103 +496,78 @@ tabs:[
     b:["The 150 rate-path scores use only five rows: -0.75 (56), 0 (62), +0.5 (3), +0.75 (8), +1 (21). [4]","A decision at the meeting is mixed into the score, so a meeting that moved reads as another move next. [4]"]})
  ],
  arrows:[
-  A("org","right","mdata","left","newLink"),
   A("mdata","right","tools","left","newLink"),
-  A("tools","right","facts","left","newLink"),
-  A("mdata","bottom","store","top","exists"),
-  A("store","right","asof","left","exists"),
-  A("asof","top","tools","bottom","exists"),
+  A("asof","left","tools","right","exists"),
   A("scorer","right","cache","left","newLink"),
   A("cache","right","dir","left","exists"),
-  A("coarse","bottom","dir","top","gap")
+  A("coarse","left","dir","right","gap")
  ]
 },
 
-/* ------------------------------------------------------ 6. CONSUMER */
-{id:"consumer", label:"Consumer", title:"Consumer view: what rate moves mean for households",
+/* ------------------------------------------------------ 3d. CONSUMER */
+{id:"consumer", label:"3d. Consumer", title:"Consumer view: what rate moves mean for households",
  intro:"The new specialist looks at the U.S. consumer. Most inputs already exist in the data. The rubric that turns them into a score is still open. [2]",
  boxes:[
-  B("borrow",1,0,"exists","Borrowing costs","mortgage rate, Baa spread",
-   {i:"The 30-year mortgage rate and the extra yield on Baa-rated company bonds over the 10-year Treasury. [4]",
-    b:["Series: MORTGAGE30US and BAA10Y. [10]"]}),
-  B("spend",2,0,"exists","Spending, prices","consumer spending, core PCE",
-   {i:"Real consumer spending growth and core PCE inflation (prices of what households buy, without food and energy). [4]",
-    b:["Series: PCEC96 and PCEPILFE. [10]"]}),
-  B("mood",3,0,"exists","Consumer mood","sentiment, expected inflation",
-   {i:"How consumers feel and what inflation they expect in a year. [4]",
-    b:["Series: UMCSENT and MICH. [10]"]}),
-  B("org",1,1,"new","Organizer brief","question and anchor date",
-   {i:"The organizer asks for the household view as of the anchor date."}),
-  B("cons",2,1,"new","Consumer subagent","household view from evidence",
-   {i:"Reads the three evidence groups and writes what they show so far. It calls the model.",
-    b:["It builds on getOutlook, which already gathers these steps. [2]"]}),
-  B("out",3,1,"new","Household report","plain words, dated figures",
-   {i:"A short report with dated figures and the earlier runs of rate moves it compares with. [4]"}),
-  B("noadv",4,1,"rule","No advice rule","evidence, never advice",
-   {i:"The answer shows evidence and never says what to do. System prompt rule 7: no investment advice. [9]",
-    b:["getOutlook already says what the evidence shows, never what will happen. [4]"]}),
-  B("stub",1,2,"gap","Today's stub","placeholder score only",
-   {i:"scoreConsumerImpact is a stub today. [12]"}),
-  B("rubric",2,2,"open","Which rubric?","who decides: Rain and Aarya",
+  B("evid",0,0,"exists","Household evidence","rates, spending, mood series",
+   {i:"Three groups of series already in the data. [4][10]",
+    t:[["Borrowing costs","30-year mortgage rate (MORTGAGE30US) and the extra yield on Baa company bonds over the 10-year Treasury (BAA10Y)"],["Spending, prices","Real consumer spending (PCEC96) and core PCE inflation (PCEPILFE): prices of what households buy, without food and energy"],["Consumer mood","Consumer sentiment (UMCSENT) and expected inflation in a year (MICH)"]]}),
+  B("cons",1,0,"new","Consumer subagent","household view from evidence",
+   {i:"Reads the evidence and writes what it shows so far. It calls the model. It builds on getOutlook, which already gathers these steps. [2]"}),
+  B("rep",2,0,"new","Household report","plain words, dated figures",
+   {i:"A short report with dated figures and the earlier runs of rate moves it compares with. [4]",
+    b:["It shows evidence and never says what to do. System prompt rule 7: no investment advice. [9]","getOutlook already says what the evidence shows, never what will happen. [4]"]}),
+  B("stub",0,1,"gap","Today's stub","placeholder score only",
+   {i:"scoreConsumerImpact is a stub today. The tool tells the model not to report a score. [12]"}),
+  B("rubric",1,1,"open","Which rubric?","who decides: Rain and Aarya",
    {i:"Open question. What should a consumer-impact score measure, and on what scale?",
     b:["The plug-in point exists: {{fomc.rubric.scoreMinutes}}. [2]","Keep the structure fixed and test how steady the score is across repeated runs. [2]"]},
    "Rain and Aarya"),
-  B("miss",3,2,"gap","Missing data","no card or car rates",
+  B("miss",2,1,"gap","Missing data","no card or car rates",
    {i:"Some household costs are not in the data. [2]",
     b:["Credit card and car loan rates are missing, and so is total interest on federal debt.","The agent is told to say so instead of guessing."]})
  ],
  arrows:[
-  A("borrow","bottom","cons","top","exists",{ta:0.35}),
-  A("spend","bottom","cons","top","exists",{ta:0.55}),
-  A("mood","bottom","cons","top","exists",{ta:0.8}),
-  A("org","right","cons","left","newLink"),
-  A("cons","right","out","left","newLink"),
-  A("out","right","noadv","left","newLink"),
+  A("evid","right","cons","left","exists"),
+  A("cons","right","rep","left","newLink"),
   A("stub","right","rubric","left","gap"),
   A("rubric","top","cons","bottom","indirect"),
-  A("miss","top","out","bottom","gap")
+  A("miss","top","rep","bottom","gap")
  ]
 },
 
-/* -------------------------------------------------- 7. LOOKBACK BIAS */
-{id:"lookback", label:"Lookback bias", title:"Lookback bias: what we stop, what we cannot, how we test",
+/* -------------------------------------------------- 4a. LOOKBACK BIAS */
+{id:"lookback", label:"4a. Lookback bias", title:"Lookback bias: what we stop, what we cannot, how we test",
  intro:"Professor Robbins worries that a model may have been trained on events after the date it is asked about. The date gate stops future data. It cannot stop what the model remembers. These planned tests measure that memory. [2][7]",
  callout:"**A prompt cannot erase what a model learned.** Edits to prompts and skill text can only lower how much an answer leans on that memory. The tests below measure the lean. [Inference]",
  boxes:[
-  B("gate",0,0,"rule","Date gate","blocks later dates and data",
-   {i:"Refuses a tool call that names a later date, and withholds a result that holds one. Minutes count only after release. [2]"}),
-  B("vint",1,0,"exists","Point-in-time data","values as first published",
-   {i:"A vintage is a value as first published, before later revisions. 17 revised series use the vintage known on the anchor date. [2]"}),
-  B("checks",2,0,"exists","Hindsight checks","score years, prompt rule 8",
-   {i:"Two small guards. Neither reads the model's final answer for later events. [Inference]",
-    t:[["checkAsOf","Flags a score rationale that names a year or date after the minutes release, unless the minutes name it. It runs only inside validateScores. [8][14]"],["Prompt rule 8","Tells the model to use only what the tools and the first message show, never memory of later events. [9]"]]}),
-  B("cutoff",0,1,"gap","Cutoff unverified","training cutoff is unknown",
+  B("guards",0,0,"exists","Guards that exist","gate, vintages, score checks",
+   {i:"Three guards stop later facts. None reads the model's final answer for later events. [Inference]",
+    t:[["Date gate","Refuses a tool call that names a later date, and withholds a result that holds one. Minutes count only after release. [2]"],["Point-in-time data","Values as first published. 17 revised series use the vintage known on the anchor date. [2]"],["checkAsOf","Flags a score rationale that names a year or date after the minutes release, unless the minutes name it. It runs only inside validateScores. [8][14]"],["Prompt rule 8","Tells the model to use only what the tools and the first message show, never memory of later events. [9]"]]}),
+  B("cutoff",1,0,"gap","Cutoff unverified","training cutoff is unknown",
    {i:"The training cutoff is the last date of text the model learned from. We do not know it for our model. [7][13]",
     b:["{{cfg.modelCutoff}} is unset, so {{cutoffLabel}} marks every meeting unverified. [7]","The docs say only meetings after the cutoff are clean. [2]","Professor Robbins raised the risk (relayed by Alex Tung, 2026-11-10)."]}),
-  B("probe",1,1,"new","Cutoff probe","find where memory ends",
+  B("probe",2,0,"new","Cutoff probe","find where memory ends",
    {i:"[Inference] Ask the bare model about dated public events and see where its answers turn from specific to vague. A bare model gets no tools, minutes or data.",
     t:[["Step 1","Pick dated public events, such as Fed decisions, from each quarter"],["Step 2","Ask the bare model, with no tools and no data"],["Step 3","Mark each answer right, vague or wrong"],["Step 4","Set cfg.modelCutoff where right answers stop"]]}),
-  B("split",2,1,"new","Before-after split","report each side apart",
+  B("split",3,0,"new","Before-after split","report each side apart",
    {i:"Report every accuracy number twice: for meetings before the cutoff and after it. {{cutoffLabel}} already sorts meetings into before, near and after. [7]",
     b:["[Inference] Few meetings fall after the cutoff, so that side has little statistical power."]}),
-  B("target",3,1,"open","Leak gap target","how small must it be?",
+  B("target",4,0,"open","Leak gap target","how small must it be?",
    {i:"Open question. How small must the leak gap be? [Inference] A starting proposal: 5 percentage points or less on next-meeting accuracy.",
     b:["The leak gap is how much better the model does when it can recognize a meeting than when it cannot."]},
    "Professor Robbins"),
-  B("mask",1,2,"new","Masked minutes","hide dates, years, names",
+  B("mask",2,1,"new","Masked minutes","hide dates, years, names",
    {i:"[Inference] Strip dates, years and member names from the minutes, then score again.",
     t:[["Compare","Next-meeting accuracy on the original text and on the masked text"],["Reading","A bigger drop before the cutoff than after it suggests memory"],["Why next meeting","The rate-path scorer is told the decision, so test the next-meeting reading, not this meeting's score [2]"]]}),
-  B("flip",2,2,"new","Flipped minutes","swap the policy sentences",
+  B("flip",3,1,"new","Flipped minutes","swap the policy sentences",
    {i:"[Inference] Edit the minutes so the policy sentences say the opposite, for example swap raise and lower, then score.",
     b:["If the score follows the text, the model is reading.","If it stays near what really happened, the model is remembering."]}),
-  B("future",3,2,"new","Later-event check","flag later events in answers",
+  B("future",4,1,"new","Later-event check","flag later events in answers",
    {i:"Extend checkAsOf from score rationales to chat answers. [8]",
     b:["Add eval cases that tempt hindsight, such as asking as of February 2020 whether a pandemic will hit.","An answer that names an event after the anchor date fails the case."]})
  ],
  arrows:[
-  A("gate","right","vint","left","exists"),
-  A("vint","right","checks","left","exists"),
-  A("gate","bottom","cutoff","top","gap"),
+  A("guards","right","cutoff","left","gap"),
   A("cutoff","right","probe","left","newLink"),
   A("probe","right","split","left","newLink"),
   A("split","right","target","left","newLink"),
@@ -614,8 +579,8 @@ tabs:[
  tables:["tests"]
 },
 
-/* --------------------------------------------------- 8. HILL-CLIMB */
-{id:"hill", label:"Hill-climb", title:"Hill-climb loop: tune prompts against the tests",
+/* --------------------------------------------------- 4b. HILL-CLIMB */
+{id:"hill", label:"4b. Hill-climb", title:"Hill-climb loop: tune prompts against the tests",
  intro:"Hill-climbing means: change one thing, test it, keep the change only if the score improves, then repeat. We apply it to prompt and skill text, scored by the lookback tests. This is Alex Tung's proposal of 2026-11-10; the details are [Inference].",
  boxes:[
   B("run",0,0,"new","Run both suites","leak gap, then 57 cases",
@@ -627,45 +592,41 @@ tabs:[
   B("rerun",2,0,"new","Rerun both suites","same questions, same settings",
    {i:"Use the same questions and the same settings. Scores run at temperature 0 (no randomness), so repeat runs agree. [2]"}),
   B("keep",3,0,"rule","Keep or undo?","three tests must pass",
-   {i:"Keep the edit only if all three hold.",
+   {i:"Keep the edit only if all three hold. Otherwise restore the last kept text and try a different edit.",
     t:[["Leak gap","Must shrink"],["57-case eval","Must not drop from the last kept version"],["Refusal rate","Must not rise. This stops the model from passing by refusing everything."]]}),
   B("stop",4,0,"open","Stop at target","gap inside the agreed range",
    {i:"Stop when the leak gap sits inside the range the group agrees on. [Inference] The proposal is 5 percentage points or less.",
     b:["Report what the loop could not fix. A prompt lowers reliance on memory but cannot remove it. [Inference]"]},
    "Professor Robbins"),
-  B("undo",1,1,"new","Undo the edit","back to last good text",
-   {i:"Restore the last kept version of the text, then try a different edit."}),
-  B("tune",0,1,"rule","Tune early, judge late","2008 to 2018, then 2019 on",
-   {i:"Tune on meetings from 2008 to 2018. Judge on 2019 onward. The repo already uses this split for its cutoffs. [4]",
-    b:["[Inference] Meetings after the training cutoff are the cleanest judge, once the cutoff is known."]}),
-  B("log",4,1,"rule","Log every edit","tests never edited to pass",
-   {i:"Write down each edit and its result. We never change a test to make it pass.",
-    b:["The log is what we show Professor Robbins when the loop stops. [Inference]"]})
+  B("rules",4,1,"rule","Loop rules","tune early, judge late, log",
+   {i:"Three rules keep the loop honest.",
+    t:[["Tune early, judge late","Tune on meetings from 2008 to 2018. Judge on 2019 onward. The repo already uses this split for its cutoffs. [4]"],["Log every edit","Write down each edit and its result. The log is what we show Professor Robbins when the loop stops. [Inference]"],["Never edit a test","We never change a test to make it pass."]]})
  ],
  arrows:[
   A("run","right","change","left","newLink"),
   A("change","right","rerun","left","newLink"),
   A("rerun","right","keep","left","newLink"),
   A("keep","right","stop","left","newLink"),
-  A("keep","bottom","undo","right","newLink",{label:"worse: undo"}),
-  A("undo","top","change","bottom","newLink"),
-  A("tune","top","run","bottom","indirect"),
-  A("log","top","stop","bottom","indirect")
+  A("keep","bottom","change","bottom","newLink",{label:"worse: undo, try another edit"}),
+  A("rules","top","stop","bottom","indirect")
  ],
  tables:["keeprules"]
 },
 
 /* --------------------------------------------------- 9. NEXT STEPS */
-{id:"next", label:"Next steps", title:"Next steps", next:true}
+{id:"next", label:"5. Next steps", title:"Next steps", next:true}
 ],
 
 tableDefs:{
-  mapping:{title:"What each specialist wraps",head:["Specialist","Wraps today's code","Calls the model?"],rows:[
-    ["Minutes reader","readMinutes, getDecision, decisionCards, policyViews, forecastRevisions","Yes, to summarize passages"],
-    ["Retrieval subagent","searchMinutes, the ranking code, the focus window, the harness lookups","No. It is plain code"],
-    ["Market and econ data","getSeries, getSnapshot, getPolicyPath, assessEconomy, getOutlook, the as-of data code","Mostly code. The model only phrases the result"],
-    ["Rubric scorer","scoreByDimension, scoreCache, the fomc-score skill, the score checks","Yes, but run ahead of time by pipeline/score_minutes.m"],
-    ["Consumer view","New. Builds on getOutlook, the spending, price and sentiment series, and the planned rubric","Yes"]
+  mapping:{title:"What each agent does, and which course pattern it follows",
+   note:"Pattern names come from the course deck [16]. Which pattern fits which agent is my reading. [Inference]",
+   head:["Agent","Job, and the code it wraps","Pattern","Calls the model?"],rows:[
+    ["Organizer and critic","Routes the question, briefs the specialists, merges reports, reruns today's checks. Wraps the lookup triggers in the focus folder and the guard folder.","Router, and Critic (the Lead)","Only when the code rules cannot place a question [Inference]"],
+    ["Retrieval subagent","Finds paragraph ids. Wraps searchMinutes, the ranking code, the focus window.","Specialist, plain code","No"],
+    ["Minutes reader","Summarizes passages with quotes. Wraps readMinutes, getDecision, decisionCards, policyViews, forecastRevisions.","Specialist (Generator)","Yes"],
+    ["Market and econ data","Returns dated figures. Wraps getSeries, getSnapshot, getPolicyPath, assessEconomy, getOutlook, the as-of data code.","Specialist, mostly code","Mostly code. The model only phrases the result"],
+    ["Rubric scorer","Scores a meeting one rubric dimension per call. Wraps scoreByDimension, scoreCache, the fomc-score skill, the score checks.","Specialist (Generator), run ahead of time","Yes, ahead of time by pipeline/score_minutes.m"],
+    ["Consumer view","New. Builds on getOutlook, the spending, price and sentiment series, and the planned rubric.","Specialist (Generator)","Yes"]
   ]},
   tests:{title:"The planned tests at a glance",head:["Test","Question it answers","Built from"],rows:[
     ["Cutoff probe","Where does the model's knowledge end?","New script. Sets cfg.modelCutoff"],
@@ -720,7 +681,8 @@ sources:[
  {n:12,path:"../src/+fomc/+tools/registry.m",label:"src/+fomc/+tools/registry.m",note:"The 11 tools offered to the model"},
  {n:13,path:"../src/+fomc/config.m",label:"src/+fomc/config.m",note:"Settings, including modelCutoff and compactAtTokens"},
  {n:14,path:"../src/+fomc/+guard/validateScores.m",label:"src/+fomc/+guard/validateScores.m",note:"Where checkAsOf runs"},
- {n:15,path:"../skills/fomc-score/SKILL.md",label:"skills/fomc-score/SKILL.md",note:"The scoring skill"}
+ {n:15,path:"../skills/fomc-score/SKILL.md",label:"skills/fomc-score/SKILL.md",note:"The scoring skill"},
+ {n:16,path:null,label:"IEOR 4570, Multi-Agent Architectures (Peticolas, fall 2026 course slides)",note:"Not in this repository. Router pattern, deep research tree, common pitfalls"}
 ]
 };
 
@@ -983,7 +945,7 @@ function buildDiagram(tab){
 function buildTable(def){
   var h='<h3>'+esc(def.title)+'</h3><div class="tablewrap"><table class="dtable"><thead><tr>'+def.head.map(function(x){return '<th scope="col">'+esc(x)+'</th>';}).join('')+'</tr></thead><tbody>';
   def.rows.forEach(function(r){h+='<tr>'+r.map(function(c,i){return (i===0?'<th scope="row">':'<td>')+fmt(c)+(i===0?'</th>':'</td>');}).join('')+'</tr>';});
-  return h+'</tbody></table></div>';
+  return h+'</tbody></table></div>'+(def.note?'<p class="fine">'+fmt(def.note)+'</p>':'');
 }
 
 function buildOptions(tab){
@@ -1024,13 +986,32 @@ function buildNext(tab){
      N.dates.map(function(r){return '<tr>'+r.map(function(c){return '<td>'+fmt(c)+'</td>';}).join('')+'</tr>';}).join('')+'</tbody></table></div>';
   h+='<p class="fine"><strong>'+fmt(N.datesNote)+'</strong></p>';
   h+='<h3 id="sources-h">Sources</h3><ol class="sources" aria-labelledby="sources-h">'+
-     DATA.sources.map(function(s){return '<li id="src-'+s.n+'" value="'+s.n+'"><a href="'+esc(s.path)+'">'+esc(s.label)+'</a> - '+esc(s.note)+'</li>';}).join('')+'</ol>';
+     DATA.sources.map(function(s){return '<li id="src-'+s.n+'" value="'+s.n+'">'+(s.path?'<a href="'+esc(s.path)+'">'+esc(s.label)+'</a>':esc(s.label))+' - '+esc(s.note)+'</li>';}).join('')+'</ol>';
   return h;
 }
 
-/* Tabs and panels */
+/* Tabs: a top row of groups, and a second row of sub-tabs inside a group that has more than one page */
 var tablist=document.getElementById('tablist'), panelsEl=document.getElementById('panels');
-var tabEls={}, panelEls={};
+var gTabEls={}, gPanelEls={}, subLists={}, tabEls={}, panelEls={}, groupOf={}, lastLeaf={};
+var tabById={}; DATA.tabs.forEach(function(t){tabById[t.id]=t;});
+
+function buildLeaf(tab,multi){
+  var p=document.createElement('section'); p.id='panel-'+tab.id; p.className='leaf';
+  if(multi){p.setAttribute('role','tabpanel'); p.setAttribute('aria-labelledby','tab-'+tab.id); p.hidden=true;}
+  if(tab.next){p.innerHTML=buildNext(tab);}
+  else{
+    var hd=document.createElement('h2'); hd.className='ptitle'; hd.textContent=tab.title; p.appendChild(hd);
+    var intro=document.createElement('p'); intro.className='intro'; intro.innerHTML=fmt(tab.intro); p.appendChild(intro);
+    if(tab.callout){var c=document.createElement('div'); c.className='callout'; c.innerHTML=fmt(tab.callout); p.appendChild(c);}
+    p.appendChild(buildDiagram(tab));
+    (tab.tables||[]).forEach(function(k){
+      var def=(k==='glossary')?DATA.glossary:DATA.tableDefs[k];
+      var d=document.createElement('div'); d.innerHTML=buildTable(def); p.appendChild(d);
+    });
+    if(tab.options){p.appendChild(buildOptions(tab));}
+  }
+  return p;
+}
 function buildPage(){
   var M=DATA.meta;
   document.getElementById('kicker').textContent=M.kicker;
@@ -1043,52 +1024,74 @@ function buildPage(){
     return '<article class="card"><h2>'+esc(c.title)+'</h2><ul>'+c.items.map(function(i){return '<li>'+fmt(i)+'</li>';}).join('')+'</ul></article>';
   }).join('');
 
-  DATA.tabs.forEach(function(tab,i){
-    var tb=document.createElement('button'); tb.type='button'; tb.id='tab-'+tab.id; tb.setAttribute('role','tab');
-    tb.setAttribute('aria-controls','panel-'+tab.id); tb.setAttribute('aria-selected','false'); tb.tabIndex=-1; tb.textContent=tab.label;
-    tb.setAttribute('data-tab',tab.id);
-    tablist.appendChild(tb); tabEls[tab.id]=tb;
+  DATA.groups.forEach(function(g){
+    var multi=g.tabs.length>1;
+    var tb=document.createElement('button'); tb.type='button'; tb.id='gtab-'+g.id; tb.setAttribute('role','tab');
+    tb.setAttribute('aria-controls','gpanel-'+g.id); tb.setAttribute('aria-selected','false'); tb.tabIndex=-1; tb.textContent=g.label;
+    tb.setAttribute('data-group',g.id); tablist.appendChild(tb); gTabEls[g.id]=tb;
 
-    var p=document.createElement('section'); p.id='panel-'+tab.id; p.className='panel'; p.setAttribute('role','tabpanel');
-    p.setAttribute('aria-labelledby','tab-'+tab.id); p.hidden=true;
-    if(tab.next){p.innerHTML=buildNext(tab);}
-    else{
-      var hd=document.createElement('h2'); hd.className='ptitle'; hd.textContent=tab.title; p.appendChild(hd);
-      var intro=document.createElement('p'); intro.className='intro'; intro.innerHTML=fmt(tab.intro); p.appendChild(intro);
-      if(tab.callout){var c=document.createElement('div'); c.className='callout'; c.innerHTML=fmt(tab.callout); p.appendChild(c);}
-      p.appendChild(buildDiagram(tab));
-      (tab.tables||[]).forEach(function(k){
-        var def=(k==='glossary')?DATA.glossary:DATA.tableDefs[k];
-        var d=document.createElement('div'); d.innerHTML=buildTable(def); p.appendChild(d);
-      });
-      if(tab.options){p.appendChild(buildOptions(tab));}
+    var gp=document.createElement('section'); gp.id='gpanel-'+g.id; gp.className='gpanel'; gp.setAttribute('role','tabpanel');
+    gp.setAttribute('aria-labelledby','gtab-'+g.id); gp.hidden=true;
+    if(multi){
+      var sl=document.createElement('div'); sl.className='sublist'; sl.setAttribute('role','tablist'); sl.setAttribute('aria-label',g.label+' pages');
+      gp.appendChild(sl); subLists[g.id]=sl;
     }
-    panelsEl.appendChild(p); panelEls[tab.id]=p;
+    g.tabs.forEach(function(tid){
+      var tab=tabById[tid]; groupOf[tid]=g.id;
+      if(multi){
+        var st=document.createElement('button'); st.type='button'; st.id='tab-'+tid; st.setAttribute('role','tab');
+        st.setAttribute('aria-controls','panel-'+tid); st.setAttribute('aria-selected','false'); st.tabIndex=-1; st.textContent=tab.label;
+        st.setAttribute('data-tab',tid); subLists[g.id].appendChild(st); tabEls[tid]=st;
+      }
+      var leaf=buildLeaf(tab,multi); gp.appendChild(leaf); panelEls[tid]=leaf;
+    });
+    lastLeaf[g.id]=g.tabs[0];
+    panelsEl.appendChild(gp); gPanelEls[g.id]=gp;
   });
 }
 
+function leafIds(){return DATA.tabs.map(function(t){return t.id;});}
+/* Show one page (a leaf). Its group and sub-tab open with it. */
 function activate(id,focusTab,setHash){
-  if(!tabEls[id]){id=DATA.tabs[0].id;}
-  DATA.tabs.forEach(function(t){
-    var on=t.id===id, tb=tabEls[t.id];
-    tb.setAttribute('aria-selected',on?'true':'false'); tb.tabIndex=on?0:-1; panelEls[t.id].hidden=!on;
+  if(!tabById[id]){id=DATA.tabs[0].id;}
+  var gid=groupOf[id]; lastLeaf[gid]=id;
+  DATA.groups.forEach(function(g){
+    var on=g.id===gid, tb=gTabEls[g.id];
+    tb.setAttribute('aria-selected',on?'true':'false'); tb.tabIndex=on?0:-1; gPanelEls[g.id].hidden=!on;
+    if(g.tabs.length>1){
+      g.tabs.forEach(function(tid){
+        var son=tid===id, st=tabEls[tid];
+        st.setAttribute('aria-selected',son?'true':'false'); st.tabIndex=son?0:-1; panelEls[tid].hidden=!son;
+      });
+    }
   });
-  if(focusTab){tabEls[id].focus();}
+  if(focusTab){(tabEls[id]&&gPanelEls[gid].contains(document.activeElement)?tabEls[id]:gTabEls[gid]).focus();}
   if(setHash!==false&&location.hash!=='#'+id){try{history.replaceState(null,'','#'+id);}catch(e){location.hash=id;}}
 }
-tablist.addEventListener('click',function(ev){var b=ev.target.closest('[role=tab]'); if(b){activate(b.getAttribute('data-tab'),false);}});
+tablist.addEventListener('click',function(ev){var b=ev.target.closest('[role=tab]'); if(b){var g=b.getAttribute('data-group'); activate(lastLeaf[g],false);}});
 tablist.addEventListener('keydown',function(ev){
-  var ids=DATA.tabs.map(function(t){return t.id;}), cur=document.activeElement&&document.activeElement.getAttribute('data-tab');
+  var ids=DATA.groups.map(function(g){return g.id;}), cur=document.activeElement&&document.activeElement.getAttribute('data-group');
   var i=ids.indexOf(cur); if(i<0){return;}
   var n=null;
   if(ev.key==='ArrowRight'){n=(i+1)%ids.length;}
   else if(ev.key==='ArrowLeft'){n=(i-1+ids.length)%ids.length;}
   else if(ev.key==='Home'){n=0;}
   else if(ev.key==='End'){n=ids.length-1;}
-  if(n!==null){ev.preventDefault();activate(ids[n],true);}
+  if(n!==null){ev.preventDefault();activate(lastLeaf[ids[n]],false);gTabEls[ids[n]].focus();}
+});
+panelsEl.addEventListener('click',function(ev){var b=ev.target.closest&&ev.target.closest('.sublist [role=tab]'); if(b){activate(b.getAttribute('data-tab'),false);}});
+panelsEl.addEventListener('keydown',function(ev){
+  var b=ev.target.closest&&ev.target.closest('.sublist [role=tab]'); if(!b){return;}
+  var g=DATA.groups.filter(function(x){return x.id===groupOf[b.getAttribute('data-tab')];})[0], ids=g.tabs, i=ids.indexOf(b.getAttribute('data-tab'));
+  var n=null;
+  if(ev.key==='ArrowRight'){n=(i+1)%ids.length;}
+  else if(ev.key==='ArrowLeft'){n=(i-1+ids.length)%ids.length;}
+  else if(ev.key==='Home'){n=0;}
+  else if(ev.key==='End'){n=ids.length-1;}
+  if(n!==null){ev.preventDefault();activate(ids[n],false);tabEls[ids[n]].focus();}
 });
 
-/* A citation link such as #src-3 opens the Next steps tab and scrolls to that source */
+/* A citation link such as #src-3 opens the Next steps page and scrolls to that source */
 function goSource(hash){
   var m=/^#?(src-\d+)$/.exec(hash); if(!m){return false;}
   activate('next',false);
@@ -1100,9 +1103,12 @@ document.addEventListener('click',function(ev){
   var a=ev.target.closest&&ev.target.closest('a[href^="#src-"]');
   if(a){ev.preventDefault();goSource(a.getAttribute('href'));}
 });
+/* The hash can name a page (#organizer) or a group (#agents opens its first page) */
 function fromHash(){
   var h=location.hash.replace(/^#/,'');
-  if(tabEls[h]){activate(h,false,false);}
+  var g=DATA.groups.filter(function(x){return x.id===h;})[0];
+  if(tabById[h]){activate(h,false,false);}
+  else if(g){activate(lastLeaf[g.id],false,false);}
   else if(!goSource(location.hash)){activate(DATA.tabs[0].id,false,false);}
 }
 window.addEventListener('hashchange',fromHash);
@@ -1123,6 +1129,9 @@ function validateData(){
     if(!t.boxes||!t.boxes.length){warn(t.id+': no boxes');}
     (t.tables||[]).forEach(function(k){if(k!=='glossary'&&!DATA.tableDefs[k]){warn(t.id+': unknown table '+k);}});
   });
+  var seen={};
+  DATA.groups.forEach(function(g){g.tabs.forEach(function(t){if(!tabById[t]){warn('group '+g.id+' names an unknown tab '+t);}if(seen[t]){warn('tab '+t+' is in two groups');}seen[t]=true;});});
+  DATA.tabs.forEach(function(t){if(!seen[t.id]){warn('tab '+t.id+' is in no group');}});
   var cited={};
   var all=JSON.stringify(DATA);
   (all.match(/\[(\d+)\]/g)||[]).forEach(function(m){cited[m.slice(1,-1)]=true;});
@@ -1132,9 +1141,10 @@ function validateData(){
 }
 
 buildPage();
+(function(){var tb=document.querySelector('.tabbar');function set(){document.documentElement.style.setProperty('--tbh',(tb.offsetHeight-1)+'px');}set();window.addEventListener('resize',set);})();
 validateData();
 fromHash();
-if(!tabEls[location.hash.replace(/^#/,'')]&&!/^#src-\d+$/.test(location.hash)){activate(DATA.tabs[0].id,false,true);}
+if(!tabById[location.hash.replace(/^#/,'')]&&!/^#src-\d+$/.test(location.hash)&&!DATA.groups.some(function(g){return '#'+g.id===location.hash;})){activate(DATA.tabs[0].id,false,true);}
 var w=document.getElementById('warn');
 w.setAttribute('data-warnings',String(warnings.length));
 w.textContent=warnings.join('\n');
