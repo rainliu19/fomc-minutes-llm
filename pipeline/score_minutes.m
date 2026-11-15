@@ -30,7 +30,7 @@ for k = 1:height(M)
     if ~isempty(saved) && all(ismember(dimensions, string(saved.dimensionsScored)))
         continue
     end
-    [pressure, swapMB] = memoryNow();
+    [pressure, swapMB] = fomc.util.memoryNow();
     if fomc.util.memoryShort(pressure, swapMB)
         fprintf("STOP before %s: memory short (pressure %d, %.0f MB swap). Run again to continue.\n", meeting, pressure, swapMB);
         break
@@ -51,12 +51,4 @@ for k = 1:height(M)
     if done >= maxMeetings
         break
     end
-end
-
-function [pressure, swapMB] = memoryNow()
-% macOS memory pressure level (1 normal, 2 warning, 4 critical) and swap in use, in MB
-[~, p] = system("sysctl -n kern.memorystatus_vm_pressure_level");
-[~, sw] = system("sysctl -n vm.swapusage");
-pressure = str2double(strtrim(p));
-swapMB = str2double(regexp(sw, "used = ([\d.]+)M", "tokens", "once"));
 end

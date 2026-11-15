@@ -47,34 +47,9 @@ t0 = tic;
 [s, answer, structured, calls] = fomc.runTurn(s, message, Format=format);
 fomc.web.store("set", sessionId, s);
 
-% Repair shortened paragraph ids, then check the answer: build the cited paragraphs and look for
-% figures that appear in no source
-answer = fomc.guard.expandIds(answer, s.known);
-answer = fomc.guard.plainEnglish(answer);
-cites = fomc.guard.citations(answer, s.ctx, s.known);
-% Choose a warning for the page, if any: bad figures first, then missing or unverified citations
-warning = "";
-sources = [s.contextBlock; string({calls.result}).'];
+% Check the answer (ids, plain words, citations, figures) and choose the warning for the page, if any
+[answer, cites, warning] = fomc.guard.review(answer, s, calls, message, format, structured);
 isSkillScore = isstruct(structured) && isscalar(structured) && isfield(structured, "skill");
-if isSkillScore
-    if ~isfield(structured, "ok") || ~structured.ok
-        warning = "FOMC skill score was not validated. Issues: " + ...
-            strjoin(string(structured.issues), " ") + ...
-            ". Failed dimensions: " + strjoin(string(structured.failedDimensions), ", ") + ...
-            ". Do not rely on it as verified.";
-    end
-else
-    badFigures = fomc.guard.checkFigures(answer, sources);
-    if ~isempty(badFigures)
-        warning = "Check these figures against the minutes, they do not appear in the sources: " + strjoin(badFigures, "; ") + ".";
-    elseif fomc.focus.aboutMinutes(message) && format == "chat" && ~any(string({calls.name}) == "prefetchNotice")
-        if isempty(cites) || ~any([cites.ok])
-            warning = "This answer cites no paragraph from the minutes. Treat it as unverified.";
-        elseif ~all([cites.ok])
-            warning = "Some citations could not be verified.";
-        end
-    end
-end
 
 % Analysis mode: put the written parts in plain words, then show the checked summary, or say it failed
 structured = plainStructured(structured);
