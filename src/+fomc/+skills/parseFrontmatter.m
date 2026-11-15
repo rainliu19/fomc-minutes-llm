@@ -1,9 +1,11 @@
-function metadata = parseFrontmatter(skillFile)
+function metadata = parseFrontmatter(skillFile, nvp)
 %PARSEFRONTMATTER Read name and description from a skill's YAML frontmatter.
-%   metadata = fomc.skills.parseFrontmatter(skillFile)
+%   metadata = fomc.skills.parseFrontmatter(skillFile, Keys=["tools"])
+%   Keys: other fields to read besides name and description (agents/*.md use tools, stages).
 
 arguments
     skillFile (1,1) string
+    nvp.Keys (1,:) string = string.empty
 end
 
 if ~isfile(skillFile)
@@ -26,10 +28,11 @@ if isempty(closing)
         "Skill frontmatter in %s has no closing '---' line.", skillFile);
 end
 
-fields = struct("name", "", "description", "");
+keys = ["name" "description" nvp.Keys];
+fields = cell2struct(repmat({""}, 1, numel(keys)), keys, 2);
 for i = 2:closing-1
     line = lines(i);
-    token = regexp(char(line), '^\s*(name|description)\s*:\s*(.*?)\s*$', 'tokens', 'once');
+    token = regexp(char(line), "^\s*(" + strjoin(keys, "|") + ")\s*:\s*(.*?)\s*$", 'tokens', 'once');
     if isempty(token)
         continue
     end

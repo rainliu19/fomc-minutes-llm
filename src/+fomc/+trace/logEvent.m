@@ -1,7 +1,7 @@
 function logEvent(ctx, type, payload)
 %LOGEVENT Append one JSON line to the run's trace file.
 %   fomc.trace.logEvent(ctx, "tool_call", struct(name=..., args=..., result=...))
-%   Each line has time, run id, anchor date, event type and the payload. API keys are scrubbed.
+%   Each line has time, run id, anchor date, event type, the agent when ctx.agent is set, and the payload. API keys are scrubbed.
 
 arguments
     ctx (1,1) struct
@@ -12,6 +12,10 @@ end
 % Build one event: common fields first, then the payload
 ev = struct("time", string(datetime("now", Format="yyyy-MM-dd'T'HH:mm:ss")), ...
     "runId", ctx.runId, "asOf", fomc.util.fmtDate(ctx.asOf), "type", type);
+% Inside an agent (fomc.agents.runStage), label every event with it
+if isfield(ctx, "agent")
+    ev.agent = ctx.agent;
+end
 for f = string(fieldnames(payload)).'
     ev.(f) = payload.(f);
 end

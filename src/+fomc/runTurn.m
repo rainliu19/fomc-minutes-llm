@@ -9,11 +9,14 @@ function [s, answer, structured, calls] = runTurn(s, userMsg, nvp)
 %   (fomc.analysis.structure); structured is [] in chat mode. calls: one record per tool
 %   call (name, args, result, ok, ms); the first s.lastLookups of them are the harness's own
 %   lookups (fomc.focus.prefetch). A failed turn is rolled back so the session stays valid.
+%   Lookups: the specialist agents' work (fomc.agents.run), a struct of text, recs and structured,
+%   used in place of the harness's own lookups and, for scoring, in place of the score.
 
 arguments
     s (1,1) struct
     userMsg (1,1) string
     nvp.Format (1,1) string {mustBeMember(nvp.Format, ["chat", "analysis"])} = "chat"
+    nvp.Lookups = []
 end
 
 % Set up: pick the focus window for this question, and keep the history so a failed turn can be undone
@@ -30,7 +33,12 @@ fomc.trace.logEvent(ctx, "user_message", struct("text", userMsg, ...
 
 % Skill-matched scoring requests use the dedicated structured scorer and validation loop.
 if fomc.focus.wantsScoring(userMsg)
-    [answer, structured] = fomc.skills.scoreRequest(s, userMsg);
+    if isempty(nvp.Lookups)
+        [answer, structured] = fomc.skills.scoreRequest(s, userMsg);
+    else
+        answer = nvp.Lookups.text;
+        structured = nvp.Lookups.structured;
+    end
     s.history = addUserMessage(s.history, userMsg);
     s.history = addResponseMessage(s.history, struct("role", "assistant", "content", answer));
     fomc.trace.logEvent(ctx, "final_answer", struct("text", answer, ...
@@ -43,7 +51,12 @@ question = userMsg + newline + newline + fomc.focus.note(ctx);
 % Let the harness look up the decision card or best passages itself, so a small model cannot skip it.
 % After a question about how rates moved, a follow-up that only changes the period gets the rate path too.
 followsRatePath = isfield(s, "lastUsedRatePath") && s.lastUsedRatePath;
-[found, pre] = fomc.focus.prefetch(ctx, userMsg, nvp.Format == "analysis", followsRatePath);
+if isempty(nvp.Lookups)
+    [found, pre] = fomc.focus.prefetch(ctx, userMsg, nvp.Format == "analysis", followsRatePath);
+else
+    found = nvp.Lookups.text;
+    pre = nvp.Lookups.recs;
+end
 % How many of this turn's calls the harness made before the model started (they come first), so
 % the page can tell them from the tools the model chose
 s.lastLookups = 0;

@@ -31,5 +31,5 @@ if ~isnat(nvp.MeetingDate)
 end
 % Start a session and run one turn
 s = fomc.newSession(asOf, nvp.Config, Llm=nvp.Llm, Data=nvp.Data, TracePath=nvp.TracePath);
-[s, answer, structured, calls] = fomc.runTurn(s, question, Format=nvp.Format);
+[s, answer, structured, calls] = fomc.agents.run(s, question, Format=nvp.Format);
 end
