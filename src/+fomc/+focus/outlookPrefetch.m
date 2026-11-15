@@ -17,7 +17,7 @@ function [text, recs] = outlookPrefetch(ctx, question)
 
 text = "";
 recs = struct("name", {}, "args", {}, "result", {}, "ok", {}, "ms", {});
-if ~ctx.cfg.prefetch || ~asksWhatItMeansAhead(lower(string(question)))
+if ~ctx.cfg.prefetch || ~fomc.focus.asksEffectsAhead(lower(string(question)))
     return
 end
 
@@ -113,28 +113,4 @@ years = double(string(regexp(q, "(?<!\d)(19\d\d|20\d\d)(?!\d)", "match")));
 if ~isempty(years) && max(years) < year(asOf) && max(years) >= 1991
     args.endDate = char(fomc.util.fmtDate(datetime(max(years), 12, 31)));
 end
-end
-
-function tf = asksWhatItMeansAhead(q)
-% An effect or future word and something the economy does: "What do these minutes mean for
-% inflation?", "How will higher rates affect consumer spending?", "What did the 2022 increases do
-% to mortgage rates?", "Is now a good time to buy a house?"; or where things are headed after
-% the Fed's moves
-effect = "(?<![a-z])(mean|means|meant) for|(?<![a-z])(implications?|imply|implies|impact\w*|affect\w*|" + ...
-    "effects? (on|of)|consequences?|pass(es|ed)? through|transmi\w*|feed\w* through)(?![a-z])|" + ...
-    "(?<![a-z])(do|did|does|done) to|good time to";
-headed = "where (are|is|will) (things|the economy|we|it|rates|this|inflation|prices) (\w+ )?(head\w*|going)";
-if ~isempty(regexp(q, headed, "once"))
-    tf = true;
-    return
-end
-future = "future|ahead|going forward|outlook|forecast\w*|projection|" + ...
-    "next (year|few|couple|\d+|six|twelve|several)|coming (months|years?|quarters?)|" + ...
-    "(will|going to|expected to|likely to) (\w+ ){0,3}(rise|fall|go|be|slow|stay|come|keep|cool|pick|drop|" + ...
-    "increase|decrease|decline|happen|change|look|hurt|help)";
-area = "inflation|(?<![a-z])prices|cost of living|mortgage|borrow\w*|loans?(?![a-z])|credit|debt|" + ...
-    "interest (costs?|payments?|expenses?)|spending|consum\w*|households?|econom\w*|growth|recession|" + ...
-    "jobs?(?![a-z])|unemployment|labor market|housing|(?<![a-z])(house|homes?)(?![a-z])|wages?(?![a-z])|businesses";
-tf = (~isempty(regexp(q, effect, "once")) || ~isempty(regexp(q, future, "once"))) && ...
-    ~isempty(regexp(q, area, "once"));
 end
