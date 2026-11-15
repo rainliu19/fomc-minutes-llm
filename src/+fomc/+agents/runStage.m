@@ -3,12 +3,13 @@ function reports = runStage(ctx, stage, k, brief)
 %   reports = fomc.agents.runStage(ctx, stage, k, brief)
 %   One after another by default: a stage is mostly quick lookups and the one local model
 %   answers one call at a time anyway. With cfg.parallel and more than one agent, they run at
-%   the same time on thread workers (no new process, no second model), unless memory is short
+%   the same time on thread workers (no new process, no second model; needs Parallel Computing
+%   Toolbox, else serial), unless memory is short
 %   (fomc.util.memoryShort). Each worker writes its trace to its own file; the lines are added
 %   to the run's trace in the stage's order, so they never interleave.
 
 n = numel(stage);
-par = ctx.cfg.parallel && n > 1;
+par = ctx.cfg.parallel && n > 1 && license("test", "Distrib_Computing_Toolbox") == 1;
 if par
     [pressure, swapMB] = fomc.util.memoryNow();
     if fomc.util.memoryShort(pressure, swapMB)

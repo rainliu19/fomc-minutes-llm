@@ -307,12 +307,12 @@ function stepHtml(name, kind, ms, plain, ok) {
 
 // Tool calls are model-chosen; lookups are run by the harness before the model starts (a lookup can run a
 // tool, such as getOutlook, through the normal tool path, so the turn marks them)
-const kindOf = (name, lookup) => lookup || name.startsWith("prefetch") ? "automatic lookup" : "tool";
+const kindOf = (name, lookup, agent) => (agent ? agent + " agent: " : "") + (lookup || name.startsWith("prefetch") ? "automatic lookup" : "tool");
 
 // A collapsible list of the tool calls the agent made; click one to see its arguments and result
 function toolsHtml(calls) {
   if (!calls || !calls.length) return "";
-  const items = calls.map(c => `<details class="tool step"><summary>${stepHtml(c.name, kindOf(c.name, c.lookup), c.ms, plainCall(c.name, c.args), c.ok)}</summary>` +
+  const items = calls.map(c => `<details class="tool step"><summary>${stepHtml(c.name, kindOf(c.name, c.lookup, c.agent), c.ms, plainCall(c.name, c.args), c.ok)}</summary>` +
     `<pre>${esc(JSON.stringify(c.args))}\n\n${esc(c.result)}</pre></details>`).join("");
   return `<details><summary>Tools used (${calls.length})</summary>${items}</details>`;
 }
@@ -344,7 +344,14 @@ function citationsHtml(cites, nums) {
 
 // The HTML for one live progress step, or null for events that are not shown
 function describe(e) {
-  if (e.type === "tool_call") return stepHtml(e.name, kindOf(e.name), e.ms, plainCall(e.name, e.args), e.ok);
+  const agents = [].concat(e.agents || []).join(" + ");
+  if (e.type === "route") return stepHtml("", "", null, `Routed by code: ${e.route} (${agents})`);
+  if (e.type === "stage") return stepHtml("", "", null, `Stage ${e.stage}: ${agents}${e.parallel ? ", at the same time" : ""}`);
+  if (e.type === "handoff") return stepHtml("", "", null, `→ handed to the ${e.to} agent`);
+  if (e.type === "handback") return stepHtml("", "", null, e.ok ? `← ${e.agent} agent returned (${e.ms} ms)` : `← ${e.agent} agent failed: ${e.error}`);
+  if (e.type === "critic") return stepHtml("", "", null, `Critic round ${e.round}: ${e.pass ? "passed" : "found a problem, asked for one rewrite"}`);
+  if (e.type === "parallel_off") return stepHtml("", "", null, `Ran one at a time: ${e.reason}`);
+  if (e.type === "tool_call") return stepHtml(e.name, kindOf(e.name, false, e.agent), e.ms, plainCall(e.name, e.args), e.ok);
   if (e.type === "prefetch" && e.kind === "data") return stepHtml("prefetchData", "automatic lookup", null, plainCall("prefetchData", {series: e.series}));
   if (e.type === "prefetch" && e.kind === "passages") return stepHtml("prefetchPassages", "automatic lookup", null, plainCall("prefetchPassages"));
   if (e.type === "model_response") return stepHtml("", "", null, e.nToolCalls ? `Model step ${e.round}: chose ${e.nToolCalls} tool call(s)` : `Model step ${e.round}: writing the answer`);

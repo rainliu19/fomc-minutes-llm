@@ -127,6 +127,27 @@ classdef testAgents < matlab.unittest.TestCase
             tc.verifyEqual(brief.reports.consumer.meetingDate, "");
         end
 
+        function aParallelStageGivesTheSameReportsAndAnOrderedTrace(tc)
+            tc.assumeTrue(license("test", "Distrib_Computing_Toolbox") == 1, "needs Parallel Computing Toolbox");
+            q = "What did the minutes say about unemployment and what is the rate now?";
+            brief = struct("question", q, "isAnalysis", false, "route", "other", ...
+                "followsRatePath", false, "reports", struct(), "session", []);
+            st = fomc.agents.route(q);
+            out = cell(1, 2);
+            for j = 1:2
+                cfg = fomc.config(verbose=false, agents="multi", parallel=(j == 2));
+                ctx = fomc.context(datetime(2020,3,1), cfg, tc.D, tracePath=string(tempname) + ".jsonl");
+                out{j} = fomc.agents.runStage(ctx, st{1}, 1, brief);
+                ev = eventsOf(ctx.tracePath);
+                % each agent's handoff and handback stay together, in the stage's order
+                types = typesOf(ev);
+                tc.verifyEqual(types(ismember(types, ["handoff" "handback"])), ["handoff" "handback" "handoff" "handback"]);
+            end
+            for f = ["agent" "ok" "text" "ids" "meetingDate" "direction"]
+                tc.verifyEqual({out{2}.(f)}, {out{1}.(f)}, f);
+            end
+        end
+
         % ---- the writer sees the same lookups as in single mode ----
         function minutesAndNumbersQuestionsGiveTheSameFirstMessageAsSingleMode(tc)
             for q = ["What did the Fed decide at the latest meeting?" "What is the unemployment rate?" ...
@@ -159,6 +180,15 @@ classdef testAgents < matlab.unittest.TestCase
             tc.verifyEqual(sum(types == "handoff"), sum(types == "handback"));
             tools = ev(types == "tool_call" & cellfun(@(e) isfield(e, "agent"), ev).');
             tc.verifyTrue(all(cellfun(@(e) ismember(string(e.agent), ["minutes" "market" "consumer"]), tools)));
+        end
+
+        function theHouseholdRouteKeepsTheFirstMessageWithinTheBudget(tc)
+            % The first-turn prompt budget is 5,000 tokens (testBudgets: 2,375 for the system prompt and tools)
+            m = fomc.llm.Mock({struct("content", "Ok.")});
+            [~, ~, ~, s] = fomc.runAgent("What do the latest Fed minutes mean for my mortgage?", datetime(2020,3,1), ...
+                Config=tc.cfg, Llm=@m.call, Data=tc.D, TracePath=string(tempname) + ".jsonl");
+            tokens = strlength(string(s.history.Messages{1}.content)) / 3.3;
+            tc.verifyLessThanOrEqual(tokens, 5000 - 2375);
         end
 
         function singleModeEmitsNoAgentEvents(tc)

@@ -249,3 +249,11 @@ Each run writes `logs/trace-<runId>.jsonl` (web sessions: `logs/web-<session>.js
 - The model is small. It handles lookups and short summaries; decisions and votes come from code, but check other claims against the cited paragraph.
 - Only meetings after the model's training cutoff are clean, and the local model's cutoff is not yet verified.
 - On an 8 GB Mac, close MATLAB and heavy apps before `uv run app.py`. See [MATLAB_GAPS.md](MATLAB_GAPS.md) for MATLAB limits found along the way.
+
+## Multi-agent mode
+
+`cfg.agents="multi"` (web app: `FOMC_AGENTS=multi`), `cfg.parallel`, `cfg.criticRounds`; see `docs/agents.md`. New trace
+events: `route {route, agents}`, `stage {stage, agents, parallel}`, `handoff {to, stage, tools}`,
+`handback {agent, to, ok, ms, nIds, error}`, `critic {round, pass, issues}`, `parallel_off {reason}`. Events inside an
+agent carry `agent`. `fomc.agents.run` replaces `fomc.runTurn` as the entry; with `"single"` it calls it.
+

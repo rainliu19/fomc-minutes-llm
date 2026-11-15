@@ -9,7 +9,8 @@ function [s, answer, structured, calls] = run(s, msg, nvp)
 %        in the lookups, so the answer says that part is missing);
 %     4. fomc.agents.critic checks the answer.
 %   Score questions take the scorer's answer directly, as in single mode. Trace events from
-%   inside an agent carry its name; s.lastLookupAgents says which agent made each lookup.
+%   inside an agent carry its name; s.lastLookupAgents says which agent made each lookup and
+%   s.lastAgentIssues which agents failed ("" if none).
 
 arguments
     s (1,1) struct
@@ -51,6 +52,7 @@ text(bad) = "[The " + [reports(bad).agent] + " agent could not report: " + [repo
 lookups = struct("text", strjoin(text(text ~= ""), newline), "recs", [reports.calls], "structured", reports(end).structured);
 s.ctx = ctx;
 s.lastLookupAgents = repelem([reports.agent], arrayfun(@(r) numel(r.calls), reports));
+s.lastAgentIssues = strjoin("The " + [reports(bad).agent] + " agent could not report (" + [reports(bad).error] + ").", " ");
 
 [s, answer, structured, calls] = fomc.runTurn(s, msg, Format=nvp.Format, Lookups=lookups);
 if route ~= "score" && nvp.Format == "chat" && ~any(string({calls.name}) == "prefetchNotice")

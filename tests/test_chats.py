@@ -184,6 +184,23 @@ class ApiPrivacy(unittest.TestCase):
     def test_progress_of_another_browsers_chat_is_hidden(self):
         self.assertEqual(self.app.progress("c" * 32, 0, owner=YOU), {"events": [], "next": 0})
 
+    def test_progress_passes_the_agent_events_through(self):
+        events = [{"type": "route", "route": "household", "agents": ["minutes", "market"]},
+                  {"type": "handoff", "to": "minutes", "stage": 1},
+                  {"type": "tool_call", "name": "getDecision", "agent": "minutes", "ok": True, "ms": 5},
+                  {"type": "handback", "agent": "minutes", "ok": False, "ms": 9, "error": "boom"},
+                  {"type": "critic", "round": 1, "pass": True, "issues": ""}]
+        path = self.app.runtime.LOGS / ("web-" + "c" * 32 + ".jsonl")
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("\n".join(json.dumps(e) for e in events) + "\n", encoding="utf-8")
+        try:
+            got = self.app.progress("c" * 32, 0, owner=ME)["events"]
+        finally:
+            path.unlink()
+        for want, have in zip(events, got):
+            for key, value in want.items():
+                self.assertEqual(have[key], value, key)
+
     def test_chatting_into_another_browsers_chat_is_refused(self):
         req = self.app.ChatRequest(message="hi", session_id="c" * 32)
         answer = self.app.chat(req, owner=YOU)

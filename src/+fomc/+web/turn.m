@@ -20,7 +20,7 @@ end
 
 % First message of a web session: create the session, anchored at the date given (or the latest release)
 if ~fomc.web.store("has", sessionId)
-    cfg = fomc.config(verbose=false);
+    cfg = fomc.config(verbose=false, agents=agentMode());
     if model ~= ""
         cfg.model = model;
     end
@@ -44,12 +44,15 @@ s.effort = effort;
 
 % Run the question through the agent and save the updated session
 t0 = tic;
-[s, answer, structured, calls] = fomc.runTurn(s, message, Format=format);
+[s, answer, structured, calls] = fomc.agents.run(s, message, Format=format);
 fomc.web.store("set", sessionId, s);
 
 % Check the answer (ids, plain words, citations, figures) and choose the warning for the page, if any
 [answer, cites, warning] = fomc.guard.review(answer, s, calls, message, format, structured);
 isSkillScore = isstruct(structured) && isscalar(structured) && isfield(structured, "skill");
+if s.ctx.cfg.agents == "multi" && s.lastAgentIssues ~= ""   % a specialist agent failed: say so first
+    warning = strip(s.lastAgentIssues + " " + warning);
+end
 
 % Analysis mode: put the written parts in plain words, then show the checked summary, or say it failed
 structured = plainStructured(structured);
@@ -63,7 +66,7 @@ end
 % Everything the page needs, as JSON
 out = struct("answer", answer, "structured", structured, ...
     "anchorDate", fomc.util.fmtDate(s.ctx.asOf), "seconds", toc(t0), ...
-    "citations", {num2cell(cites)}, "warning", warning, "toolCalls", {packCalls(calls, lookupsOf(s))});
+    "citations", {num2cell(cites)}, "warning", warning, "toolCalls", {packCalls(calls, lookupsOf(s), agentsOf(s, numel(calls)))});
 json = jsonencode(out);
 end
 
@@ -88,6 +91,14 @@ if isfield(st, "evidence") && ~isempty(st.evidence)
 end
 end
 
+function mode = agentMode()
+% "multi" turns on the organizer and specialist agents (set FOMC_AGENTS=multi); anything else is one agent
+mode = "single";
+if getenv("FOMC_AGENTS") == "multi"
+    mode = "multi";
+end
+end
+
 function n = lookupsOf(s)
 % How many of the turn's calls the harness made before the model started
 n = 0;
@@ -96,7 +107,17 @@ if isfield(s, "lastLookups")
 end
 end
 
-function c = packCalls(calls, nLookups)
+function who = agentsOf(s, n)
+% Which agent made each call: a lookup is its specialist's, anything after is the writer's (single mode: none)
+who = repmat("", 1, n);
+if s.ctx.cfg.agents == "multi"
+    who(:) = "writer";
+    k = min(n, numel(s.lastLookupAgents));
+    who(1:k) = s.lastLookupAgents(1:k);
+end
+end
+
+function c = packCalls(calls, nLookups, who)
 % Tool calls for display: name, arguments, a clipped result, status, time, and whether the harness
 % ran it before the model started (lookup) rather than the model choosing it.
 c = cell(numel(calls), 1);
@@ -107,6 +128,6 @@ for i = 1:numel(calls)
         result = extractBefore(result, 1501) + "...";
     end
     c{i} = struct("name", calls(i).name, "args", calls(i).args, "result", result, ...
-        "ok", calls(i).ok, "ms", calls(i).ms, "lookup", i <= nLookups);
+        "ok", calls(i).ok, "ms", calls(i).ms, "lookup", i <= nLookups, "agent", who(i));
 end
 end

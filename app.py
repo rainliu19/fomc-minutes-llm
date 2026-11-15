@@ -211,7 +211,8 @@ def progress(session_id: str, after: int = 0, owner: str = Depends(owner_of)):
             except json.JSONDecodeError:
                 continue
             events.append({k: e.get(k) for k in ("type", "kind", "series", "name", "args", "ok", "ms", "round",
-                                                 "nToolCalls", "attempt", "stats")})
+                                                 "nToolCalls", "attempt", "stats", "agent", "to", "stage", "agents", "route", "pass",
+                                                 "issues", "error", "reason", "parallel")})
         after = len(lines)
     return {"events": events, "next": after}
 
