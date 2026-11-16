@@ -7,6 +7,9 @@ function [text, recs] = dataPrefetch(ctx, question, skip)
 %   months earlier. text goes in front of the question; recs is the record for the trace and
 %   the figure check. Questions about no data topic get nothing. skip: series to leave out
 %   (fomc.focus.prefetch passes the ones another lookup already gives).
+%   A question that names months (fomc.focus.monthsNamed) all after the newest value these series show
+%   gets a prefetchNotice instead: the harness answers it, since a small model restates the latest value
+%   as the value for the month asked. A month any series shows, or no month named, gets the figures.
 
 text = "";
 recs = struct("name", {}, "args", {}, "result", {}, "ok", {}, "ms", {});
@@ -26,6 +29,8 @@ names = fomc.data.plainNames();
 G = fomc.data.coreGroups();
 lines = strings(0, 1);
 series = cell(0, 1);
+newest = datetime(1, 1, 1);                 % the newest observation any of these series shows
+first = "";                                 % the first series' latest value, for the notice
 for id = ids.'
     [T, note] = fomc.data.valueAsOf(ctx.D, id, ctx.asOf);
     name = displayName(names, id);
@@ -34,6 +39,10 @@ for id = ids.'
         continue
     end
     latest = T(end, :);
+    newest = max(newest, latest.date);
+    if first == ""
+        first = "The latest " + name + " is " + fmt(latest.value, ctx.D.dict, id) + " on " + fomc.util.fmtDate(latest.date) + ".";
+    end
     ago12 = nearest(T, latest.date - calyears(1));
     ago3 = nearest(T, latest.date - calmonths(3));
     line = "- " + name + " (" + id + "): " + fmt(latest.value, ctx.D.dict, id) + " on " + fomc.util.fmtDate(latest.date);
@@ -55,6 +64,20 @@ for id = ids.'
     end
     lines(end+1, 1) = line + "."; %#ok<AGROW>
     series{end+1, 1} = struct("seriesId", id, "label", name, "rows", {rows}); %#ok<AGROW>
+end
+
+months = fomc.focus.monthsNamed(question);
+if ~isempty(months) && all(months > newest)
+    verb = " is";
+    if numel(months) > 1, verb = " are"; end
+    reply = strjoin(unique(string(months, "MMMM yyyy"), "stable"), " and ") + verb + " not known as of " + ...
+        fomc.util.fmtDate(ctx.asOf) + ". " + first;
+    if first == ""
+        reply = reply + "No value was public yet for this series.";
+    end
+    text = "[" + reply + " Say this plainly.]";
+    recs(end+1) = struct("name", "prefetchNotice", "args", struct(), "result", reply, "ok", true, "ms", 0);
+    return
 end
 
 result = struct("anchorDate", fomc.util.fmtDate(ctx.asOf), "series", {series});

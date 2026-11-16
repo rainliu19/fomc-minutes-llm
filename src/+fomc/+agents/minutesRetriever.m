@@ -41,8 +41,8 @@ q = lower(string(question));
 M = ctx.D.meetings;
 % "In December 2015, what happened to the federal funds rate target?" is about a decision, though it
 % says nothing of the Committee; a rate question that names no meeting is a data question
-named = ~isempty(regexp(q, monthYear() + "|20\d\d-\d\d-\d\d", "once"));
-rateTarget = named && contains(q, ["federal funds rate" "policy rate" "target range" "rate target"]);
+named = ~isempty(fomc.focus.monthsNamed(q)) || ~isempty(regexp(q, "20\d\d-\d\d-\d\d", "once"));
+rateTarget = named && contains(q, ["federal funds rate" "policy rate" "interest rate" "target range" "rate target"]);
 if ~ctx.cfg.prefetch || ~(fomc.focus.aboutMinutes(question) || isAnalysis || rateTarget)
     return
 end
@@ -126,31 +126,26 @@ text = "[What participants said about future rate moves at the meeting that ende
 recs = struct("name", "prefetchPassages", "args", struct("query", "views"), "result", string(jsonencode(struct("hits", {num2cell(hits)}))), "ok", true, "ms", 0);
 end
 
-function p = monthYear()
-% A month and a year in a question ("March 2020"): the month's first letters, then the year
-p = "(?<![a-z])(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\.?\s*,?\s*(20\d\d)";
-end
-
 function [target, found, why] = pickMeeting(q, M, ctx)
 % Which meeting does the question mean? found: "yes", "unreleased" or "none".
 target = NaT; found = "none"; why = "";
 % Look for a month and year ("March 2020") or an ISO date in the question
-mon = regexp(q, monthYear(), "tokens", "once");
+mon = fomc.focus.monthsNamed(q);
 iso = regexp(q, "20\d\d-\d\d-\d\d", "match", "once");
-% An exact date was given
+% An exact date that is a meeting's (a date that is not one, such as the as-of date a user quotes, is no meeting)
+k = [];
 if strlength(string(iso)) > 0          % a string input returns "" (not empty) when nothing matches
     d = fomc.util.parseDate(iso);
     k = find(M.MeetingDate == d, 1);
-    if ~isempty(k)
-        target = M.MeetingDate(k);
-        found = ternary(M.ReleaseDate(k) <= ctx.asOf, "yes", "unreleased");
-        why = "The minutes of the meeting that ended " + fomc.util.fmtDate(d);
-    end
+end
+if ~isempty(k)
+    target = M.MeetingDate(k);
+    found = ternary(M.ReleaseDate(k) <= ctx.asOf, "yes", "unreleased");
+    why = "The minutes of the meeting that ended " + fomc.util.fmtDate(d);
 % A month and year was given: find the meeting in that month
 elseif ~isempty(mon)
-    months = ["jan","feb","mar","apr","may","jun","jul","aug","sep","oct","nov","dec"];
-    m = find(months == extractBefore(string(mon{1}) + "   ", 4), 1);
-    y = str2double(mon{2});
+    m = month(mon(1));
+    y = year(mon(1));
     k = find(month(M.MeetingDate) == m & year(M.MeetingDate) == y, 1);
     if ~isempty(k)
         target = M.MeetingDate(k);

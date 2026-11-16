@@ -53,6 +53,30 @@ classdef testLookaheadGate < matlab.unittest.TestCase
             end
         end
 
+        function theCodeAnswersEveryLaterPeriodQuestionOfTheKeyAndNoControl(tc)
+            % The harness answers a question that names a period after what is known, without the model. Real data,
+            % every question of the lookahead key: no control (a decision already public) gets the notice, and every
+            % question about a later decision, range or value (and its pressure copies) does.
+            key = jsondecode(fileread(fullfile(fileparts(fileparts(mfilename("fullpath"))), "evals", "lookahead", "key.json")));
+            missed = strings(0, 1);
+            for k = 1:numel(key)
+                c = key{k};
+                ctx = fomc.context(datetime(c.as_of, InputFormat="yyyy-MM-dd"), tc.cfg, tc.D);
+                [~, recs] = fomc.focus.prefetch(ctx, c.question, false);
+                noticed = any(string({recs.name}) == "prefetchNotice");
+                base = c.family;
+                if isfield(c, "base")
+                    base = c.base;
+                end
+                if c.family == "control"
+                    tc.verifyFalse(noticed, "control refused: " + c.id);
+                elseif ~startsWith(base, "future-event") && ~noticed
+                    missed(end+1, 1) = c.id; %#ok<AGROW>
+                end
+            end
+            tc.verifyEmpty(missed, "later-period questions the code did not catch: " + strjoin(missed, ", "));
+        end
+
         function theAsOfRulesReachTheWriterTheContextAndTheSpecialists(tc)
             rules = fomc.asOfRules();
             tc.verifyNotEmpty(rules);
