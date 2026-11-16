@@ -57,6 +57,18 @@ classdef testAgentsCritic < matlab.unittest.TestCase
             tc.verifyEqual(numel(m2.Seen), 1, "an answer about what participants expected passes");
         end
 
+        function anEffectsAnswerMustCiteAParagraphOnlyWhenTheLookupsGaveOne(tc)
+            q = "What did the 2022 increases do to mortgage rates?";
+            m = fomc.llm.Mock({struct("content", "x")});
+            s = fomc.newSession(datetime(2020,3,1), fomc.config(verbose=false), Llm=@m.call, Data=tc.D, TracePath=string(tempname) + ".jsonl");
+            withIds = struct("name", "prefetchPassages", "result", "The staff forecast [2020-01-29/staffOutlook/1] tilted to the upside.");
+            noIds = struct("name", "getSnapshot", "result", "{""series"":[]}");
+            [~, ~, uncited] = fomc.guard.review("Mortgage rates rose.", s, withIds, q, "chat", []);
+            [~, ~, nothingToCite] = fomc.guard.review("Mortgage rates rose.", s, noIds, q, "chat", []);
+            tc.verifySubstring(uncited, "cites no paragraph");
+            tc.verifyEqual(nothingToCite, "");
+        end
+
         function criticRoundsAreCappedInCode(tc)
             cfg = fomc.config(verbose=false, criticRounds=1);
             [~, m, s] = tc.ask("Hello there.", "The range is 1-1/2 to 1-3/4 percent.", "Fine.", cfg);

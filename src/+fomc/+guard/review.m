@@ -30,11 +30,17 @@ if ~isempty(badFigures)
 elseif format == "chat" && fomc.focus.asksNextMove(lower(message)) && ...
         ~isempty(regexp(answer, "^\W*(yes|no)(?![a-z])|^[^.]*(?<![a-z])(the fed|the committee|fomc) should(?![a-z])", "once", "ignorecase"))
     warning = "The answer says yes or no, or what the Fed should do. The minutes only show what participants expected, so say that.";
-elseif fomc.focus.aboutMinutes(message) && format == "chat" && ~any(string({calls.name}) == "prefetchNotice")
+elseif format == "chat" && ~any(string({calls.name}) == "prefetchNotice") && ...
+        (fomc.focus.aboutMinutes(message) || asksEffectsWithIds(message, calls))
     if isempty(cites) || ~any([cites.ok])
         warning = "This answer cites no paragraph from the minutes. Treat it as unverified.";
     elseif ~all([cites.ok])
         warning = "Some citations could not be verified.";
     end
 end
+end
+
+function tf = asksEffectsWithIds(message, calls)
+% A question about what the rate path means ahead, when the lookups gave paragraphs to cite (the staff outlook)
+tf = fomc.focus.asksEffectsAhead(lower(message)) && ~isempty(fomc.guard.idsIn(string({calls.result})));
 end

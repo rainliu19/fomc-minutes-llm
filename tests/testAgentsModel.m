@@ -141,6 +141,16 @@ classdef testAgentsModel < matlab.unittest.TestCase
             tc.verifyEqual(q.text, "", "a data question that names no meeting gets no minutes");
         end
 
+        function theConsumerReportHoldsTheDirectionAndTheToolNoteButNotTheMarketFiguresAgain(tc)
+            brief = tc.brief("What do the latest minutes mean for my mortgage?");
+            brief.reports = struct("scorer", fomc.agents.report("scorer", meetingDate="2020-01-29", direction="hold"), ...
+                "market", fomc.agents.report("market", text="UNRATE: 3.5% on 2020-02-07"));
+            r = fomc.agents.consumerView(tc.ctx, brief);
+            tc.verifySubstring(r.text, "hold");
+            tc.verifySubstring(r.text, "not implemented");
+            tc.verifyFalse(contains(r.text, "UNRATE"), "the writer already reads the market report");
+        end
+
         function theWriterReadsTheSpecialistsReportsAndEachCallIsLabelled(tc)
             reply = fomc.llm.Mock({struct("content", "Short report [2020-01-29/policyAction/1].")});
             factory = @(~, ~, ~) @(h, t, f) reply.call(h, t, f);
