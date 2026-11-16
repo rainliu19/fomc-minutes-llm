@@ -1,22 +1,22 @@
 function [text, recs] = prefetch(ctx, question, isAnalysis, followsRatePath)
-%PREFETCH Lookups the harness does before the model starts: minutes, data, rate path, economy, outlook.
+%PREFETCH Stage-1 lookups as one text: the minutes agent's, then the market agent's.
 %   [text, recs] = fomc.focus.prefetch(ctx, question, isAnalysis, followsRatePath)
-%   The minutes part is fomc.focus.minutesPrefetch and the market part is
-%   fomc.focus.marketPrefetch (data, rate path, economy, outlook); followsRatePath (default
-%   false) is true for a follow-up that only changes the period. Both are added to the
-%   question, minutes first. The multi-agent organizer runs the two parts as two agents
-%   (fomc.agents.run); this is the single-agent version.
+%   For callers that do not go through the organizer (fomc.runTurn without Lookups, tests).
+%   followsRatePath (default false) is true for a follow-up that only changes the period.
+%   The organizer (fomc.agents.run) runs the same two agents one by one, with the trace.
 
 if nargin < 4
     followsRatePath = false;
 end
-[text, recs] = fomc.focus.minutesPrefetch(ctx, question, isAnalysis);
-[marketText, marketRecs] = fomc.focus.marketPrefetch(ctx, question, followsRatePath);
-if marketText ~= ""
+brief = struct("question", question, "isAnalysis", isAnalysis, "followsRatePath", followsRatePath);
+m = fomc.agents.minutesRetriever(ctx, brief);
+k = fomc.agents.marketData(ctx, brief);
+text = m.text;
+if k.text ~= ""
     if text ~= ""
         text = text + newline;
     end
-    text = text + marketText;
-    recs = [recs, marketRecs];
+    text = text + k.text;
 end
+recs = [m.calls, k.calls];
 end

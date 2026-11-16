@@ -23,8 +23,6 @@ function cfg = config(nvp)
 %                      June 2022 minutes scored 0.25, 0.5 and 0 in three runs).
 %   scorerModel        Model for the rubric scorer, independent of the agent.
 %   verbose            Print each tool call as it runs.
-%   agents             "single" (one agent, the default) or "multi" (the organizer runs the
-%                      specialist agents first: see fomc.agents.run and docs/agents.md).
 %   parallel           Run the agents of one stage at the same time on thread workers, when
 %                      memory allows. Off: they run one after another (a stage is mostly
 %                      quick lookups, and the one model answers one call at a time anyway).
@@ -52,7 +50,6 @@ arguments
     nvp.compactAtTokens (1,1) double = 5500
     nvp.scorerModel (1,1) string = ""
     nvp.verbose (1,1) logical = true
-    nvp.agents (1,1) string {mustBeMember(nvp.agents, ["single", "multi"])} = "single"
     nvp.parallel (1,1) logical = false
     nvp.criticRounds (1,1) double {mustBeInteger, mustBePositive} = 2
     nvp.dataDir (1,1) string = ""

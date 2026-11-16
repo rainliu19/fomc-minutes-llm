@@ -34,7 +34,9 @@ fomc.trace.logEvent(ctx, "user_message", struct("text", userMsg, ...
 % Skill-matched scoring requests use the dedicated structured scorer and validation loop.
 if fomc.focus.wantsScoring(userMsg)
     if isempty(nvp.Lookups)
-        [answer, structured] = fomc.skills.scoreRequest(s, userMsg);
+        r = fomc.agents.rubricScorer(s.ctx, struct("route", "score", "question", userMsg, "session", s));
+        answer = r.text;
+        structured = r.structured;
     else
         answer = nvp.Lookups.text;
         structured = nvp.Lookups.structured;

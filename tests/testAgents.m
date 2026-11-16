@@ -19,16 +19,16 @@ classdef testAgents < matlab.unittest.TestCase
 
     methods (TestMethodSetup)
         function makeContext(tc)
-            tc.cfg = fomc.config(verbose=false, agents="multi");
+            tc.cfg = fomc.config(verbose=false);
             tc.ctx = fomc.context(datetime(2020,3,1), tc.cfg, tc.D, tracePath=string(tempname) + ".jsonl");
         end
     end
 
     methods (Test)
         % ---- contract ----
-        function singleModeIsTheDefault(tc)
+        function defaultsAreSet(tc)
             c = fomc.config();
-            tc.verifyEqual([c.agents, string(c.parallel), string(c.criticRounds)], ["single" "false" "2"]);
+            tc.verifyEqual([string(c.parallel), string(c.criticRounds)], ["false" "2"]);
         end
 
         function aReportHasEveryContractField(tc)
@@ -135,7 +135,7 @@ classdef testAgents < matlab.unittest.TestCase
             st = fomc.agents.route(q);
             out = cell(1, 2);
             for j = 1:2
-                cfg = fomc.config(verbose=false, agents="multi", parallel=(j == 2));
+                cfg = fomc.config(verbose=false, parallel=(j == 2));
                 ctx = fomc.context(datetime(2020,3,1), cfg, tc.D, tracePath=string(tempname) + ".jsonl");
                 out{j} = fomc.agents.runStage(ctx, st{1}, 1, brief);
                 ev = eventsOf(ctx.tracePath);
@@ -148,17 +148,19 @@ classdef testAgents < matlab.unittest.TestCase
             end
         end
 
-        % ---- the writer sees the same lookups as in single mode ----
-        function minutesAndNumbersQuestionsGiveTheSameFirstMessageAsSingleMode(tc)
+        % ---- the writer sees the same lookups as the harness makes ----
+        function theOrganizerSendsTheWriterTheSameLookupsAsTheHarnessDoes(tc)
             for q = ["What did the Fed decide at the latest meeting?" "What is the unemployment rate?" ...
                     "What did the minutes say about unemployment and what is the rate now?"]
                 first = strings(1, 2);
-                modes = ["single" "multi"];
                 for j = 1:2
                     m = fomc.llm.Mock({struct("content", "Ok.")});
-                    cfg = fomc.config(verbose=false, agents=modes(j));
-                    [~, ~, ~, s] = fomc.runAgent(q, datetime(2020,3,1), Config=cfg, Llm=@m.call, Data=tc.D, ...
-                        TracePath=string(tempname) + ".jsonl");
+                    s = fomc.newSession(datetime(2020,3,1), tc.cfg, Llm=@m.call, Data=tc.D, TracePath=string(tempname) + ".jsonl");
+                    if j == 1
+                        s = fomc.runTurn(s, q);          % lookups made inside the loop (fomc.focus.prefetch)
+                    else
+                        s = fomc.agents.run(s, q);       % lookups made by the specialist agents
+                    end
                     first(j) = string(s.history.Messages{1}.content);
                 end
                 tc.verifyEqual(first(2), first(1), q);
@@ -189,15 +191,6 @@ classdef testAgents < matlab.unittest.TestCase
                 Config=tc.cfg, Llm=@m.call, Data=tc.D, TracePath=string(tempname) + ".jsonl");
             tokens = strlength(string(s.history.Messages{1}.content)) / 3.3;
             tc.verifyLessThanOrEqual(tokens, 5000 - 2375);
-        end
-
-        function singleModeEmitsNoAgentEvents(tc)
-            cfg = fomc.config(verbose=false);
-            m = fomc.llm.Mock({struct("content", "Ok.")});
-            fomc.runAgent("What did the Fed decide?", datetime(2020,3,1), Config=cfg, Llm=@m.call, Data=tc.D, ...
-                TracePath=tc.ctx.tracePath);
-            types = typesOf(eventsOf(tc.ctx.tracePath));
-            tc.verifyFalse(any(ismember(types, ["route" "stage" "handoff" "handback" "critic"])));
         end
     end
 end

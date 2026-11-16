@@ -48,7 +48,7 @@ classdef testAgentsCritic < matlab.unittest.TestCase
         end
 
         function criticRoundsAreCappedInCode(tc)
-            cfg = fomc.config(verbose=false, agents="multi", criticRounds=1);
+            cfg = fomc.config(verbose=false, criticRounds=1);
             [~, m, s] = tc.ask("Hello there.", "The range is 1-1/2 to 1-3/4 percent.", "Fine.", cfg);
             tc.verifyEqual(numel(m.Seen), 1);
             tc.verifyTrue(s.lastReview.unverified);
@@ -68,7 +68,7 @@ classdef testAgentsCritic < matlab.unittest.TestCase
         function [answer, m, s] = ask(tc, q, varargin)
             % Run one multi-agent turn; varargin: scripted replies (text or reply struct), then optional cfg and trace path
             script = {};
-            cfg = fomc.config(verbose=false, agents="multi");
+            cfg = fomc.config(verbose=false);
             tp = string(tempname) + ".jsonl";
             for i = 1:numel(varargin)
                 v = varargin{i};

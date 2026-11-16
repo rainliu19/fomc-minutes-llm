@@ -252,8 +252,8 @@ Each run writes `logs/trace-<runId>.jsonl` (web sessions: `logs/web-<session>.js
 
 ## Multi-agent mode
 
-`cfg.agents="multi"` (web app: `FOMC_AGENTS=multi`), `cfg.parallel`, `cfg.criticRounds`; see `docs/agents.md`. New trace
+`cfg.parallel`, `cfg.criticRounds`; see `docs/agents.md`. New trace
 events: `route {route, agents}`, `stage {stage, agents, parallel}`, `handoff {to, stage, tools}`,
 `handback {agent, to, ok, ms, nIds, error}`, `critic {round, pass, issues}`, `parallel_off {reason}`. Events inside an
-agent carry `agent`. `fomc.agents.run` replaces `fomc.runTurn` as the entry; with `"single"` it calls it.
+agent carry `agent`. `fomc.agents.run` is the entry for every turn; `fomc.runTurn` is its writer loop.
 

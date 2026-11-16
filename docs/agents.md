@@ -3,16 +3,15 @@
 One writer model (Qwen3 4B, local) and four small specialist agents run by an organizer. The design is
 `docs/subagent_architecture.html`; the patterns are the OpenAI Agents SDK's, in MATLAB.
 
-## Modes
+## How a turn runs
 
-| `cfg.agents` | What runs |
-|---|---|
-| `"single"` (default) | `fomc.runTurn`: the harness does the lookups, one model call loop writes the answer. |
-| `"multi"` (`FOMC_AGENTS=multi` for the web app) | `fomc.agents.run`: route, specialists in stages, the same writer loop on their reports, then the critic. |
+Every question goes through `fomc.agents.run` (the web app, `fomc.runAgent`, `fomc.chat`): route, specialists in
+stages, the writer loop (`fomc.runTurn`) on their reports, then the critic.
 
 `cfg.parallel` (default false) runs a stage's agents at the same time on thread workers (Parallel Computing
-Toolbox). It is off when memory is short (`fomc.util.memoryShort`; a `parallel_off` event says so). One model
-call runs at a time either way, so the gain is only the code lookups (about 0.7 s).
+Toolbox, and only if memory allows: `fomc.util.memoryShort`; a `parallel_off` event says so). It is off because
+the stage-1 lookups take about 0.1 s warm, less than the hand-off to a worker costs, and the one local model
+answers one call at a time either way. Turn it on when a specialist starts doing slow work.
 `cfg.criticRounds` (default 2) caps the critic: the draft is round 1, so one rewrite at most.
 
 ## The agents (`agents/*.md`, one file each)
@@ -21,16 +20,16 @@ Frontmatter: `name`, `description`, `tools` (the only tools the agent may call; 
 others). The body is the agent's instructions (phase 2 of the roadmap tunes these). `organizer.md` also holds
 the `stages` line (the order) and the critic's rewrite message.
 
-| Stage | Agent | Today it is | Owner replaces |
+| Stage | Agent | Where the code is | Owner edits |
 |---|---|---|---|
-| 1 | `minutes` | `fomc.focus.minutesPrefetch` | `+agents/minutesRetriever.m` |
-| 1 | `market` | `fomc.focus.marketPrefetch` | `+agents/marketData.m` |
-| 2 | `scorer` | `fomc.skills.scoreRequest`; `fomc.data.minutesDirection` | `+agents/rubricScorer.m` |
+| 1 | `minutes` | Rain's lookup, in `+agents/minutesRetriever.m` (function `lookup`) | the same file |
+| 1 | `market` | Alex's lookup, in `+agents/marketData.m` (function `lookup`) | the same file |
+| 2 | `scorer` | Aarya's scorer, in `+agents/rubricScorer.m` (function `scoreQuestion`); `fomc.data.minutesDirection` for household questions | the same file |
 | 3 | `consumer` | the `scoreConsumerImpact` stub | `+agents/consumerView.m` |
 
 Routes (by code, `fomc.agents.route`): a scoring question runs `scorer`; a question about what the minutes or
 rates mean for households (`fomc.focus.asksEffectsAhead`) runs all three stages; anything else runs stage 1.
-Stage 1 sends the writer the same text as single mode.
+Stage 1 sends the writer the same text as `fomc.focus.prefetch`, which calls the same two agents (a test checks it).
 
 ## Agent contract
 
@@ -46,4 +45,4 @@ Whatever you return passes the date gate (nothing after the anchor).
 ## Transparency
 
 Trace events: `route`, `stage`, `handoff`, `handback`, `critic`, `parallel_off`; every event inside an agent has
-`agent`. The page shows them live and tags each tool with its agent (`FOMC_AGENTS=multi`).
+`agent`. The page shows them live and tags each tool with its agent.

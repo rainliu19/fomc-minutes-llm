@@ -20,7 +20,7 @@ end
 
 % First message of a web session: create the session, anchored at the date given (or the latest release)
 if ~fomc.web.store("has", sessionId)
-    cfg = fomc.config(verbose=false, agents=agentMode());
+    cfg = fomc.config(verbose=false);
     if model ~= ""
         cfg.model = model;
     end
@@ -50,7 +50,7 @@ fomc.web.store("set", sessionId, s);
 % Check the answer (ids, plain words, citations, figures) and choose the warning for the page, if any
 [answer, cites, warning] = fomc.guard.review(answer, s, calls, message, format, structured);
 isSkillScore = isstruct(structured) && isscalar(structured) && isfield(structured, "skill");
-if s.ctx.cfg.agents == "multi" && s.lastAgentIssues ~= ""   % a specialist agent failed: say so first
+if s.lastAgentIssues ~= ""   % a specialist agent failed: say so first
     warning = strip(s.lastAgentIssues + " " + warning);
 end
 
@@ -91,14 +91,6 @@ if isfield(st, "evidence") && ~isempty(st.evidence)
 end
 end
 
-function mode = agentMode()
-% "multi" turns on the organizer and specialist agents (set FOMC_AGENTS=multi); anything else is one agent
-mode = "single";
-if getenv("FOMC_AGENTS") == "multi"
-    mode = "multi";
-end
-end
-
 function n = lookupsOf(s)
 % How many of the turn's calls the harness made before the model started
 n = 0;
@@ -108,13 +100,10 @@ end
 end
 
 function who = agentsOf(s, n)
-% Which agent made each call: a lookup is its specialist's, anything after is the writer's (single mode: none)
-who = repmat("", 1, n);
-if s.ctx.cfg.agents == "multi"
-    who(:) = "writer";
-    k = min(n, numel(s.lastLookupAgents));
-    who(1:k) = s.lastLookupAgents(1:k);
-end
+% Which agent made each call: a lookup is its specialist's, anything after is the writer's
+who = repmat("writer", 1, n);
+k = min(n, numel(s.lastLookupAgents));
+who(1:k) = s.lastLookupAgents(1:k);
 end
 
 function c = packCalls(calls, nLookups, who)

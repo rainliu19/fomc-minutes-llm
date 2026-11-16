@@ -1,14 +1,14 @@
 function [s, answer, structured, calls] = run(s, msg, nvp)
 %RUN One user turn through the organizer: route, run the specialists in stages, write, check.
 %   [s, answer, structured, calls] = fomc.agents.run(s, msg, Format="chat" | "analysis")
-%   With cfg.agents "single" (the default) this is fomc.runTurn. With "multi":
+%   The entry for every turn (web app, fomc.runAgent, fomc.chat):
 %     1. fomc.agents.route picks the stages (agents/organizer.md);
 %     2. each stage's agents run (fomc.agents.runStage) and hand back reports;
 %     3. their texts become the lookups the writer sees, in place of fomc.focus.prefetch, and
 %        fomc.runTurn runs its usual loop on them to write the answer (a failed agent is named
 %        in the lookups, so the answer says that part is missing);
 %     4. fomc.agents.critic checks the answer.
-%   Score questions take the scorer's answer directly, as in single mode. Trace events from
+%   Score questions take the scorer's answer directly. Trace events from
 %   inside an agent carry its name; s.lastLookupAgents says which agent made each lookup and
 %   s.lastAgentIssues which agents failed ("" if none).
 
@@ -17,11 +17,6 @@ arguments
     msg (1,1) string
     nvp.Format (1,1) string {mustBeMember(nvp.Format, ["chat", "analysis"])} = "chat"
 end
-if s.ctx.cfg.agents == "single"
-    [s, answer, structured, calls] = fomc.runTurn(s, msg, Format=nvp.Format);
-    return
-end
-
 ctx = s.ctx;
 ctx.focus = fomc.focus.window(msg, ctx.asOf, ctx.cfg);
 ctx.agent = "organizer";

@@ -31,7 +31,7 @@ while true
         fprintf("Conversation cleared.\n\n");
         continue
     end
-    [s, answer] = fomc.runTurn(s, q);
+    [s, answer] = fomc.agents.run(s, q);
     fprintf("\nASSISTANT: %s\n\n", answer);
 end
 end
