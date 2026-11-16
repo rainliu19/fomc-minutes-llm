@@ -77,6 +77,15 @@ classdef testAgentsModel < matlab.unittest.TestCase
             tc.verifyEqual(seen.calls, 1);
         end
 
+        function aQuestionBeforeAnyMinutesWereReleasedGetsAPlainNotice(tc)
+            % Anchor before the first release: there is no "latest released meeting" to name
+            ctx = fomc.context(datetime(2000,1,1), fomc.config(verbose=false), tc.D, tracePath=string(tempname) + ".jsonl");
+            brief = struct("question", "What did the Committee decide at its January 2020 meeting?", "isAnalysis", false, "followsRatePath", false);
+            r = fomc.agents.minutesRetriever(ctx, brief);
+            tc.verifySubstring(r.text, "No minutes have been released yet.");
+            tc.verifyTrue(r.ok);
+        end
+
         function evidenceShorterThanTheLimitGoesToTheWriterUnchanged(tc)
             tc.ctx.cfg.agentSummarizeOver = 100;
             [short, s1] = tc.specialist("market", "UNRATE: 3.5% on 2020-02-07", {struct("content", "x")});
