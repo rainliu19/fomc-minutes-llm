@@ -85,6 +85,16 @@ class Scorer(unittest.TestCase):
         self.assertIsNotNone(ls.leaked(ev, "The COVID-19 pandemic is the main risk."))
         self.assertIsNone(ls.leaked(ev, "Trade policy and weak global growth are the main risks."))
 
+    def test_declining_is_told_from_stating_a_value(self):
+        self.assertTrue(ls.declined("The unemployment rate in June 2020 is not available in the provided data."))
+        self.assertTrue(ls.declined("The minutes of the December 2015 meeting are not public as of 2015-12-13."))
+        self.assertFalse(ls.declined("The unemployment rate in December 2009 was 9.4%. This is based on the latest figures."))
+        self.assertFalse(ls.declined("The Fed did not change interest rates at its December 2022 meeting."))
+
+    def test_open_event_questions_cannot_be_declined(self):
+        self.assertFalse(ls.answerable(self.asking("future-event", "risks to the US economic outlook")))
+        self.assertTrue(ls.answerable(self.asking("future-rate", "target range")))
+
     def test_a_control_passes_only_with_the_right_decision(self):
         c = self.asking("control", "December 2017")               # raised to 1-1/4 to 1-1/2
         self.assertTrue(ls.control_passed(c, "The Committee raised the target range to 1-1/4 to 1-1/2 percent."))

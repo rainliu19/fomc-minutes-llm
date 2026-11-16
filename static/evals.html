@@ -69,11 +69,15 @@
 
   <h2>Lookahead bias</h2>
   <div class="card" id="look-intro"></div>
-  <div class="card" style="margin-top:10px"><table id="look-runs"></table></div>
+  <h3 style="margin:14px 0 6px;font-size:15px">Trend: the error rate as stops and prompts are added</h3>
+  <div class="card"><table id="look-trend"></table></div>
+  <p class="note">Each row adds something to the one above (per model). Change = points of error rate against the previous row; negative is better. Rows from a run that has not finished are marked partial.</p>
+  <h3 style="margin:14px 0 6px;font-size:15px">All runs</h3>
+  <div class="card"><table id="look-runs"></table></div>
   <p class="note" id="look-note"></p>
   <div class="card" style="margin-top:10px"><table id="look-fam"></table></div>
   <details class="sec" id="sec-leaks">
-    <summary title="Click to collapse or expand"><h2>Answers that leaked</h2></summary>
+    <summary title="Click to collapse or expand"><h2>Answers that were errors</h2></summary>
     <p><label for="look-pick" class="note">Run </label> <select id="look-pick"></select></p>
     <div class="card"><table id="look-leaks" class="q"></table></div>
   </details>
@@ -220,29 +224,43 @@ function questions(all, key) {
 const FAMILIES = {"future-decision": "A rate decision made after the as-of date", "future-rate": "The target range months after it",
   "future-data": "An unemployment rate published after it", "future-event": "An event (a crisis, a policy tool, a new Chair)",
   "pressure": "The same facts, asked to use general knowledge", "control": "Control: a decision already public (the answer must be given)"};
-const rate = p => p && p.n ? p.leaked + "/" + p.n + " (" + pct(p.leaked, p.n) + ", 95% range " + Math.round(100 * p.ci95[0]) + "-" + Math.round(100 * p.ci95[1]) + "%)" : "n/a";
-const modeName = {team: "Team", one: "One agent", bare: "Bare model"};
+const rate = p => p && p.n ? p.errors + "/" + p.n + " (" + pct(p.errors, p.n) + ", 95% range " + Math.round(100 * p.ci95[0]) + "-" + Math.round(100 * p.ci95[1]) + "%)" : "n/a";
+const modeName = {open: "Baseline (no guards)", team: "Guards (team)", one: "Guards (one agent)"};
 
 function lookahead({key, runs}) {
   if (!key.length) return;
   const by = {}; key.forEach(c => (by[c.family] = by[c.family] || []).push(c));
   const scored = key.filter(c => c.family !== "control");
-  el("look-intro").innerHTML = `<p style="margin-top:0">The data are cut off at the as-of date, but a model may have been trained on what happened later. ${scored.length} questions ask about a fact that became public <b>after</b> the as-of date (and ${(by.control || []).length} controls ask about one that was public, to catch a model that refuses everything). An answer that states the later fact, and was not given it by a tool, <b>leaked</b>. The lookahead error rate is leaked answers out of ${scored.length}.</p>
+  el("look-intro").innerHTML = `<p style="margin-top:0">The data are cut off at the as-of date, but a model may have been trained on what happened later. ${scored.length} questions ask about a fact that became public <b>after</b> the as-of date (and ${(by.control || []).length} controls ask about one that was public, to catch a model that refuses everything). An answer is an <b>error</b> when it presents something after the as-of date as known: it states the later fact, or, for a question about one fact, gives a value instead of saying it is not known on that date (an invented value is still the model ignoring the date). <b>The lookahead error rate is errors out of ${scored.length}.</b></p>
     <table>${Object.keys(FAMILIES).map(f => `<tr><td>${esc(FAMILIES[f])}</td><td>${(by[f] || []).length}</td><td style="text-align:left;white-space:normal" class="note">${esc((by[f] || [{question: ""}])[0].question)} <i>(as of ${esc((by[f] || [{as_of: ""}])[0].as_of)})</i></td></tr>`).join("")}</table>`;
   const rows = runs.map(r => r.summary);
   el("look-runs").innerHTML = "<tr><th>Model</th><th>How it ran</th><th>Prompt</th><th>Lookahead error rate</th><th>Without pressure</th><th>Held out</th><th>Answered by code</th><th>Controls passed</th></tr>" +
-    (rows.length ? rows.map(s => `<tr><td>${esc(s.label)}</td><td>${modeName[s.mode]}</td><td>${esc(s.tag)}</td><td><b>${rate(s.overall)}</b>${s.partial ? ` <span class="pill">partial: ${s.n_done} of ${s.n_key}</span>` : ""}</td><td>${rate(s.without_pressure)}</td><td>${rate(s.held_out)}</td><td>${s.answered_by_code} of ${s.n_done}</td><td>${s.controls.passed}/${s.controls.n}</td></tr>`).join("") : '<tr><td colspan="8" class="note">No runs yet. Run <code>python tests/bench_lookahead.py &lt;modelId&gt; --team</code> while the app is running.</td></tr>');
-  el("look-note").textContent = "Lower is better. The patterns catch only the facts in the key, so the real rate is at least this high. Answered by code = the app replied without calling the model (for example a meeting whose minutes are not public yet), which protects the answer but is not the model resisting its memory; the bare model row shows the model alone. Held out = 20% of the questions, set aside before any prompt tuning.";
+    (rows.length ? rows.map(s => `<tr><td>${esc(s.label)}</td><td>${modeName[s.mode]}</td><td>${esc(s.tag)}</td><td><b>${rate(s.overall)}</b>${s.partial ? ` <span class="pill">partial: ${s.n_done} of ${s.n_key}</span>` : ""}</td><td>${rate(s.without_pressure)}</td><td>${rate(s.held_out)}</td><td>${s.answered_by_code} of ${s.n_done}</td><td>${s.controls.passed}/${s.controls.n}</td></tr>`).join("") : '<tr><td colspan="9" class="note">No runs yet. Run <code>python tests/bench_lookahead.py &lt;modelId&gt; --team</code> while the app is running.</td></tr>');
+  // Trend: per model, no stops, then the date, then every stop (one agent, team), then each prompt version in order
+  const STAGE = {open: "Baseline: no guards, the tools can see all the data", one: "Guards: data cutoff and checks (one agent)", team: "Guards: data cutoff and checks"};
+  const order = s => ["open", "one", "team"].indexOf(s.mode) * 1000 + (parseInt(String(s.tag).replace(/\D/g, "")) || 0);
+  const trend = [];
+  [...new Set(rows.map(s => s.model))].forEach(m => {
+    let prev = null;
+    rows.filter(s => s.model === m && order(s) >= 0).sort((a, b) => order(a) - order(b)).forEach(s => {
+      const r = s.overall.n ? 100 * s.overall.errors / s.overall.n : null;
+      const d = prev == null || r == null ? "" : (r - prev >= 0 ? "+" : "") + (r - prev).toFixed(1) + " pts";
+      trend.push(`<tr><td>${esc(s.label)}</td><td style="text-align:left;white-space:normal">${STAGE[s.mode]}${s.mode === "open" ? "" : (s.tag === "v0" ? " (v0, the app as in main)" : " plus prompts (" + esc(s.tag) + ")")}</td><td><b>${rate(s.overall)}</b>${s.partial ? ` <span class="pill">partial ${s.n_done}/${s.n_key}</span>` : ""}</td><td class="${d.startsWith("-") ? "ok" : d.startsWith("+") ? "bad" : ""}">${d || "start"}</td><td>${s.controls.passed}/${s.controls.n}</td></tr>`);
+      if (r != null) prev = r;
+    });
+  });
+  el("look-trend").innerHTML = "<tr><th>Model</th><th>What is added</th><th>Lookahead error rate</th><th>Change</th><th>Controls passed</th></tr>" + (trend.join("") || '<tr><td colspan="6" class="note">No runs yet.</td></tr>');
+  el("look-note").textContent = "Lower is better. Answered by code = the app replied without calling the model (for example a meeting whose minutes are not public yet), which protects the answer but is not the model resisting its memory. Held out = 20% of the questions, set aside before any prompt tuning.";
   const fams = Object.keys(FAMILIES).filter(f => f !== "control");
   el("look-fam").innerHTML = "<tr><th>Run</th>" + fams.map(f => `<th title="${esc(FAMILIES[f])}">${f.replace("future-", "")}</th>`).join("") + "</tr>" +
-    rows.map(s => `<tr><td>${esc(s.label)}, ${modeName[s.mode]}, ${esc(s.tag)}</td>` + fams.map(f => `<td>${s.by_family[f] ? s.by_family[f].leaked + "/" + s.by_family[f].n : "n/a"}</td>`).join("") + "</tr>").join("");
+    rows.map(s => `<tr><td>${esc(s.label)}, ${modeName[s.mode]}, ${esc(s.tag)}</td>` + fams.map(f => `<td>${s.by_family[f] ? s.by_family[f].errors + "/" + s.by_family[f].n : "n/a"}</td>`).join("") + "</tr>").join("");
   const pick = el("look-pick");
   pick.innerHTML = runs.map((r, i) => `<option value="${i}">${esc(r.summary.label)}, ${modeName[r.summary.mode]}, ${esc(r.summary.tag)}</option>`).join("");
   pick.onchange = () => {
     const r = runs[pick.value]; if (!r) { el("look-leaks").innerHTML = ""; return; }
-    const bad = r.cases.filter(c => c.leaked);
-    el("look-leaks").innerHTML = "<tr><th>Question</th><th>As of</th><th>The sentence that leaked</th></tr>" +
-      (bad.length ? bad.map(c => `<tr><td>${esc(c.question)}<details><summary>Show the answer</summary><div class="ans">${esc(c.answer)}</div></details></td><td class="sec">${esc(c.as_of)}</td><td>${esc(c.leak)}</td></tr>`).join("") : '<tr><td colspan="3" class="note">No answer leaked.</td></tr>');
+    const bad = r.cases.filter(c => c.error);
+    el("look-leaks").innerHTML = "<tr><th>Question</th><th>As of</th><th>Why it counts</th></tr>" +
+      (bad.length ? bad.map(c => `<tr><td>${esc(c.question)}<details><summary>Show the answer</summary><div class="ans">${esc(c.answer)}</div></details></td><td class="sec">${esc(c.as_of)}</td><td>${c.leak ? "States the later fact: " + esc(c.leak) : "Gave a value instead of saying it is not known on that date"}</td></tr>`).join("") : '<tr><td colspan="3" class="note">No errors.</td></tr>');
   };
   pick.onchange();
 }
