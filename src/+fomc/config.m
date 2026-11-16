@@ -26,6 +26,10 @@ function cfg = config(nvp)
 %   parallel           Run the agents of one stage at the same time on thread workers, when
 %                      memory allows. Off: they run one after another (a stage is mostly
 %                      quick lookups, and the one model answers one call at a time anyway).
+%   agentSummarizeOver Evidence shorter than this many characters goes to the writer as it is,
+%                      with no sub-agent model call (the lookups are 500 to 1,600 characters; a
+%                      summary of a decision card cost 8 to 20 s and dropped what the writer
+%                      cites). 0: every specialist with evidence summarizes it.
 %   criticRounds       Most answers the critic checks per turn: the draft and, if it fails,
 %                      one rewrite.
 
@@ -51,6 +55,7 @@ arguments
     nvp.scorerModel (1,1) string = ""
     nvp.verbose (1,1) logical = true
     nvp.parallel (1,1) logical = false
+    nvp.agentSummarizeOver (1,1) double {mustBeNonnegative} = 1500
     nvp.criticRounds (1,1) double {mustBeInteger, mustBePositive} = 2
     nvp.dataDir (1,1) string = ""
     nvp.logDir (1,1) string = ""

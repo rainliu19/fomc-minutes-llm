@@ -7,12 +7,13 @@ function r = subAgent(ctx, brief, name, evidence, recs)
 %   enforced by fomc.tools.dispatch), and the evidence is its first message. It may call its
 %   tools for more, then writes a short report. Code checks the report (fomc.guard.checkReport:
 %   no id or number its sources lack); a bad report, a failed model or no model falls back to
-%   the evidence, so facts are never lost. No model call when there is no evidence, in analysis
-%   mode (its grounding check needs the raw text) or without brief.llmFor (a model factory
-%   f(cfg, prompt, tools); fomc.agents.run sets it).
+%   the evidence, so facts are never lost. A report that cites none of the evidence's paragraph
+%   ids also falls back (the writer cannot cite it). No model call when there is no evidence, when it is
+%   shorter than cfg.agentSummarizeOver, in analysis mode (its grounding check needs the raw
+%   text) or without brief.llmFor (a model factory f(cfg, prompt, tools); fomc.agents.run sets it).
 
 r = fomc.agents.report(name, text=evidence, calls=recs);
-if evidence == "" || brief.isAnalysis || ~isfield(brief, "llmFor") || isempty(brief.llmFor)
+if evidence == "" || strlength(evidence) < ctx.cfg.agentSummarizeOver || brief.isAnalysis || ~isfield(brief, "llmFor") || isempty(brief.llmFor)
     return
 end
 c = fomc.agents.catalog();
@@ -34,6 +35,8 @@ else
     bad = fomc.guard.checkReport(answer, [evidence; string({calls.result}).']);
     if ~isempty(bad)
         reason = "not in sources: " + strjoin(bad, ", ");
+    elseif ~isempty(fomc.guard.idsIn(evidence)) && isempty(fomc.guard.idsIn(answer))
+        reason = "no paragraph id kept";
     end
 end
 fomc.trace.logEvent(ctx, "agent_model", struct("ms", round(toc(t0) * 1000), "fallback", reason ~= "", "reason", reason));

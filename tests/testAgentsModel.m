@@ -18,7 +18,7 @@ classdef testAgentsModel < matlab.unittest.TestCase
 
     methods (TestMethodSetup)
         function makeContext(tc)
-            tc.ctx = fomc.context(datetime(2020,3,1), fomc.config(verbose=false), tc.D, tracePath=string(tempname) + ".jsonl");
+            tc.ctx = fomc.context(datetime(2020,3,1), fomc.config(verbose=false, agentSummarizeOver=0), tc.D, tracePath=string(tempname) + ".jsonl");
         end
     end
 
@@ -77,13 +77,31 @@ classdef testAgentsModel < matlab.unittest.TestCase
             tc.verifyEqual(seen.calls, 1);
         end
 
+        function evidenceShorterThanTheLimitGoesToTheWriterUnchanged(tc)
+            tc.ctx.cfg.agentSummarizeOver = 100;
+            [short, s1] = tc.specialist("market", "UNRATE: 3.5% on 2020-02-07", {struct("content", "x")});
+            [long, s2] = tc.specialist("market", "UNRATE: 3.5% on 2020-02-07. " + strjoin(repmat("More.", 1, 30)), {struct("content", "UNRATE was 3.5%.")});
+            tc.verifyEqual(short.text, "UNRATE: 3.5% on 2020-02-07");
+            tc.verifyEqual([s1.calls s2.calls], [0 1]);
+            tc.verifyEqual(long.text, "UNRATE was 3.5%.");
+        end
+
+        function aSummaryThatDropsEveryParagraphIdFallsBack(tc)
+            evidence = "Rates held [2020-01-29/policyAction/1]. Inflation was elevated [2020-01-29/inflation/2].";
+            kept = tc.specialist("minutes", evidence, {struct("content", "Rates held [2020-01-29/policyAction/1].")});
+            dropped = tc.specialist("minutes", evidence, {struct("content", "Rates held and inflation was elevated.")});
+            tc.verifyEqual(kept.text, "Rates held [2020-01-29/policyAction/1].");
+            tc.verifyEqual(dropped.text, evidence);
+            tc.verifySubstring(fileread(tc.ctx.tracePath), '"reason":"no paragraph id kept"');
+        end
+
         function theWriterReadsTheSpecialistsReportsAndEachCallIsLabelled(tc)
             reply = fomc.llm.Mock({struct("content", "Short report.")});
             factory = @(~, ~, ~) @(h, t, f) reply.call(h, t, f);
             writer = fomc.llm.Mock({struct("content", "Ok.")});
             tp = string(tempname) + ".jsonl";
             [~, ~, ~, s] = fomc.runAgent("What is the unemployment rate and what did the minutes say about it?", ...
-                datetime(2020,3,1), Config=fomc.config(verbose=false), Llm=@writer.call, Data=tc.D, TracePath=tp, AgentLlm=factory);
+                datetime(2020,3,1), Config=fomc.config(verbose=false, agentSummarizeOver=0), Llm=@writer.call, Data=tc.D, TracePath=tp, AgentLlm=factory);
             tc.verifyGreaterThanOrEqual(numel(reply.Seen), 1);
             tc.verifySubstring(string(s.history.Messages{1}.content), "Short report.");
             tc.verifySubstring(fileread(tp), '"type":"agent_model"');

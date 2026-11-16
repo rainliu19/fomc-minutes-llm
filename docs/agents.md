@@ -35,6 +35,10 @@ model, analysis mode or no evidence falls back to the code's text, so facts are 
 
 Routes (by code, `fomc.agents.route`): a scoring question runs `scorer`; a question about what the minutes or
 rates mean for households (`fomc.focus.asksEffectsAhead`) runs all three stages; anything else runs stage 1.
+A specialist skips its model call when the evidence is shorter than `cfg.agentSummarizeOver` (default 1,500
+characters; the lookups are 500 to 1,600): a summary of a decision card cost 8 to 20 s and dropped the paragraph ids
+the writer cites, which sent it back for a second lookup. A report that cites none of the evidence's ids falls back
+too. Set it to 0 to summarize everything.
 Cost: a specialist adds one model call (a few seconds of reading plus a short report), and the writer then reads two
 short reports instead of the raw lookups.
 
