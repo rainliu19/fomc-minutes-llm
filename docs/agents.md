@@ -102,3 +102,9 @@ date line of each first message. It is not under `agents/*.md` or `agents/<name>
 for an agent. `tests/bench_lookahead.py` measures the error rate on 114 questions (`evals/lookahead/key.json`):
 `--open` is the baseline with no guards, `--team --tag v0` the app before these rules, `--team --tag v1` with them.
 The Evaluation page's Lookahead bias tab shows the three.
+
+v1 adds a code check to the short rules: `fomc.focus.monthsNamed` finds the months a question names, and when every one
+is after what is known (`fomc.focus.dataPrefetch`: after the newest value of the series the question is about;
+`minutesRetriever`: a meeting whose minutes are not public), the harness returns a `prefetchNotice` and `fomc.runTurn`
+answers with it, no model call. A month any series shows goes to the model. Limits: only months named in words, and the
+topic matcher must find a series; "next year" and event questions rely on the rules alone.
