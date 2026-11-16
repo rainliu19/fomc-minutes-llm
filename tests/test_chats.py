@@ -296,6 +296,14 @@ class Evaluation(unittest.TestCase):
             for rx in c["checks"] + c["forbid"]:
                 re.compile(rx)                       # every pattern is a valid regex
 
+    def test_the_lookahead_route_returns_the_key_and_every_run_with_a_summary(self):
+        import app
+        got = app.evals_lookahead()
+        self.assertGreaterEqual(len([c for c in got["key"] if c["family"] != "control"]), 100)
+        for r in got["runs"]:
+            self.assertIn("overall", r["summary"])
+            self.assertEqual(len(r["cases"]), r["summary"]["n_done"])
+
     def test_the_evals_route_lists_runs_smallest_model_first(self):
         import app
         sizes = [r["summary"]["params_b"] for r in app.evals()]

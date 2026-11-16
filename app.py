@@ -139,6 +139,14 @@ def evals():
     return runs
 
 
+@app.get("/evals/lookahead")
+def evals_lookahead():
+    """The look-ahead key and every saved run (evals/lookahead/*.json from tests/bench_lookahead.py)."""
+    folder = HERE / "evals" / "lookahead"
+    runs = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(folder.glob("*.json")) if p.name != "key.json"]
+    return {"key": json.loads((folder / "key.json").read_text(encoding="utf-8")), "runs": runs}
+
+
 @app.get("/evals/key")
 def evals_key():
     """The 50 questions, so the Evaluation page can show each question's text."""
