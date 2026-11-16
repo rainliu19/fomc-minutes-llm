@@ -57,8 +57,7 @@ classdef testAgentsCritic < matlab.unittest.TestCase
         function criticEventsAreTraced(tc)
             tp = string(tempname) + ".jsonl";
             tc.ask("Hello there.", "The range is 1-1/2 to 1-3/4 percent.", "Fine.", [], tp);
-            lines = readlines(tp);
-            ev = arrayfun(@jsondecode, lines(strlength(lines) > 0), UniformOutput=false);
+            ev = traceEvents(tp);
             c = ev(cellfun(@(e) string(e.type) == "critic", ev));
             tc.verifyEqual(cellfun(@(e) e.pass, c).', [false true]);
         end

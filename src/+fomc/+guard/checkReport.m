@@ -7,6 +7,7 @@ function bad = checkReport(reply, sources)
 
 src = replace(join(string(sources(:)), " "), ",", "");
 reply = replace(string(reply), ",", "");
+% contains(src, tokens) is one answer for "any token", so each token is asked on its own
 missing = @(tokens) tokens(~arrayfun(@(t) contains(src, t), tokens));
 ids = fomc.guard.idsIn(reply);
 nums = unique(string(regexp(reply, "\d+(?:\.\d+)?", "match")));

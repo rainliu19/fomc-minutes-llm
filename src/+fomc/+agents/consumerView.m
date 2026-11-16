@@ -4,7 +4,7 @@ function r = consumerView(ctx, brief)
 %   Its evidence is the market agent's report and the scorer's direction for its meeting, plus
 %   the consumer-impact tool's answer (still a stub that says no score exists). The sub-agent
 %   (fomc.agents.subAgent, prompt in agents/consumer.md) writes what the evidence shows so far.
-%   No owner yet: replace this file, keeping this signature (docs/agents.md).
+%   Replace this file when the consumer rubric is settled, keeping this signature (docs/agents.md).
 
 sc = brief.reports.scorer;
 if sc.meetingDate == ""   % no meeting named, so nothing to read
@@ -12,7 +12,7 @@ if sc.meetingDate == ""   % no meeting named, so nothing to read
     return
 end
 [json, rec] = fomc.tools.dispatch(ctx, "scoreConsumerImpact", struct("meetingDate", char(sc.meetingDate)));
-evidence = strjoin([brief.reports.market.text, "Minutes direction for the meeting that ended " + sc.meetingDate + ": " + sc.direction + ".", ...
-    "Consumer-impact tool: " + string(json)], newline);
+direction = "Minutes direction for the meeting that ended " + sc.meetingDate + ": " + sc.direction + ".";
+evidence = strjoin([brief.reports.market.text, direction, "Consumer-impact tool: " + string(json)], newline);
 r = fomc.agents.subAgent(ctx, brief, "consumer", evidence, rec);
 end

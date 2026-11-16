@@ -17,7 +17,7 @@ answers one call at a time either way. Turn it on when a specialist starts doing
 ## The agents (`agents/*.md`, one file each)
 
 Frontmatter: `name`, `description`, `tools` (the only tools the agent may call; `fomc.tools.dispatch` refuses
-others). The body is the agent's **system prompt** (phase 2 of the roadmap tunes these). `organizer.md` also holds
+others). The body is the agent's **system prompt** (they are meant to be tuned). `organizer.md` also holds
 the `stages` line (the order) and the critic's rewrite message.
 
 Each specialist is a sub-agent (`fomc.agents.subAgent`): its code finds the evidence, then its own short model loop
@@ -35,10 +35,8 @@ model, analysis mode or no evidence falls back to the code's text, so facts are 
 
 Routes (by code, `fomc.agents.route`): a scoring question runs `scorer`; a question about what the minutes or
 rates mean for households (`fomc.focus.asksEffectsAhead`) runs all three stages; anything else runs stage 1.
-A specialist skips its model call when the evidence is shorter than `cfg.agentSummarizeOver` (default 1,500
-characters; the lookups are 500 to 1,600): a summary of a decision card cost 8 to 20 s and dropped the paragraph ids
-the writer cites, which sent it back for a second lookup. A report that cites none of the evidence's ids falls back
-too. Set it to 0 to summarize everything.
+A specialist skips its model call when its evidence is short (`cfg.agentSummarizeOver`; config.m says why), and its
+report falls back to the evidence if it cites none of the evidence's ids. Set the limit to 0 to summarize everything.
 Cost: a specialist adds one model call (a few seconds of reading plus a short report), and the writer then reads two
 short reports instead of the raw lookups.
 

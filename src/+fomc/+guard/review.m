@@ -24,7 +24,8 @@ if isstruct(structured) && isscalar(structured) && isfield(structured, "skill")
 end
 badFigures = fomc.guard.checkFigures(answer, sources);
 if ~isempty(badFigures)
-    warning = "Check these figures against the minutes, they do not appear in the sources: " + strjoin(badFigures, "; ") + ".";
+    warning = "Check these figures against the minutes, they do not appear in the sources: " + ...
+        strjoin(badFigures, "; ") + ".";
 elseif fomc.focus.aboutMinutes(message) && format == "chat" && ~any(string({calls.name}) == "prefetchNotice")
     if isempty(cites) || ~any([cites.ok])
         warning = "This answer cites no paragraph from the minutes. Treat it as unverified.";

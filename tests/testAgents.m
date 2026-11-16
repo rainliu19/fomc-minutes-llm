@@ -106,7 +106,7 @@ classdef testAgents < matlab.unittest.TestCase
             r = fomc.agents.runOne(bad, 1, tc.ctx, struct());
             tc.verifyFalse(r.ok);
             tc.verifySubstring(r.error, "boom");
-            ev = eventsOf(tc.ctx.tracePath);
+            ev = traceEvents(tc.ctx.tracePath);
             tc.verifyEqual(typesOf(ev), ["handoff" "handback"]);
             tc.verifyFalse(ev{2}.ok);
         end
@@ -138,7 +138,7 @@ classdef testAgents < matlab.unittest.TestCase
                 cfg = fomc.config(verbose=false, parallel=(j == 2));
                 ctx = fomc.context(datetime(2020,3,1), cfg, tc.D, tracePath=string(tempname) + ".jsonl");
                 out{j} = fomc.agents.runStage(ctx, st{1}, 1, brief);
-                ev = eventsOf(ctx.tracePath);
+                ev = traceEvents(ctx.tracePath);
                 % each agent's handoff and handback stay together, in the stage's order
                 types = typesOf(ev);
                 tc.verifyEqual(types(ismember(types, ["handoff" "handback"])), ["handoff" "handback" "handoff" "handback"]);
@@ -172,7 +172,7 @@ classdef testAgents < matlab.unittest.TestCase
             m = fomc.llm.Mock({struct("content", "Ok.")});
             fomc.runAgent("What do the latest Fed minutes mean for my mortgage?", datetime(2020,3,1), ...
                 Config=tc.cfg, Llm=@m.call, Data=tc.D, TracePath=tc.ctx.tracePath);
-            ev = eventsOf(tc.ctx.tracePath);
+            ev = traceEvents(tc.ctx.tracePath);
             types = typesOf(ev);
             order = types(ismember(types, ["route" "stage" "handoff" "handback" "final_answer"]));
             tc.verifyEqual(order(1:3), ["route" "stage" "handoff"]);
@@ -198,12 +198,6 @@ end
 function r = throwBoom(~, ~)
 r = [];
 error("boom");
-end
-
-function ev = eventsOf(path)
-% The trace file as a cell array of events (structs)
-lines = readlines(path);
-ev = arrayfun(@jsondecode, lines(strlength(lines) > 0), UniformOutput=false);
 end
 
 function t = typesOf(ev)

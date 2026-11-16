@@ -6,7 +6,7 @@ function [s, answer] = critic(s, msg, answer, calls)
 %   gets agents/organizer.md's "Critic" message once and the rewrite replaces the draft in the
 %   history (the message itself is not kept). Rounds are capped by cfg.criticRounds in code: the
 %   draft is round 1, so the default 2 allows one rewrite. An answer that still fails is
-%   marked unverified in s.lastReview (the web page shows it), never looped on.
+%   marked unverified in s.lastReview (the critic trace events carry the same), never looped on.
 
 cfg = s.ctx.cfg;
 s.lastReview = struct("rounds", 0, "unverified", false, "issues", "");

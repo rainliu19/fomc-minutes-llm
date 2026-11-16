@@ -8,12 +8,14 @@ function r = subAgent(ctx, brief, name, evidence, recs)
 %   tools for more, then writes a short report. Code checks the report (fomc.guard.checkReport:
 %   no id or number its sources lack); a bad report, a failed model or no model falls back to
 %   the evidence, so facts are never lost. A report that cites none of the evidence's paragraph
-%   ids also falls back (the writer cannot cite it). No model call when there is no evidence, when it is
-%   shorter than cfg.agentSummarizeOver, in analysis mode (its grounding check needs the raw
-%   text) or without brief.llmFor (a model factory f(cfg, prompt, tools); fomc.agents.run sets it).
+%   ids also falls back (the writer cannot cite it). No model call when there is no evidence, when
+%   it is shorter than cfg.agentSummarizeOver (see config.m), in analysis mode (its grounding check
+%   needs the raw text) or without brief.llmFor (a model factory f(cfg, prompt, tools) that
+%   fomc.agents.run sets).
 
 r = fomc.agents.report(name, text=evidence, calls=recs);
-if evidence == "" || strlength(evidence) < ctx.cfg.agentSummarizeOver || brief.isAnalysis || ~isfield(brief, "llmFor") || isempty(brief.llmFor)
+noModel = evidence == "" || strlength(evidence) < ctx.cfg.agentSummarizeOver || brief.isAnalysis;
+if noModel || ~isfield(brief, "llmFor") || isempty(brief.llmFor)
     return
 end
 c = fomc.agents.catalog();
@@ -39,10 +41,11 @@ else
         reason = "no paragraph id kept";
     end
 end
-fomc.trace.logEvent(ctx, "agent_model", struct("ms", round(toc(t0) * 1000), "fallback", reason ~= "", "reason", reason));
+fomc.trace.logEvent(ctx, "agent_model", ...
+    struct("ms", round(toc(t0) * 1000), "fallback", reason ~= "", "reason", reason));
+text = evidence;
 if reason == ""
-    r = fomc.agents.report(name, text=answer, calls=calls);
-else
-    r = fomc.agents.report(name, text=evidence, calls=calls);
+    text = answer;
 end
+r = fomc.agents.report(name, text=text, calls=calls);
 end

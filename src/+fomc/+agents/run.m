@@ -48,12 +48,13 @@ reports = [done{:}];
 % The writer's lookups: each report's text in stage order; a failed agent is named instead
 text = [reports.text];
 bad = ~[reports.ok];
-text(bad) = "[The " + [reports(bad).agent] + " agent could not report: " + [reports(bad).error] + ...
-    ". Say plainly that this part is missing.]";
-lookups = struct("text", strjoin(text(text ~= ""), newline), "recs", [reports.calls], "structured", reports(end).structured);
+why = "The " + [reports(bad).agent] + " agent could not report (" + [reports(bad).error] + ").";
+text(bad) = "[" + why + " Say plainly that this part is missing.]";
+lookups = struct("text", strjoin(text(text ~= ""), newline), "recs", [reports.calls], ...
+    "structured", reports(end).structured);
 s.ctx = ctx;
 s.lastLookupAgents = repelem([reports.agent], arrayfun(@(r) numel(r.calls), reports));
-s.lastAgentIssues = strjoin("The " + [reports(bad).agent] + " agent could not report (" + [reports(bad).error] + ").", " ");
+s.lastAgentIssues = strjoin(why, " ");
 
 [s, answer, structured, calls] = fomc.runTurn(s, msg, Format=nvp.Format, Lookups=lookups);
 if route ~= "score" && nvp.Format == "chat" && ~any(string({calls.name}) == "prefetchNotice")
