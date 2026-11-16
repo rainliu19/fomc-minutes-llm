@@ -1,6 +1,6 @@
 # Agents
 
-One writer model (Qwen3 4B, local) and four small specialist agents run by an organizer. The design is
+One writer model (IBM Granite 3.3 2B by default, local; the model list on the page changes it) and four small specialist agents run by an organizer. The design is
 `docs/subagent_architecture.html`; the patterns are the OpenAI Agents SDK's, in MATLAB.
 
 ## How a turn runs
@@ -70,5 +70,25 @@ Whatever you return passes the date gate (nothing after the anchor).
 
 ## Transparency
 
-Trace events: `route`, `stage`, `handoff`, `handback`, `critic`, `parallel_off`; every event inside an agent has
-`agent`. The page shows them live and tags each tool with its agent.
+The page's side panel ("How the agents worked", `static/agents-panel.js`, after the course demo's context panel) draws
+the trace as a timeline: a column per agent (organizer, minutes, market, scorer, consumer, writer, critic), a row per
+step. It fills while the model works and reopens per answer ("See how the agents worked"; the reply carries the trace's
+line range, saved with the chat).
+
+Trace events: `route` (with the question), `stage`, `handoff` (`reads`: whose reports the agent is briefed with),
+`handback` (the report), `agent_model` (`skipped` and why, or ms and fallback), `critic`, `parallel_off`, and per model
+call `message` (what the model was sent: role, text, `from` = the agents whose output it carries) and one
+`model_response` (`fomc.trace.llmCall` wraps all five model call sites, so every call is counted once, tokens included).
+Every event inside an agent has `agent`; the writer's are "writer", one-agent mode's are "agent". Strings in the log
+are capped at 20,000 characters.
+
+## Switch and default model
+
+"Agents: Team | One" next to Effort (`agents` in `/chat`, default team; locked with the model once a chat starts, saved
+with it). One runs `fomc.runTurn` alone with the harness's own lookups and no critic, so the switch compares the
+architecture only. The default model is the first of `models/models.json`: IBM Granite 3.3 2B (`fast`), the best
+accuracy for its memory. The rubric scorer stays on `cfg.scorerModel` (qwen3), the model its saved scores
+(`data/scores/`) were made and validated with.
+
+The "Measured" table above is from qwen3 and mixes two machines (the one-agent file was run on another Mac), so its
+seconds do not compare; the evaluations are being rerun on one machine for all models.

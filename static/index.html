@@ -33,11 +33,11 @@
   .evalbtn:hover { background: #25598c; border-color: #25598c; }
   .controls .col2 { justify-self: end; }
   .blurb { margin: 0; max-width: 760px; color: #d6e0ea; font-size: 14.5px; }
-  .layout { display: flex; flex: 1; min-height: 0; }
+  .layout { display: flex; flex: 1; min-height: 0; overflow-x: auto; }
   aside { width: 270px; flex: none; overflow-y: auto; background: var(--side); border-right: 1px solid var(--line); padding: 12px;
           display: flex; flex-direction: column; gap: 10px; }
-  main { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 12px 20px 0; max-width: 900px; }
-  #agents { flex: 0 0 min(52vw, 56rem); min-width: 0; overflow: auto; background: var(--side); border-left: 1px solid var(--line); padding: 0 14px 14px; }
+  main { flex: 1 0 24rem; display: flex; flex-direction: column; padding: 12px 20px 0; max-width: 900px; }
+  #agents { flex: 0 1 min(44vw, 50rem); min-width: 16rem; overflow: auto; background: var(--side); border-left: 1px solid var(--line); padding: 0 14px 14px; }
   .ahdr { display: flex; justify-content: space-between; align-items: center; padding: 10px 0 2px; }
   #agentgrid { display: grid; grid-template-columns: repeat(var(--cols, 1), minmax(15rem, 1fr)); column-gap: 10px; row-gap: 6px; }
   .ahead { position: sticky; top: 0; z-index: 1; background: var(--side); padding: 8px 0 6px; border-bottom: 2px solid var(--gold);
@@ -123,6 +123,7 @@
   @media (max-width: 760px) {
     .layout { flex-direction: column; }
     aside { max-height: 40vh; }
+    main { flex: 1 1 auto; }
     aside { width: auto; border-right: none; border-bottom: 1px solid var(--line); }
     aside.closed { display: none; }
     #menu { display: inline-block; }
