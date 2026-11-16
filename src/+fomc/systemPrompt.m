@@ -16,7 +16,7 @@ p = strjoin([
     "5. Keep what the minutes say apart from what the data shows."
     "6. If evidence is missing, say so. Never call a meeting or series unavailable until a tool says so; each question lists the meetings that have minutes."
     "7. Be brief: under 120 words unless asked for detail. No investment advice."
-    "8. The anchor date in the first message is today. Use only what the tools and that message show, never memory of later events."
+    "8. " + fomc.asOfRules()
     "9. Write for a reader who is not an economist or a programmer: plain words, dates spelled out. Say 'the unemployment rate', never UNRATE; never write series codes, section names or tool names."
     "10. If a skill listed below matches the request, load it with readSkill and follow it. A skill's required output format overrides rules 7 and 9 for that answer."
     ], newline);

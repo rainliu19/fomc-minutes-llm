@@ -144,7 +144,8 @@
     <div class="card how">
     <div id="look-intro"></div>
     <ul>
-      <li><b>The three stages.</b> Baseline = the app with the data cutoff off: the tools can return anything, the date the model is told is today's, and the as-of date is only said in the question. Guards = the app as it is in main: data cut off at the as-of date, dated lookups refused, checks on the answer, and the prompt rule never to use memory of later events. Guards plus prompts = the same with the lookahead prompt files added (not run yet).</li>
+      <li><b>What is tested.</b> The FOMC minutes agent of this project (<code>fomc-minutes-llm</code>), as one whole: the tools, data cutoff, guards and prompts around a model. Every run uses the same model inside it, <span id="look-model">the app's default</span>, so the stages differ only in what is around the model.</li>
+      <li><b>The three stages.</b> Baseline = the app with the data cutoff off: the tools can return anything, the date the model is told is today's, and the as-of date is only said in the question. Guards = the app as it is in main: data cut off at the as-of date, dated lookups refused, checks on the answer, and the prompt rule never to use memory of later events. Guards plus prompts (v1) = the same app with the point-in-time rules from <code>agents/shared/asof.md</code> in the writer's prompt, every specialist's prompt and the date line of the first message: a later meeting, month or value is "not known yet", never guessed, and general knowledge of later events is not used even when the user asks. The rules were written from the types of question, not from the answers that went wrong.</li>
       <li><b>Who decides the right answer.</b> Code. The rate decisions, target ranges and unemployment values come from the data files (the target-range series and the first release of each month); the 20 event questions use a hand-written list of events and the dates they became public. A model is never the judge.</li>
       <li><b>What counts as an error.</b> An answer that presents something after the as-of date as known: it states the later fact (a sentence with the decision and its range, the later range, the later value, or the event's name, not given by a tool in guarded runs), or, for a question about one fact, it gives a value instead of saying it is not known on that date. An invented value counts, because the model ignored the date. Event questions are open, so only stating the event counts there.</li>
       <li><b>Controls.</b> 10 questions about decisions that were public by their as-of date. The answer must give the decision and range. This catches a model or a guard that refuses everything.</li>
@@ -262,6 +263,7 @@ const FAMILIES = {"future-decision": "A rate decision made after the as-of date"
   "future-data": "An unemployment rate published after it", "future-event": "An event (a crisis, a policy tool, a new Chair)",
   "pressure": "The same facts, asked to use general knowledge", "control": "Control: a decision already public (the answer must be given)"};
 const rate = p => p && p.n ? p.errors + "/" + p.n + " (" + pct(p.errors, p.n) + ", 95% range " + Math.round(100 * p.ci95[0]) + "-" + Math.round(100 * p.ci95[1]) + "%)" : "n/a";
+const AGENT = "FOMC minutes agent";      // what is tested: this app's agent; the model inside it is named in the methodology
 const modeName = {open: "Baseline (no guards)", team: "Guards (team)", one: "Guards (one agent)"};
 
 function lookahead({key, runs}) {
@@ -272,7 +274,7 @@ function lookahead({key, runs}) {
     <table>${Object.keys(FAMILIES).map(f => `<tr><td>${esc(FAMILIES[f])}</td><td>${(by[f] || []).length}</td><td style="text-align:left;white-space:normal" class="note">${esc((by[f] || [{question: ""}])[0].question)} <i>(as of ${esc((by[f] || [{as_of: ""}])[0].as_of)})</i></td></tr>`).join("")}</table>`;
   const rows = runs.map(r => r.summary);
   el("look-runs").innerHTML = "<tr><th>Model</th><th>How it ran</th><th>Prompt</th><th>Lookahead error rate</th><th>Without pressure</th><th>Held out</th><th>Answered by code</th><th>Controls passed</th></tr>" +
-    (rows.length ? rows.map(s => `<tr><td>${esc(s.label)}</td><td>${modeName[s.mode]}</td><td>${esc(s.tag)}</td><td><b>${rate(s.overall)}</b>${s.partial ? ` <span class="pill">partial: ${s.n_done} of ${s.n_key}</span>` : ""}</td><td>${rate(s.without_pressure)}</td><td>${rate(s.held_out)}</td><td>${s.answered_by_code} of ${s.n_done}</td><td>${s.controls.passed}/${s.controls.n}</td></tr>`).join("") : '<tr><td colspan="9" class="note">No runs yet. Run <code>python tests/bench_lookahead.py &lt;modelId&gt; --team</code> while the app is running.</td></tr>');
+    (rows.length ? rows.map(s => `<tr><td>${AGENT}</td><td>${modeName[s.mode]}</td><td>${esc(s.tag)}</td><td><b>${rate(s.overall)}</b>${s.partial ? ` <span class="pill">partial: ${s.n_done} of ${s.n_key}</span>` : ""}</td><td>${rate(s.without_pressure)}</td><td>${rate(s.held_out)}</td><td>${s.answered_by_code} of ${s.n_done}</td><td>${s.controls.passed}/${s.controls.n}</td></tr>`).join("") : '<tr><td colspan="9" class="note">No runs yet. Run <code>python tests/bench_lookahead.py &lt;modelId&gt; --team</code> while the app is running.</td></tr>');
   // Trend: per model, no stops, then the date, then every stop (one agent, team), then each prompt version in order
   const STAGE = {open: "Baseline: no guards, the tools can see all the data", one: "Guards: data cutoff and checks (one agent)", team: "Guards: data cutoff and checks"};
   const order = s => ["open", "one", "team"].indexOf(s.mode) * 1000 + (parseInt(String(s.tag).replace(/\D/g, "")) || 0);
@@ -282,17 +284,18 @@ function lookahead({key, runs}) {
     rows.filter(s => s.model === m && order(s) >= 0).sort((a, b) => order(a) - order(b)).forEach(s => {
       const r = s.overall.n ? 100 * s.overall.errors / s.overall.n : null;
       const d = prev == null || r == null ? "" : (r - prev >= 0 ? "+" : "") + (r - prev).toFixed(1) + " pts";
-      trend.push(`<tr><td>${esc(s.label)}</td><td style="text-align:left;white-space:normal">${STAGE[s.mode]}${s.mode === "open" ? "" : (s.tag === "v0" ? " (v0, the app as in main)" : " plus prompts (" + esc(s.tag) + ")")}</td><td><b>${rate(s.overall)}</b>${s.partial ? ` <span class="pill">partial ${s.n_done}/${s.n_key}</span>` : ""}</td><td class="${d.startsWith("-") ? "ok" : d.startsWith("+") ? "bad" : ""}">${d || "start"}</td><td>${s.controls.passed}/${s.controls.n}</td></tr>`);
+      trend.push(`<tr><td>${AGENT}</td><td style="text-align:left;white-space:normal">${STAGE[s.mode]}${s.mode === "open" ? "" : (s.tag === "v0" ? " (v0, the app as in main)" : " plus prompts (" + esc(s.tag) + ")")}</td><td><b>${rate(s.overall)}</b>${s.partial ? ` <span class="pill">partial ${s.n_done}/${s.n_key}</span>` : ""}</td><td class="${d.startsWith("-") ? "ok" : d.startsWith("+") ? "bad" : ""}">${d || "start"}</td><td>${s.controls.passed}/${s.controls.n}</td></tr>`);
       if (r != null) prev = r;
     });
   });
   el("look-trend").innerHTML = "<tr><th>Model</th><th>What is added</th><th>Lookahead error rate</th><th>Change</th><th>Controls passed</th></tr>" + (trend.join("") || '<tr><td colspan="6" class="note">No runs yet.</td></tr>');
+  el("look-model").textContent = [...new Set(rows.map(s => s.label.replace(/^[^:]*: /, "") + " (Ollama " + s.ollama_name + ")"))].join(", ");
   el("look-note").textContent = "Lower is better. Answered by code = the app replied without calling the model (for example a meeting whose minutes are not public yet), which protects the answer but is not the model resisting its memory. Held out = 20% of the questions, set aside before any prompt tuning.";
   const fams = Object.keys(FAMILIES).filter(f => f !== "control");
   el("look-fam").innerHTML = "<tr><th>Run</th>" + fams.map(f => `<th title="${esc(FAMILIES[f])}">${f.replace("future-", "")}</th>`).join("") + "</tr>" +
-    rows.map(s => `<tr><td>${esc(s.label)}, ${modeName[s.mode]}, ${esc(s.tag)}</td>` + fams.map(f => `<td>${s.by_family[f] ? s.by_family[f].errors + "/" + s.by_family[f].n : "n/a"}</td>`).join("") + "</tr>").join("");
+    rows.map(s => `<tr><td>${modeName[s.mode]}, ${esc(s.tag)}</td>` + fams.map(f => `<td>${s.by_family[f] ? s.by_family[f].errors + "/" + s.by_family[f].n : "n/a"}</td>`).join("") + "</tr>").join("");
   const pick = el("look-pick");
-  pick.innerHTML = runs.map((r, i) => `<option value="${i}">${esc(r.summary.label)}, ${modeName[r.summary.mode]}, ${esc(r.summary.tag)}</option>`).join("");
+  pick.innerHTML = runs.map((r, i) => `<option value="${i}">${modeName[r.summary.mode]}, ${esc(r.summary.tag)}</option>`).join("");
   pick.onchange = () => {
     const r = runs[pick.value]; if (!r) { el("look-leaks").innerHTML = ""; return; }
     const bad = r.cases.filter(c => c.error);

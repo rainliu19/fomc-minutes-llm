@@ -52,7 +52,29 @@ classdef testLookaheadGate < matlab.unittest.TestCase
                 tc.verifyEmpty(laterDates(fomc.contextBlock(ctx, fomc.dataBrief(ctx)), asOf), "context block as of " + string(asOf, "yyyy-MM-dd"));
             end
         end
+
+        function theAsOfRulesReachTheWriterTheContextAndTheSpecialists(tc)
+            rules = fomc.asOfRules();
+            tc.verifyNotEmpty(rules);
+            tc.verifySubstring(fomc.systemPrompt(), rules);
+            ctx = fomc.context(datetime(2020,3,1), tc.cfg, syntheticData());
+            tc.verifySubstring(fomc.contextBlock(ctx, "x"), "nothing after it is known");
+            tc.verifySubstring(string(fomc.anchorLine(datetime(2020,3,1))), "nothing after it is known");
+            % a specialist's own prompt: the body of its file, then these rules
+            box = containers.Map();
+            m = fomc.llm.Mock({struct("content", "Summary.")});
+            brief = struct("question", "What is the market doing?", "isAnalysis", false, "llmFor", @(cfg, prompt, tools) remember(box, prompt, m));
+            cfg = fomc.config(verbose=false);
+            fomc.agents.subAgent(fomc.context(datetime(2020,3,1), cfg, syntheticData()), brief, "market", string(repmat('x', 1, 60000)), struct([]));
+            tc.verifySubstring(string(box("prompt")), rules);
+        end
     end
+end
+
+function f = remember(box, prompt, m)
+% A model factory that keeps the prompt it was given
+box("prompt") = prompt;
+f = @m.call;
 end
 
 function re = YEAR()

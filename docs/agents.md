@@ -92,3 +92,13 @@ accuracy for its memory. The rubric scorer stays on `cfg.scorerModel` (qwen3), t
 
 The "Measured" table above is from qwen3 and mixes two machines (the one-agent file was run on another Mac), so its
 seconds do not compare; the evaluations are being rerun on one machine for all models.
+
+## Lookahead bias
+
+The data are cut off at the as-of date (the date gate above), but a model may have been trained on later events.
+`agents/shared/asof.md` holds the point-in-time rules. It is read by `fomc.asOfRules` into the writer's system
+prompt (rule 8), into every specialist's prompt (`fomc.agents.subAgent`) and, through `fomc.anchorLine`, into the
+date line of each first message. It is not under `agents/*.md` or `agents/<name>/`, so the catalog does not take it
+for an agent. `tests/bench_lookahead.py` measures the error rate on 114 questions (`evals/lookahead/key.json`):
+`--open` is the baseline with no guards, `--team --tag v0` the app before these rules, `--team --tag v1` with them.
+The Evaluation page's Lookahead bias tab shows the three.

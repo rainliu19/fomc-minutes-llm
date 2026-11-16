@@ -31,12 +31,13 @@ prompt = a.body;
 if isfield(a.pages, topic)
     prompt = prompt + newline + a.pages.(topic);
 end
+prompt = prompt + newline + newline + fomc.asOfRules();
 cfg = ctx.cfg;
 cfg.maxToolRounds = 3;
 cfg.maxTokens = min(cfg.maxTokens, 400);
 ctx.cfg = cfg;
 sub = struct("ctx", ctx, "history", messageHistory, "llm", brief.llmFor(cfg, prompt, a.tools), ...
-    "systemPrompt", prompt, "contextBlock", "ANCHOR DATE: " + fomc.util.fmtDate(ctx.asOf) + ". Treat it as today.", ...
+    "systemPrompt", prompt, "contextBlock", fomc.anchorLine(ctx.asOf), ...
     "known", strings(0, 1), "ownsLlm", false, "effort", "low", "lastUsedRatePath", false);
 lookups = struct("text", evidence, "recs", recs, "structured", []);
 t0 = tic;

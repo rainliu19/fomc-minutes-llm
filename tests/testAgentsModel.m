@@ -29,7 +29,7 @@ classdef testAgentsModel < matlab.unittest.TestCase
             tc.verifyEqual(r.text, "Unemployment was 3.5% (UNRATE).");
             c = fomc.agents.catalog();
             a = c([c.name] == "market");
-            tc.verifyEqual(seen.prompt, a.body);
+            tc.verifyEqual(seen.prompt, a.body + newline + newline + fomc.asOfRules());
             tc.verifyEqual(seen.tools, a.tools);
             tc.verifyEqual(seen.calls, 1);
         end
@@ -122,8 +122,9 @@ classdef testAgentsModel < matlab.unittest.TestCase
             id = "Rates held [2020-01-29/policyAction/1].";
             [~, withPage] = tc.specialist("minutes", id, {struct("content", id)}, false, "Q?", "views");
             [~, noPage] = tc.specialist("minutes", id, {struct("content", id)}, false, "Q?", "no such page");
-            tc.verifyEqual(withPage.prompt, a.body + newline + a.pages.views);
-            tc.verifyEqual(noPage.prompt, a.body);
+            rules = string(newline) + newline + fomc.asOfRules();      % every specialist's prompt ends with the point-in-time rules
+            tc.verifyEqual(withPage.prompt, a.body + newline + a.pages.views + rules);
+            tc.verifyEqual(noPage.prompt, a.body + rules);
         end
 
         function aNextMoveQuestionGetsTheParticipantsViewsNotTheDecisionCard(tc)
