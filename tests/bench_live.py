@@ -65,7 +65,7 @@ def read_trace(session_id):
     for line in path.read_text().splitlines():
         e = json.loads(line)
         s = e.get("stats")
-        if e["type"] in ("model_response", "grounding_check") and s:
+        if e["type"] == "model_response" and s:      # every model call logs one
             rounds += 1
             p_tok += s["promptTokens"]; o_tok += s["outputTokens"]; p_ms += s["promptMs"]; o_ms += s["outputMs"]
         if e["type"] == "tool_call":
@@ -105,7 +105,8 @@ def run_case(case, effort):
     answer, total, r = "", 0.0, {}
     for q in case["questions"]:
         t0 = time.time()
-        r = post("/chat", {"message": q, "session_id": sid, "as_of": case["as_of"], "effort": effort, "model": MODEL})
+        r = post("/chat", {"message": q, "session_id": sid, "as_of": case["as_of"], "effort": effort, "model": MODEL,
+                         "agents": "team" if MULTI else "one"})
         total = time.time() - t0                        # time of the last question in the chat
         answer = r["answer"]
     stats, tool_text = read_trace(sid)

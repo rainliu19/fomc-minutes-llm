@@ -8,7 +8,7 @@ Ask questions about FOMC minutes and the economy around them. The agent answers 
 
 1. MATLAB R2026b with the "Large Language Models (LLMs) with MATLAB" add-on and the Text Analytics Toolbox.
 2. [Ollama](https://ollama.com/download) and [uv](https://docs.astral.sh/uv/): `brew install ollama uv`
-3. The default model (about 2.5 GB): `ollama pull qwen3:4b-instruct`. The other models on the page download the same way (see `models/`); the app builds each one the first time you pick it.
+3. The default model (about 1.5 GB): `ollama pull granite3.3:2b`. The other models on the page download the same way (see `models/`); the app builds each one the first time you pick it.
 
 **Start the chat page**
 

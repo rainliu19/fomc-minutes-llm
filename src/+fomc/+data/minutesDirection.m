@@ -16,7 +16,7 @@ arguments
     D (1,1) struct
     k (1,1) double
     rangeNow (1,:) table
-    nvp.Model (1,1) string = fomc.config(verbose=false).model
+    nvp.Model (1,1) string = fomc.config(verbose=false).scorerModel
     nvp.UseAI (1,1) logical = true
     nvp.Cutoff (1,1) double = 0.5
     nvp.Folder (1,1) string = ""

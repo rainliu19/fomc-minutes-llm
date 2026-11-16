@@ -4,10 +4,12 @@
 """
 import json
 import re
+import contextlib
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -201,6 +203,56 @@ class ApiPrivacy(unittest.TestCase):
             for key, value in want.items():
                 self.assertEqual(have[key], value, key)
 
+    def test_progress_passes_the_timeline_fields_clips_results_and_stops_at_before(self):
+        events = [{"type": "message", "agent": "writer", "role": "user", "text": "Q", "from": ["minutes"]},
+                  {"type": "handoff", "to": "consumer", "reads": ["minutes", "market"]},
+                  {"type": "agent_model", "agent": "market", "skipped": True, "reason": "under"},
+                  {"type": "tool_call", "name": "getSnapshot", "result": "x" * 5000, "ok": True},
+                  {"type": "model_response", "content": "later"}]
+        path = self.app.runtime.LOGS / ("web-" + "c" * 32 + ".jsonl")
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("\n".join(json.dumps(e) for e in events) + "\n", encoding="utf-8")
+        try:
+            got = self.app.progress("c" * 32, 1, before=4, owner=ME)
+        finally:
+            path.unlink()
+        self.assertEqual([e["type"] for e in got["events"]], ["handoff", "agent_model", "tool_call"])
+        self.assertEqual(got["events"][0]["reads"], ["minutes", "market"])
+        self.assertTrue(got["events"][1]["skipped"])
+        self.assertLessEqual(len(got["events"][2]["result"]), 1503)
+        self.assertEqual(got["next"], 4)
+
+    def test_a_chat_reply_says_which_trace_lines_it_made_and_whether_a_team_answered(self):
+        app = self.app
+        sid = "d" * 32
+        trace = app.runtime.LOGS / f"web-{sid}.jsonl"
+        trace.parent.mkdir(parents=True, exist_ok=True)
+        trace.write_text("old\n", encoding="utf-8")
+        seen = {}
+
+        def fake_matlab(name, *args, nargout=1):
+            seen["args"] = args
+            with trace.open("a", encoding="utf-8") as f:
+                f.write("one\ntwo\n")
+            return json.dumps({"answer": "A", "structured": None, "citations": [], "warning": "", "toolCalls": [],
+                               "seconds": 1, "anchorDate": "2020-04-08"})
+
+        try:
+            with mock.patch.object(app, "matlab_call", fake_matlab), mock.patch.object(app, "watchdog", contextlib.nullcontext()), \
+                    mock.patch.object(app.runtime, "ensure_ollama"), mock.patch.object(app.runtime, "ensure_model"), \
+                    mock.patch.object(app.runtime, "memory_verdict", return_value=("ok", "")):
+                one = app.chat(app.ChatRequest(message="hi", session_id=sid, agents="one"), owner=ME)
+                default = app.chat(app.ChatRequest(message="again", session_id=sid), owner=ME)
+        finally:
+            trace.unlink()
+        self.assertEqual(one["trace"], [1, 3])
+        self.assertEqual(one["agents"], "one")
+        self.assertEqual(seen["args"][-1], "team")           # the default is the team
+        self.assertEqual(default["trace"], [3, 5])
+        saved = app.get_chat(sid, owner=ME)
+        self.assertEqual(saved["agents"], "team")
+        self.assertEqual([m.get("trace") for m in saved["messages"] if m["role"] == "assistant"], [[1, 3], [3, 5]])
+
     def test_chatting_into_another_browsers_chat_is_refused(self):
         req = self.app.ChatRequest(message="hi", session_id="c" * 32)
         answer = self.app.chat(req, owner=YOU)
@@ -221,8 +273,8 @@ class ModelList(unittest.TestCase):
         self.assertEqual(len({m["name"] for m in self.models}), len(self.models))
 
     def test_the_first_model_is_the_default_and_three_are_offered(self):
-        self.assertEqual(self.models[0]["id"], "qwen3")
-        self.assertEqual([m["id"] for m in self.models if m.get("offered", True)], ["qwen3", "fast", "q25-15"])
+        self.assertEqual(self.models[0]["id"], "fast")      # IBM Granite 3.3 2B: the best accuracy for its memory
+        self.assertEqual([m["id"] for m in self.models if m.get("offered", True)], ["fast", "qwen3", "q25-15"])
 
     def test_every_model_has_a_parameter_count_for_the_evaluation(self):
         for m in self.models:
@@ -253,7 +305,7 @@ class Evaluation(unittest.TestCase):
         import app
         prices = json.loads((REPO / "models" / "api_prices.json").read_text())["models"]
         runs = app.evals()
-        self.assertEqual(len(runs), 16)                        # the price file is not mistaken for a run
+        self.assertEqual(len(runs), len(list((REPO / "evals").glob("*.json"))) - 1)    # every run but key.json
         for r in runs:
             t = r["summary"]["tokens"]
             self.assertGreaterEqual(t["in_per_question"], 0)

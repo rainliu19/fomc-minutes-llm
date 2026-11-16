@@ -96,6 +96,7 @@ class ChatRequest(BaseModel):
     as_of: str = ""                          # YYYY-MM-DD; only used when a session starts
     effort: str = "low"                      # "low", "medium" or "high"
     model: str = ""                          # a model id from models/models.json; "" is the default
+    agents: str = "team"                     # "team" (organizer and specialists) or "one" (the writer alone)
 
 
 @app.get("/")
@@ -106,6 +107,11 @@ def index(request: Request):
     if not re.fullmatch(r"[0-9a-f]{32}", request.cookies.get(OWNER_COOKIE, "")):
         set_owner_cookie(response, uuid.uuid4().hex)
     return response
+
+
+@app.get("/agents-panel.js")
+def agents_panel_script():
+    return FileResponse(HERE / "static" / "agents-panel.js", headers={"Cache-Control": "no-cache"})
 
 
 @app.get("/info")
@@ -143,6 +149,7 @@ def evals_key():
 def chat(request: ChatRequest, owner: str = Depends(owner_of)):
     session_id = clean_session_id(request.session_id)
     effort = request.effort if request.effort in EFFORTS else "low"
+    agents = request.agents if request.agents in ("team", "one") else "team"
     entry = runtime.model_entry(request.model)
     failed = {"session_id": session_id, "structured": None, "citations": [], "warning": "",
               "tool_calls": [], "seconds": 0, "anchor": request.as_of}
@@ -152,22 +159,29 @@ def chat(request: ChatRequest, owner: str = Depends(owner_of)):
     if verdict == "refuse":
         return {**failed, "answer": message}
     runtime.LOGS.mkdir(exist_ok=True)
-    trace = str(runtime.LOGS / f"web-{session_id}.jsonl")
+    trace_path = runtime.LOGS / f"web-{session_id}.jsonl"
+    trace = str(trace_path)
+    first_line = line_count(trace_path)      # this turn's events are the lines after these
     try:
         runtime.ensure_ollama()              # restarts the model server if the watchdog had to stop it
         runtime.ensure_model(entry)          # builds the chosen model the first time it is used
         with watchdog:
             result = json.loads(matlab_call("fomc.web.turn", session_id, request.message, request.as_of,
-                                            effort, entry["name"], trace, store.seed(session_id, owner)))
+                                            effort, entry["name"], trace, store.seed(session_id, owner), agents))
     except Exception as e:                   # MATLAB errors come back as a message, not a crash
         reason = f" ({runtime.panic_reason})" if runtime.panic_reason else ""
         return {**failed, "answer": f"Agent error{reason}: {str(e)[:300]}"}
     reply = {"answer": result["answer"], "structured": result["structured"], "citations": result["citations"],
              "warning": result["warning"], "tool_calls": result["toolCalls"], "seconds": result["seconds"],
-             "anchor": result["anchorDate"]}
-    store.append(session_id, owner, {"as_of": result["anchorDate"], "model": entry["id"], "effort": effort},
+             "anchor": result["anchorDate"], "agents": agents, "trace": [first_line, line_count(trace_path)]}
+    store.append(session_id, owner, {"as_of": result["anchorDate"], "model": entry["id"], "effort": effort, "agents": agents},
                  request.message, reply)
     return {"session_id": session_id, **reply, "memory": message}
+
+
+def line_count(path: Path) -> int:
+    """How many lines a trace file has so far (0 before its first turn)."""
+    return len(path.read_text(encoding="utf-8").splitlines()) if path.exists() else 0
 
 
 @app.get("/chats")
@@ -196,8 +210,9 @@ def delete_chat(chat_id: str, owner: str = Depends(owner_of)):
 
 
 @app.get("/progress")
-def progress(session_id: str, after: int = 0, owner: str = Depends(owner_of)):
-    """New trace events since line `after`, so the page can show tool calls while the model works."""
+def progress(session_id: str, after: int = 0, before: int | None = None, owner: str = Depends(owner_of)):
+    """Trace events from line `after` (up to line `before`), so the page can draw the agents' work while the
+    model works, and again for an answer already given."""
     if store.owned_by_other(clean_session_id(session_id), owner):
         return {"events": [], "next": 0}
     # Read the session's trace file and return the lines added since the page last asked
@@ -205,6 +220,8 @@ def progress(session_id: str, after: int = 0, owner: str = Depends(owner_of)):
     events = []
     if path.exists():
         lines = path.read_text(encoding="utf-8").splitlines()
+        if before is not None:
+            lines = lines[:before]
         for line in lines[after:]:
             try:
                 e = json.loads(line)
@@ -212,7 +229,10 @@ def progress(session_id: str, after: int = 0, owner: str = Depends(owner_of)):
                 continue
             events.append({k: e.get(k) for k in ("type", "kind", "series", "name", "args", "ok", "ms", "round",
                                                  "nToolCalls", "attempt", "stats", "agent", "to", "stage", "agents", "route", "pass",
-                                                 "issues", "error", "reason", "parallel")})
+                                                 "issues", "error", "reason", "parallel", "role", "text", "from", "reads",
+                                                 "skipped", "fallback", "nIds", "content", "question", "result")})
+            if isinstance(events[-1]["result"], str) and len(events[-1]["result"]) > 1500:
+                events[-1]["result"] = events[-1]["result"][:1500] + "..."
         after = len(lines)
     return {"events": events, "next": after}
 

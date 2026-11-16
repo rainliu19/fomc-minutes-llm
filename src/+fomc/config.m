@@ -2,7 +2,7 @@ function cfg = config(nvp)
 %CONFIG Default settings for the agent. cfg = fomc.config(Name=Value) overrides any.
 %
 %   backend            "ollama" (local, free); the only one built.
-%   model              Ollama model name; "fomc-qwen3" is built from models/qwen3/Modelfile.
+%   model              Ollama model name; "fomc-fast" (IBM Granite 3.3 2B) is built from models/fast/Modelfile.
 %   endpoint           Ollama address.
 %   timeoutSec         Wait for one model call.
 %   maxToolRounds      Tool-call rounds per turn.
@@ -21,7 +21,9 @@ function cfg = config(nvp)
 %   structuredTemperature  Randomness of the JSON calls (skill scores, the structured analysis);
 %                      0, so the same minutes get the same score (at 0.2 one dimension of the
 %                      June 2022 minutes scored 0.25, 0.5 and 0 in three runs).
-%   scorerModel        Model for the rubric scorer, independent of the agent.
+%   scorerModel        Model for the rubric scorer, independent of the agent. "fomc-qwen3" unless told
+%                      otherwise: the saved scores (data/) and the scorer's checks were made and validated
+%                      with it, and a scorer on another model starts with no saved scores.
 %   verbose            Print each tool call as it runs.
 %   parallel           Run the agents of one stage at the same time on thread workers, when
 %                      memory allows. Off: they run one after another (a stage is mostly
@@ -35,7 +37,7 @@ function cfg = config(nvp)
 
 arguments
     nvp.backend (1,1) string = "ollama"
-    nvp.model (1,1) string = "fomc-qwen3"
+    nvp.model (1,1) string = "fomc-fast"
     nvp.endpoint (1,1) string = "127.0.0.1:11434"
     nvp.timeoutSec (1,1) double = 600
     nvp.maxToolRounds (1,1) double = 8
@@ -71,8 +73,8 @@ end
 if cfg.logDir == ""
     cfg.logDir = fullfile(root, "logs");
 end
-% The scorer uses the agent model unless told otherwise
+% The scorer keeps the model its saved scores were made with, whatever the agent's model
 if cfg.scorerModel == ""
-    cfg.scorerModel = cfg.model;
+    cfg.scorerModel = "fomc-qwen3";
 end
 end
