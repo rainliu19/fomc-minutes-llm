@@ -6,7 +6,8 @@ function [s, answer, structured, calls] = run(s, msg, nvp)
 %     2. each stage's agents run (fomc.agents.runStage) and hand back reports;
 %     3. their texts become the lookups the writer sees, in place of fomc.focus.prefetch, and
 %        fomc.runTurn runs its usual loop on them to write the answer (a failed agent is named
-%        in the lookups, so the answer says that part is missing);
+%        in the lookups, so the answer says that part is missing); the lookups end with one line
+%        naming up to three of the reports' paragraph ids to cite, last where the writer reads best;
 %     4. fomc.agents.critic checks the answer.
 %   Score questions take the scorer's answer directly. Trace events from
 %   inside an agent carry its name; s.lastLookupAgents says which agent made each lookup and
@@ -50,6 +51,10 @@ text = [reports.text];
 bad = ~[reports.ok];
 why = "The " + [reports(bad).agent] + " agent could not report (" + [reports(bad).error] + ").";
 text(bad) = "[" + why + " Say plainly that this part is missing.]";
+ids = unique(vertcat(reports.ids), "stable");
+if ~isempty(ids)
+    text(end+1) = "[Cite what you use with its paragraph id in square brackets, such as [" + strjoin(ids(1:min(3, end)), "] or [") + "].]";
+end
 lookups = struct("text", strjoin(text(text ~= ""), newline), "recs", [reports.calls], ...
     "structured", reports(end).structured);
 s.ctx = ctx;

@@ -163,8 +163,19 @@ classdef testAgents < matlab.unittest.TestCase
                     end
                     first(j) = string(s.history.Messages{1}.content);
                 end
-                tc.verifyEqual(first(2), first(1), q);
+                % the organizer ends the lookups with one line on citing; the harness path has none
+                tc.verifyEqual(regexprep(first(2), "\n\[Cite what you use[^\n]*\]$", ""), first(1), q);
             end
+        end
+
+        function theLookupsEndWithAReminderToCiteTheIdsTheReportsHold(tc)
+            m = fomc.llm.Mock({struct("content", "Ok.")});
+            s = fomc.newSession(datetime(2020,3,1), tc.cfg, Llm=@m.call, Data=tc.D, TracePath=string(tempname) + ".jsonl");
+            s = fomc.agents.run(s, "What did the Fed decide at the latest meeting?");
+            tc.verifySubstring(string(s.history.Messages{1}.content), "[Cite what you use with its paragraph id in square brackets, such as [2020-01-29/policyAction/1].]");
+            s = fomc.newSession(datetime(2020,3,1), tc.cfg, Llm=@m.call, Data=tc.D, TracePath=string(tempname) + ".jsonl");
+            s = fomc.agents.run(s, "What is the unemployment rate?");
+            tc.verifyFalse(contains(string(s.history.Messages{1}.content), "Cite what you use"), "nothing to cite");
         end
 
         % ---- trace ----
