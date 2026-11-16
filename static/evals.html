@@ -57,31 +57,26 @@
   svg .app { fill: var(--blue); } svg .bare { fill: var(--gold); } svg .mem { fill: var(--mem); } svg .multi { fill: var(--multi); }
   svg.chartsvg { min-width: 760px; }
   .bg-app { background: var(--blue); } .bg-bare { background: var(--gold); } .bg-mem { background: var(--mem); } .bg-multi { background: var(--multi); }
+  .tabs { display: flex; gap: 4px; max-width: 1100px; margin: 0 auto; padding: 12px 20px 0; border-bottom: 1px solid var(--line); }
+  .tabs button { font: inherit; background: none; border: 1px solid transparent; border-bottom: none; border-radius: 4px 4px 0 0; padding: 7px 16px; color: var(--muted); cursor: pointer; margin-bottom: -1px; }
+  .tabs button[aria-selected="true"] { color: var(--text); background: var(--bg); border-color: var(--line); font-weight: bold; }
+  [hidden] { display: none !important; }
 </style>
 </head>
 <body>
 <div class="top">
   <h1>Model Evaluation</h1>
-  <p>How each local model does on the same 50 questions, scored against an answer key read from the decision cards, with one agent, with a team of specialist agents (multi-agent) and as a baseline with no agent. <a href="/">Back to the chat</a></p>
+  <p>How each local model does on our own tests. <a href="/">Back to the chat</a></p>
 </div>
+<nav class="tabs" role="tablist">
+  <button role="tab" id="tabbtn-acc" aria-controls="tab-acc" aria-selected="true">Accuracy and cost</button>
+  <button role="tab" id="tabbtn-look" aria-controls="tab-look" aria-selected="false">Lookahead bias</button>
+</nav>
 <main>
+  <section id="tab-acc" role="tabpanel">
   <div id="empty" class="card" hidden>No results yet. Run <code>python tests/bench_live.py &lt;modelId&gt;</code> while the app is running.</div>
 
-  <h2>Lookahead bias</h2>
-  <div class="card" id="look-intro"></div>
-  <h3 style="margin:14px 0 6px;font-size:15px">Trend: the error rate as stops and prompts are added</h3>
-  <div class="card"><table id="look-trend"></table></div>
-  <p class="note">Each row adds something to the one above (per model). Change = points of error rate against the previous row; negative is better. Rows from a run that has not finished are marked partial.</p>
-  <h3 style="margin:14px 0 6px;font-size:15px">All runs</h3>
-  <div class="card"><table id="look-runs"></table></div>
-  <p class="note" id="look-note"></p>
-  <div class="card" style="margin-top:10px"><table id="look-fam"></table></div>
-  <details class="sec" id="sec-leaks">
-    <summary title="Click to collapse or expand"><h2>Answers that were errors</h2></summary>
-    <p><label for="look-pick" class="note">Run </label> <select id="look-pick"></select></p>
-    <div class="card"><table id="look-leaks" class="q"></table></div>
-  </details>
-
+  <p class="note" style="margin-top:0">How each local model does on the same 50 questions, scored against an answer key read from the decision cards, with one agent, with a team of specialist agents (multi-agent) and as a baseline with no agent. <a href="/">Back to the chat</a></p>
   <h2>Accuracy and memory</h2>
   <div class="card">
     <div class="legend"><span><i class="bg-app"></i>One agent (tools, minutes, checks)</span><span><i class="bg-multi"></i>Multi-agent (organizer + minutes, market, scorer, consumer specialists)</span><span><i class="bg-bare"></i>Baseline (same model, no agent)</span><span><i class="bg-mem"></i>Memory</span></div>
@@ -126,6 +121,39 @@
     </ul>
     </div>
   </details>
+  </section>
+
+  <section id="tab-look" role="tabpanel" hidden>
+  <h2>Lookahead error rate: baseline, guards, guards plus prompts</h2>
+  <div class="card"><table id="look-trend"></table></div>
+  <p class="note">Each row adds something to the one above (per model). Change = points of error rate against the previous row; negative is better.</p>
+
+  <h2>Error rates</h2>
+  <div class="card"><table id="look-runs"></table></div>
+  <p class="note" id="look-note"></p>
+  <div class="card" style="margin-top:10px"><table id="look-fam"></table></div>
+
+  <details class="sec" id="sec-leaks">
+    <summary title="Click to collapse or expand"><h2>Answers that were errors</h2></summary>
+    <p><label for="look-pick" class="note">Run </label> <select id="look-pick"></select></p>
+    <div class="card"><table id="look-leaks" class="q"></table></div>
+  </details>
+
+  <details class="sec foot">
+    <summary title="Click to collapse or expand"><h2>Lookahead methodology</h2></summary>
+    <div class="card how">
+    <div id="look-intro"></div>
+    <ul>
+      <li><b>The three stages.</b> Baseline = the app with the data cutoff off: the tools can return anything, the date the model is told is today's, and the as-of date is only said in the question. Guards = the app as it is in main: data cut off at the as-of date, dated lookups refused, checks on the answer, and the prompt rule never to use memory of later events. Guards plus prompts = the same with the lookahead prompt files added (not run yet).</li>
+      <li><b>Who decides the right answer.</b> Code. The rate decisions, target ranges and unemployment values come from the data files (the target-range series and the first release of each month); the 20 event questions use a hand-written list of events and the dates they became public. A model is never the judge.</li>
+      <li><b>What counts as an error.</b> An answer that presents something after the as-of date as known: it states the later fact (a sentence with the decision and its range, the later range, the later value, or the event's name, not given by a tool in guarded runs), or, for a question about one fact, it gives a value instead of saying it is not known on that date. An invented value counts, because the model ignored the date. Event questions are open, so only stating the event counts there.</li>
+      <li><b>Controls.</b> 10 questions about decisions that were public by their as-of date. The answer must give the decision and range. This catches a model or a guard that refuses everything.</li>
+      <li><b>Held out.</b> 20% of each family was set aside before any prompt work, so a prompt tuned on the rest can be checked on questions it was not tuned on.</li>
+      <li><b>Limits.</b> One run of one model, so run-to-run variation is not measured. Whether an answer declines is read from its wording, so an unusual phrasing can be misjudged either way. The patterns for stating a later fact cover only the facts in the key. The baseline's control questions fail because the small model often ignores a date given only in the question, which says the baseline is weak, not that it knows the future. Training cutoffs of the models are assumed from their release dates, not confirmed.</li>
+    </ul>
+    </div>
+  </details>
+  </section>
 </main>
 <script>
 const el = id => document.getElementById(id);
@@ -219,6 +247,15 @@ function questions(all, key) {
   };
   pick.onchange();
 }
+
+// ---- Tabs: Accuracy and cost | Lookahead bias (the address keeps the choice: /evaluation#lookahead) ----
+function showTab(name) {
+  ["acc", "look"].forEach(k => { el("tab-" + k).hidden = k !== name; el("tabbtn-" + k).setAttribute("aria-selected", k === name); });
+  history.replaceState(null, "", name === "look" ? "#lookahead" : location.pathname);
+}
+el("tabbtn-acc").onclick = () => showTab("acc");
+el("tabbtn-look").onclick = () => showTab("look");
+if (location.hash === "#lookahead") showTab("look");
 
 // ---- Lookahead bias ----
 const FAMILIES = {"future-decision": "A rate decision made after the as-of date", "future-rate": "The target range months after it",
