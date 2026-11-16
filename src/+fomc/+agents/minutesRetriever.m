@@ -5,7 +5,8 @@ function r = minutesRetriever(ctx, brief)
 %   local function lookup and its helpers); this function only wraps it in the agent contract
 %   (docs/agents.md). It calls the same pieces as before: fomc.focus.window, fomc.tools.dispatch,
 %   fomc.data.* and fomc.guard.*. Replace lookup, or this whole file, keeping this signature:
-%   fill the report with fomc.agents.report (text, calls, meetingDate "YYYY-MM-DD" or "").
+%   the code finds the paragraphs; the sub-agent (fomc.agents.subAgent, prompt in
+%   agents/minutes.md) summarizes them with their ids. Set meetingDate ("YYYY-MM-DD" or "").
 %   Only minutes released by ctx.asOf; every claim carries a paragraph id.
 
 [text, recs, meeting] = lookup(ctx, brief.question, brief.isAnalysis);
@@ -13,7 +14,8 @@ date = "";
 if ~isnat(meeting)
     date = fomc.util.fmtDate(meeting);
 end
-r = fomc.agents.report("minutes", text=text, calls=recs, meetingDate=date);
+r = fomc.agents.subAgent(ctx, brief, "minutes", text, recs);
+r.meetingDate = date;
 end
 
 function [text, recs, meeting] = lookup(ctx, question, isAnalysis)

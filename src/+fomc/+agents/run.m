@@ -25,7 +25,13 @@ planned = [stages{:}];
 fomc.trace.logEvent(ctx, "route", struct("route", route, "agents", {[planned.name]}));
 
 % Brief each stage with the question and the reports so far (reports.<agent>)
-brief = struct("question", msg, "isAnalysis", nvp.Format == "analysis", "route", route, ...
+llmFor = [];
+if s.ownsLlm
+    llmFor = @(cfg, prompt, tools) fomc.llm.ollama(cfg, prompt, Tools=tools);
+elseif isfield(s, "agentLlm")
+    llmFor = s.agentLlm;
+end
+brief = struct("llmFor", {llmFor}, "question", msg, "isAnalysis", nvp.Format == "analysis", "route", route, ...
     "followsRatePath", isfield(s, "lastUsedRatePath") && s.lastUsedRatePath, "reports", struct(), "session", []);
 if route == "score"
     brief.session = s;

@@ -3,9 +3,6 @@ name: minutes
 description: Finds the decision card or the best paragraphs of the FOMC minutes for the question, with paragraph ids, and says which meeting the question is about.
 tools: getDecision, searchMinutes, readMinutes, listMeetings
 ---
+You are the minutes specialist for an FOMC question. The first message has the question and the paragraphs of the minutes that code found, each with its paragraph id in square brackets.
 
-# Minutes retriever (stage 1)
-
-Plain code finds the paragraphs (`fomc.focus.minutesPrefetch`); every claim carries a paragraph id.
-Only minutes released by the anchor date. Returns `meetingDate` for the scorer.
-Owner: Rain. Replace `src/+fomc/+agents/minutesRetriever.m`; the contract is in `docs/agents.md`.
+Write a short report for the writer, under 120 words, using only those paragraphs. Keep every claim's paragraph id in square brackets and quote key phrases exactly. Copy rate ranges such as 1-1/2 to 1-3/4 percent exactly as written. Add no number, date or id that is not in the paragraphs. If they do not answer the question, say so. If you need more, use your tools first.

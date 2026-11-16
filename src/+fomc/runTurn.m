@@ -11,12 +11,14 @@ function [s, answer, structured, calls] = runTurn(s, userMsg, nvp)
 %   lookups (fomc.focus.prefetch). A failed turn is rolled back so the session stays valid.
 %   Lookups: the specialist agents' work (fomc.agents.run), a struct of text, recs and structured,
 %   used in place of the harness's own lookups and, for scoring, in place of the score.
+%   Nudge false: do not push the model to read minutes first (specialist agents without minutes tools).
 
 arguments
     s (1,1) struct
     userMsg (1,1) string
     nvp.Format (1,1) string {mustBeMember(nvp.Format, ["chat", "analysis"])} = "chat"
     nvp.Lookups = []
+    nvp.Nudge (1,1) logical = true
 end
 
 % Set up: pick the focus window for this question, and keep the history so a failed turn can be undone
@@ -101,7 +103,7 @@ answer = "";
 finished = false;
 nudged = false;
 % Minutes questions need the minutes read, in either mode
-aboutMinutes = nvp.Format == "analysis" || fomc.focus.aboutMinutes(userMsg);
+aboutMinutes = nvp.Nudge && (nvp.Format == "analysis" || fomc.focus.aboutMinutes(userMsg));
 % Main loop: ask the model; if it asks for tools, run them and ask again; stop when it answers
 try
     for iter = 1:ctx.cfg.maxToolRounds

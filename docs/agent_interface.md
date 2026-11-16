@@ -254,6 +254,6 @@ Each run writes `logs/trace-<runId>.jsonl` (web sessions: `logs/web-<session>.js
 
 `cfg.parallel`, `cfg.criticRounds`; see `docs/agents.md`. New trace
 events: `route {route, agents}`, `stage {stage, agents, parallel}`, `handoff {to, stage, tools}`,
-`handback {agent, to, ok, ms, nIds, error}`, `critic {round, pass, issues}`, `parallel_off {reason}`. Events inside an
+`handback {agent, to, ok, ms, nIds, error}`, `critic {round, pass, issues}`, `parallel_off {reason}`, `agent_model {ms, fallback, reason}` (a specialist's own model call; its `model_response` and tool events carry the agent too). Events inside an
 agent carry `agent`. `fomc.agents.run` is the entry for every turn; `fomc.runTurn` is its writer loop.
 

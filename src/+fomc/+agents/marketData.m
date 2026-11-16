@@ -2,13 +2,13 @@ function r = marketData(ctx, brief)
 %MARKETDATA The market and econ data agent (stage 1): dated figures, rate path, economy, outlook.
 %   r = fomc.agents.marketData(ctx, brief)
 %   ALEX'S AGENT. The lookup that was fomc.focus.marketPrefetch is below, unchanged (the local
-%   function lookup). Code only: it runs the tools through fomc.tools.dispatch, so the date
-%   gates and the trace apply, MATLAB does the arithmetic, and the writer only phrases the
-%   result. Each figure names its series and the date it was known. A question that is not
+%   function lookup). The code runs the tools through fomc.tools.dispatch (date gates and
+%   trace apply) and does the arithmetic; the sub-agent (fomc.agents.subAgent, prompt in
+%   agents/market.md) phrases the result as a short dated report. Each figure names its series and the date it was known. A question that is not
 %   about numbers gets an empty report. Contract: docs/agents.md.
 
 [text, recs] = lookup(ctx, brief.question, brief.followsRatePath);
-r = fomc.agents.report("market", text=text, calls=recs);
+r = fomc.agents.subAgent(ctx, brief, "market", text, recs);
 end
 
 function [text, recs] = lookup(ctx, question, followsRatePath)
