@@ -6,42 +6,62 @@ function r = minutesRetriever(ctx, brief)
 %   (docs/agents.md). It calls the same pieces as before: fomc.focus.window, fomc.tools.dispatch,
 %   fomc.data.* and fomc.guard.*. Replace lookup, or this whole file, keeping this signature:
 %   the code finds the paragraphs; the sub-agent (fomc.agents.subAgent, prompt in
-%   agents/minutes.md) summarizes them with their ids. Set meetingDate ("YYYY-MM-DD" or "").
+%   agents/minutes.md and the page agents/minutes/<topic>.md the lookup chose) summarizes them with their ids. Set meetingDate ("YYYY-MM-DD" or "").
 %   Only minutes released by ctx.asOf; every claim carries a paragraph id.
 
-[text, recs, meeting] = lookup(ctx, brief.question, brief.isAnalysis);
+[text, recs, meeting, topic] = lookup(ctx, brief.question, brief.isAnalysis);
 date = "";
 if ~isnat(meeting)
     date = fomc.util.fmtDate(meeting);
 end
-r = fomc.agents.subAgent(ctx, brief, "minutes", text, recs);
+r = fomc.agents.subAgent(ctx, brief, "minutes", text, recs, topic);
 r.meetingDate = date;
 end
 
-function [text, recs, meeting] = lookup(ctx, question, isAnalysis)
+function [text, recs, meeting, topic] = lookup(ctx, question, isAnalysis)
 %LOOKUP The minutes lookups.
-%   [text, recs, meeting] = lookup(ctx, question, isAnalysis)
+%   [text, recs, meeting, topic] = lookup(ctx, question, isAnalysis)
 %
 %   A small model sometimes skips a tool or invents a result, so for minutes questions:
-%     decision or vote   the named (or latest) meeting's decision card, or a plain "not
-%                        public on the anchor date" if its minutes are not released
-%     other              the best matching paragraphs (fomc.retrieve.rank)
+%     next decision      what participants expected at the latest released meeting (topic "views")
+%     decision or vote   the named (or latest) meeting's decision card (topic "decision"), or a plain
+%                        "not public on the anchor date" if its minutes are not released
+%     other              the best matching paragraphs, fomc.retrieve.rank (topic "passages")
 %   text is added to the question; recs are tool-call records for the trace and the
-%   citation check. Data-only questions get nothing. meeting: the meeting whose decision card
-%   was looked up (NaT when none). This is the minutes retriever's lookup (fomc.agents.minutesRetriever).
+%   citation check. Data-only questions get nothing. meeting: the meeting the text is about
+%   (NaT when none). topic: which page of agents/minutes/ the sub-agent reads with its prompt.
+%   This is the minutes retriever's lookup (fomc.agents.minutesRetriever).
 
 % Nothing to do unless prefetch is on and the question is about the minutes
 text = "";
 meeting = NaT;
+topic = "";
 recs = struct("name", {}, "args", {}, "result", {}, "ok", {}, "ms", {});
-if ~ctx.cfg.prefetch || ~(fomc.focus.aboutMinutes(question) || isAnalysis)
+q = lower(string(question));
+M = ctx.D.meetings;
+% "In December 2015, what happened to the federal funds rate target?" is about a decision, though it
+% says nothing of the Committee; a rate question that names no meeting is a data question
+named = ~isempty(regexp(q, monthYear() + "|20\d\d-\d\d-\d\d", "once"));
+rateTarget = named && contains(q, ["federal funds rate" "policy rate" "target range" "rate target"]);
+if ~ctx.cfg.prefetch || ~(fomc.focus.aboutMinutes(question) || isAnalysis || rateTarget)
     return
 end
 
+% A question about the next decision: what participants expected, not the last decision
+latest = latestReleased(M, ctx);
+if fomc.focus.asksNextMove(q) && ~isempty(latest)
+    V = fomc.data.policyViews(ctx.D, find(M.MeetingDate == latest, 1));
+    if ~isempty(V.views)
+        [text, recs] = viewsLookup(ctx, V);
+        meeting = latest;
+        topic = "views";
+        fomc.trace.logEvent(ctx, "prefetch", struct("kind", "views", "meeting", fomc.util.fmtDate(latest)));
+        return
+    end
+end
+
 % Does the question ask about a decision or vote?
-q = lower(string(question));
-M = ctx.D.meetings;
-decisionIntent = isAnalysis || ~isempty(regexp(q, ...
+decisionIntent = isAnalysis || rateTarget || ~isempty(regexp(q, ...
     "(?<![a-z])(decid\w*|decision|vote\w*|dissent\w*|rais\w*|hike\w*|cut|cuts|lower\w*|hold|held|unchanged)(?![a-z])", "once"));
 
 % Yes: find which meeting it means
@@ -49,7 +69,6 @@ if decisionIntent
     [target, found, why] = pickMeeting(q, M, ctx);
     % That meeting's minutes are not public yet: tell the model to say so
     if found == "unreleased"
-        latest = latestReleased(M, ctx);
         avail = "No minutes have been released yet.";      % before the first release there is no latest meeting
         if ~isempty(latest)
             avail = "The latest minutes available are for the meeting that ended " + fomc.util.fmtDate(latest) + ".";
@@ -66,6 +85,7 @@ if decisionIntent
         if rec.ok
             text = cardText(jsondecode(json));
             meeting = target;
+            topic = "decision";
             fomc.trace.logEvent(ctx, "prefetch", struct("kind", "decision", "meeting", fomc.util.fmtDate(target)));
             return
         end
@@ -85,15 +105,37 @@ if ~isempty(hits)
         newline + strjoin(lines, newline) + "]";
     recs(end+1) = struct("name", "prefetchPassages", "args", struct("query", string(question)), ...
         "result", string(jsonencode(struct("hits", {num2cell(hits)}))), "ok", true, "ms", round(toc(t0) * 1000));
+    topic = "passages";
     fomc.trace.logEvent(ctx, "prefetch", struct("kind", "passages", "ids", [hits.id]));
 end
+end
+
+function [text, recs] = viewsLookup(ctx, V)
+% What participants expected for the next meetings, the most widely held views first, each with its id.
+% Recorded like passages found by code, so the citation check accepts their ids.
+n = min(numel(V.views), ctx.cfg.prefetchHits);
+hits = struct("id", cell(1, n), "snippet", "");
+lines = strings(n, 1);
+for i = 1:n
+    v = V.views{i};
+    hits(i) = struct("id", v.id, "snippet", v.text);
+    lines(i) = sprintf("- Held by %s (leans: %s): %s [%s]", v.share, v.lean, v.text, v.id);
+end
+text = "[What participants said about future rate moves at the meeting that ended " + V.meetingDate + ", read from the minutes by code (the lean: " + ...
+    V.lean + "). Cite their ids; never answer yes or no:" + newline + strjoin(lines, newline) + "]";
+recs = struct("name", "prefetchPassages", "args", struct("query", "views"), "result", string(jsonencode(struct("hits", {num2cell(hits)}))), "ok", true, "ms", 0);
+end
+
+function p = monthYear()
+% A month and a year in a question ("March 2020"): the month's first letters, then the year
+p = "(?<![a-z])(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\.?\s*,?\s*(20\d\d)";
 end
 
 function [target, found, why] = pickMeeting(q, M, ctx)
 % Which meeting does the question mean? found: "yes", "unreleased" or "none".
 target = NaT; found = "none"; why = "";
 % Look for a month and year ("March 2020") or an ISO date in the question
-mon = regexp(q, "(?<![a-z])(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\.?\s*,?\s*(20\d\d)", "tokens", "once");
+mon = regexp(q, monthYear(), "tokens", "once");
 iso = regexp(q, "20\d\d-\d\d-\d\d", "match", "once");
 % An exact date was given
 if strlength(string(iso)) > 0          % a string input returns "" (not empty) when nothing matches

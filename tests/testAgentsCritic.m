@@ -47,6 +47,16 @@ classdef testAgentsCritic < matlab.unittest.TestCase
             tc.verifyTrue(s.lastReview.unverified);
         end
 
+        function aYesOrNoOrWhatTheFedShouldDoToANextMoveQuestionGetsOneRewrite(tc)
+            q = "Should the Fed raise rates at the next meeting?";
+            rewrite = "Participants did not expect a change [2020-01-29/policyAction/1].";
+            [a, m] = tc.ask(q, "Yes, the Fed should raise rates [2020-01-29/policyAction/1].", rewrite);
+            tc.verifyEqual(a, rewrite);
+            tc.verifyEqual(numel(m.Seen), 2);
+            [~, m2] = tc.ask(q, "Participants expected rates to hold [2020-01-29/policyAction/1].");
+            tc.verifyEqual(numel(m2.Seen), 1, "an answer about what participants expected passes");
+        end
+
         function criticRoundsAreCappedInCode(tc)
             cfg = fomc.config(verbose=false, criticRounds=1);
             [~, m, s] = tc.ask("Hello there.", "The range is 1-1/2 to 1-3/4 percent.", "Fine.", cfg);

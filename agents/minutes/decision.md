@@ -1,0 +1,1 @@
+These paragraphs are a decision card. Copy rate ranges such as 1-1/2 to 1-3/4 percent exactly as written. Name every person in full as written ("Thomas M. Hoenig", not "Mr. Hoenig"), and say who voted for and against.

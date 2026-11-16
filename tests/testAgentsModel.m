@@ -5,6 +5,7 @@ classdef testAgentsModel < matlab.unittest.TestCase
     properties
         D
         ctx
+        Pad = string(repmat(' ', 1, 6000))   % market evidence shorter than its own limit (agents/market.md) never reaches its model
     end
 
     methods (TestClassSetup)
@@ -24,7 +25,7 @@ classdef testAgentsModel < matlab.unittest.TestCase
 
     methods (Test)
         function aSpecialistRunsOnItsOwnPromptAndToolsAndReportsTheModelsText(tc)
-            [r, seen] = tc.specialist("market", "UNRATE: 3.5% on 2020-02-07", {struct("content", "Unemployment was 3.5% (UNRATE).")});
+            [r, seen] = tc.specialist("market", "UNRATE: 3.5% on 2020-02-07" + tc.Pad, {struct("content", "Unemployment was 3.5% (UNRATE).")});
             tc.verifyEqual(r.text, "Unemployment was 3.5% (UNRATE).");
             c = fomc.agents.catalog();
             a = c([c.name] == "market");
@@ -35,8 +36,8 @@ classdef testAgentsModel < matlab.unittest.TestCase
 
         function aReplyWithANumberNoSourceHasFallsBackToTheCodesText(tc)
             evidence = "UNRATE: 3.5% on 2020-02-07";
-            r = tc.specialist("market", evidence, {struct("content", "Unemployment was 9.9%.")});
-            tc.verifyEqual(r.text, evidence);
+            r = tc.specialist("market", evidence + tc.Pad, {struct("content", "Unemployment was 9.9%.")});
+            tc.verifyEqual(strip(r.text), evidence);
             tc.verifySubstring(fileread(tc.ctx.tracePath), '"fallback":true');
         end
 
@@ -47,10 +48,11 @@ classdef testAgentsModel < matlab.unittest.TestCase
         end
 
         function aFailingModelFallsBackInsteadOfThrowing(tc)
-            tc.ctx.agent = "market";
+            tc.ctx.agent = "minutes";
             brief = struct("question", "Q?", "isAnalysis", false, "llmFor", @(~, ~, ~) @(~, ~, ~) error("model is down"));
-            r = fomc.agents.subAgent(tc.ctx, brief, "market", "UNRATE: 3.5%", []);
-            tc.verifyEqual(r.text, "UNRATE: 3.5%");
+            r = fomc.agents.subAgent(tc.ctx, brief, "minutes", "Rates held [2020-01-29/policyAction/1].", []);
+            tc.verifyEqual(r.text, "Rates held [2020-01-29/policyAction/1].");
+            tc.verifySubstring(fileread(tc.ctx.tracePath), '"reason":"model"');
         end
 
         function noEvidenceNoFactoryOrAnAnalysisTurnMeansNoModelCall(tc)
@@ -72,7 +74,7 @@ classdef testAgentsModel < matlab.unittest.TestCase
         end
 
         function aMarketSpecialistIsNotNudgedToReadMinutes(tc)
-            [~, seen] = tc.specialist("market", "UNRATE: 3.5% on 2020-02-07", {struct("content", "Unemployment was 3.5%.")}, false, ...
+            [~, seen] = tc.specialist("market", "UNRATE: 3.5% on 2020-02-07" + tc.Pad, {struct("content", "Unemployment was 3.5%.")}, false, ...
                 "What did the minutes say about unemployment?");
             tc.verifyEqual(seen.calls, 1);
         end
@@ -88,11 +90,12 @@ classdef testAgentsModel < matlab.unittest.TestCase
 
         function evidenceShorterThanTheLimitGoesToTheWriterUnchanged(tc)
             tc.ctx.cfg.agentSummarizeOver = 100;
-            [short, s1] = tc.specialist("market", "UNRATE: 3.5% on 2020-02-07", {struct("content", "x")});
-            [long, s2] = tc.specialist("market", "UNRATE: 3.5% on 2020-02-07. " + strjoin(repmat("More.", 1, 30)), {struct("content", "UNRATE was 3.5%.")});
-            tc.verifyEqual(short.text, "UNRATE: 3.5% on 2020-02-07");
+            id = "Rates held [2020-01-29/policyAction/1].";
+            [short, s1] = tc.specialist("minutes", id, {struct("content", "x")});
+            [long, s2] = tc.specialist("minutes", id + " " + strjoin(repmat("More.", 1, 30)), {struct("content", id)});
+            tc.verifyEqual(short.text, id);
             tc.verifyEqual([s1.calls s2.calls], [0 1]);
-            tc.verifyEqual(long.text, "UNRATE was 3.5%.");
+            tc.verifyEqual(long.text, id);
         end
 
         function aSummaryThatDropsEveryParagraphIdFallsBack(tc)
@@ -104,24 +107,71 @@ classdef testAgentsModel < matlab.unittest.TestCase
             tc.verifySubstring(fileread(tc.ctx.tracePath), '"reason":"no paragraph id kept"');
         end
 
+        function aMarketReportBelowItsOwnLimitReachesTheWriterAsWritten(tc)
+            % agents/market.md sets summarizeOver: the code's text already carries the writer's instructions
+            evidence = "[Outlook, cite the staff forecast with its ids [2020-01-29/staffOutlook/1]." + strjoin(repmat("Figure.", 1, 200)) + "]";
+            [r, seen] = tc.specialist("market", evidence, {struct("content", "Short.")});
+            tc.verifyEqual(r.text, evidence);
+            tc.verifyEqual(seen.calls, 0);
+        end
+
+        function aSpecialistPromptIsItsRoleAndTheTopicPageItWasGiven(tc)
+            c = fomc.agents.catalog();
+            a = c([c.name] == "minutes");
+            tc.verifyEqual(sort(string(fieldnames(a.pages))).', ["decision" "passages" "views"]);
+            id = "Rates held [2020-01-29/policyAction/1].";
+            [~, withPage] = tc.specialist("minutes", id, {struct("content", id)}, false, "Q?", "views");
+            [~, noPage] = tc.specialist("minutes", id, {struct("content", id)}, false, "Q?", "no such page");
+            tc.verifyEqual(withPage.prompt, a.body + newline + a.pages.views);
+            tc.verifyEqual(noPage.prompt, a.body);
+        end
+
+        function aNextMoveQuestionGetsTheParticipantsViewsNotTheDecisionCard(tc)
+            r = fomc.agents.minutesRetriever(tc.ctxWithViews(), tc.brief("Should the Fed raise rates at the next meeting?"));
+            tc.verifySubstring(r.text, "[2020-01-29/participantsViews/9]");
+            tc.verifySubstring(r.text, "hold");
+            tc.verifyFalse(contains(r.text, "Decision card"));
+            tc.verifyEqual(r.meetingDate, "2020-01-29");
+        end
+
+        function aRateTargetQuestionThatNamesAMeetingGetsItsDecisionCard(tc)
+            r = fomc.agents.minutesRetriever(tc.ctx, tc.brief("In January 2020, what happened to the federal funds rate target?"));
+            tc.verifySubstring(r.text, "Decision card for the meeting that ended 2020-01-29");
+            q = fomc.agents.minutesRetriever(tc.ctx, tc.brief("What was the federal funds rate in 2019?"));
+            tc.verifyEqual(q.text, "", "a data question that names no meeting gets no minutes");
+        end
+
         function theWriterReadsTheSpecialistsReportsAndEachCallIsLabelled(tc)
-            reply = fomc.llm.Mock({struct("content", "Short report.")});
+            reply = fomc.llm.Mock({struct("content", "Short report [2020-01-29/policyAction/1].")});
             factory = @(~, ~, ~) @(h, t, f) reply.call(h, t, f);
             writer = fomc.llm.Mock({struct("content", "Ok.")});
             tp = string(tempname) + ".jsonl";
-            [~, ~, ~, s] = fomc.runAgent("What is the unemployment rate and what did the minutes say about it?", ...
+            [~, ~, ~, s] = fomc.runAgent("What did the Committee decide at the latest meeting?", ...
                 datetime(2020,3,1), Config=fomc.config(verbose=false, agentSummarizeOver=0), Llm=@writer.call, Data=tc.D, TracePath=tp, AgentLlm=factory);
             tc.verifyGreaterThanOrEqual(numel(reply.Seen), 1);
-            tc.verifySubstring(string(s.history.Messages{1}.content), "Short report.");
+            tc.verifySubstring(string(s.history.Messages{1}.content), "Short report [2020-01-29/policyAction/1].");
             tc.verifySubstring(fileread(tp), '"type":"agent_model"');
         end
     end
 
     methods
-        function [r, seen] = specialist(tc, name, evidence, script, isAnalysis, question)
+        function b = brief(~, question)
+            b = struct("question", question, "isAnalysis", false, "followsRatePath", false);
+        end
+
+        function ctx = ctxWithViews(tc)
+            % Meeting 1 (released by the anchor) gets one sentence about future rate moves, as policyViews reads them
+            D = tc.D;
+            D.paras(end+1, :) = {1, "participantsViews", 9, "Several participants judged that it would likely be appropriate to hold the " + ...
+                "target range for the federal funds rate steady at coming meetings.", "2020-01-29/participantsViews/9"};
+            ctx = fomc.context(datetime(2020,3,1), fomc.config(verbose=false), D, tracePath=string(tempname) + ".jsonl");
+        end
+
+        function [r, seen] = specialist(tc, name, evidence, script, isAnalysis, question, topic)
             % Run one specialist on some evidence with a scripted model; seen: its prompt, tools and call count
             if nargin < 5, isAnalysis = false; end
             if nargin < 6, question = "Q?"; end
+            if nargin < 7, topic = ""; end
             c = fomc.agents.catalog();
             a = c([c.name] == name);
             tc.ctx.agent = name;
@@ -130,7 +180,7 @@ classdef testAgentsModel < matlab.unittest.TestCase
             m = fomc.llm.Mock(script);
             factory = @(~, prompt, tools) recorded(log, m, prompt, tools);
             brief = struct("question", question, "isAnalysis", isAnalysis, "llmFor", factory);
-            r = fomc.agents.subAgent(tc.ctx, brief, name, evidence, []);
+            r = fomc.agents.subAgent(tc.ctx, brief, name, evidence, [], topic);
             seen = struct("prompt", log('prompt'), "tools", log('tools'), "calls", log('calls'));
         end
     end

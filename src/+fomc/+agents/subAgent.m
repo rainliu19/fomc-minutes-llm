@@ -1,31 +1,41 @@
-function r = subAgent(ctx, brief, name, evidence, recs)
+function r = subAgent(ctx, brief, name, evidence, recs, topic)
 %SUBAGENT A specialist as a sub-agent: its own prompt and tools, a short model loop on what its code found.
-%   r = fomc.agents.subAgent(ctx, brief, name, evidence, recs)
+%   r = fomc.agents.subAgent(ctx, brief, name, evidence, recs, topic)
 %   The agent's code has already looked things up (evidence, and recs, the tool-call records
 %   behind it). The sub-agent is the writer's loop (fomc.runTurn) in a fresh conversation: its
-%   system prompt is the body of agents/<name>.md, only that file's tools are offered (and
+%   system prompt is the body of agents/<name>.md plus the page agents/<name>/<topic>.md for the
+%   topic the lookup found (none when topic is "" or has no page), only that file's tools are offered (and
 %   enforced by fomc.tools.dispatch), and the evidence is its first message. It may call its
 %   tools for more, then writes a short report. Code checks the report (fomc.guard.checkReport:
 %   no id or number its sources lack); a bad report, a failed model or no model falls back to
 %   the evidence, so facts are never lost. A report that cites none of the evidence's paragraph
 %   ids also falls back (the writer cannot cite it). No model call when there is no evidence, when
-%   it is shorter than cfg.agentSummarizeOver (see config.m), in analysis mode (its grounding check
+%   it is shorter than cfg.agentSummarizeOver or the agent's own summarizeOver, whichever is longer
+%   (see config.m and agents/market.md), in analysis mode (its grounding check
 %   needs the raw text) or without brief.llmFor (a model factory f(cfg, prompt, tools) that
 %   fomc.agents.run sets).
 
+if nargin < 6
+    topic = "";
+end
 r = fomc.agents.report(name, text=evidence, calls=recs);
-noModel = evidence == "" || strlength(evidence) < ctx.cfg.agentSummarizeOver || brief.isAnalysis;
+c = fomc.agents.catalog();
+a = c([c.name] == name);
+limit = max(ctx.cfg.agentSummarizeOver, a.summarizeOver);    % NaN (no own limit) is ignored by max
+noModel = evidence == "" || strlength(evidence) < limit || brief.isAnalysis;
 if noModel || ~isfield(brief, "llmFor") || isempty(brief.llmFor)
     return
 end
-c = fomc.agents.catalog();
-a = c([c.name] == name);
+prompt = a.body;
+if isfield(a.pages, topic)
+    prompt = prompt + newline + a.pages.(topic);
+end
 cfg = ctx.cfg;
 cfg.maxToolRounds = 3;
 cfg.maxTokens = min(cfg.maxTokens, 400);
 ctx.cfg = cfg;
-sub = struct("ctx", ctx, "history", messageHistory, "llm", brief.llmFor(cfg, a.body, a.tools), ...
-    "systemPrompt", a.body, "contextBlock", "ANCHOR DATE: " + fomc.util.fmtDate(ctx.asOf) + ". Treat it as today.", ...
+sub = struct("ctx", ctx, "history", messageHistory, "llm", brief.llmFor(cfg, prompt, a.tools), ...
+    "systemPrompt", prompt, "contextBlock", "ANCHOR DATE: " + fomc.util.fmtDate(ctx.asOf) + ". Treat it as today.", ...
     "known", strings(0, 1), "ownsLlm", false, "effort", "low", "lastUsedRatePath", false);
 lookups = struct("text", evidence, "recs", recs, "structured", []);
 t0 = tic;
