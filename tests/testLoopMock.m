@@ -122,10 +122,11 @@ classdef testLoopMock < matlab.unittest.TestCase
             lines(lines == "") = [];
             types = arrayfun(@(l) string(jsondecode(l).type), lines).';
             % One prefetch call (the data snapshot) runs before the session starts; then the organizer
-            % routes, the two stage-1 agents hand over and back, the writer loops, the critic checks
-            tc.verifyEqual(types, ["tool_call" "session_start" "route" "stage" "handoff" "handback" ...
-                "handoff" "handback" "user_message" "model_response" "tool_call" "model_response" ...
-                "final_answer" "critic"]);
+            % routes, the two stage-1 agents hand over, say whether their model ran, and hand back, the
+            % writer loops (each model call is the messages it was sent, then its response), the critic checks
+            tc.verifyEqual(types, ["tool_call" "session_start" "route" "stage" "handoff" "agent_model" "handback" ...
+                "handoff" "agent_model" "handback" "user_message" "message" "message" "model_response" "tool_call" ...
+                "message" "model_response" "final_answer" "critic"]);
         end
 
         function everyQuestionCarriesTheFocusNote(tc)

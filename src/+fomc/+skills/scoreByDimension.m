@@ -145,7 +145,7 @@ for i = 1:height(dims)
     history = addUserMessage(messageHistory, prompt);
     for attempt = 1:maxAttempts
         t0 = tic;
-        [reply, ~, stats] = s.llm(history, false, dimSchema);
+        reply = fomc.trace.llmCall(s, history, false, dimSchema, Round=attempt);
         calls = calls + 1;
         content = strtrim(string(reply));
         try
@@ -167,7 +167,7 @@ for i = 1:height(dims)
         fomc.trace.logEvent(ctx, "skill_score_validation", struct("meetingDate", meetingDate, ...
             "releaseDate", releaseDate, "dimension", key, "attempt", attempt, "ok", isempty(failures), ...
             "score", candidateScore(candidate), "reply", extractBefore(content, min(strlength(content), 800) + 1), ...
-            "issues", failures, "passages", ids, "ms", round(toc(t0) * 1000), "stats", stats));
+            "issues", failures, "passages", ids, "ms", round(toc(t0) * 1000)));
         if isstruct(candidate) && ~isempty(fieldnames(candidate))
             score.dimensions.(key) = candidate;
         end

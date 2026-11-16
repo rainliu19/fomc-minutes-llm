@@ -9,8 +9,9 @@ function [s, answer, structured, calls] = runTurn(s, userMsg, nvp)
 %   (fomc.analysis.structure); structured is [] in chat mode. calls: one record per tool
 %   call (name, args, result, ok, ms); the first s.lastLookups of them are the harness's own
 %   lookups (fomc.focus.prefetch). A failed turn is rolled back so the session stays valid.
-%   Lookups: the specialist agents' work (fomc.agents.run), a struct of text, recs and structured,
-%   used in place of the harness's own lookups and, for scoring, in place of the score.
+%   Lookups: the specialist agents' work (fomc.agents.run), a struct of text, recs and structured
+%   (and from: the agents whose reports the text carries), used in place of the harness's own lookups
+%   and, for scoring, in place of the score.
 %   Nudge false: do not push the model to read minutes first (specialist agents without minutes tools).
 
 arguments
@@ -98,7 +99,12 @@ end
 % Add the message to the conversation
 s.history = addUserMessage(s.history, question);
 
-% Loop state: the final answer, whether the model finished, whether we already pushed back
+% Loop state: the final answer, whether the model finished, whether we already pushed back, and which
+% agents' reports the first question carries (for the page's timeline)
+from = strings(1, 0);
+if isstruct(nvp.Lookups) && isfield(nvp.Lookups, "from")
+    from = nvp.Lookups.from;
+end
 answer = "";
 finished = false;
 nudged = false;
@@ -115,14 +121,11 @@ try
                 fomc.trace.logEvent(ctx, "compact", struct("replaced", nReplaced));
             end
         end
-        % Ask the model, then record what it said and how long it took
-        t0 = tic;
-        [text, out, stats] = s.llm(s.history, true, []);
+        % Ask the model (fomc.trace.llmCall records what it was sent and what it said)
+        [text, out] = fomc.trace.llmCall(s, s.history, true, [], Round=iter, From=from);
+        from = strings(1, 0);    % only the first question carries the specialists' reports
         tcs = toolCallsOf(out);
         content = fomc.llm.cleanText(string(text));
-        fomc.trace.logEvent(ctx, "model_response", struct("round", iter, ...
-            "content", content, "nToolCalls", numel(tcs), ...
-            "thinking", clip(thinkingOf(out), 4000), "ms", round(toc(t0) * 1000), "stats", stats));
 
         % Add the model's reply (text and any tool calls) to the conversation
         msg = struct("role", "assistant", "content", content);
@@ -199,14 +202,6 @@ for k = 1:numel(tcs)
     if ~isfield(tcs, "id") || isempty(tcs(k).id)
         tcs(k).id = "call_" + k;
     end
-end
-end
-
-function t = thinkingOf(out)
-% The model's separate 'thinking' text, if it sent any
-t = "";
-if isfield(out, "thinking") && ~isempty(out.thinking)
-    t = string(out.thinking);
 end
 end
 

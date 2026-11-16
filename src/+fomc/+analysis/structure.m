@@ -25,7 +25,7 @@ failures = strings(0, 1);
 for attempt = 1:maxAttempts
     t0 = tic;
     % One model call with the JSON schema (no tools)
-    [text, ~, stats] = s.llm(s.history, false, schema);
+    text = fomc.trace.llmCall(s, s.history, false, schema, Round=attempt);
     content = string(text);
     structured = [];
     failures = strings(0, 1);
@@ -42,7 +42,7 @@ for attempt = 1:maxAttempts
     end
     fomc.trace.logEvent(ctx, "grounding_check", struct("attempt", attempt, ...
         "ok", isempty(failures), "failures", failures, "reply", content, ...
-        "ms", round(toc(t0) * 1000), "stats", stats));
+        "ms", round(toc(t0) * 1000)));
 
     if strlength(content) == 0
         content = "(empty)";

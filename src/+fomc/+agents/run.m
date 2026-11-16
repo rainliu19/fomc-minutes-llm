@@ -1,6 +1,6 @@
 function [s, answer, structured, calls] = run(s, msg, nvp)
 %RUN One user turn through the organizer: route, run the specialists in stages, write, check.
-%   [s, answer, structured, calls] = fomc.agents.run(s, msg, Format="chat" | "analysis")
+%   [s, answer, structured, calls] = fomc.agents.run(s, msg, Format="chat" | "analysis", Team=true)
 %   The entry for every turn (web app, fomc.runAgent, fomc.chat):
 %     1. fomc.agents.route picks the stages (agents/organizer.md);
 %     2. each stage's agents run (fomc.agents.runStage) and hand back reports;
@@ -10,20 +10,30 @@ function [s, answer, structured, calls] = run(s, msg, nvp)
 %        naming up to three of the reports' paragraph ids to cite, last where the writer reads best;
 %     4. fomc.agents.critic checks the answer.
 %   Score questions take the scorer's answer directly. Trace events from
-%   inside an agent carry its name; s.lastLookupAgents says which agent made each lookup and
-%   s.lastAgentIssues which agents failed ("" if none).
+%   inside an agent carry its name (the writer's say "writer", the critic's "critic");
+%   s.lastLookupAgents says which agent made each lookup and s.lastAgentIssues which agents
+%   failed ("" if none). Team=false skips all of that: the writer alone, with the harness's own
+%   lookups (fomc.focus.prefetch) and no critic, its events under the name "agent".
 
 arguments
     s (1,1) struct
     msg (1,1) string
     nvp.Format (1,1) string {mustBeMember(nvp.Format, ["chat", "analysis"])} = "chat"
+    nvp.Team (1,1) logical = true
+end
+if ~nvp.Team
+    s.ctx.agent = "agent";
+    [s, answer, structured, calls] = fomc.runTurn(s, msg, Format=nvp.Format);
+    s.lastLookupAgents = strings(1, 0);
+    s.lastAgentIssues = "";
+    return
 end
 ctx = s.ctx;
 ctx.focus = fomc.focus.window(msg, ctx.asOf, ctx.cfg);
 ctx.agent = "organizer";
 [stages, route] = fomc.agents.route(msg);
 planned = [stages{:}];
-fomc.trace.logEvent(ctx, "route", struct("route", route, "agents", {[planned.name]}));
+fomc.trace.logEvent(ctx, "route", struct("route", route, "agents", {[planned.name]}, "question", msg));
 
 % Brief each stage with the question and the reports so far (reports.<agent>)
 llmFor = [];
@@ -56,7 +66,8 @@ if ~isempty(ids)
     text(end+1) = "[Cite what you use with its paragraph id in square brackets, such as [" + strjoin(ids(1:min(3, end)), "] or [") + "].]";
 end
 lookups = struct("text", strjoin(text(text ~= ""), newline), "recs", [reports.calls], ...
-    "structured", reports(end).structured);
+    "structured", reports(end).structured, "from", [reports([reports.text] ~= "").agent]);
+ctx.agent = "writer";
 s.ctx = ctx;
 s.lastLookupAgents = repelem([reports.agent], arrayfun(@(r) numel(r.calls), reports));
 s.lastAgentIssues = strjoin(why, " ");

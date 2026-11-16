@@ -1,7 +1,8 @@
 function logEvent(ctx, type, payload)
 %LOGEVENT Append one JSON line to the run's trace file.
 %   fomc.trace.logEvent(ctx, "tool_call", struct(name=..., args=..., result=...))
-%   Each line has time, run id, anchor date, event type, the agent when ctx.agent is set, and the payload. API keys are scrubbed.
+%   Each line has time, run id, anchor date, event type, the agent when ctx.agent is set, and the payload
+%   (a text field is cut at 20,000 characters). API keys are scrubbed.
 
 arguments
     ctx (1,1) struct
@@ -17,7 +18,11 @@ if isfield(ctx, "agent")
     ev.agent = ctx.agent;
 end
 for f = string(fieldnames(payload)).'
-    ev.(f) = payload.(f);
+    v = payload.(f);
+    if isstring(v) && isscalar(v) && strlength(v) > 20000   % one text field never fills the log
+        v = extractBefore(v, 20001) + "...";
+    end
+    ev.(f) = v;
 end
 line = fomc.trace.scrub(string(jsonencode(ev)));
 

@@ -3,10 +3,15 @@ function r = runOne(agent, k, ctx, brief)
 %   r = fomc.agents.runOne(agent, stage, ctx, brief)
 %   The agent runs with ctx.agent set (so every trace event says whose it is) and only its own
 %   tools (ctx.allowedTools, enforced by fomc.tools.dispatch). Whatever it returns passes the
-%   date gate (nothing dated after the anchor, nothing oversized). A failure is a report with
+%   date gate (nothing dated after the anchor, nothing oversized). The trace says what the agent is
+%   briefed with (handoff reads) and what it returned (handback text). A failure is a report with
 %   ok=false, never an error, so one agent cannot stop the others. Safe on a thread worker.
 
-fomc.trace.logEvent(ctx, "handoff", struct("to", agent.name, "stage", k, "tools", {agent.tools}));
+reads = {};    % the earlier agents' reports this one is briefed with
+if isfield(brief, "reports")
+    reads = fieldnames(brief.reports);
+end
+fomc.trace.logEvent(ctx, "handoff", struct("to", agent.name, "stage", k, "tools", {agent.tools}, "reads", {reads}));
 ctx.agent = agent.name;
 ctx.allowedTools = agent.tools;
 t0 = tic;
@@ -22,5 +27,5 @@ catch ME
 end
 r.ms = round(toc(t0) * 1000);
 fomc.trace.logEvent(ctx, "handback", struct("to", "organizer", "ok", r.ok, "ms", r.ms, ...
-    "nIds", numel(r.ids), "error", r.error));
+    "nIds", numel(r.ids), "error", r.error, "text", r.text));
 end

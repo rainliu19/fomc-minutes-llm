@@ -13,7 +13,7 @@ function r = subAgent(ctx, brief, name, evidence, recs, topic)
 %   it is shorter than cfg.agentSummarizeOver or the agent's own summarizeOver, whichever is longer
 %   (see config.m and agents/market.md), in analysis mode (its grounding check
 %   needs the raw text) or without brief.llmFor (a model factory f(cfg, prompt, tools) that
-%   fomc.agents.run sets).
+%   fomc.agents.run sets). The agent_model trace event says which, or how long the model took.
 
 if nargin < 6
     topic = "";
@@ -22,8 +22,9 @@ r = fomc.agents.report(name, text=evidence, calls=recs);
 c = fomc.agents.catalog();
 a = c([c.name] == name);
 limit = max(ctx.cfg.agentSummarizeOver, a.summarizeOver);    % NaN (no own limit) is ignored by max
-noModel = evidence == "" || strlength(evidence) < limit || brief.isAnalysis;
-if noModel || ~isfield(brief, "llmFor") || isempty(brief.llmFor)
+why = skipReason(evidence, limit, brief);
+if why ~= ""
+    fomc.trace.logEvent(ctx, "agent_model", struct("skipped", true, "reason", why));
     return
 end
 prompt = a.body;
@@ -52,10 +53,24 @@ else
     end
 end
 fomc.trace.logEvent(ctx, "agent_model", ...
-    struct("ms", round(toc(t0) * 1000), "fallback", reason ~= "", "reason", reason));
+    struct("skipped", false, "ms", round(toc(t0) * 1000), "fallback", reason ~= "", "reason", reason));
 text = evidence;
 if reason == ""
     text = answer;
 end
 r = fomc.agents.report(name, text=text, calls=calls);
+end
+
+function why = skipReason(evidence, limit, brief)
+% Why the specialist's model does not run ("" when it does); the trace tells the page
+why = "";
+if evidence == ""
+    why = "no evidence to summarize";
+elseif brief.isAnalysis
+    why = "analysis mode needs the raw text";
+elseif strlength(evidence) < limit
+    why = "evidence is " + strlength(evidence) + " characters, under this agent's limit of " + limit;
+elseif ~isfield(brief, "llmFor") || isempty(brief.llmFor)
+    why = "no model connection";
+end
 end

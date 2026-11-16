@@ -1,11 +1,12 @@
-function json = turn(sessionId, message, asOfText, effort, model, tracePath, seedJson)
+function json = turn(sessionId, message, asOfText, effort, model, tracePath, seedJson, agents)
 %TURN One chat turn for the web app (app.py calls it through the MATLAB Engine).
-%   json = fomc.web.turn(sessionId, message, asOfText, effort, model, tracePath, seedJson)
+%   json = fomc.web.turn(sessionId, message, asOfText, effort, model, tracePath, seedJson, agents)
 %   The first message of a session creates it, anchored at asOfText (YYYY-MM-DD, or "" for
 %   the latest release) and using Ollama model `model` ("" for the default). effort is
 %   "low", "medium" or "high" (see fomc.effort) and may change between messages. seedJson
 %   is earlier questions and answers as a JSON array of {q, a, ids}; it is used only when
-%   the session is new, to continue a chat saved before a restart. Returns JSON: answer,
+%   the session is new, to continue a chat saved before a restart. agents is "team" (the organizer
+%   and its specialists) or "one" (the writer alone). Returns JSON: answer,
 %   structured, anchorDate, seconds, citations, warning, toolCalls.
 
 arguments
@@ -16,6 +17,7 @@ arguments
     model (1,1) string
     tracePath (1,1) string
     seedJson (1,1) string = ""
+    agents (1,1) string {mustBeMember(agents, ["team" "one"])} = "team"
 end
 
 % First message of a web session: create the session, anchored at the date given (or the latest release)
@@ -44,7 +46,7 @@ s.effort = effort;
 
 % Run the question through the agent and save the updated session
 t0 = tic;
-[s, answer, structured, calls] = fomc.agents.run(s, message, Format=format);
+[s, answer, structured, calls] = fomc.agents.run(s, message, Format=format, Team=agents == "team");
 fomc.web.store("set", sessionId, s);
 
 % Check the answer (ids, plain words, citations, figures) and choose the warning for the page, if any
@@ -66,7 +68,7 @@ end
 % Everything the page needs, as JSON
 out = struct("answer", answer, "structured", structured, ...
     "anchorDate", fomc.util.fmtDate(s.ctx.asOf), "seconds", toc(t0), ...
-    "citations", {num2cell(cites)}, "warning", warning, "toolCalls", {packCalls(calls, lookupsOf(s), agentsOf(s, numel(calls)))});
+    "citations", {num2cell(cites)}, "warning", warning, "toolCalls", {packCalls(calls, lookupsOf(s), agentsOf(s, numel(calls), agents))});
 json = jsonencode(out);
 end
 
@@ -99,9 +101,12 @@ if isfield(s, "lastLookups")
 end
 end
 
-function who = agentsOf(s, n)
-% Which agent made each call: a lookup is its specialist's, anything after is the writer's
-who = repmat("writer", 1, n);
+function who = agentsOf(s, n, agents)
+% Which agent made each call: a lookup is its specialist's, anything after is the writer's (no name for one agent)
+who = repmat("", 1, n);
+if agents == "team"
+    who(:) = "writer";
+end
 k = min(n, numel(s.lastLookupAgents));
 who(1:k) = s.lastLookupAgents(1:k);
 end

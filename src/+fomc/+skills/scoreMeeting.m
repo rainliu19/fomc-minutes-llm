@@ -56,7 +56,7 @@ failures = strings(0, 1);
 score = struct();
 for attempt = 1:maxAttempts
     t0 = tic;
-    [text, ~, stats] = s.llm(history, false, schema);
+    text = fomc.trace.llmCall(s, history, false, schema, Round=attempt);
     content = strtrim(string(text));
     parseFailure = "";
     try
@@ -72,7 +72,7 @@ for attempt = 1:maxAttempts
     end
     fomc.trace.logEvent(ctx, "skill_score_validation", struct( ...
         "meetingDate", meetingDate, "releaseDate", releaseDate, "attempt", attempt, ...
-        "ok", isempty(failures), "issues", failures, "ms", round(toc(t0) * 1000), "stats", stats));
+        "ok", isempty(failures), "issues", failures, "ms", round(toc(t0) * 1000)));
 
     history = addResponseMessage(history, struct("role", "assistant", "content", content));
     if isempty(failures) || attempt == maxAttempts
