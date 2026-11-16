@@ -17,8 +17,10 @@ answers one call at a time either way. Turn it on when a specialist starts doing
 ## The agents (`agents/*.md`, one file each)
 
 Frontmatter: `name`, `description`, `tools` (the only tools the agent may call; `fomc.tools.dispatch` refuses
-others). The body is the agent's **system prompt** (they are meant to be tuned). `organizer.md` also holds
-the `stages` line (the order) and the critic's rewrite message.
+others), optional `summarizeOver`. The body is the agent's **system prompt**, a short role; topic pages in
+`agents/<name>/<topic>.md` add one focused rule set (the minutes agent has `decision`, `views`, `passages`: the
+lookup picks the page). They are meant to be tuned. `organizer.md` also holds the `stages` line (the order) and
+the critic's rewrite message.
 
 Each specialist is a sub-agent (`fomc.agents.subAgent`): its code finds the evidence, then its own short model loop
 (the writer's `fomc.runTurn` in a fresh conversation, its prompt, only its tools, at most 3 rounds) writes a report.
@@ -28,17 +30,32 @@ model, analysis mode or no evidence falls back to the code's text, so facts are 
 
 | Stage | Agent | Code that finds the evidence | Model call |
 |---|---|---|---|
-| 1 | `minutes` | Rain's lookup, `+agents/minutesRetriever.m` (`lookup`) | summarizes the paragraphs with their ids |
-| 1 | `market` | Alex's lookup, `+agents/marketData.m` (`lookup`) | phrases the dated figures |
+| 1 | `minutes` | Rain's lookup, `+agents/minutesRetriever.m` (`lookup`): decision card, participants' views for next-move questions, or best paragraphs | summarizes the paragraphs with their ids |
+| 1 | `market` | Alex's lookup, `+agents/marketData.m` (`lookup`) | none by default (`summarizeOver: 6000`): its text already tells the writer what to cite |
 | 2 | `scorer` | Aarya's scorer, `+agents/rubricScorer.m` (`scoreQuestion`); `fomc.data.minutesDirection` | score route: one call per rubric dimension (the skill's own loop); household route: none, a saved score is read |
-| 3 | `consumer` | `+agents/consumerView.m` (the consumer-impact stub) | writes the household view from the market report and the direction |
+| 3 | `consumer` | `+agents/consumerView.m` (the consumer-impact stub): the direction and the tool's note | none while the rubric is a stub |
 
 Routes (by code, `fomc.agents.route`): a scoring question runs `scorer`; a question about what the minutes or
 rates mean for households (`fomc.focus.asksEffectsAhead`) runs all three stages; anything else runs stage 1.
 A specialist skips its model call when its evidence is short (`cfg.agentSummarizeOver`; config.m says why), and its
 report falls back to the evidence if it cites none of the evidence's ids. Set the limit to 0 to summarize everything.
-Cost: a specialist adds one model call (a few seconds of reading plus a short report), and the writer then reads two
-short reports instead of the raw lookups.
+The market agent's model call is off because summarizing its text dropped the writer's instructions in it ("cite the
+staff forecast with its ids", "do not answer yes or no"): the writer then cited nothing or answered yes. The organizer
+ends the lookups with one line naming the reports' first ids to cite. The critic also asks for one rewrite when a
+next-move answer says yes or no or what the Fed should do, or an effects answer cites nothing although ids were given.
+
+## Measured (qwen3 4B, 57 cases, one run each)
+
+| | One agent (main) | Team |
+|---|---|---|
+| Correct | 48/53 (90.6%) | 53/53 (100%, 95% CI 93.2 to 100) |
+| Citations verified | 77/81 | 113/113 |
+| Silent errors, warnings | 5, 1 | 0, 0 |
+| Median / p90 seconds | 18.0 / 28.9 | 15.5 / 36.1 |
+
+Three of the five cases won are lookup fixes (rate-target questions that name a meeting) that the one agent could use
+too; the rest come from the guard and the critic. Household questions are slower (about 37 s against 29 s). Small
+sample, one run: read the gain as "no worse, probably better", not as proof.
 
 ## Agent contract
 
