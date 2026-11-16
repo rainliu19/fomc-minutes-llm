@@ -27,6 +27,7 @@ REPO = Path(__file__).parent.parent
 ARGS = [a for a in sys.argv[1:] if not a.startswith("--")]
 MODEL = ARGS[0] if ARGS else ""                      # a model id; empty is the default
 RUN_HIGH = "--high" in sys.argv
+MULTI = "--multi" in sys.argv                    # save as evals/<id>-multi.json (the app runs the multi-agent organizer)
 LIMIT = int(sys.argv[sys.argv.index("--limit") + 1]) if "--limit" in sys.argv else 0
 HIGH_CASES = {"decision-01", "decision-02", "decision-03", "why-01", "why-02"}   # the Low vs High subset
 CAUSAL = re.compile(r"(?i)\b(because|due to|in response to|owing to|as a result of|driven by|reflect(?:ing|ed)|so as to|in order to)\b")
@@ -205,7 +206,7 @@ def main():
     OPENER.open(BASE + "/", timeout=60).read()
     OPENER.open(BASE + "/info?model=" + MODEL, timeout=60).read()
     time.sleep(25)
-    path = REPO / "evals" / f"{entry['id']}.json"
+    path = REPO / "evals" / f"{entry['id']}{'-multi' if MULTI else ''}.json"
     # A run that stopped early (memory) is continued: finished cases are kept, only the rest are asked
     rows = json.loads(path.read_text())["cases"] if path.exists() else []
     done = {(r["id"], r["effort"]) for r in rows}
@@ -228,7 +229,7 @@ def main():
         rows.append(row)
         print(json.dumps({k: row[k] for k in ("id", "effort", "seconds", "passed", "tool_ok", "swap_mb")}))
         sys.stdout.flush()
-    meta = {"model": entry["id"], "label": entry["label"], "params_b": entry.get("params_b"), "ollama_name": entry["name"],
+    meta = {"model": entry["id"] + ("-multi" if MULTI else ""), "label": entry["label"] + (", multi-agent" if MULTI else ""), "multi": MULTI, "params_b": entry.get("params_b"), "ollama_name": entry["name"],
             "date": time.strftime("%Y-%m-%d"), "complete": len([r for r in rows if r["effort"] == "low"]) == len(key)
             and (not RUN_HIGH or len([r for r in rows if r["effort"] == "high"]) == len([c for c in key if c["id"] in HIGH_CASES]))}
     out = {"summary": summarize(rows, meta), "cases": rows}
@@ -249,21 +250,22 @@ def rescore():
         old = d["summary"]
         meta = {k: old[k] for k in ("model", "label", "params_b", "ollama_name", "date", "complete") if k in old}
         # Labels come from models/models.json, so renaming a model there renames its saved results too
-        label = next((e["label"] for e in json.loads((REPO / "models" / "models.json").read_text()) if e["id"] == path.stem.replace("-baseline", "")), None)
+        kind = "baseline" if old.get("baseline") else "multi" if old.get("multi") else ""
+        model = path.stem.removesuffix("-baseline").removesuffix("-multi")
+        label = next((e["label"] for e in json.loads((REPO / "models" / "models.json").read_text()) if e["id"] == model), None)
         if label:
-            meta["label"] = label.split(": ")[-1] + ", bare model" if old.get("baseline") else label
-        if old.get("baseline"):
-            meta["baseline"] = True
+            meta["label"] = {"baseline": label.split(": ")[-1] + ", bare model", "multi": label + ", multi-agent", "": label}[kind]
+        if kind:
+            meta[kind] = True
         d["summary"] = summarize(d["cases"], meta)
         for extra in ("high_effort", "model_memory_mb", "model_memory_pct_of_8gb"):    # measured separately; keep them
             if extra in old:
                 d["summary"][extra] = old[extra]
-        base = path.with_name(path.name.replace("-baseline", ""))          # a bare-model row has the same model's memory
-        if old.get("baseline") and base.exists() and "model_memory_mb" not in d["summary"]:
-            app = json.loads(base.read_text())["summary"]
+        app = path.with_name(model + ".json")              # a bare-model or multi-agent row has the same model's memory
+        if kind and app.exists() and "model_memory_mb" not in d["summary"]:
             for extra in ("model_memory_mb", "model_memory_pct_of_8gb"):
-                if extra in app:
-                    d["summary"][extra] = app[extra]
+                if extra in (m := json.loads(app.read_text())["summary"]):
+                    d["summary"][extra] = m[extra]
         path.write_text(json.dumps(d, indent=1))
         print("rescored", path.name, d["summary"]["accuracy"], d["summary"]["silent_errors"])
 
