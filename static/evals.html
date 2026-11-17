@@ -124,12 +124,12 @@
   </section>
 
   <section id="tab-look" role="tabpanel" hidden>
-  <h2>Lookahead error rate: baseline, guards, guards plus prompts</h2>
+  <h2>Lookahead error rate: baseline, v0, v1</h2>
   <div class="card"><table id="look-trend"></table></div>
-  <p class="note">Each row adds something to the one above (per model). Change = points of error rate against the previous row; negative is better.</p>
+  <p class="note" id="look-trend-note"></p>
 
-  <h2>Error rates</h2>
-  <div class="card"><table id="look-runs"></table></div>
+  <h2>All question sets</h2>
+  <div class="card"><table id="look-sets"></table></div>
   <p class="note" id="look-note"></p>
   <div class="card" style="margin-top:10px"><table id="look-fam"></table></div>
 
@@ -144,13 +144,15 @@
     <div class="card how">
     <div id="look-intro"></div>
     <ul>
-      <li><b>What is tested.</b> The FOMC minutes agent of this project (<code>fomc-minutes-llm</code>), as one whole: the tools, data cutoff, guards and prompts around a model. Every run uses the same model inside it, <span id="look-model">the app's default</span>, so the stages differ only in what is around the model.</li>
-      <li><b>The three stages.</b> Baseline = the app with the data cutoff off: the tools can return anything, the date the model is told is today's, and the as-of date is only said in the question. Guards = the app as it is in main: data cut off at the as-of date, dated lookups refused, checks on the answer, and the prompt rule never to use memory of later events. Guards plus prompts (v1) = the same app with two additions. (1) A code check: when a question names a month the data cannot show yet (a meeting whose minutes are not public, or a month after the newest value of the series it asks about), the app answers "not known as of the anchor date" itself, with the latest known value and its date, without asking the model. A month the data shows, or no month named, goes to the model as before. (2) Short point-in-time rules from <code>agents/shared/asof.md</code> in the writer's prompt, every specialist's prompt and the date line: nothing after the anchor date, even if the user asks for general knowledge. The check was designed from the v0 error types, not tuned on answers; most of the drop from v0 to v1 is this code check (see "Answered by code"), not changed model behaviour. It catches only months named in words ("June 2020"), so "next year" still reaches the model.</li>
-      <li><b>Who decides the right answer.</b> Code. The rate decisions, target ranges and unemployment values come from the data files (the target-range series and the first release of each month); the 20 event questions use a hand-written list of events and the dates they became public. A model is never the judge.</li>
+      <li><b>What is tested.</b> The FOMC minutes agent of this project (<code>fomc-minutes-llm</code>), as one whole: the tools, data cutoff, guards, code checks and prompts around a model. Every run uses the same model inside it, <span id="look-model">the app's default</span>, so the stages differ only in what is around the model.</li>
+      <li><b>Baseline.</b> The app with the data cutoff off: the tools can return anything, the date the model is told is today's, and the as-of date is only said in the question. No guards, no prompt rules.</li>
+      <li><b>v0: guards.</b> The app as it is in main: data cut off at the as-of date, dated lookups refused, checks on the answer, and a meeting whose minutes are not public yet is answered "not public" by code, without the model.</li>
+      <li><b>v1: guards, a date check and prompt rules.</b> v0 plus two additions. (1) A date check in code: when a question names a period the data cannot show yet, the app answers "not known as of the anchor date" itself, with the latest known value and its date, without asking the model. A period is a month in words ("June 2020", "July of 2020", "February 1, 2023"), a quarter ("Q2 2021"), a part of a year ("the end of 2021"), or a distance from the anchor date ("3 months from now", "next quarter"); a period the data shows, a question about forecasts, or no period named goes to the model as before; a question about a rate decision or vote at a meeting whose minutes are not public is answered the same way. (2) Short point-in-time rules from <code>agents/shared/asof.md</code> in the writer's prompt, every specialist's prompt and the date line: nothing after the anchor date, even if the user asks for general knowledge. Most of the drop from v0 to v1 is the date check (see "Answered by code"), not changed model behaviour. It cannot read a month with no year, a numeric month ("9/2019"), a season, a bare year or "the next meeting", and a decision question with no rate or "decide" word may still reach the model.</li>
+      <li><b>The question sets.</b> The <b>unseen set</b> was written after v1 was built and was not used to develop it: it is the one fair test, and the headline numbers come from it. The <b>fresh set</b> was used to find the gaps in v1's date check, and the <b>main key</b> uses three fixed wordings that v1's first date check was designed from, so v1 is not tested fairly on either (they are labelled development sets and show v1 at its best). When v1 is changed after seeing a set's errors, that set becomes a development set and a new unseen set is written. The earlier narrower v1 (month names only) is kept in <code>evals/lookahead/archive/</code>.</li>
+      <li><b>Who decides the right answer.</b> Code. The rate decisions, target ranges and unemployment values come from the data files (the target-range series and the first release of each month); the event questions use a hand-written list of events and the dates they became public. A model is never the judge.</li>
       <li><b>What counts as an error.</b> An answer that presents something after the as-of date as known: it states the later fact (a sentence with the decision and its range, the later range, the later value, or the event's name, not given by a tool in guarded runs), or, for a question about one fact, it gives a value instead of saying it is not known on that date. An invented value counts, because the model ignored the date. Event questions are open, so only stating the event counts there.</li>
-      <li><b>Controls.</b> 10 questions about decisions that were public by their as-of date. The answer must give the decision and range. This catches a model or a guard that refuses everything.</li>
-      <li><b>Held out.</b> 20% of each family was set aside before any prompt work, so a prompt tuned on the rest can be checked on questions it was not tuned on.</li>
-      <li><b>Limits.</b> One run of one model, so run-to-run variation is not measured. Whether an answer declines is read from its wording, so an unusual phrasing can be misjudged either way. The patterns for stating a later fact cover only the facts in the key. The baseline's control questions fail because the small model often ignores a date given only in the question, which says the baseline is weak, not that it knows the future. Training cutoffs of the models are assumed from their release dates, not confirmed.</li>
+      <li><b>Controls.</b> Questions about facts that were public by their as-of date (a decision, an unemployment value, a target range). The answer must give the fact. This catches a model or a guard that refuses everything; a failure is usually the small model garbling a number, not a refusal.</li>
+      <li><b>Limits.</b> One run of one model per stage, so run-to-run variation is not measured, and sets of 56 to 104 questions give wide ranges (shown). Whether an answer declines is read from its wording, so an unusual phrasing can be misjudged either way. The patterns for stating a later fact cover only the facts in each set. The baseline's control questions fail because the small model often ignores a date given only in the question, which says the baseline is weak, not that it knows the future. Training cutoffs of the models are assumed from their release dates, not confirmed.</li>
     </ul>
     </div>
   </details>
@@ -265,40 +267,46 @@ const FAMILIES = {"future-decision": "A rate decision made after the as-of date"
 const rate = p => p && p.n ? p.errors + "/" + p.n + " (" + pct(p.errors, p.n) + ", 95% range " + Math.round(100 * p.ci95[0]) + "-" + Math.round(100 * p.ci95[1]) + "%)" : "n/a";
 const AGENT = "FOMC minutes agent";      // what is tested: this app's agent; the model inside it is named in the methodology
 const modeName = {open: "Baseline (no guards)", team: "Guards (team)", one: "Guards (one agent)"};
+const stageOf = s => s.mode === "open" ? "baseline" : s.tag;                       // baseline, v0, v1
+const STAGES = ["baseline", "v0", "v1"];
+const STAGE = {baseline: "Baseline: no guards, the tools can see all the data", v0: "v0: guards (data cutoff and checks, the app as in main)",
+  v1: "v1: v0 plus a date check in code and short point-in-time prompt rules"};
 
-function lookahead({key, runs}) {
+function lookahead({key, runs, sets}) {
   if (!key.length) return;
-  const by = {}; key.forEach(c => (by[c.family] = by[c.family] || []).push(c));
-  const scored = key.filter(c => c.family !== "control");
-  el("look-intro").innerHTML = `<p style="margin-top:0">The data are cut off at the as-of date, but a model may have been trained on what happened later. ${scored.length} questions ask about a fact that became public <b>after</b> the as-of date (and ${(by.control || []).length} controls ask about one that was public, to catch a model that refuses everything). An answer is an <b>error</b> when it presents something after the as-of date as known: it states the later fact, or, for a question about one fact, gives a value instead of saying it is not known on that date (an invented value is still the model ignoring the date). <b>The lookahead error rate is errors out of ${scored.length}.</b></p>
+  // The sets, headline first: unseen (no version was built on it), then the two development sets
+  const SETS = [{id: "unseen", label: "Unseen set (headline)", d: sets.unseen}, {id: "fresh", label: "Fresh set (development)", d: sets.fresh},
+    {id: "main", label: "Main key (development)", d: {key, runs}}].filter(s => s.d && s.d.key && s.d.key.length);
+  const head = SETS[0];
+  const by = {}; head.d.key.forEach(c => (by[c.family] = by[c.family] || []).push(c));
+  const scored = head.d.key.filter(c => c.family !== "control");
+  el("look-intro").innerHTML = `<p style="margin-top:0">The data are cut off at the as-of date, but a model may have been trained on what happened later. Each question asks about a fact that became public <b>after</b> the as-of date (the headline set has ${scored.length}), plus controls that ask about one that was public, to catch a model that refuses everything. An answer is an <b>error</b> when it presents something after the as-of date as known: it states the later fact, or, for a question about one fact, gives a value instead of saying it is not known on that date (an invented value is still the model ignoring the date). <b>The lookahead error rate is errors out of the scored questions.</b></p>
     <table>${Object.keys(FAMILIES).map(f => `<tr><td>${esc(FAMILIES[f])}</td><td>${(by[f] || []).length}</td><td style="text-align:left;white-space:normal" class="note">${esc((by[f] || [{question: ""}])[0].question)} <i>(as of ${esc((by[f] || [{as_of: ""}])[0].as_of)})</i></td></tr>`).join("")}</table>`;
-  const rows = runs.map(r => r.summary);
-  el("look-runs").innerHTML = "<tr><th>Model</th><th>How it ran</th><th>Prompt</th><th>Lookahead error rate</th><th>Without pressure</th><th>Held out</th><th>Answered by code</th><th>Controls passed</th></tr>" +
-    (rows.length ? rows.map(s => `<tr><td>${AGENT}</td><td>${modeName[s.mode]}</td><td>${esc(s.tag)}</td><td><b>${rate(s.overall)}</b>${s.partial ? ` <span class="pill">partial: ${s.n_done} of ${s.n_key}</span>` : ""}</td><td>${rate(s.without_pressure)}</td><td>${rate(s.held_out)}</td><td>${s.answered_by_code} of ${s.n_done}</td><td>${s.controls.passed}/${s.controls.n}</td></tr>`).join("") : '<tr><td colspan="9" class="note">No runs yet. Run <code>python tests/bench_lookahead.py &lt;modelId&gt; --team</code> while the app is running.</td></tr>');
-  // Trend: per model, no stops, then the date, then every stop (one agent, team), then each prompt version in order
-  const STAGE = {open: "Baseline: no guards, the tools can see all the data", one: "Guards: data cutoff and checks (one agent)", team: "Guards: data cutoff and checks"};
-  const order = s => ["open", "one", "team"].indexOf(s.mode) * 1000 + (parseInt(String(s.tag).replace(/\D/g, "")) || 0);
-  const trend = [];
-  [...new Set(rows.map(s => s.model))].forEach(m => {
-    let prev = null;
-    rows.filter(s => s.model === m && order(s) >= 0).sort((a, b) => order(a) - order(b)).forEach(s => {
+  const runOf = (set, st) => set.d.runs.map(r => r.summary).find(s => stageOf(s) === st);
+  // Headline: baseline, v0, v1 on the unseen set, with the change from the row above
+  let prev = null;
+  el("look-trend").innerHTML = "<tr><th>Model</th><th>Stage</th><th>Lookahead error rate</th><th>Change</th><th>Answered by code</th><th>Controls passed</th></tr>" +
+    STAGES.map(st => {
+      const s = runOf(head, st); if (!s) return "";
       const r = s.overall.n ? 100 * s.overall.errors / s.overall.n : null;
-      const d = prev == null || r == null ? "" : (r - prev >= 0 ? "+" : "") + (r - prev).toFixed(1) + " pts";
-      trend.push(`<tr><td>${AGENT}</td><td style="text-align:left;white-space:normal">${STAGE[s.mode]}${s.mode === "open" ? "" : (s.tag === "v0" ? " (v0, the app as in main)" : " plus prompts (" + esc(s.tag) + ")")}</td><td><b>${rate(s.overall)}</b>${s.partial ? ` <span class="pill">partial ${s.n_done}/${s.n_key}</span>` : ""}</td><td class="${d.startsWith("-") ? "ok" : d.startsWith("+") ? "bad" : ""}">${d || "start"}</td><td>${s.controls.passed}/${s.controls.n}</td></tr>`);
+      const d = prev == null || r == null ? "start" : (r - prev >= 0 ? "+" : "") + (r - prev).toFixed(1) + " pts";
       if (r != null) prev = r;
-    });
-  });
-  el("look-trend").innerHTML = "<tr><th>Model</th><th>What is added</th><th>Lookahead error rate</th><th>Change</th><th>Controls passed</th></tr>" + (trend.join("") || '<tr><td colspan="6" class="note">No runs yet.</td></tr>');
-  el("look-model").textContent = [...new Set(rows.map(s => s.label.replace(/^[^:]*: /, "") + " (Ollama " + s.ollama_name + ")"))].join(", ");
-  el("look-note").textContent = "Lower is better. Answered by code = the app replied without calling the model (for example a meeting whose minutes are not public yet), which protects the answer but is not the model resisting its memory. Held out = 20% of the questions, set aside before any prompt tuning.";
+      return `<tr><td>${AGENT}</td><td style="text-align:left;white-space:normal">${STAGE[st]}</td><td><b>${rate(s.overall)}</b>${s.partial ? ` <span class="pill">partial ${s.n_done}/${s.n_key}</span>` : ""}</td><td class="${d.startsWith("-") ? "ok" : d.startsWith("+") ? "bad" : ""}">${d}</td><td>${s.answered_by_code} of ${s.n_done}</td><td>${s.controls.passed}/${s.controls.n}</td></tr>`;
+    }).join("");
+  el("look-trend-note").textContent = "Measured on the unseen set: questions v1 was not built or tuned on. Change = points against the row above; negative is better. Answered by code = the app replied without calling the model, which protects the answer but is not the model resisting its memory.";
+  el("look-sets").innerHTML = "<tr><th>Stage</th>" + SETS.map(s => `<th>${s.label}</th>`).join("") + "</tr>" +
+    STAGES.map(st => `<tr><td style="text-align:left">${STAGE[st].split(":")[0]}</td>` + SETS.map(set => { const s = runOf(set, st); return `<td>${s ? rate(s.overall) : "n/a"}</td>`; }).join("") + "</tr>").join("");
+  el("look-note").textContent = "Lower is better. The development sets were used to build v1, so v1's rate there is lower than its fair rate; the baseline and v0 were fixed before any of the sets existed, so their rates are fair on all three.";
+  const all = SETS.flatMap(set => set.d.runs.map(r => ({set, r})).sort((a, b) => STAGES.indexOf(stageOf(a.r.summary)) - STAGES.indexOf(stageOf(b.r.summary))));
+  el("look-model").textContent = [...new Set(all.map(x => x.r.summary.label.replace(/^[^:]*: /, "") + " (Ollama " + x.r.summary.ollama_name + ")"))].join(", ");
   const fams = Object.keys(FAMILIES).filter(f => f !== "control");
-  el("look-fam").innerHTML = "<tr><th>Run</th>" + fams.map(f => `<th title="${esc(FAMILIES[f])}">${f.replace("future-", "")}</th>`).join("") + "</tr>" +
-    rows.map(s => `<tr><td>${modeName[s.mode]}, ${esc(s.tag)}</td>` + fams.map(f => `<td>${s.by_family[f] ? s.by_family[f].errors + "/" + s.by_family[f].n : "n/a"}</td>`).join("") + "</tr>").join("");
+  el("look-fam").innerHTML = "<tr><th>Set and stage</th>" + fams.map(f => `<th title="${esc(FAMILIES[f])}">${f.replace("future-", "")}</th>`).join("") + "</tr>" +
+    all.map(({set, r}) => `<tr><td>${set.label.split(" (")[0]}, ${stageOf(r.summary)}</td>` + fams.map(f => `<td>${r.summary.by_family[f] ? r.summary.by_family[f].errors + "/" + r.summary.by_family[f].n : "n/a"}</td>`).join("") + "</tr>").join("");
   const pick = el("look-pick");
-  pick.innerHTML = runs.map((r, i) => `<option value="${i}">${modeName[r.summary.mode]}, ${esc(r.summary.tag)}</option>`).join("");
+  pick.innerHTML = all.map((x, i) => `<option value="${i}">${x.set.label.split(" (")[0]}, ${stageOf(x.r.summary)}</option>`).join("");
   pick.onchange = () => {
-    const r = runs[pick.value]; if (!r) { el("look-leaks").innerHTML = ""; return; }
-    const bad = r.cases.filter(c => c.error);
+    const x = all[pick.value]; if (!x) { el("look-leaks").innerHTML = ""; return; }
+    const bad = x.r.cases.filter(c => c.error);
     el("look-leaks").innerHTML = "<tr><th>Question</th><th>As of</th><th>Why it counts</th></tr>" +
       (bad.length ? bad.map(c => `<tr><td>${esc(c.question)}<details><summary>Show the answer</summary><div class="ans">${esc(c.answer)}</div></details></td><td class="sec">${esc(c.as_of)}</td><td>${c.leak ? "States the later fact: " + esc(c.leak) : "Gave a value instead of saying it is not known on that date"}</td></tr>`).join("") : '<tr><td colspan="3" class="note">No errors.</td></tr>');
   };

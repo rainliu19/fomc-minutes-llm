@@ -141,10 +141,15 @@ def evals():
 
 @app.get("/evals/lookahead")
 def evals_lookahead():
-    """The look-ahead key and every saved run (evals/lookahead/*.json from tests/bench_lookahead.py)."""
+    """The look-ahead key and runs (evals/lookahead/*.json from tests/bench_lookahead.py), and the other sets in
+    sub-folders (fresh, unseen) as sets: {name: {key, runs}}. Retired runs are in evals/lookahead/archive/ and not served."""
     folder = HERE / "evals" / "lookahead"
-    runs = [json.loads(p.read_text(encoding="utf-8")) for p in sorted(folder.glob("*.json")) if p.name != "key.json"]
-    return {"key": json.loads((folder / "key.json").read_text(encoding="utf-8")), "runs": runs}
+
+    def load(path):
+        return {"key": json.loads((path / "key.json").read_text(encoding="utf-8")),
+                "runs": [json.loads(p.read_text(encoding="utf-8")) for p in sorted(path.glob("*.json")) if p.name != "key.json"]}
+    sets = {p.name: load(p) for p in sorted(folder.iterdir()) if p.is_dir() and (p / "key.json").exists()}
+    return {**load(folder), "sets": sets}
 
 
 @app.get("/evals/key")

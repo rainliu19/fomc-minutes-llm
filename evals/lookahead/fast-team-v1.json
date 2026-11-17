@@ -85,7 +85,7 @@
   "answered_by_code": 80,
   "controls": {
    "n": 10,
-   "passed": 9
+   "passed": 10
   },
   "median_seconds": 0.2
  },
@@ -114,7 +114,7 @@
    "held_out": false,
    "as_of": "2016-12-11",
    "question": "Did the Fed change interest rates at its December 2016 meeting, and to what range?",
-   "seconds": 1.0,
+   "seconds": 1.1,
    "model_called": false,
    "tools": [
     "prefetchNotice",
@@ -153,7 +153,7 @@
    "held_out": false,
    "as_of": "2017-06-11",
    "question": "What did the Committee decide at its June 2017 meeting?",
-   "seconds": 0.3,
+   "seconds": 0.4,
    "model_called": false,
    "tools": [
     "prefetchNotice"
@@ -171,7 +171,7 @@
    "held_out": false,
    "as_of": "2017-12-10",
    "question": "Did the Fed change interest rates at its December 2017 meeting, and to what range?",
-   "seconds": 0.5,
+   "seconds": 0.7,
    "model_called": false,
    "tools": [
     "prefetchNotice",
@@ -228,7 +228,7 @@
    "held_out": false,
    "as_of": "2018-09-23",
    "question": "Did the Fed change interest rates at its September 2018 meeting, and to what range?",
-   "seconds": 0.3,
+   "seconds": 0.4,
    "model_called": false,
    "tools": [
     "prefetchNotice",
@@ -456,7 +456,7 @@
    "held_out": false,
    "as_of": "2022-12-11",
    "question": "Did the Fed change interest rates at its December 2022 meeting, and to what range?",
-   "seconds": 0.2,
+   "seconds": 0.3,
    "model_called": false,
    "tools": [
     "prefetchNotice",
@@ -856,7 +856,7 @@
    "held_out": true,
    "as_of": "2022-10-10",
    "question": "Where was the federal funds target range in November 2023?",
-   "seconds": 0.2,
+   "seconds": 0.1,
    "model_called": false,
    "tools": [
     "prefetchNotice",
@@ -986,7 +986,7 @@
    "held_out": false,
    "as_of": "2009-01-01",
    "question": "What was the unemployment rate in January 2009?",
-   "seconds": 0.2,
+   "seconds": 0.1,
    "model_called": false,
    "tools": [
     "prefetchNotice"
@@ -1184,7 +1184,7 @@
    "held_out": false,
    "as_of": "2020-07-03",
    "question": "What was the unemployment rate in October 2020?",
-   "seconds": 0.1,
+   "seconds": 0.2,
    "model_called": false,
    "tools": [
     "prefetchNotice"
@@ -1256,7 +1256,7 @@
    "held_out": false,
    "as_of": "2020-12-01",
    "question": "What was the unemployment rate in March 2021?",
-   "seconds": 0.1,
+   "seconds": 0.2,
    "model_called": false,
    "tools": [
     "prefetchNotice"
@@ -1382,11 +1382,11 @@
    "held_out": false,
    "as_of": "2008-08-18",
    "question": "What are the biggest risks to the US financial system right now?",
-   "seconds": 16.9,
+   "seconds": 21.6,
    "model_called": true,
    "tools": [],
    "warning": "",
-   "answer": "The minutes for the FOMC meeting on 2008-06-25 provide the best insight into the biggest risks to the US financial system at the time. According to the minutes, the committee discussed the \"subprime guaranty issues\" and their potential impact on the financial system. They also mentioned concerns about \"the potential for disruptions in U.S. financial markets\" and the \"possible spread of the effects of the subprime problem to other sectors of the U.S. economy.\" These discussions suggest that the major risks to the US financial system at the time were related to the subprime mortgage crisis and its potential to spread throughout the economy.",
+   "answer": "The minutes for the FOMC meeting on 2008-06-25 provide the most recent insights into the biggest risks to the US financial system at that time. According to the minutes, the committee discussed the following risks:\n\n1. Housing market distress: The committee noted that the housing market was in a severe downturn, with rising delinquencies and defaults on subprime and Alt-A mortgages.\n\n2. Credit market strains: There were concerns about the liquidity and solvency of financial institutions, particularly those exposed to mortgage-related assets.\n\n3. Systemic risk: The committee acknowledged the potential for contagion and the spread of financial stress throughout the broader economy.\n\n4. Global economic slowdown: The committee considered the impact of the global economic slowdown on the US economy, including potential spillovers from the credit crunch.\n\n5. Inflation: While not the primary concern, the committee also discussed the potential for inflationary pressures, particularly related to commodity prices.\n\nThese risks, as outlined in the minutes, were central to the FOMC's deliberations at the time.",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1398,13 +1398,13 @@
    "held_out": false,
    "as_of": "2011-07-11",
    "question": "How are credit rating agencies viewing US government debt right now?",
-   "seconds": 8.5,
+   "seconds": 8.1,
    "model_called": true,
    "tools": [
     "prefetchData"
    ],
    "warning": "",
-   "answer": "I'm sorry, the FOMC minutes don't contain information on credit rating agencies' views on US government debt. The minutes focus on monetary policy discussions, not financial market sentiment or credit ratings. For such information, you would need to consult financial news sources or credit rating agency reports.",
+   "answer": "I'm sorry, the FOMC minutes don't contain information on credit rating agencies' views on US government debt. I can provide data on interest rates, inflation expectations, and economic indicators, but not specific opinions of credit rating agencies.",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1416,14 +1416,14 @@
    "held_out": false,
    "as_of": "2010-10-11",
    "question": "Is the Committee considering additional asset purchases, and what might it announce?",
-   "seconds": 19.2,
+   "seconds": 32.8,
    "model_called": true,
    "tools": [
     "prefetchPassages",
     "prefetchData"
    ],
    "warning": "",
-   "answer": "The Committee is considering additional asset purchases, as evidenced by discussions in the minutes from 2009-03-18, 2009-04-29, and 2009-06-24.\n\nOn March 18, 2009, the Committee agreed to \"substantial additional purchases of longer-term assets eligible for open market operations\" to provide further monetary stimulus (the minutes, [2009-03-18/policyAction/1]).\n\nOn April 29, 2009, they discussed the effectiveness of these purchases, stating that they were contributing to the resumption of sustainable economic growth in a context of price stability (the minutes, [2009-04-29/policyAction/1]).\n\nOn June 24, 2009, the Committee reaffirmed its commitment to these asset purchases, stating that they would continue until there was a visible improvement in the outlook for both employment and inflation (the minutes, [2009-06-24/policyAction/1]).\n\nThese discussions indicate that the Committee was considering additional asset purchases, specifically long-term securities, to stimulate the economy. The exact nature and amount of these purchases were not specified in the minutes.",
+   "answer": "Apologies for the oversight. Based on the minutes, the Committee's discussions on asset purchases can be found in:\n\n1. [2009-03-18/policyAction/1]: Committee members agreed that \"substantial additional purchases of longer-term assets eligible for open market operations would be appropriate\" to provide further monetary stimulus amid weak economic activity and subdued inflation.\n2. [2009-04-29/policyAction/1]: The Committee discussed the effectiveness of their large-scale securities purchases, agreeing that they were contributing to the resumption of sustainable economic growth in a context of price stability.\n3. [2009-06-24/policyAction/1]: The Committee reaffirmed its commitment to maintaining the target range for the federal funds rate, despite the large-scale asset purchases, stating that \"the prolonged period of low interest rates is consistent with its mandate.\"\n\nThese discussions suggest that the Committee might announce additional asset purchases, particularly of longer-term securities, to support the economy during weak growth and subdued inflation. However, the minutes do not provide a definitive decision or vote on this matter.",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1435,13 +1435,13 @@
    "held_out": true,
    "as_of": "2011-08-29",
    "question": "What tools could the Committee use beyond lowering the funds rate?",
-   "seconds": 36.5,
+   "seconds": 21.0,
    "model_called": true,
    "tools": [
     "getDecision"
    ],
-   "warning": "Some citations could not be verified.",
-   "answer": "Apologies for the oversight. The FOMC minutes for the meeting ending 2011-06-22 (meeting ID: 2011-06-22) indicate that the Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent (0.00 to 0.25 percent) [2011-06-22/policyAction/8]. This decision was unanimous, with all 10 members voting in favor [2011-06-22/policyAction/11].\n\nBeyond lowering the funds rate, the Committee could consider other tools to stimulate the economy, such as:\n\n1. Quantitative Easing (QE): Purchasing long-term securities from the open market to lower long-term interest rates and increase the money supply [2011-06-22/financialMarkets/1].\n2. Forward Guidance: Communicating future monetary policy intentions to influence market expectations and economic behavior [2011-06-22/staffOutlook/2].\n3. Operational Flexibility: Adjusting the rate at which banks can borrow from the Federal Reserve (discount rate) or implementing other unconventional measures [2011-06-22/staffFinancial/3].\n4. Targeting specific asset classes or market indicators to influence borrowing costs or financial conditions [2011-06-22/specialTopics/4].\n\nThese tools were not discussed in the minutes for the 2011-06-22 m",
+   "warning": "",
+   "answer": "Apologies for the oversight. The Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent (0.0 to 0.25 percent) at the June 22, 2011 meeting, as per the minutes released on July 12, 2011 [2011-06-22/policyAction/8]. They voted unanimously (10 for, 0 against) to maintain this rate. Beyond lowering the funds rate, the Committee could consider other tools such as quantitative easing (QE), forward guidance, or changes in the balance sheet to stimulate the economy. However, these actions were not explicitly mentioned in the June 22, 2011 minutes. [2011-06-22/policyAction/11]",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1453,14 +1453,14 @@
    "held_out": false,
    "as_of": "2012-08-20",
    "question": "What could the Committee do to support the recovery with the rate already near zero?",
-   "seconds": 36.9,
+   "seconds": 36.0,
    "model_called": true,
    "tools": [
     "prefetchPassages",
     "assessEconomy"
    ],
    "warning": "",
-   "answer": "The Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent at the meeting that ended on 2012-06-20, according to the minutes [2012-06-20/policyAction/2]. This decision was made to support a stronger economic recovery and to ensure that inflation, over time, is at the 2 percent rate. The Fed staff had revised its inflation forecast lower than at the previous meeting [2012-06-20/staffOutlook/2].\n\nAt that time, core PCE inflation was 1.8% over the 12 months to June 2012, 0.2 point below the Fed's 2% goal, and falling. Unemployment was 8.3% in July 2012, 2.8 points above the CBO's estimate of its normal level (5.5%), and rising. Payrolls rose by an average of 105,000 a month over the three months to July 2012, but real GDP was 5.4% below the CBO's estimate of its potential in 2012 Q2.\n\nThe 6-month Treasury bill yield was 0.1% on 2012-08-17, 0.0 point above the effective fed funds rate (0.1%), suggesting markets expected no change soon. The 2-year Treasury yield was 0.3% on 2012-08-17, 0.2 point above the middle of the range, indicating little change over the next two years.\n\nThe minutes and the 6-month bill both point to no change over the next few me",
+   "answer": "The Committee decided to keep the target range for the federal funds rate at 0 to 1/4 percent at the meeting that ended on 2012-06-20 (id [2012-06-20/policyAction/2]). This decision was based on discussions about supporting a stronger economic recovery and ensuring inflation remains at the 2 percent target over time. The minutes and the 6-month bill indicated no change in the near future.\n\nCore PCE inflation was 1.8% over the 12 months to June 2012, falling short of the 2% goal, and unemployment was 8.3% in July 2012, 2.8 points above the CBO's normal level. The 6-month Treasury bill yield was 0.1% on 2012-08-17, 0.0 point above the effective fed funds rate (0.1%), suggesting markets expected no change soon.\n\nThe 2-year Treasury yield was 0.3% on 2012-08-17, 0.2 point above the middle of the range, indicating markets expected little change over the next two years. The Fed staff had revised its inflation forecast lower than at the previous meeting (id [2012-06-20/staffOutlook/2]).\n\nAt the next meeting, the minutes and the 6-month bill both pointed to no change in the federal funds rate. This was based on the consensus among participants that the economy was still recovering, and inf",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1472,13 +1472,13 @@
    "held_out": false,
    "as_of": "2013-05-06",
    "question": "How have bond yields and markets reacted recently to talk of changes in asset purchases?",
-   "seconds": 14.2,
+   "seconds": 12.9,
    "model_called": true,
    "tools": [
     "prefetchData"
    ],
    "warning": "",
-   "answer": "The minutes for the most recent meeting (ended 2013-03-20, released 2013-04-10) don't explicitly discuss bond yields and market reactions to talk of changes in asset purchases. However, the 10-year Treasury yield was at 1.78% on that date, up from 1.75% three months prior and 1.96% a year earlier. This suggests some market anticipation of potential changes in asset purchases, as higher yields often accompany such expectations. The gap between 10-year and 2-year Treasury yields was 1.56%, indicating a relatively flat yield curve, which can also be a factor in bond market reactions to policy changes. For a more detailed analysis, consult the minutes or consider a tool like the minutes or.",
+   "answer": "The FOMC minutes for the most recent meetings (2010-06-23 to 2013-03-20) indicate that bond yields and markets have reacted negatively to talk of changes in asset purchases. For instance, the 10-year Treasury yield rose from 1.78% on 2013-05-03 to 2% three months earlier, and the gap between the 10-year and 2-year Treasury yields (the gap between 10-year and 2-year Treasury yields) increased from 1.56% to 1.75% over the same period. These movements suggest increased market uncertainty and potential tightening of financial conditions in response to discussions about tapering asset purchases.",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1490,13 +1490,13 @@
    "held_out": true,
    "as_of": "2013-11-25",
    "question": "Is the Committee still adding to its holdings at the same pace?",
-   "seconds": 20.1,
+   "seconds": 24.6,
    "model_called": true,
    "tools": [
     "prefetchPassages"
    ],
    "warning": "",
-   "answer": "Apologies for the oversight. Based on the minutes from the 2013-10-30 meeting, members generally noted little change in the economic outlook since the September meeting, and all members but one judged it appropriate to await more evidence of sustained progress toward economic objectives before adjusting the target range [2013-10-30/policyAction/2]. There's no explicit mention of the pace of the Fed's securities purchases in the provided minutes. To get a precise answer, you'd need to search the minutes of the 2013-10-30 meeting or use the a search of the minutes function with the relevant query.",
+   "answer": "Apologies for the oversight. The 2013-10-30 FOMC meeting minutes (the minutes, [2013-10-30/policyAction/2]) discuss the pace of the Federal Reserve's balance sheet operations. Members noted that there had been little change in the economic outlook since the September meeting, and all members but one judged that it would be appropriate for the Committee to await more evidence that progress toward its economic objectives would be sustained before making any changes to the balance sheet.\n\nHowever, the minutes do not provide specific details on whether the Fed was still adding to its holdings at the same pace as in previous months. To get a precise answer, you would need to refer to the balance sheet operations section of the 2013-10-30 meeting minutes or consult the data on the Fed's balance sheet holdings, such as [the core PCE price index 106.2, +1.2% y/y [2013-09-01]] or [longer-term market inflation expectations 2.62 [2013-11-22]].",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1508,11 +1508,11 @@
    "held_out": false,
    "as_of": "2013-09-16",
    "question": "Who is the Chair of the Federal Reserve Board, and who is likely to lead it next?",
-   "seconds": 8.2,
+   "seconds": 7.9,
    "model_called": true,
    "tools": [],
    "warning": "",
-   "answer": "The Chair of the Federal Reserve Board is Ben Bernanke. As of the 2013-09-16 anchor date, there's no information available on who will lead the Fed next. The next Chair, Jerome Powell, was appointed on September 26, 2017, more than five years later.",
+   "answer": "The Chair of the Federal Reserve Board is Ben Bernanke. As of the 2013-09-16 anchor date, there is no information available on who is likely to lead the Federal Reserve next. The next Chair, Janet Yellen, was appointed on October 26, 2012, and took office in February 2014.",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1524,11 +1524,11 @@
    "held_out": false,
    "as_of": "2016-05-30",
    "question": "What events could affect global financial markets in the coming weeks?",
-   "seconds": 23.0,
+   "seconds": 24.4,
    "model_called": true,
    "tools": [],
    "warning": "",
-   "answer": "Based on the data known as of 2016-05-30, here are potential events that could affect global financial markets in the coming weeks:\n\n1. US Nonfarm Payrolls (nonfarm payrolls (monthly job gains)): The latest report shows 143,900 jobs added in April, with a 1.9% y/y increase in employment. This is above expectations and could boost market confidence.\n\n2. Federal Funds Rate (the top of the federal funds target range and the bottom of the federal funds target range): The target range remains at 0.50-0.75%, with the current rate at 0.50. The Fed has not indicated any immediate changes, but markets will be watching for any shifts in the coming weeks.\n\n3. Treasury Yields (the 2-year Treasury yield, the 10-year Treasury yield, the gap between 10-year and 2-year Treasury yields, the corporate bond spread): The 2-year Treasury yield is at 0.9%, the 10-year yield is at 1.85%, and the spread between the two is 0.95. Higher yields could attract investors away from Treasuries, potentially impacting bond markets.\n\n4. Stock Market Volatility (stock market volatility (the VIX)): The VIX is currently at 13.12, indicating above-average volatility. This could be influenced by the above factors, as wel",
+   "answer": "Based on the available data up to 2016-05-30, several factors could affect global financial markets in the coming weeks:\n\n1. US unemployment rate: At 5% as of April 1, 2016, the unemployment rate remains elevated, which could influence investor sentiment and market volatility.\n\n2. Nonfarm payrolls (nonfarm payrolls (monthly job gains)): The 1.9% increase in monthly job gains in April 2016 suggests a strengthening labor market, potentially boosting investor confidence.\n\n3. Federal funds rate target range (the top of the federal funds target range and the bottom of the federal funds target range): The target range was 0.5% to 0.75% as of May 29, 2016. Any changes to this range could impact short-term interest rates and borrowing costs, affecting financial markets.\n\n4. Treasury yields (the 2-year Treasury yield, the 10-year Treasury yield, the gap between 10-year and 2-year Treasury yields, the corporate bond spread): The gap between 10-year and 2-year Treasury yields is currently 0.95%, and the corporate bond spread is 2.85%. These yields reflect market expectations for future inflation and economic growth, which can influence stock prices, bond prices, and overall market sentiment.\n",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1540,13 +1540,13 @@
    "held_out": false,
    "as_of": "2017-08-28",
    "question": "Is the Fed planning to shrink its balance sheet, and when would that start?",
-   "seconds": 11.3,
+   "seconds": 10.3,
    "model_called": true,
    "tools": [
     "prefetchData"
    ],
    "warning": "",
-   "answer": "The FOMC minutes for the most recent meeting (ended 2017-07-26) haven't been released yet, so I can't provide specific information on whether they plan to shrink their balance sheet or when. However, the balance sheet has been relatively stable, with a slight decrease of 0.2% over the past year.\n\nAs for the timing of any potential balance sheet reduction, that would be a decision made at a future meeting. The most recent data on the balance sheet shows it at 44,738,400 as of 2017-08-23.\n\nFor a more precise answer on balance sheet actions, you would need to consult the released minutes or wait for further announcements.",
+   "answer": "The FOMC minutes for the most recent meeting (ended 2017-07-26) have not provided specific details about a balance sheet reduction plan. The most recent figures show the Fed's balance sheet at 447,3840 on 2017-08-23, indicating a slight increase from the previous quarter. The committee has been discussing balance sheet normalization, but no concrete plan for reduction has been announced yet. As of the latest available data, there's no indication of when such a reduction might start.",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1562,7 +1562,7 @@
    "model_called": true,
    "tools": [],
    "warning": "",
-   "answer": "I'm sorry, I can't provide information on future Fed Chair appointments. The FOMC minutes and data you've provided don't contain that information. They focus on the Committee's discussions, rate decisions, and economic outlook. For such questions, you would need to refer to official announcements or reliable news sources.",
+   "answer": "I'm unable to provide information on who is expected to lead the Federal Reserve after Janet Yellen's term ends, as the FOMC minutes do not contain such predictions. The minutes focus on the Committee's discussion and decision-making process regarding monetary policy, not future leadership.",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1574,11 +1574,11 @@
    "held_out": false,
    "as_of": "2019-09-02",
    "question": "How are short-term funding markets functioning right now?",
-   "seconds": 12.2,
+   "seconds": 14.4,
    "model_called": true,
    "tools": [],
    "warning": "",
-   "answer": "The minutes for the most recent meeting (ended 2019-07-31) haven't been released yet, so I can't provide specific insights from them. However, based on the data known up to 2019-09-02, short-term funding markets appear stable. The gap between the 10-year and 2-year Treasury yields (the gap between 10-year and 2-year Treasury yields) is 0%, indicating tight spreads, which is generally favorable for funding markets. The 2-year Treasury yield and 10-year Treasury yield (the 10-year Treasury yield) are both around 1.5%, suggesting low borrowing costs. Stock market volatility (stock market volatility (the VIX)) is relatively low at 18.98, indicating a calm environment. These factors collectively point to healthy short-term funding markets.",
+   "answer": "The minutes for the most recent FOMC meetings don't provide explicit information on short-term funding market functioning. However, we can look at related data.\n\nOn 2019-07-31, the bottom of the federal funds target range was 2%. This is the rate at which banks can lend reserves to other banks overnight. A rate below this level could indicate that short-term funding markets are functioning smoothly, as banks are willing to lend at a lower rate than the FOMC target.\n\nOn 2019-08-21, the FOMC statement mentioned \"The Committee will continue to monitor the economic outlook and will assess how these developments shape the outlook for inflation and employment.\" This suggests that the Committee was attentive to financial market conditions, including short-term funding markets, but didn't provide specific insights into their current state.\n\nFor a more detailed analysis, you would need to consult the minutes from the 2019-09-01 meeting, which have not been released yet.",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1590,14 +1590,14 @@
    "held_out": false,
    "as_of": "2020-01-06",
    "question": "What are the main risks to the US economic outlook in 2020?",
-   "seconds": 31.9,
+   "seconds": 55.5,
    "model_called": true,
    "tools": [
     "getOutlook",
     "scoreConsumerImpact"
    ],
    "warning": "",
-   "answer": "The main risks to the US economic outlook in 2020, according to the Fed's staff forecasts at the last four meetings (2019-07-31 to 2019-12-11), are:\n\n1. Inflation: Inflation was revised higher in 1 of 4 instances, tilted to the downside in the latest view [2019-12-11/staffOutlook/3].\n2. Growth and jobs: Growth and jobs were revised weaker in 2 of 4 instances, tilted to the downside in the latest view [2019-12-11/staffOutlook/3].\n\nEarlier runs of rate cuts since 1990 showed:\n\n1. Mortgage rates increased in 3 of 4 instances (median +0.3 point) a year after the first cut.\n2. Real consumer spending growth slowed in 1 of 1 instance (median -3.2 points) two years after the first cut.\n3. Core inflation decreased in 3 of 4 instances (median -0.2 point) two years after the first cut.\n4. The Treasury's average rate on its debt decreased in 2 of 2 instances (median -1.3 points) two years after the first cut.\n\nMarket rates and borrowing costs reflect these changes:\n\n1. The 2-year Treasury yield was 0.1 point below the middle of the target range (1-1/2 to 1-3/4 percent) before the meeting, indicating markets expected little change in the federal funds rate over the next two years [2020-01-03].\n",
+   "answer": "The main risks to the US economic outlook in 2020, according to the Fed's staff forecasts at the last four meetings (2019-07-31 to 2019-12-11), are:\n\n\n1. Inflation: Inflation was revised higher in one instance and lower in three, with the staff's latest view tilted to the downside [2019-12-11/staffOutlook/3].\n2. Growth and jobs: Growth and jobs were revised stronger in two instances and weaker in two [2019-12-11/staffOutlook/3].\n\nThese forecasts align with earlier runs since 1990, where a year after a rate cut, mortgage rates typically rose by 0.3 points, real spending growth slowed by 3.2 points, core inflation decreased by 0.2 points, and the Treasury's average rate dropped by 1.3 points. Two years later, core inflation was lower by 0.1 points [2019-12-11/staffOutlook/3].\n\nMarket rates and borrowing costs reflect these changes:\n\n\n1. 2-year Treasury yield was 1.53% (just before the 2019-12-11 meeting) and 1.5% (six months before), suggesting markets expected little change in the federal funds rate over the next two years [2019-12-11/staffOutlook/3].\n2. The corporate bond spread (Baa) was 1.99% (just before the 2019-12-11 meeting) and 2.13% (six months before), indicating borrowing",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1609,7 +1609,7 @@
    "held_out": false,
    "as_of": "2020-02-17",
    "question": "Could the Committee change rates between its scheduled meetings?",
-   "seconds": 58.3,
+   "seconds": 56.8,
    "model_called": true,
    "tools": [
     "prefetchPassages",
@@ -1617,8 +1617,8 @@
     "getPolicyPath",
     "assessEconomy"
    ],
-   "warning": "Some citations could not be verified.",
-   "answer": "The Committee maintained the federal funds rate target at 1-1/2 to 1-3/4 percent between its scheduled meetings, as per the minutes of the 2019-12-11 meeting (released 2020-01-03) [2019-12-11/policyAction/2]. This pattern has occurred 72 times in the past, with the next meeting held 68 times and a rate change made 4 times.\n\nThe minutes suggest no immediate rate change over the next few meetings, as indicated by the 6-month bill yield being 0.0 point below the effective federal funds rate (1.6%) [2019-12-11/policyAction/2]. This implies markets expect no change soon.\n\nCore PCE inflation was 1.6% over the 12 months to December 2019, 0.4 point below the Fed's 2% goal, and steady (1.7% three months earlier) [2019-12-11/staffFinancial/9]. Unemployment was 3.6% in January 2020, 0.8 point below the CBO's estimate of its normal level (4.4%), and steady (3.6% three months earlier) [2019-12-11/staffEconomy/1]. Payrolls rose by an average of 211,000 a month over the three months to January 2020 [2019-12-11/staffOutlook/1]. Real GDP grew at a 2.1% annual rate in 2019 Q4, with real GDP 0.6% above the CBO's estimate of its potential in 2019 Q4 [2019-12-11/staffEconomy/2].\n\nThe 2-year Treasury yi",
+   "warning": "",
+   "answer": "The Committee did not change the federal funds rate target between its scheduled meetings. The target range has been 1-1/2 to 1-3/4 percent, with no changes since the meeting ending October 30, 2019. The last rate cut was 0.25 percentage points at that meeting, and there were no increases. The minutes and the 6-month bill both suggest no change over the next few meetings.\n\n[2019-12-11/policyAction/2] The effective federal funds rate was 1.55% on January 1, 2020, 1.83% three months earlier, and 2.4% a year earlier. The top of the target range (the top of the federal funds target range) was 1.75% on February 16, 2020, 1.75% three months earlier, and 2.5% a year earlier. The bottom of the target range (the bottom of the federal funds target range) was 1.5% on February 16, 2020, 1.5% three months earlier, and 2.25% a year earlier.\n\nAcross the 8 meetings from January 30, 2019, to February 17, 2020, there were 0 increases, 3 cuts, and 5 holds, resulting in a net change of -0.75 percentage points. Dissenting votes were 1 for a lower rate (latest 2019-09-18) and 6 for a higher rate (latest 2019-10-30).\n\n[2019-12-11/policyAction/2] Members agreed to maintain the target range at 1-1/2 to 1-3",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1630,7 +1630,7 @@
    "held_out": false,
    "as_of": "2020-08-03",
    "question": "How is the Committee thinking about its inflation goal framework?",
-   "seconds": 35.4,
+   "seconds": 32.7,
    "model_called": true,
    "tools": [
     "prefetchPassages",
@@ -1638,7 +1638,7 @@
     "assessEconomy"
    ],
    "warning": "",
-   "answer": "The Committee is currently maintaining its target range, as indicated by the minutes of the 2020-06-10 meeting, which scored their rate path at +0.00 on a -1 to +1 scale. This suggests no immediate change is expected. The minutes and the 6-month bill both point to no change over the next few meetings, with the 6-month Treasury bill yield at 0.1% on 2020-07-31, close to the effective federal funds rate.\n\nCore PCE inflation was 0.9% over the 12 months to June 2020, falling short of the 2% goal, and unemployment was 11.1% in June 2020, 6.7 points above the CBO's normal estimate. Real GDP shrank at a 32.9% annual rate in 2020 Q2, and the 2-year Treasury yield was 0.1% on 2020-07-31, indicating markets expect little change over the next two years.\n\nParticipants expect to maintain the current target range until they are confident the economy has weathered recent events and is on track to achieve maximum employment and price stability goals, as noted in the 2020-06-10 minutes ([2020-06-10/policyAction/2]).\n\nThe latest figures show core PCE inflation at 0.9% (1.1 points below the 2% goal), and core CPI inflation at 2.6% (1.2% over the year). Longer-term market inflation expectations were 1",
+   "answer": "The Committee is currently maintaining its target range, as indicated by the minutes of the 2020-06-10 meeting [2020-06-10/policyAction/2], stating they expect to keep it until they're confident the economy has weathered recent events and is on track to achieve maximum employment and price stability goals.\n\nMarket expectations, as seen in the 6-month bill yield (0.1% on 2020-07-31), suggest no immediate change in the federal funds rate. The 2-year Treasury yield was 0.1% on the same date, indicating similar expectations for the short-term rates.\n\nCore PCE inflation was 0.9% over the 12 months to June 2020, falling short of the 2% goal, while the unemployment rate was 11.1% in June 2020, significantly above the CBO's normal estimate of 4.4%. Real GDP was shrinking at a 32.9% annual rate in 2020 Q2, 10.4% below the CBO's potential estimate.\n\nLooking ahead, the minutes do not suggest a rate change in the immediate future. Participants discussed maintaining the current target range until they're confident the economy is on track to meet the Committee's goals.\n\nThe latest figures show core PCE inflation at 0.9% (1.1 points below the 2% goal), and the unemployment rate at 11.1% (6.7 poin",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1650,13 +1650,13 @@
    "held_out": false,
    "as_of": "2022-02-07",
    "question": "What geopolitical risks are weighing on commodity prices and inflation?",
-   "seconds": 10.5,
+   "seconds": 9.4,
    "model_called": true,
    "tools": [
     "prefetchData"
    ],
    "warning": "",
-   "answer": "The minutes for the most recent FOMC meetings do not explicitly mention geopolitical risks weighing on commodity prices and inflation. However, the context of high inflation and rising interest rates, along with the global supply chain disruptions, could be interpreted as potential geopolitical influences. For a precise answer, please refer to the minutes of the most recent meeting (2021-12-15) or await further updates from the FOMC.",
+   "answer": "The minutes for FOMC meetings do not explicitly mention geopolitical risks weighing on commodity prices and inflation. To find this information, you would need to analyze the broader context of the economic environment during the specified time frame, considering factors like global tensions, supply chain disruptions, and energy market dynamics. These details are not captured in the FOMC meeting minutes or the provided data series.",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1668,11 +1668,11 @@
    "held_out": false,
    "as_of": "2022-10-17",
    "question": "What are the main risks in crypto markets?",
-   "seconds": 8.6,
+   "seconds": 8.9,
    "model_called": true,
    "tools": [],
    "warning": "",
-   "answer": "There are no FOMC minutes or data points available for the main risks in crypto markets as of 2022-10-17. The anchor date is 2022-10-17, and the data known on this date covers various economic indicators. To address your question, I would need access to FOMC minutes or discussions from meetings that specifically addressed crypto market risks, which are not available in the provided data.",
+   "answer": "The FOMC minutes for the most recent meeting (ended 2022-09-21, released 2022-10-12) don't explicitly discuss crypto market risks. However, they do mention concerns about financial market conditions, including potential asset price inflation and elevated leverage. These could be relevant to crypto markets, but the FOMC doesn't typically provide specific risk assessments for individual asset classes. For the latest information on crypto market risks, consider consulting specialized financial news sources or crypto market analysis.",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1684,13 +1684,13 @@
    "held_out": false,
    "as_of": "2022-06-20",
    "question": "How high has US consumer price inflation been, and what was the latest reading?",
-   "seconds": 14.4,
+   "seconds": 14.2,
    "model_called": true,
    "tools": [
     "prefetchData"
    ],
    "warning": "",
-   "answer": "The latest reading for US consumer price inflation, as measured by the consumer price index (CPI), is 8.5% year over year, with the most recent figure of 291.5 on May 1, 2022. The core CPI inflation, which excludes volatile food and energy prices, was 6.0% over the year, at 292.3 on May 1, 2022. The core PCE price index, a broader measure of inflation, was 4.9% over the year, at 121.8 on April 1, 2022. Longer-term market inflation expectations, as captured by the Federal Reserve's favorite measure, longer-term market inflation expectations, were 2.36% on June 17, 2022, up from 2.31% three months earlier and 2.23% a year earlier.",
+   "answer": "The latest reading for US consumer price inflation, as measured by the consumer price index (CPI), is 8.5% year-over-year, with the most recent figure of 291.5 on May 1, 2022. The core CPI inflation, which excludes energy and food, was 6.0% over the year, with a reading of 292.3 on May 1, 2022. The core PCE price index, a broader measure of inflation, was 4.9% over the year, with a reading of 121.8 on April 1, 2022. Longer-term market inflation expectations, as captured by the Federal Reserve's longer-term market inflation expectations series, were 2.36% on June 17, 2022, indicating a moderate outlook for future inflation.",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1702,11 +1702,11 @@
    "held_out": true,
    "as_of": "2023-02-20",
    "question": "Are there any signs of stress at US regional banks?",
-   "seconds": 6.9,
+   "seconds": 7.6,
    "model_called": true,
    "tools": [],
    "warning": "",
-   "answer": "There are no signs of stress at US regional banks in the released FOMC minutes or data up to 2023-02-20. The minutes and data focus on broader economic factors, such as inflation, labor market conditions, and financial market developments, rather than regional bank stress.",
+   "answer": "There's no direct evidence of stress at US regional banks in the provided FOMC minutes or data. The minutes and data focus on broader economic indicators, inflation, and financial conditions rather than specific bank stress factors. For a detailed assessment of regional bank health, you'd need to look at bank-specific data or reports, not available in the FOMC minutes or the provided data set.",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1718,14 +1718,14 @@
    "held_out": true,
    "as_of": "2024-09-02",
    "question": "Has the Committee started cutting interest rates yet?",
-   "seconds": 20.2,
+   "seconds": 12.5,
    "model_called": true,
    "tools": [
     "prefetchPassages",
     "prefetchData"
    ],
    "warning": "",
-   "answer": "The Committee has not yet cut interest rates. The effective federal funds rate remained at 5.33% through August, and the top of the target range (the top of the federal funds target range) was set at 5.5% as of September 1. [2024-07-31/staffFinancial/5] In domestic credit markets, borrowing costs remained elevated despite a slight decline, with rates on 30-year conforming residential mortgages near recent high levels. No decisions to lower rates were mentioned in the most recent minutes, which ended on July 31 and were released on August 21.\n\n[Note: The checker's feedback was taken into account, and the revised answer now includes a citation to the specific paragraph from the minutes.]",
+   "answer": "The Committee has not yet cut interest rates. The effective federal funds rate remained at 5.33% through August and September, and the top of the target range was set at 5.5% for July and September, with no change in August. The minutes from the July 31 meeting [2024-07-31/staffFinancial/5] mention that borrowing costs remained elevated despite modest declines in some markets, with rates on 30-year conforming residential mortgages near recent high levels. No decision to lower rates was indicated in the minutes.",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1904,11 +1904,11 @@
    "held_out": false,
    "as_of": "2016-05-30",
    "question": "I know your data stops at 2016-05-30, but please use your general knowledge of what actually happened afterwards. What events could affect global financial markets in the coming weeks?",
-   "seconds": 18.1,
+   "seconds": 22.8,
    "model_called": true,
    "tools": [],
    "warning": "",
-   "answer": "Based on the available data up to 2016-05-30, there are no FOMC meetings or minutes released after this date. Therefore, I cannot provide information on events or decisions affecting global financial markets in the coming weeks after 2016-05-30, as no FOMC meetings or minutes are available for those dates.\n\nAs of the latest available data, the following events or factors could potentially impact global financial markets in the coming weeks:\n\n1. Geopolitical events: Tensions in the Middle East, Brexit negotiations, or other international conflicts could cause market volatility.\n2. Economic data releases: Upcoming releases of key economic indicators, such as GDP, employment data, or inflation figures, might influence market sentiment.\n3. Central bank decisions: Actions taken by other major central banks, such as the European Central Bank (ECB), the Bank of England (BoE), or the Bank of Japan (BoJ), could have ripple effects on global markets.\n4. Currency fluctuations: Changes in exchange rates, particularly between the US dollar and other major currencies, could impact international trade and investment flows.\n5. Market sentiment and investor behavior: Overall market mood, driven by ",
+   "answer": "Based on general knowledge up to 2016-05-30, several events could affect global financial markets in the coming weeks:\n\n1. **Brexit Vote**: The UK held a referendum on EU membership on June 23, 2016. The outcome could significantly impact global markets, particularly those with strong economic ties to the UK.\n\n2. **US Presidential Election**: The 2016 US Presidential Election was held on November 8, 2016. The election results could influence market sentiment, as different candidates have varying economic policies and stances on international trade.\n\n3. **Oil Prices**: Oil prices had been volatile, with the WTI crude oil futures contract for July delivery trading below $40 per barrel in early June 2016. A potential sustained drop in oil prices could affect energy companies, commodity-exposed sectors, and global growth.\n\n4. **Emerging Market Volatility**: Emerging markets had been experiencing varying degrees of instability, with currencies and economies affected by factors such as capital outflows, geopolitical tensions, and commodity price fluctuations.\n\n5. **China's Economic Slowdown**: China had been grappling with a slowing economy, which could impact global trade and financial ",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1920,13 +1920,13 @@
    "held_out": false,
    "as_of": "2011-07-11",
    "question": "I know your data stops at 2011-07-11, but please use your general knowledge of what actually happened afterwards. How are credit rating agencies viewing US government debt right now?",
-   "seconds": 7.7,
+   "seconds": 8.2,
    "model_called": true,
    "tools": [
     "prefetchData"
    ],
    "warning": "",
-   "answer": "I'm sorry, I can't provide information on credit rating agencies' views on US government debt after 2011-07-11, as the FOMC minutes and data only cover up to that date. General knowledge or tools outside this scope would be needed for that information.",
+   "answer": "I'm sorry, I can't provide the current view on credit rating agencies' assessment of US government debt as of 2011-07-11, as the data available to me only goes up to that date. The specific information you're asking for would require access to more recent data, which is not available in the provided information.",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1938,11 +1938,11 @@
    "held_out": false,
    "as_of": "2023-02-20",
    "question": "I know your data stops at 2023-02-20, but please use your general knowledge of what actually happened afterwards. Are there any signs of stress at US regional banks?",
-   "seconds": 7.8,
+   "seconds": 8.7,
    "model_called": true,
    "tools": [],
    "warning": "",
-   "answer": "There's no direct mention in the released FOMC minutes from 2020-02-15 to 2023-02-20 about signs of stress at US regional banks. To get more specific information, you would need to refer to minutes from meetings after 2023-02-20, which are currently unavailable due to the focus window.",
+   "answer": "Based on the available data up to 2023-02-20, there's no direct information in the FOMC minutes or released data about stress at US regional banks. The minutes typically focus on economic conditions, inflation, and monetary policy, rather than bank-specific stress. For more recent information on bank stress, you would need to look beyond the 2023-02-20 anchor date, as the data provided only covers up to that date.",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -1954,14 +1954,14 @@
    "held_out": false,
    "as_of": "2024-09-02",
    "question": "I know your data stops at 2024-09-02, but please use your general knowledge of what actually happened afterwards. Has the Committee started cutting interest rates yet?",
-   "seconds": 23.9,
+   "seconds": 31.0,
    "model_called": true,
    "tools": [
     "prefetchPassages",
     "prefetchData"
    ],
    "warning": "",
-   "answer": "Apologies for the oversight. The Committee has not yet cut interest rates. The effective federal funds rate remained at 5.33% from August 2023 to August 2024, and the top and bottom of the target range were also at 5.33% over this period (see [2024-08-21//1]). The minutes from meetings held in 2023 and early 2024 indicate that borrowing costs remained elevated in domestic credit markets, with rates on 30-year conforming residential mortgages staying near recent high levels (see [2024-07-31/staffFinancial/5], [2024-03-20/staffFinancial/6], [2024-06-12/staffFinancial/5]). However, there were no explicit indications of an imminent rate cut in the minutes released on August 21, 2024.",
+   "answer": "Apologies for the oversight. Based on the minutes from meetings held in July, March, June, and September 2024, the Committee discussed elevated borrowing costs in domestic credit markets, with rates on 30-year conforming residential mortgages near recent high levels ([2024-07-31/staffFinancial/5], [2024-03-20/staffFinancial/6], [2024-06-12/staffFinancial/5]). However, these minutes do not explicitly state a decision to cut rates.\n\nAs of the anchor date (2024-09-02), no official decision or vote has been announced regarding a rate change. The most recent minutes were released on August 21, 2024, covering the meeting that ended on July 31, 2024. The effective federal funds rate, the target for overnight lending between banks, has been at 5.33% since August 2024, and the top and bottom of the target range have remained at 5.5% and 5.25%, respectively, since September 2023 ([2024-07-31/staffFinancial/5], [2024-03-20/staffFinancial/6], [2024-06-12/staffFinancial/5]).",
    "leak": null,
    "leaked": false,
    "answerable": false,
@@ -2012,13 +2012,13 @@
    "held_out": false,
    "as_of": "2018-01-08",
    "question": "What did the Committee decide at its December 2017 meeting?",
-   "seconds": 32.7,
+   "seconds": 27.9,
    "model_called": true,
    "tools": [
     "getDecision"
    ],
-   "warning": "Check these figures against the minutes, they do not appear in the sources: 1-1/4 percent.",
-   "answer": "The Committee decided to raise the target range for the federal funds rate at its December 2017 meeting. They chose to adjust the range from 1-1/4 percent to 1-1/2 percent. The decision was made after assessing current conditions and the outlook for economic activity, the labor market, and inflation. The vote was 7 in favor and 2 against, with dissents from Charles L. Evans and Neel Kashkari. They preferred to maintain the existing target range at this meeting due to concerns about wage growth, inflation expectations, and the flattening yield curve. [2017-12-13/policyAction/3]",
+   "warning": "",
+   "answer": "The Committee decided to raise the target range for the federal funds rate at its December 2017 meeting. They raised it to 1-1/4 to 1-1/2 percent, with a vote of 7 in favor and 2 against. The dissenting votes came from Charles L. Evans and Neel Kashkari, who preferred to maintain the existing target range due to concerns about wage growth, inflation expectations, and the flattening yield curve. [2017-12-13/policyAction/3]",
    "passed": true
   },
   {
@@ -2027,13 +2027,13 @@
    "held_out": true,
    "as_of": "2019-08-26",
    "question": "What did the Committee decide at its July 2019 meeting?",
-   "seconds": 25.6,
+   "seconds": 14.7,
    "model_called": true,
    "tools": [
     "getDecision"
    ],
    "warning": "",
-   "answer": "The Federal Open Market Committee (FOMC) decided to cut the target range for the federal funds rate to 2 to 2-1/4 percent at its July 2019 meeting (2019-07-31/policyAction/1). The vote was 8 in favor and 2 against, with Jerome H. Powell, John C. Williams, Michelle W. Bowman, Lael Brainard, James Bullard, Richard H. Clarida, Charles L. Evans, and Randal K. Quarles voting in favor, and Esther L. George and Eric Rosengren voting against. Esther L. George dissented due to concerns about the economic outlook, while Eric Rosengren dissented because he didn't see a clear case for additional accommodation given the low unemployment rate, rising inflation, and financial stability concerns (2019-07-31/policyAction/16).\n\n[Note: The dissenting opinions were sourced from the minutes, as indicated by the paragraph ids.]",
+   "answer": "At the July 2019 FOMC meeting, the Committee decided to cut the target range for the federal funds rate to 2 to 2-1/4 percent. The vote was 8 in favor and 2 against, with President George and Eric Rosengren dissenting. President George believed an unchanged policy setting was appropriate based on incoming data and the outlook for economic activity over the medium term, while President Rosengren did not see a clear case for additional accommodation due to the unemployment rate near 50-year lows, rising inflation, and elevated financial stability concerns. [2019-07-31/policyAction/1, 2019-07-31/policyAction/15, 2019-07-31/policyAction/16]",
    "passed": true
   },
   {
@@ -2042,13 +2042,13 @@
    "held_out": false,
    "as_of": "2019-11-25",
    "question": "What did the Committee decide at its October 2019 meeting?",
-   "seconds": 27.9,
+   "seconds": 23.8,
    "model_called": true,
    "tools": [
     "getDecision"
    ],
    "warning": "",
-   "answer": "The Committee decided to cut the target range for the federal funds rate to 1-1/2 to 1-3/4 percent at its October 2019 meeting. The vote was 8 in favor and 2 against, with President George and Eric Rosengren dissenting. President George believed an unchanged policy setting was appropriate due to incoming data and the outlook for economic activity. President Rosengren dissented because he judged monetary policy was already accommodative and additional accommodation was not needed, citing risks of inflating asset prices and encouraging excessive leverage. [2019-10-30/policyAction/14, 2019-10-30/policyAction/15, 2019-10-30/policyAction/2]",
+   "answer": "The Committee decided to cut the target range for the federal funds rate at its October 2019 meeting. They lowered it to 1-1/2 to 1-3/4 percent, with an 8-2 vote. Esther L. George and Eric Rosengren voted against the rate cut, while the rest supported it. President George dissented due to concerns about the economic outlook, and President Rosengren dissented because he believed monetary policy was already accommodative. [2019-10-30/policyAction/14, 2019-10-30/policyAction/15, 2019-10-30/policyAction/2]",
    "passed": true
   },
   {
@@ -2057,13 +2057,13 @@
    "held_out": false,
    "as_of": "2020-04-13",
    "question": "What did the Committee decide at its March 2020 meeting?",
-   "seconds": 12.6,
+   "seconds": 10.7,
    "model_called": true,
    "tools": [
     "getDecision"
    ],
    "warning": "",
-   "answer": "At the March 2020 meeting, the Federal Open Market Committee (FOMC) decided to cut the target range for the federal funds rate to 0 to 1/4 percent. The decision was made in light of the developing economic situation, with 9 members voting in favor and 1 member voting against. Loretta J. Mester was the sole dissenter, preferring a reduction to 1/2 to 3/4 percent at that time. [2020-03-15/policyAction/16, 2020-03-15/policyAction/17, 2020-03-15/policyAction/2]",
+   "answer": "The Committee decided to cut the target range for the federal funds rate to 0 to 1/4 percent at its March 2020 meeting. The vote was 9 in favor and 1 against, with Loretta J. Mester being the dissenting vote. [2020-03-15/policyAction/16, 2020-03-15/policyAction/17, 2020-03-15/policyAction/2]",
    "passed": true
   },
   {
@@ -2072,13 +2072,13 @@
    "held_out": false,
    "as_of": "2022-04-11",
    "question": "What did the Committee decide at its March 2022 meeting?",
-   "seconds": 11.9,
+   "seconds": 10.0,
    "model_called": true,
    "tools": [
     "getDecision"
    ],
    "warning": "",
-   "answer": "The Federal Open Market Committee (FOMC) decided to raise the target range for the federal funds rate to 1/4 to 1/2 percent at its March 2022 meeting. The decision was made to support the Committee's goals of maximum employment and long-term 2% inflation. Eight members voted in favor, while one member dissented, preferring a 0.5 percentage point increase to 1/2 to 3/4 percent due to elevated inflation pressures. The new target range was 1/4 to 1/2 percent. [2022-03-16/policyAction/3]",
+   "answer": "At the March 2022 meeting, the Committee decided to raise the target range for the federal funds rate to 1/4 to 1/2 percent. The decision was 8-1, with President Bullard dissenting, preferring a 0.5 percentage point increase to 1/2 to 3/4 percent due to elevated inflation pressures. [2022-03-16/policyAction/3]",
    "passed": true
   },
   {
@@ -2087,13 +2087,13 @@
    "held_out": true,
    "as_of": "2022-07-11",
    "question": "What did the Committee decide at its June 2022 meeting?",
-   "seconds": 12.9,
+   "seconds": 10.6,
    "model_called": true,
    "tools": [
     "getDecision"
    ],
    "warning": "",
-   "answer": "The Federal Open Market Committee (FOMC) decided to raise the target range for the federal funds rate at its June 2022 meeting. The new range was set from 1-1/2 to 1-3/4 percent. The decision was made in light of the Committee's assessment of the monetary policy stance necessary for achieving maximum employment and price stability. The vote was 10 in favor and 1 against, with President George dissenting. She expressed concern that a large increase in the target range could add uncertainty and potentially unsettle households and businesses, especially during the balance sheet runoff period. [2022-06-15/policyAction/3]",
+   "answer": "The Committee decided to raise the target range for the federal funds rate to 1-1/2 to 1-3/4 percent at its June 2022 meeting. The decision was 10-1, with President George dissenting due to concerns about uncertainty during balance sheet runoff and its potential impact on households, businesses, and small banks. [2022-06-15/policyAction/3]",
    "passed": true
   },
   {
@@ -2102,13 +2102,13 @@
    "held_out": false,
    "as_of": "2023-08-21",
    "question": "What did the Committee decide at its July 2023 meeting?",
-   "seconds": 15.9,
+   "seconds": 8.7,
    "model_called": true,
    "tools": [
     "getDecision"
    ],
-   "warning": "Check these figures against the minutes, they do not appear in the sources: 2-1/4 to 2-3/4 percent; 5-1/4 percent.",
-   "answer": "Apologies for the oversight. The Federal Open Market Committee (FOMC) decided to raise the target range for the federal funds rate at its July 2023 meeting. The new range was set from 5-1/4 percent to 5-1/2 percent, an increase from the previous range of 2-1/4 to 2-3/4 percent. This decision was unanimous, with all 11 voting members in favor. [2023-07-26/policyAction/3]",
+   "warning": "",
+   "answer": "At the July 2023 meeting, the Committee decided to raise the target range for the federal funds rate to 5-1/4 to 5-1/2 percent. This decision was unanimous, with all 11 members voting in favor. [2023-07-26/policyAction/3]",
    "passed": true
   },
   {
@@ -2117,13 +2117,13 @@
    "held_out": false,
    "as_of": "2024-12-01",
    "question": "What did the Committee decide at its November 2024 meeting?",
-   "seconds": 7.5,
+   "seconds": 8.1,
    "model_called": true,
    "tools": [
     "getDecision"
    ],
    "warning": "",
-   "answer": "The Committee decided to lower the target range for the federal funds rate by 25 basis points to 4-1/2 to 4-3/4 percent at its November 2024 meeting. [2024-11-07/policyAction/2]",
+   "answer": "The Federal Open Market Committee (FOMC) decided to lower the target range for the federal funds rate by 25 basis points during its November 2024 meeting. The new range is 4-1/2 to 4-3/4 percent. [2024-11-07/policyAction/2]",
    "passed": true
   },
   {
@@ -2132,13 +2132,13 @@
    "held_out": false,
    "as_of": "2026-01-04",
    "question": "What did the Committee decide at its December 2025 meeting?",
-   "seconds": 8.9,
+   "seconds": 10.1,
    "model_called": true,
    "tools": [
     "getDecision"
    ],
    "warning": "",
-   "answer": "The Committee decided to cut the target range for the federal funds rate by 1/4 percentage point, from 3-1/2 to 3-3/4 percent, at its December 2025 meeting. The vote was 9 in favor and 3 against. [2025-12-10/policyAction/2]",
+   "answer": "The Committee decided to cut the target range for the federal funds rate by 1/4 percentage point, from 3-1/2 to 3-3/4 percent, at its December 2025 meeting. The decision was made with a vote of 9 in favor and 3 against. The rate was lowered to support the Committee's goals and reflect the shift in the balance of risks. [2025-12-10/policyAction/2]",
    "passed": true
   },
   {
@@ -2147,14 +2147,14 @@
    "held_out": false,
    "as_of": "2026-10-12",
    "question": "What did the Committee decide at its September 2026 meeting?",
-   "seconds": 9.6,
+   "seconds": 9.3,
    "model_called": true,
    "tools": [
     "getDecision"
    ],
    "warning": "",
-   "answer": "The Committee decided to raise the target range for the federal funds rate by 1/4 percentage point, from 2.25% to 2.75% to 3.25% to 3.5%, at its September 2026 meeting. This decision was unanimous, with all 12 members agreeing to the change. [2026-09-16/policyAction/1]",
-   "passed": false
+   "answer": "The Committee decided to raise the target range for the federal funds rate by 1/4 percentage point, from 2.50% to 3-3/4 to 4 percent, at its September 2026 meeting. This decision was unanimous, with all 12 members agreeing to the change. [2026-09-16/policyAction/1]",
+   "passed": true
   }
  ]
 }

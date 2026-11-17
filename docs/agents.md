@@ -99,12 +99,18 @@ The data are cut off at the as-of date (the date gate above), but a model may ha
 `agents/shared/asof.md` holds the point-in-time rules. It is read by `fomc.asOfRules` into the writer's system
 prompt (rule 8), into every specialist's prompt (`fomc.agents.subAgent`) and, through `fomc.anchorLine`, into the
 date line of each first message. It is not under `agents/*.md` or `agents/<name>/`, so the catalog does not take it
-for an agent. `tests/bench_lookahead.py` measures the error rate on 114 questions (`evals/lookahead/key.json`):
-`--open` is the baseline with no guards, `--team --tag v0` the app before these rules, `--team --tag v1` with them.
-The Evaluation page's Lookahead bias tab shows the three.
+for an agent. `tests/bench_lookahead.py` measures the error rate: `--open` is the baseline with no guards, `--team --tag v0` the
+guards (the app in main), `--team --tag v1` v1. v1 is v0 plus the short rules above plus a date check in code:
+`fomc.focus.periodsNamed` finds the periods a question names (months in words, quarters, parts of a year,
+"3 months from now"), and when every one is after what is known (`fomc.focus.dataPrefetch`: after the newest value of
+the series the question is about; `minutesRetriever`: a meeting whose minutes are not public) the harness returns a
+`prefetchNotice` and `fomc.runTurn` answers with it, no model call. A period any series shows, a question about
+forecasts, or no period named goes to the model. Limits: a month with no year, a numeric month, a season, a bare year and
+"the next meeting" are not read.
 
-v1 adds a code check to the short rules: `fomc.focus.monthsNamed` finds the months a question names, and when every one
-is after what is known (`fomc.focus.dataPrefetch`: after the newest value of the series the question is about;
-`minutesRetriever`: a meeting whose minutes are not public), the harness returns a `prefetchNotice` and `fomc.runTurn`
-answers with it, no model call. A month any series shows goes to the model. Limits: only months named in words, and the
-topic matcher must find a series; "next year" and event questions rely on the rules alone.
+Question sets (`--key fresh|unseen` selects a set; runs go in that set's folder): `evals/lookahead/key.json` (114,
+three fixed wordings), `fresh/` (68, new wordings, used to broaden the check) and `unseen/` (74, written after the
+check was broadened: the headline). When v1 changes after a set's errors were seen, that set becomes a development set;
+write a new unseen set with a new seed (`tests/make_lookahead_unseen.py` is the pattern). The Evaluation page's
+Lookahead bias tab shows baseline, v0 and v1 on the unseen set and the other sets beside it. The version history
+(prompt-only v1, the month-names-only date check) and its numbers are in `evals/lookahead/archive/README.md`.

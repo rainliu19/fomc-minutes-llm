@@ -303,6 +303,11 @@ class Evaluation(unittest.TestCase):
         for r in got["runs"]:
             self.assertIn("overall", r["summary"])
             self.assertEqual(len(r["cases"]), r["summary"]["n_done"])
+        for name in ("fresh", "unseen"):                    # the other sets, each with its own key and runs
+            self.assertTrue(got["sets"][name]["key"])
+            for r in got["sets"][name]["runs"]:
+                self.assertEqual(len(r["cases"]), r["summary"]["n_done"])
+        self.assertNotIn("archive", got["sets"])             # retired runs are not served
 
     def test_the_evals_route_lists_runs_smallest_model_first(self):
         import app
