@@ -231,8 +231,16 @@ classdef testPrefetch < matlab.unittest.TestCase
         end
 
         function theWebTurnWarnsAboutAMangledFigure(tc)
-            out = webTurn(tc, "They lowered the range to 9/4 to 11/4 percent [2020-01-29/policyAction/1].");
+            out = webTurn(tc, "They lowered the range to 9/4 to 11/4 percent [2020-01-29/policyAction/1].", ...
+                "What did participants say about inflation?");
             tc.verifySubstring(out.warning, "9/4 to 11/4 percent");
+        end
+
+        function aDecisionAnswerAgainstTheCardIsReplacedByTheCardNotWarnedAbout(tc)
+            out = webTurn(tc, "They lowered the range to 9/4 to 11/4 percent [2020-01-29/policyAction/1].");
+            tc.verifyEmpty(out.warning);
+            tc.verifyFalse(contains(out.answer, "9/4"));
+            tc.verifySubstring(out.answer, "[2020-01-29/policyAction/");
         end
 
         function theWebAnalysisShowsTheCheckedSummary(tc)

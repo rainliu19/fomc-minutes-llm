@@ -38,9 +38,7 @@ if ~isnat(ctx.focus.start)
     eligible = eligible & M.MeetingDate >= ctx.focus.start & M.MeetingDate <= ctx.focus.end;
 end
 % BM25 score: each word adds more if it is rare overall and appears often in a short paragraph
-low = lower(P.text);
-len = strlength(P.text);
-avgLen = mean(len);
+[low, len, avgLen] = deal(ctx.D.corpus.low, ctx.D.corpus.len, ctx.D.corpus.avgLen);   % worked out once, in fomc.data.build
 k1 = 1.2; b = 0.75;                                       % standard BM25 settings
 N = height(P);
 score = zeros(N, 1);
