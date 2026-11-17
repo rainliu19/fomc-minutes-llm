@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How the agents worked</title>
+<style>
+  :root {
+    --bg: #f5f5f5; --card: #ffffff; --text: #222222; --muted: #5f6b76; --line: #d9dde1;
+    --navy: #163855; --blue: #3a6c9c; --gold: #cf8b40; --user: #e6eef6; --ok: #3c763d; --bad: #a94442;
+    --code: #f0f2f4; --head-text: #ffffff; --side: #ebeef1;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e1721; --card: #15212e; --text: #e8ecf0; --muted: #9aa8b5; --line: #263646;
+      --navy: #0b2236; --blue: #7fb0dc; --gold: #e0a35a; --user: #1c3248; --ok: #7fc47c; --bad: #e68b88;
+      --code: #0e1721; --head-text: #ffffff; --side: #111c28;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.55 "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  h1 { font: normal 24px Georgia, "Palatino Linotype", Palatino, "Times New Roman", serif; margin: 0 0 4px; }
+  .top { background: var(--navy); color: var(--head-text); border-bottom: 4px solid var(--gold); padding: 14px 20px 12px; }
+  .top a { color: var(--head-text); }
+  main { padding: 0 20px 24px; }
+  .note { color: var(--muted); font-size: 13.5px; }
+  #agents { background: var(--side); border: 1px solid var(--line); border-radius: 6px; padding: 0 14px 14px; margin-top: 14px; overflow-x: auto; }
+  #agentgrid { display: grid; grid-template-columns: repeat(var(--cols, 1), minmax(15rem, 1fr)); column-gap: 10px; row-gap: 6px; }
+  .ahead { position: sticky; top: 0; z-index: 1; background: var(--side); padding: 8px 0 6px; border-bottom: 2px solid var(--gold);
+           font-weight: 600; text-transform: capitalize; }
+  .acell { border-left: 3px solid var(--muted); padding: 5px 9px; background: var(--card); border-radius: 0 4px 4px 0;
+           font-size: 12.5px; white-space: pre-wrap; word-break: break-word; }
+  .acell.system { border-color: var(--bad); } .acell.user { border-color: var(--ok); } .acell.assistant { border-color: var(--blue); }
+  .acell.tool { border-color: var(--gold); } .acell.note { border-left-style: dashed; background: none; color: var(--muted); }
+  .acell.dim { opacity: .65; }
+</style>
+</head>
+<body>
+<header class="top"><h1>How the agents worked</h1><div>One column per agent, one row per step, in the order things happened. <a href="/">Back to the chat</a></div></header>
+<main>
+  <p id="msg" class="note">Loading...</p>
+  <section id="agents" hidden><div id="agentgrid"></div></section>
+</main>
+<script src="/agents-panel.js"></script>
+<script>
+// /agents?session_id=...&after=a&before=b : the trace lines of one answer, drawn full width
+const q = new URLSearchParams(location.search);
+const sid = q.get("session_id"), range = [Number(q.get("after")), Number(q.get("before"))];
+const msg = document.getElementById("msg");
+if (!sid || range.some(Number.isNaN)) {
+  msg.textContent = "Open this page from \"See how the agents worked\" under an answer in the chat.";
+} else {
+  agentsPanel.open(sid, range).then(() => { msg.hidden = !document.getElementById("agentgrid").children.length ? false : true;
+    if (!msg.hidden) msg.textContent = "No agent steps were saved for this answer."; })
+    .catch(() => { msg.textContent = "Could not load the trace."; });
+}
+</script>
+</body>
+</html>

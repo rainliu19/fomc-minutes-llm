@@ -123,6 +123,12 @@ def info(model: str = ""):
     return data
 
 
+@app.get("/agents")
+def agents_page():
+    """How the agents worked for one answer, full width, opened in a new tab from the chat."""
+    return FileResponse(HERE / "static" / "agents.html", headers={"Cache-Control": "no-cache"})
+
+
 @app.get("/evaluation")
 def evaluation_page():
     return FileResponse(HERE / "static" / "evals.html", headers={"Cache-Control": "no-cache"})

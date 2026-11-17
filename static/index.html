@@ -518,7 +518,11 @@ $("agentsclose").addEventListener("click", () => agentsPanel.close());
 // "See how the agents worked" under an answer: draw that answer's part of the trace
 $("log").addEventListener("click", (ev) => {
   const link = ev.target.closest("a.how");
-  if (link) { ev.preventDefault(); agentsPanel.open(sessionId, link.dataset.trace.split(",").map(Number)); }
+  if (link) {
+    ev.preventDefault();       // a new tab: the timeline has one column per agent and needs the width
+    const [a, b] = link.dataset.trace.split(",").map(Number);
+    window.open(`/agents?session_id=${encodeURIComponent(sessionId)}&after=${a}&before=${b}`, "_blank", "noopener");
+  }
 });
 $("new").addEventListener("click", newChat);
 $("menu").addEventListener("click", () => $("side").classList.toggle("closed"));
