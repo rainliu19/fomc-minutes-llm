@@ -36,7 +36,7 @@
 </style>
 </head>
 <body>
-<header class="top"><h1>How the agents worked</h1><div>One column per agent, one row per step, in the order things happened. <a href="/">Back to the chat</a></div></header>
+<header class="top"><h1>How the agents worked</h1><div>One column per agent, one row per step, in the order things happened. <a id="back" href="/">Back to the chat</a></div></header>
 <main>
   <p id="msg" class="note">Loading...</p>
   <section id="agents" hidden><div id="agentgrid"></div></section>
@@ -47,6 +47,7 @@
 const q = new URLSearchParams(location.search);
 const sid = q.get("session_id"), range = [Number(q.get("after")), Number(q.get("before"))];
 const msg = document.getElementById("msg");
+if (sid) document.getElementById("back").href = "/?chat=" + encodeURIComponent(sid);
 if (!sid || range.some(Number.isNaN)) {
   msg.textContent = "Open this page from \"See how the agents worked\" under an answer in the chat.";
 } else {

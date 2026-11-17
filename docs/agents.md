@@ -70,10 +70,10 @@ Whatever you return passes the date gate (nothing after the anchor).
 
 ## Transparency
 
-The page's side panel ("How the agents worked", `static/agents-panel.js`, after the course demo's context panel) draws
-the trace as a timeline: a column per agent (organizer, minutes, market, scorer, consumer, writer, critic), a row per
-step. It fills while the model works and reopens per answer ("See how the agents worked"; the reply carries the trace's
-line range, saved with the chat).
+The "How the agents worked" page (`/agents`, `static/agents.html`, drawn by `static/agents-panel.js` after the course demo's context
+panel) shows the trace as a timeline: a column per agent (organizer, minutes, market, scorer, consumer, writer, critic), a row per
+step. "See how the agents worked" under an answer goes to it in the same tab (the reply carries the trace's line range, saved
+with the chat), and "Back to the chat" returns to that conversation.
 
 Trace events: `route` (with the question), `stage`, `handoff` (`reads`: whose reports the agent is briefed with),
 `handback` (the report), `agent_model` (`skipped` and why, or ms and fallback), `critic`, `parallel_off`, and per model

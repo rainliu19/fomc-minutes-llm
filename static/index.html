@@ -37,16 +37,6 @@
   aside { width: 270px; flex: none; overflow-y: auto; background: var(--side); border-right: 1px solid var(--line); padding: 12px;
           display: flex; flex-direction: column; gap: 10px; }
   main { flex: 1 0 24rem; display: flex; flex-direction: column; padding: 12px 20px 0; max-width: 900px; }
-  #agents { flex: 0 1 min(44vw, 50rem); min-width: 16rem; overflow: auto; background: var(--side); border-left: 1px solid var(--line); padding: 0 14px 14px; }
-  .ahdr { display: flex; justify-content: space-between; align-items: center; padding: 10px 0 2px; }
-  #agentgrid { display: grid; grid-template-columns: repeat(var(--cols, 1), minmax(15rem, 1fr)); column-gap: 10px; row-gap: 6px; }
-  .ahead { position: sticky; top: 0; z-index: 1; background: var(--side); padding: 8px 0 6px; border-bottom: 2px solid var(--gold);
-           font-weight: 600; text-transform: capitalize; }
-  .acell { border-left: 3px solid var(--muted); padding: 5px 9px; background: var(--card); border-radius: 0 4px 4px 0;
-           font-size: 12.5px; white-space: pre-wrap; word-break: break-word; }
-  .acell.system { border-color: var(--bad); } .acell.user { border-color: var(--ok); } .acell.assistant { border-color: var(--blue); }
-  .acell.tool { border-color: var(--gold); } .acell.note { border-left-style: dashed; background: none; color: var(--muted); }
-  .acell.dim { opacity: .65; }
   .arole { font-weight: 600; font-size: 11.5px; color: var(--muted); }
   #scroll { flex: 1; overflow-y: auto; min-height: 0; padding: 4px 4px 12px 0; }
   #composer { flex: none; padding: 8px 0 10px; background: var(--bg); }
@@ -128,7 +118,6 @@
     aside.closed { display: none; }
     #menu { display: inline-block; }
     main { padding: 12px 16px; }
-    #agents { flex: none; max-height: 60vh; border-left: none; border-top: 1px solid var(--line); }
   }
 </style>
 </head>
@@ -188,13 +177,8 @@
     against the cited paragraphs. Independent project, not affiliated with or endorsed by the Federal Reserve.</p>
   </div>
 </main>
-<section id="agents" hidden>
-  <div class="ahdr"><b>How the agents worked</b><button id="agentsclose" type="button">Close</button></div>
-  <div id="agentgrid"></div>
-</section>
 </div>
 
-<script src="/agents-panel.js"></script>
 <script>
 // Shortcut for finding a page element by id
 const $ = (id) => document.getElementById(id);
@@ -364,14 +348,9 @@ function citationsHtml(cites, nums) {
   return `<details open><summary>Sources (${cites.length})</summary>${items}</details>`;
 }
 
-// Every 2 seconds while the agent works: fetch new progress events and draw them in the agents panel
-async function poll(sid, state) {
-  try {
-    const r = await (await fetch(`/progress?session_id=${sid}&after=${state.after}`)).json();
-    state.after = r.next;
-    agentsPanel.add(r.events);
-    $("actsum").textContent = `Working... ${Math.round((Date.now() - state.t0) / 1000)}s`;
-  } catch (_) {}
+// Every 2 seconds while the agent works: show how long it has been
+function poll(sid, state) {
+  $("actsum").textContent = `Working... ${Math.round((Date.now() - state.t0) / 1000)}s`;
 }
 
 // One finished answer: text, warning, sources, structured analysis, tools used, and its footer
@@ -405,7 +384,7 @@ function setAgents(v) {
 
 // Start an empty chat
 function newChat() {
-  sessionId = null; agentsPanel.close(); $("log").innerHTML = ""; lockSettings(false); renderChats(); $("input").focus();
+  sessionId = null; $("log").innerHTML = ""; lockSettings(false); renderChats(); $("input").focus();
   $("side").classList.add("closed");
 }
 
@@ -470,7 +449,7 @@ async function openChat(id) {
   for (const m of chat.messages) {
     if (m.role === "user") add("user", esc(m.text)); else add("assistant", assistantHtml(m));
   }
-  $("asof").value = chat.as_of; $("model").value = chat.model; setEffort(chat.effort || "low"); setAgents(chat.agents || "team"); agentsPanel.close();
+  $("asof").value = chat.as_of; $("model").value = chat.model; setEffort(chat.effort || "low"); setAgents(chat.agents || "team");
   lockSettings(true); renderChats(); $("side").classList.add("closed");
 }
 
@@ -481,7 +460,7 @@ $("form").addEventListener("submit", async (ev) => {
   if (!message) return;
   if (!sessionId) sessionId = crypto.randomUUID();
   lockSettings(true);
-  $("activity").hidden = false; $("actsum").textContent = "Working..."; agentsPanel.start();
+  $("activity").hidden = false; $("actsum").textContent = "Working...";
   add("user", esc(message)); $("input").value = "";
   $("send").disabled = true;
   // Start counting trace lines after the ones already there (a continued chat has older ones)
@@ -514,14 +493,13 @@ $("input").addEventListener("keydown", (e) => {
 
 document.querySelectorAll("#effort button").forEach(b => b.addEventListener("click", () => setEffort(b.dataset.v)));
 document.querySelectorAll("#agentmode button").forEach(b => b.addEventListener("click", () => setAgents(b.dataset.v)));
-$("agentsclose").addEventListener("click", () => agentsPanel.close());
-// "See how the agents worked" under an answer: draw that answer's part of the trace
+// "See how the agents worked" under an answer: go to the page that draws that answer's part of the trace
 $("log").addEventListener("click", (ev) => {
   const link = ev.target.closest("a.how");
   if (link) {
-    ev.preventDefault();       // a new tab: the timeline has one column per agent and needs the width
+    ev.preventDefault();       // its own page, in this tab like the Evaluation page: one column per agent needs the width
     const [a, b] = link.dataset.trace.split(",").map(Number);
-    window.open(`/agents?session_id=${encodeURIComponent(sessionId)}&after=${a}&before=${b}`, "_blank", "noopener");
+    location.href = `/agents?session_id=${encodeURIComponent(sessionId)}&after=${a}&before=${b}`;
   }
 });
 $("new").addEventListener("click", newChat);
@@ -538,6 +516,8 @@ $("menu").addEventListener("click", () => $("side").classList.toggle("closed"));
   } catch (e) { /* the date and model boxes simply stay empty */ }
   $("side").classList.add("closed");
   await loadChats();
+  const back = new URLSearchParams(location.search).get("chat");       // "Back to the chat" from the agents page
+  if (back) { history.replaceState(null, "", "/"); openChat(back); }
 })();
 </script>
 </body>
