@@ -1,0 +1,1695 @@
+{
+ "summary": {
+  "model": "q25-15-multi",
+  "label": "Fast: Qwen2.5 1.5B, multi-agent",
+  "multi": true,
+  "params_b": 1.5,
+  "ollama_name": "fomc-q25-15",
+  "date": "2026-11-17",
+  "complete": true,
+  "tokens": {
+   "in_per_question": 5166,
+   "out_per_question": 262,
+   "total_in": 294472,
+   "total_out": 14921,
+   "api_cost_per_1000": {
+    "haiku": 0.65,
+    "sonnet": 12.95
+   },
+   "api_prices": {
+    "checked": "2026-10-06",
+    "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+    "models": [
+     {
+      "id": "haiku",
+      "label": "Claude Haiku 5.5",
+      "usd_per_mtok_in": 0.1,
+      "usd_per_mtok_out": 0.5
+     },
+     {
+      "id": "sonnet",
+      "label": "Claude Sonnet 5.5",
+      "usd_per_mtok_in": 2.0,
+      "usd_per_mtok_out": 10.0
+     }
+    ]
+   }
+  },
+  "n_cases": 57,
+  "correct": 39,
+  "n_scored": 53,
+  "accuracy": 0.736,
+  "accuracy_ci": [
+   0.604,
+   0.836
+  ],
+  "by_category": {
+   "comparison": {
+    "correct": 3,
+    "n": 4
+   },
+   "decision": {
+    "correct": 12,
+    "n": 12
+   },
+   "followup": {
+    "correct": 2,
+    "n": 3
+   },
+   "guardrail": {
+    "correct": 5,
+    "n": 5
+   },
+   "nextmove": {
+    "correct": 2,
+    "n": 4
+   },
+   "outlook": {
+    "correct": 0,
+    "n": 3
+   },
+   "stability": {
+    "correct": 6,
+    "n": 8
+   },
+   "topic": {
+    "correct": 7,
+    "n": 8
+   },
+   "vote": {
+    "correct": 2,
+    "n": 6
+   }
+  },
+  "silent_errors": {
+   "count": 8,
+   "n": 53,
+   "rate": 0.151,
+   "ci": [
+    0.079,
+    0.271
+   ],
+   "wrong": 14,
+   "warned_wrong": 6
+  },
+  "stability": {
+   "stable_groups": 3,
+   "groups": 4
+  },
+  "tool_accuracy": {
+   "ok": 52,
+   "n": 52
+  },
+  "cases_citing_verified_id": 29,
+  "cases_with_warning": 23,
+  "citations": {
+   "verified": 58,
+   "total": 81
+  },
+  "invented_reason": {
+   "flagged": 0,
+   "n": 1,
+   "note": "heuristic: causal wording not found in tool results"
+  },
+  "seconds_median": 7.7,
+  "seconds_p90": 28.3,
+  "decode_tok_s_median": 41.7,
+  "peak_swap_mb": 1086,
+  "model_memory_mb": 1304,
+  "model_memory_pct_of_8gb": 15.9
+ },
+ "cases": [
+  {
+   "id": "decision-01",
+   "category": "decision",
+   "effort": "low",
+   "group": "stability-1",
+   "seconds": 12.3,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 5945,
+    "output_tokens": 118,
+    "prefill_tok_s": 972.4,
+    "decode_tok_s": 42.1
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The Committee decided to raise the target range for the federal funds rate to 1/4 to 1/2 percent at the December 2015 meeting. The decision was unanimous, with all 10 members voting in favor. [2015-12-16/policyAction/18]",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1086
+  },
+  {
+   "id": "decision-02",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 7.5,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6205,
+    "output_tokens": 142,
+    "prefill_tok_s": 2032.4,
+    "decode_tok_s": 42.1
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The Committee decided to raise the target range for the federal funds rate to 1-1/2 to 1-3/4 percent, as stated in the minutes. This decision was made by a vote of 10 in favor and 1 against, with dissenting views from President George. [2022-06-15/policyAction/21]",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1086
+  },
+  {
+   "id": "decision-03",
+   "category": "decision",
+   "effort": "low",
+   "group": "stability-4",
+   "seconds": 4.2,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2909,
+    "output_tokens": 47,
+    "prefill_tok_s": 1136.8,
+    "decode_tok_s": 42.3
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "In support of these goals, members agreed to raise the target range for the federal funds rate to 3-3/4 to 4 percent [2022-11-02/policyAction/3].",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 40,
+   "swap_mb": 1086
+  },
+  {
+   "id": "decision-04",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 6.8,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 5950,
+    "output_tokens": 146,
+    "prefill_tok_s": 2189.9,
+    "decode_tok_s": 42.1
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The Committee decided to raise the target range for the federal funds rate to 5 to 5-1/4 percent. This decision was unanimous, with all 11 members voting in support. The meeting was held on May 3, 2023, and the minutes were released on May 24, 2023.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1078
+  },
+  {
+   "id": "decision-05",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 7.2,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6018,
+    "output_tokens": 166,
+    "prefill_tok_s": 2166.3,
+    "decode_tok_s": 42.0
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The Committee decided to raise the target range for the federal funds rate to 5-1/4 to 5-1/2 percent. This decision was made in support of the Committee's objectives to achieve maximum employment and inflation at the rate of 2 percent over the longer run, as agreed upon by the members. The vote was unanimous, with all 11 members in favor and no opposition.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1078
+  },
+  {
+   "id": "decision-06",
+   "category": "decision",
+   "effort": "low",
+   "group": "stability-2",
+   "seconds": 4.2,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 5564,
+    "output_tokens": 54,
+    "prefill_tok_s": 2347.7,
+    "decode_tok_s": 43.1
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The Federal Open Market Committee decided today to lower its target for the federal funds rate 50 basis points to 3 percent.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 44,
+   "swap_mb": 1078
+  },
+  {
+   "id": "decision-07",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 21.7,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 3,
+    "prompt_tokens": 8156,
+    "output_tokens": 613,
+    "prefill_tok_s": 1289.9,
+    "decode_tok_s": 41.7
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": false,
+   "answer": "In light of the implications of global developments for the economic outlook as well as muted inflation pressures, most members agreed to lower the target range for the federal funds rate to 1-1/2 to 1-3/4 percent at this meeting. The vote was 8 for, 2 against. For: Jerome H. Powell, John C. Williams, Michelle W. Bowman, Lael Brainard, James Bullard, Richard H. Clarida, Charles L. Evans, and Randal K. Quarles. Against: Esther L. George and Eric Rosengren. President George dissented at this meeting because she believed that an unchanged setting of monetary policy was appropriate based on incoming data and the outlook for economic activity over the medium term. Recognizing risks to the outlook",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1078
+  },
+  {
+   "id": "decision-08",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 5.1,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6193,
+    "output_tokens": 64,
+    "prefill_tok_s": 2029.2,
+    "decode_tok_s": 42.9
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The Committee decided to lower the target range for the federal funds rate to 4-3/4 to 5 percent, as stated in the minutes.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 40,
+   "swap_mb": 1078
+  },
+  {
+   "id": "decision-09",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 9.0,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6142,
+    "output_tokens": 234,
+    "prefill_tok_s": 2113.6,
+    "decode_tok_s": 41.7
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The Committee decided to cut the target range for the federal funds rate by 1/4 percentage point to 3-1/2 to 3-3/4 percent. This decision was made in support of the Committee's goals and in light of the shift in the balance of risks. The vote was 9 for, 3 against. The dissenting vote was from Stephen I. Miran, who preferred to lower the target range by 1/2 percentage point at this meeting. The decision was announced on December 10, 2025.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 40,
+   "swap_mb": 1078
+  },
+  {
+   "id": "decision-10",
+   "category": "decision",
+   "effort": "low",
+   "group": "stability-3",
+   "seconds": 7.3,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 5946,
+    "output_tokens": 176,
+    "prefill_tok_s": 2201.4,
+    "decode_tok_s": 42.0
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The Committee decided to maintain the target range for the federal funds rate at 0 to 1/4 percent and continues to anticipate that economic conditions, including low rates of resource utilization, subdued inflation trends, and stable inflation expectations, are likely to warrant exceptionally low levels for the federal funds rate for an extended period. The decision was unanimous, with all 11 members voting in favor. [2011-01-26/policyAction/11]",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1078
+  },
+  {
+   "id": "decision-11",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 16.4,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 3,
+    "prompt_tokens": 8215,
+    "output_tokens": 448,
+    "prefill_tok_s": 1629.0,
+    "decode_tok_s": 41.6
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The Committee decided to maintain the target range for the federal funds rate at 0 to 1/4 percent and to reaffirm the indication in the statement that the Committee's decision about how long to maintain the current target range for the federal funds rate would depend on its assessment of actual and expected progress toward its objectives of maximum employment and 2 percent inflation. The vote was 7 for, 3 against. For: Janet L. Yellen, William C. Dudley, Lael Brainard, Stanley Fischer, Loretta J. Mester, Jerome H. Powell, and Daniel K. Tarullo. Against: Richard W. Fisher, Narayana Kocherlakota, and Charles I. Plosser.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1078
+  },
+  {
+   "id": "decision-12",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 7.7,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6013,
+    "output_tokens": 188,
+    "prefill_tok_s": 2169.2,
+    "decode_tok_s": 42.0
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The Committee decided to hold the target range for the federal funds rate at 4-1/4 to 4-1/2 percent. This decision was made in support of its goals, with a unanimous vote of 12 for and 0 against. The minutes state: \"In support of its goals, the Committee agreed to maintain the target range for the federal funds rate at 4-1/4 to 4-1/2 percent.\"",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1078
+  },
+  {
+   "id": "stability-1a",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-1",
+   "seconds": 13.1,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6467,
+    "output_tokens": 380,
+    "prefill_tok_s": 2017.8,
+    "decode_tok_s": 41.5
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The Fed raised interest rates at its December 2015 meeting. The target range for the federal funds rate was raised from 1/4 to 1/2 percent. This decision was unanimous, with all 10 members voting in favor. The effective federal funds rate was 0.24% on 2015-12-01, down from 0.14% three months earlier and 0.12% a year earlier. The top of the federal funds target range was 0.5% on 2016-01-10, up from 0.25% three months earlier and 0% a year earlier. The bottom of the federal funds target range was 0.25% on 2016-01-10, up from 0% three months earlier and 0% a year earlier.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 42,
+   "swap_mb": 1078
+  },
+  {
+   "id": "stability-1b",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-1",
+   "seconds": 7.1,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3104,
+    "output_tokens": 195,
+    "prefill_tok_s": 1569.3,
+    "decode_tok_s": 41.5
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The federal funds rate target was raised from 1/4 to 1/2 percent at the meeting that ended on 2015-12-16. The target range was 1/4 to 1/2 percent, as stated in the minutes. The effective federal funds rate was 0.24% on 2015-12-01, 0.14% three months earlier, and 0.12% a year earlier. The top of the federal funds target range was 0.5% on 2016-01-10, 0.25% three months earlier, and 0.25% a year earlier. The bottom of the federal funds target range was 0.25% on 2016-01-10, 0% three months earlier, and 0% a year earlier.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1078
+  },
+  {
+   "id": "stability-2a",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-2",
+   "seconds": 4.0,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2921,
+    "output_tokens": 44,
+    "prefill_tok_s": 1122.6,
+    "decode_tok_s": 42.4
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The Federal Open Market Committee decided today to lower its target for the federal funds rate 50 basis points to 3 percent. [2008-01-30/policyAction/6]",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1078
+  },
+  {
+   "id": "stability-2b",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-2",
+   "seconds": 5.3,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2918,
+    "output_tokens": 139,
+    "prefill_tok_s": 1733.8,
+    "decode_tok_s": 41.9
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The federal funds rate target was cut by 50 basis points to 3 percent, from 3.5 percent. This decision was made today at the Federal Open Market Committee meeting on January 30, 2008. The vote was 9 in favor, 1 against, with Mr. Fisher dissenting. The rate had been lowered by 75 basis points just one week earlier in a decision he supported, which brought the funds rate down 175 basis points since September. Given these actions, Mr. Fisher felt that monetary policy was already quite stimulative, while headline inflation was too high at more than 3 percent over the last year.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1078
+  },
+  {
+   "id": "stability-3a",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-3",
+   "seconds": 4.8,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3091,
+    "output_tokens": 67,
+    "prefill_tok_s": 1041.1,
+    "decode_tok_s": 42.3
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The Fed held interest rates at the target range of 0 to 1/4 percent at its January 2011 meeting. The meeting was on 2011-01-26, and the relevant paragraph is [2011-01-26/policyAction/8].",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1078
+  },
+  {
+   "id": "stability-3b",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-3",
+   "seconds": 6.1,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3088,
+    "output_tokens": 160,
+    "prefill_tok_s": 1555.7,
+    "decode_tok_s": 41.7
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The federal funds rate target was held at 0 to 1/4 percent, as decided at the meeting that ended on 2011-01-26. The Committee maintained the target range for the federal funds rate at 0 to 1/4 percent and continued to anticipate that economic conditions, including low rates of resource utilization, subdued inflation trends, and stable inflation expectations, are likely to warrant exceptionally low levels for the federal funds rate for an extended period. The vote was unanimous, with all 11 members supporting the decision. The effective federal funds rate was 0.17% on 2011-01-01, 0.19% three months earlier, and 0.11% a year earlier.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1078
+  },
+  {
+   "id": "stability-4a",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-4",
+   "seconds": 3.7,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3100,
+    "output_tokens": 18,
+    "prefill_tok_s": 1039.6,
+    "decode_tok_s": 43.2
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2022-11-02/policyAction/3]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 40,
+   "swap_mb": 1078
+  },
+  {
+   "id": "stability-4b",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-4",
+   "seconds": 2.6,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3097,
+    "output_tokens": 18,
+    "prefill_tok_s": 1580.9,
+    "decode_tok_s": 43.9
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2022-11-02/policyAction/3]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1078
+  },
+  {
+   "id": "vote-01",
+   "category": "vote",
+   "effort": "low",
+   "group": null,
+   "seconds": 6.2,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 5987,
+    "output_tokens": 130,
+    "prefill_tok_s": 2160.6,
+    "decode_tok_s": 42.1
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The vote was unanimous at the June 2015 meeting. The Committee agreed to maintain the target range for the federal funds rate at 0 to 1/4 percent, as previously stated. The decision was unanimous with all 10 members voting in favor. [2015-06-17/policyAction/17]",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1078
+  },
+  {
+   "id": "vote-02",
+   "category": "vote",
+   "effort": "low",
+   "group": null,
+   "seconds": 3.2,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2901,
+    "output_tokens": 18,
+    "prefill_tok_s": 1137.6,
+    "decode_tok_s": 43.8
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2020-07-29/policyAction/2]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1078
+  },
+  {
+   "id": "vote-03",
+   "category": "vote",
+   "effort": "low",
+   "group": null,
+   "seconds": 5.9,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6001,
+    "output_tokens": 117,
+    "prefill_tok_s": 2170.3,
+    "decode_tok_s": 42.2
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The vote was unanimous at the January 2024 meeting. The action was to maintain the target range for the federal funds rate at 5-1/4 to 5-1/2 percent, as stated in the minutes. [2024-01-31/policyAction/2]",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1078
+  },
+  {
+   "id": "vote-04",
+   "category": "vote",
+   "effort": "low",
+   "group": null,
+   "seconds": 3.0,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2741,
+    "output_tokens": 19,
+    "prefill_tok_s": 1238.0,
+    "decode_tok_s": 43.2
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2008-08-05/policyAction/10]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1078
+  },
+  {
+   "id": "vote-05",
+   "category": "vote",
+   "effort": "low",
+   "group": null,
+   "seconds": 7.1,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 4893,
+    "output_tokens": 76,
+    "prefill_tok_s": 985.3,
+    "decode_tok_s": 43.8
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2013-06-19/policyAction/13]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1078
+  },
+  {
+   "id": "vote-06",
+   "category": "vote",
+   "effort": "low",
+   "group": null,
+   "seconds": 3.4,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2996,
+    "output_tokens": 18,
+    "prefill_tok_s": 1088.7,
+    "decode_tok_s": 43.6
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2016-11-02/policyAction/4]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 42,
+   "swap_mb": 1078
+  },
+  {
+   "id": "followup-01",
+   "category": "followup",
+   "effort": "low",
+   "group": null,
+   "seconds": 11.5,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 5,
+    "prompt_tokens": 13687,
+    "output_tokens": 594,
+    "prefill_tok_s": 1581.0,
+    "decode_tok_s": 41.9
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": false,
+   "answer": "Thomas M. Hoenig dissented because he judged that economic conditions were improving, and that the current highly accommodative stance of monetary policy was inconsistent with the Committee's long-run mandate. Mr. Hoenig noted that the economic recovery was shifting from transitory to more sustainable sources of growth and was picking up momentum. In his assessment, maintaining highly accommodative monetary policy in the current economic environment would increase the risk of future imbalances and, over time, cause an increase in longer-term inflation expectations. Mr. Hoenig also was concerned that the eventual orderly reduction of policy accommodation would become more difficult the longer",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1078
+  },
+  {
+   "id": "followup-02",
+   "category": "followup",
+   "effort": "low",
+   "group": null,
+   "seconds": 3.8,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6805,
+    "output_tokens": 113,
+    "prefill_tok_s": 1486.8,
+    "decode_tok_s": 41.7
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": false,
+   "answer": "President Loretta J. Mester dissented and voted against the FOMC action because she preferred to reduce the target range for the federal funds rate to 1/2 to 3/4 percent at this meeting. [2020-03-15/policyAction/17]",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1070
+  },
+  {
+   "id": "followup-03",
+   "category": "followup",
+   "effort": "low",
+   "group": null,
+   "seconds": 4.9,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 3,
+    "prompt_tokens": 10099,
+    "output_tokens": 187,
+    "prefill_tok_s": 1997.8,
+    "decode_tok_s": 41.4
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "Governor Bowman dissented and preferred to lower the target range for the federal funds rate by 25 basis points to 5 to 5-1/4 percent in light of core inflation remaining well above the Committee's objective, a labor market that is near full employment, and solid underlying growth. She also expressed her concern that the Committee's larger policy action could be seen as a premature declaration of victory on the price-stability part of the dual mandate. [2024-09-18/policyAction/20]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 41,
+   "swap_mb": 1070
+  },
+  {
+   "id": "guardrail-01",
+   "category": "guardrail",
+   "effort": "low",
+   "group": null,
+   "seconds": 0.2,
+   "tools": [
+    "prefetchNotice"
+   ],
+   "stats": {
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "output_tokens": 0,
+    "prefill_tok_s": null,
+    "decode_tok_s": null
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The minutes of the January 2008 meeting are not public as of 2008-02-15, so there is no decision to report for it. No minutes have been released yet.",
+   "passed": true,
+   "tool_ok": null,
+   "expected_tool": null,
+   "free_pct": 41,
+   "swap_mb": 1070
+  },
+  {
+   "id": "guardrail-02",
+   "category": "guardrail",
+   "effort": "low",
+   "group": null,
+   "seconds": 0.2,
+   "tools": [
+    "prefetchNotice"
+   ],
+   "stats": {
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "output_tokens": 0,
+    "prefill_tok_s": null,
+    "decode_tok_s": null
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The minutes of the January 2011 meeting are not public as of 2011-02-11, so there is no decision to report for it. The latest minutes available are for the meeting that ended 2010-12-14.",
+   "passed": true,
+   "tool_ok": null,
+   "expected_tool": null,
+   "free_pct": 41,
+   "swap_mb": 1070
+  },
+  {
+   "id": "guardrail-03",
+   "category": "guardrail",
+   "effort": "low",
+   "group": null,
+   "seconds": 0.1,
+   "tools": [
+    "prefetchNotice"
+   ],
+   "stats": {
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "output_tokens": 0,
+    "prefill_tok_s": null,
+    "decode_tok_s": null
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The minutes of the December 2013 meeting are not public as of 2014-01-03, so there is no decision to report for it. The latest minutes available are for the meeting that ended 2013-10-30.",
+   "passed": true,
+   "tool_ok": null,
+   "expected_tool": null,
+   "free_pct": 41,
+   "swap_mb": 1070
+  },
+  {
+   "id": "guardrail-04",
+   "category": "guardrail",
+   "effort": "low",
+   "group": null,
+   "seconds": 0.2,
+   "tools": [
+    "prefetchNotice"
+   ],
+   "stats": {
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "output_tokens": 0,
+    "prefill_tok_s": null,
+    "decode_tok_s": null
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The minutes of the March 2024 meeting are not public as of 2024-04-05, so there is no decision to report for it. The latest minutes available are for the meeting that ended 2024-01-31.",
+   "passed": true,
+   "tool_ok": null,
+   "expected_tool": null,
+   "free_pct": 41,
+   "swap_mb": 1070
+  },
+  {
+   "id": "guardrail-05",
+   "category": "guardrail",
+   "effort": "low",
+   "group": null,
+   "seconds": 0.1,
+   "tools": [
+    "prefetchNotice"
+   ],
+   "stats": {
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "output_tokens": 0,
+    "prefill_tok_s": null,
+    "decode_tok_s": null
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The minutes of the March 2025 meeting are not public as of 2025-04-04, so there is no decision to report for it. The latest minutes available are for the meeting that ended 2025-01-29.",
+   "passed": true,
+   "tool_ok": null,
+   "expected_tool": null,
+   "free_pct": 41,
+   "swap_mb": 1070
+  },
+  {
+   "id": "topic-01",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 10.1,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3213,
+    "output_tokens": 250,
+    "prefill_tok_s": 981.1,
+    "decode_tok_s": 41.3
+   },
+   "citations_ok": 3,
+   "citations_total": 3,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2020-01-29/participantsViews/6] Participants judged that conditions in the labor market remained strong, with the unemployment rate at a 50-year low and continued solid job gains, on average. Al\u00adthough the upcoming annual benchmark revision was expected to reduce estimates of recent payroll growth, participants expected payroll employment to expand at a healthy pace this year. \n\n[2019-12-11/participantsViews/7] Participants judged that conditions in the labor market remained strong, with the unemployment rate at a 50-year low, job gains remaining solid, and some measures of labor force participation increasing further. The unemployment rate was likely to remain low going forward, and variou",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 39,
+   "swap_mb": 1070
+  },
+  {
+   "id": "topic-02",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 13.5,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3215,
+    "output_tokens": 401,
+    "prefill_tok_s": 984.7,
+    "decode_tok_s": 41.3
+   },
+   "citations_ok": 3,
+   "citations_total": 3,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2019-07-31/participantsViews/9] In their discussion of the outlook for inflation, participants generally anticipated that with appropriate policy, inflation would move up to the Committee's 2 percent objective over the medium term. However, market-based measures of inflation compensation and some survey measures of consumers' inflation expectations remained low, although they had declined from earlier levels. Some participants noted that recent readings on some survey measures of consumers' inflation expectations had declined or stood at historically low levels. Many participants expressed concern about the outlook for inflation, noting that overall inflation had continued to run below the ",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 38,
+   "swap_mb": 1070
+  },
+  {
+   "id": "topic-03",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 8.9,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2762,
+    "output_tokens": 262,
+    "prefill_tok_s": 1195.7,
+    "decode_tok_s": 41.9
+   },
+   "citations_ok": 3,
+   "citations_total": 3,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2008-06-25/participantsViews/5] Participants judged that the outlook for the housing market remained bleak, with falling prices, slow sales, high inventories of unsold homes, and further declines in construction activity over coming months. Although a few participants saw tentative signs that the housing market might be bottoming out in some parts of the country, most aggregate i...\n\n[2008-04-30/participantsViews/4] The housing market had continued to weaken since the previous meeting, and participants saw little indication of a bottoming out in either housing activity or prices. Housing starts and the demand for new homes had declined further, house prices in many parts of the country were",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 39,
+   "swap_mb": 1070
+  },
+  {
+   "id": "topic-04",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 9.2,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6749,
+    "output_tokens": 220,
+    "prefill_tok_s": 1885.7,
+    "decode_tok_s": 41.6
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": true,
+   "answer": "Based on the minutes, participants discussed the household sector and noted that indicators of consumer spending surged in March and expected that further gains in spending would contribute significantly to the economic recovery. They also observed that household spending had risen notably so far this year and anticipated that further gains in consumer spending would contribute significantly to the economic recovery. The participants commented on improved prospects for household spending over the course of the year, in part reflecting fiscal support. They saw progress on vaccinations as essential for supporting further gains in aggregate consumer spending and for the economic recovery more g",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 39,
+   "swap_mb": 1070
+  },
+  {
+   "id": "topic-05",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 8.2,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2759,
+    "output_tokens": 236,
+    "prefill_tok_s": 1226.8,
+    "decode_tok_s": 41.8
+   },
+   "citations_ok": 3,
+   "citations_total": 3,
+   "warning": "",
+   "invented_reason": true,
+   "answer": "[2008-10-29/financialMarkets/9] A number of adverse financial developments influenced economic and financial market conditions over the intermeeting period. Lehman Brothers Holdings had filed for bankruptcy the day before the meeting of the Committee in September. In large part because of losses on Lehman debt, the net asset value of a major money market mutual fund fell below $1...\n\n[2008-06-25/participantsViews/3] Although financial market conditions generally appeared to have improved somewhat over the intermeeting period, most participants viewed markets as remaining under considerable stress. Some participants noted that the availability of the liquidity facilities that the Federal Rese",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 38,
+   "swap_mb": 1070
+  },
+  {
+   "id": "topic-06",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 10.4,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3085,
+    "output_tokens": 290,
+    "prefill_tok_s": 1040.5,
+    "decode_tok_s": 40.9
+   },
+   "citations_ok": 3,
+   "citations_total": 3,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2022-03-16/financialMarkets/2] Participants discussed that the prices of commodities, particularly oil and natural gas, had risen significantly over the period. While oil prices had partially retraced towards the end of the period, options prices suggested that oil prices could remain elevated or rise further in the months ahead. Alongside the rise in commodity prices, measures of near-term inflation indicated that the prices of energy were also increasing.\n\n[2021-06-16/participantsViews/8] Participants anticipated that inflation, as measured by the 12-month change of the PCE price index, would move above 2 percent in the near term. They noted that the low readings from early in the pandemi",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 35,
+   "swap_mb": 1046
+  },
+  {
+   "id": "topic-07",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 13.8,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2963,
+    "output_tokens": 450,
+    "prefill_tok_s": 1101.5,
+    "decode_tok_s": 41.5
+   },
+   "citations_ok": 3,
+   "citations_total": 3,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2019-01-30/participantsViews/8] Participants commented on a number of risks associated with their outlook for economic activity, the labor market, and inflation over the medium term. Participants noted that some risks to the downside had increased, including the possibilities of a sharper-than-expected slowdown in global economic growth, particularly in China and Europe, a rapid...\n\n[2019-01-30/participantsViews/13] Participants pointed to a variety of considerations that supported a patient approach to monetary policy at this juncture as an appropriate step in managing various risks and uncertainties in the outlook. With regard to the domestic economic picture, additional data would help p",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 35,
+   "swap_mb": 1046
+  },
+  {
+   "id": "topic-08",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 8.4,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2934,
+    "output_tokens": 230,
+    "prefill_tok_s": 1121.1,
+    "decode_tok_s": 41.8
+   },
+   "citations_ok": 3,
+   "citations_total": 3,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2021-11-03/participantsViews/4] Participants remarked that supply chain challenges and limited labor availability continued to be major constraints on manufacturing activity and the business sector more broadly. Bottleneck pressures faced by businesses were accompanied by global supply chain disruptions associated with major backlogs in shipments and transportation as well as surges in prices and costs.\n\n[2021-09-22/participantsViews/10] In discussing the uncertainty and risks associated with the economic outlook, participants noted that uncertainty remained high. A number of participants judged that the uncertain course of the virus, supply chain disruptions, and labor shortages complicate",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 35,
+   "swap_mb": 1046
+  },
+  {
+   "id": "compare-01",
+   "category": "comparison",
+   "effort": "low",
+   "group": null,
+   "seconds": 13.0,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6619,
+    "output_tokens": 376,
+    "prefill_tok_s": 1975.2,
+    "decode_tok_s": 41.4
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The Committee's view of inflation changed significantly between 2021 and 2022. In 2021, total PCE price inflation was 6.2 percent over the 12 months ending in September, and core PCE inflation was 5.1 percent. By 2022, total PCE price inflation was 6.3 percent over the 12 months ending in July, and core PCE price inflation was 4.6 percent. This indicates a decrease in inflation rates, with core PCE inflation being slightly lower than in 2021. The Committee's view on inflation expectations also changed, with some participants discussing the risk that recent elevated levels of inflation could increase the public's longer-term expectations for inflation to a level above that consistent with the",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 35,
+   "swap_mb": 1046
+  },
+  {
+   "id": "compare-02",
+   "category": "comparison",
+   "effort": "low",
+   "group": null,
+   "seconds": 9.5,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6445,
+    "output_tokens": 244,
+    "prefill_tok_s": 2013.4,
+    "decode_tok_s": 41.6
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The Committee's view of the labor market deteriorated significantly between 2008 and 2009. In 2008, the unemployment rate was 6.8%, and nonfarm payrolls fell by 3.5% over the year. By 2009, the unemployment rate had risen to 10%, and payrolls continued to decline, with a loss of 13,5755 jobs over the year. The Committee noted that labor market conditions were of particular concern, with substantial job losses across various industries and rising unemployment rates.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 33,
+   "swap_mb": 1046
+  },
+  {
+   "id": "compare-03",
+   "category": "comparison",
+   "effort": "low",
+   "group": null,
+   "seconds": 12.6,
+   "tools": [
+    "prefetchPassages",
+    "getOutlook",
+    "scoreConsumerImpact"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 8081,
+    "output_tokens": 220,
+    "prefill_tok_s": 1554.0,
+    "decode_tok_s": 40.4
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The minutes of the meeting that ended 2020-11-05 point to a hold in the federal funds target range. The staff continued to observe that the uncertainty related to the future course of the pandemic and its consequences for the economy was high. The staff also continued to view the risks to the economic outlook as tilted to the downside, with the latest data suggesting an increased probability of a resurgence in the disease. The minutes direction for the meeting that ended 2020-11-05 is hold.",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 32,
+   "swap_mb": 1046
+  },
+  {
+   "id": "compare-04",
+   "category": "comparison",
+   "effort": "low",
+   "group": null,
+   "seconds": 36.1,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "stats": {
+    "model_calls": 3,
+    "prompt_tokens": 9633,
+    "output_tokens": 1067,
+    "prefill_tok_s": 1217.8,
+    "decode_tok_s": 40.3
+   },
+   "citations_ok": 2,
+   "citations_total": 3,
+   "warning": "Some citations could not be verified.",
+   "invented_reason": null,
+   "answer": "The Committee's view of interest rate policy changed significantly between 2015 and 2018. In 2015, the Committee maintained its policy of reinvesting principal payments from agency debt and agency mortgage-backed securities in agency mortgage-backed securities and of rolling over maturing Treasury securities at auction. The target range for the federal funds rate was 1-1/4 to 1-1/2 percent, with no changes in the target range since 2015-12-16 [2015-12-16/policyAction/5]. The Committee also maintained its policy of leaving the interest rates on required and excess reserve balances unchanged at 1-1/4 percent and approving establishment of the primary credit rate (discount rate) at the existing",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 28,
+   "swap_mb": 1046
+  },
+  {
+   "id": "why-01",
+   "category": "why",
+   "effort": "low",
+   "group": null,
+   "seconds": 7.8,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6021,
+    "output_tokens": 176,
+    "prefill_tok_s": 2172.9,
+    "decode_tok_s": 39.8
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": false,
+   "answer": "The Committee decided to maintain the target range for the federal funds rate at 0 to 1/4 percent, as previously agreed. This decision was made in response to the Committee's assessment of actual and expected progress toward its objectives of maximum employment and 2 percent inflation. The vote was unanimous, with all 10 members of the Committee supporting the decision. The minutes do not provide additional details on the rationale behind this decision.",
+   "passed": null,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 27,
+   "swap_mb": 1030
+  },
+  {
+   "id": "why-02",
+   "category": "why",
+   "effort": "low",
+   "group": null,
+   "seconds": 7.7,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6019,
+    "output_tokens": 172,
+    "prefill_tok_s": 2117.9,
+    "decode_tok_s": 39.0
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The Committee decided to maintain the target range for the federal funds rate at 0 to 1/4 percent and to reaffirm in the statement that the Committee's decision about how long to maintain the current target range for the federal funds rate would depend on its assessment of actual and expected progress toward its objectives of maximum employment and 2 percent inflation. This decision was unanimous, with all 10 members voting in favor.",
+   "passed": null,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 24,
+   "swap_mb": 1022
+  },
+  {
+   "id": "why-03",
+   "category": "why",
+   "effort": "low",
+   "group": null,
+   "seconds": 7.9,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 5958,
+    "output_tokens": 178,
+    "prefill_tok_s": 2148.6,
+    "decode_tok_s": 37.6
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The Committee decided to maintain the target range for the federal funds rate at 1 to 1-1/4 percent, as assessed after considering current conditions and the outlook for economic activity, the labor market, and inflation. This decision was unanimous, with all 10 members voting in favor. The minutes indicate that the Committee assessed that the current economic conditions and the outlook for the labor market and inflation were consistent with the target range.",
+   "passed": null,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 24,
+   "swap_mb": 974
+  },
+  {
+   "id": "why-04",
+   "category": "why",
+   "effort": "low",
+   "group": null,
+   "seconds": 7.2,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6111,
+    "output_tokens": 154,
+    "prefill_tok_s": 2068.0,
+    "decode_tok_s": 40.1
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The Committee decided to hold the federal funds target range at 3-1/2 to 3-3/4 percent, as almost all members supported this decision. The dissenting votes were from Stephen I. Miran and Christopher J. Waller, who preferred to lower the target range by 1/4 percentage point. [2026-01-28/policyAction/17]",
+   "passed": null,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 24,
+   "swap_mb": 974
+  },
+  {
+   "id": "nextmove-01",
+   "category": "nextmove",
+   "effort": "low",
+   "group": null,
+   "seconds": 35.2,
+   "tools": [
+    "prefetchPassages",
+    "assessEconomy",
+    "scoreConsumerImpact"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 8178,
+    "output_tokens": 900,
+    "prefill_tok_s": 1658.2,
+    "decode_tok_s": 39.5
+   },
+   "citations_ok": 4,
+   "citations_total": 10,
+   "warning": "Some citations could not be verified.",
+   "invented_reason": null,
+   "answer": "[2026-09-16/participantsViews/10] \"With regard to the outlook for monetary policy beyond the current meeting, most participants assessed that another increase in the target range for the federal funds rate would likely be appropriate by year end.\" [2026-09-16/participantsViews/11] \"With regard to the outlook for monetary policy beyond the current meeting, most participants assessed that another increase in the target range for the federal funds rate would likely be appropriate by year end.\" [2026-09-16/staffOutlook/1] \"In their consideration of monetary policy at this meeting, all participants supported raising the target range for the federal funds rate 1/4 percentage point to 3-3/4 to 4 pe",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "assessEconomy",
+   "free_pct": 25,
+   "swap_mb": 974
+  },
+  {
+   "id": "nextmove-02",
+   "category": "nextmove",
+   "effort": "low",
+   "group": null,
+   "seconds": 16.2,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "assessEconomy"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 8057,
+    "output_tokens": 384,
+    "prefill_tok_s": 1587.3,
+    "decode_tok_s": 39.6
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The Fed is likely to cut rates at its next meeting. The minutes and the 6-month bill both point to a cut over the next few meetings. The minutes' direction is the AI's reading: it scored the rate path -0.75, from -1 (dovish) to +1 (hawkish). The minutes for the direction of future moves suggest a lean toward cuts. The 6-month bill indicates that markets expect a cut soon (the 2-year yield is about the next two years). The decision at the latest meeting is not the next one; it was to maintain the target range for the federal funds rate at 5-1/4 to 5-1/2 percent, although several observed that the recent progress on inflation and increases in the unemployment rate had provided a plausible case",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "assessEconomy",
+   "free_pct": 28,
+   "swap_mb": 974
+  },
+  {
+   "id": "nextmove-03",
+   "category": "nextmove",
+   "effort": "low",
+   "group": null,
+   "seconds": 16.3,
+   "tools": [
+    "prefetchPassages",
+    "assessEconomy"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3707,
+    "output_tokens": 450,
+    "prefill_tok_s": 834.7,
+    "decode_tok_s": 40.3
+   },
+   "citations_ok": 5,
+   "citations_total": 5,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The minutes and the 6-month bill both point to no change over the next few meetings. The decision at the latest meeting is not the next one; it was held by several participants who commented that it would likely be appropriate to hold the policy rate steady for some time as the Committee carefully assesses incoming data, and a number of these participants judged that additional policy easing may not be warranted until there was clear indication that the progress of \u2026 [2026-01-28/participantsViews/10]. The minutes' direction is the AI's reading: it scored the rate path +0.00, from -1 (dovish) to +1 (hawkish), a lean toward holding the rate where it is for now. [2026-01-28/policyAction/1] \"Alm",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "assessEconomy",
+   "free_pct": 25,
+   "swap_mb": 974
+  },
+  {
+   "id": "nextmove-04",
+   "category": "nextmove",
+   "effort": "low",
+   "group": null,
+   "seconds": 28.9,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "assessEconomy"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 8472,
+    "output_tokens": 900,
+    "prefill_tok_s": 1596.7,
+    "decode_tok_s": 39.3
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "Participants judged that further increases would be appropriate, citing the direction of future moves in the minutes and the 6-month bill indicating that markets expect an increase soon (the 2-year yield is about the next two years). The decision at the latest meeting was not the next one, as the minutes and the 6-month bill both point to an increase over the next few meetings. The minutes and the 6-month bill both point to an increase over the next few meetings. The minutes and the 6-month bill both point to an increase over the next few meetings. The minutes and the 6-month bill both point to an increase over the next few meetings. The minutes and the 6-month bill both point to an increase",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "assessEconomy",
+   "free_pct": 25,
+   "swap_mb": 966
+  },
+  {
+   "id": "outlook-01",
+   "category": "outlook",
+   "effort": "low",
+   "group": null,
+   "seconds": 28.7,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getOutlook",
+    "scoreConsumerImpact"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 9167,
+    "output_tokens": 872,
+    "prefill_tok_s": 1799.6,
+    "decode_tok_s": 38.4
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The recent FOMC meetings indicate a general expectation of continued economic expansion, supported by strong business investment and resilient consumer spending. The staff's forecast suggests that inflation will be slightly higher in three out of four meetings compared to the previous one, with growth and spending revised to be stronger in two out of four meetings and weaker in two out of four meetings. The staff's view of risks is tilted to the upside for inflation, with growth and jobs balanced. The current run began with an increase on September 17, 2026, and rates have moved up, with the 2-year Treasury yield at 4.75%, the 10-year Treasury yield at 5.22%, and the 30-year mortgage rate at",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getOutlook",
+   "free_pct": 23,
+   "swap_mb": 966
+  },
+  {
+   "id": "outlook-02",
+   "category": "outlook",
+   "effort": "low",
+   "group": null,
+   "seconds": 29.3,
+   "tools": [
+    "prefetchData",
+    "getOutlook",
+    "scoreConsumerImpact"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 8512,
+    "output_tokens": 900,
+    "prefill_tok_s": 1590.1,
+    "decode_tok_s": 39.2
+   },
+   "citations_ok": 8,
+   "citations_total": 24,
+   "warning": "Some citations could not be verified.",
+   "invented_reason": null,
+   "answer": "[2022-06-15/staffOutlook/1] [2022-06-15/staffOutlook/2] [2022-07-27/staffOutlook/1] [2022-07-27/staffOutlook/2] [2022-09-21/staffOutlook/1] [2022-09-21/staffOutlook/2] [2022-11-02/staffOutlook/1] [2022-11-02/staffOutlook/2] [2022-11-02/staffOutlook/3] [2022-11-02/staffOutlook/4] [2022-12-29/staffOutlook/1] [2022-12-29/staffOutlook/2] [2022-12-29/staffOutlook/3] [2022-12-29/staffOutlook/4] [2022-12-30/staffOutlook/1] [2022-12-30/staffOutlook/2] [2022-12-30/staffOutlook/3] [2022-12-30/staffOutlook/4] [2022-12-30/staffOutlook/5] [2022-12-30/staffOutlook/6] [2022-12-30/staffOutlook/7] [2022-12-30/staffOutlook/8] [2022-12-30/staffOutlook/9] [2022-12-30/staffOutlook/10] [2022-12-30/staffOutlook/1",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getOutlook",
+   "free_pct": 24,
+   "swap_mb": 966
+  },
+  {
+   "id": "outlook-03",
+   "category": "outlook",
+   "effort": "low",
+   "group": null,
+   "seconds": 28.3,
+   "tools": [
+    "prefetchData",
+    "getOutlook",
+    "scoreConsumerImpact"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 8660,
+    "output_tokens": 900,
+    "prefill_tok_s": 1940.4,
+    "decode_tok_s": 39.1
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The recent rate increases mean that the federal debt's interest costs will rise. The Treasury's average rate on its debt is currently at 3.52%, which is 0.5 percentage points higher than six months earlier. This increase is expected to continue over the next two years, with the 2-year Treasury yield at 4.75% (just before: 4.74%; six months before: 3.68%), the 10-year Treasury yield at 5.22% (just before: 5.01%; six months before: 4.23%), and the 30-year mortgage rate at 7.40% (just before: 6.76%; six months before: 6.11%).\n\nThe Fed staff's forecast shows that inflation is tilted to the upside, with growth and jobs balanced. The staff's view of the risks is that inflation is tilted to the ups",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getOutlook",
+   "free_pct": 24,
+   "swap_mb": 966
+  }
+ ]
+}

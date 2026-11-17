@@ -76,17 +76,17 @@
   <section id="tab-acc" role="tabpanel">
   <div id="empty" class="card" hidden>No results yet. Run <code>python tests/bench_live.py &lt;modelId&gt;</code> while the app is running.</div>
 
-  <p class="note" style="margin-top:0">How each local model does on the same 50 questions, scored against an answer key read from the decision cards, with one agent, with a team of specialist agents (multi-agent) and as a baseline with no agent. <a href="/">Back to the chat</a></p>
+  <p class="note" style="margin-top:0">How each local model does on the same 57 questions, scored against an answer key read from the decision cards, with one agent, with a team of specialist agents (multi-agent) and as a baseline with no agent. <a href="/">Back to the chat</a></p>
   <h2>Accuracy and memory</h2>
   <div class="card">
     <div class="legend"><span><i class="bg-app"></i>One agent (tools, minutes, checks)</span><span><i class="bg-multi"></i>Multi-agent (organizer + minutes, market, scorer, consumer specialists)</span><span><i class="bg-bare"></i>Baseline (same model, no agent)</span><span><i class="bg-mem"></i>Memory</span></div>
     <div id="chart"></div>
-    <div class="note">Models are ordered by accuracy, then by the baseline accuracy when tied. With 46 scored questions each score is uncertain by roughly 12 points either way, so small gaps are not real differences.</div>
+    <div class="note">Models are ordered by accuracy, then by the baseline accuracy when tied. With 53 scored questions each score is uncertain by roughly 13 points either way, so small gaps are not real differences.</div>
   </div>
 
   <h2>Comparison</h2>
   <div class="card"><table id="table"></table></div>
-  <p class="note">One agent = share of the 46 scored questions answered correctly, with its 95% range (the 4 "why" questions have no key). Multi-agent = the same model running as a team (an organizer, and minutes, market, scorer and consumer specialists, each with its own prompt and tools; see the methodology). Baseline = the same model with no agent: no tools, minutes or checks. Median = seconds per answer, one agent / multi-agent. Memory = the loaded model with its 8,192-token context, as a share of 8 GB; the hidden MATLAB adds about 1 GB more. Click a model to see its questions.</p>
+  <p class="note">One agent = share of the 53 scored questions answered correctly, with its 95% range (the 4 "why" questions have no key). Multi-agent = the same model running as a team (an organizer, and minutes, market, scorer and consumer specialists, each with its own prompt and tools; see the methodology). Baseline = the same model with no agent: no tools, minutes or checks. Median = seconds per answer, one agent / multi-agent. Memory = the loaded model with its 8,192-token context, as a share of 8 GB; the hidden MATLAB adds about 1 GB more. Click a model to see its questions.</p>
 
   <details class="sec">
     <summary title="Click to collapse or expand"><h2>Full test results</h2></summary>
@@ -110,14 +110,14 @@
     <summary title="Click to collapse or expand"><h2>Evaluation methodology</h2></summary>
     <div class="card how">
     <ul>
-      <li><b>The questions.</b> 50 fixed questions about decisions, votes, dissents, topics, year comparisons, follow-ups, reworded versions of the same question, and meetings whose minutes are not public yet. Code generates them (<code>tests/make_key.py</code>), so every model gets the identical set.</li>
+      <li><b>The questions.</b> 57 fixed questions about decisions, votes, dissents, topics, year comparisons, follow-ups, reworded versions of the same question, and meetings whose minutes are not public yet. Code generates 50 of them (<code>tests/make_key.py</code>) and 7 forward-looking ones were written by hand, so every model gets the identical set.</li>
       <li><b>Who decides the right answer.</b> No person and no AI. The answer key comes from the Fed's minutes: each meeting's decision, target range and vote are read out of the minutes text by code, and those readings were checked against the actual change in the federal funds rate for all 150 meetings (<code>tests/testDecisions.m</code>).</li>
       <li><b>Who grades the answers.</b> Code, not a person or an AI judge. Each answer is checked with fixed text patterns: the right direction (raised, cut or held), the right rate range, the right dissenters' names, or "not public yet" wording for unreleased meetings. A question counts as correct only if every check matches.</li>
       <li><b>What the grader cannot see.</b> Because it reads text, an unusual but correct phrasing can be marked wrong. Topic and comparison questions only check for the topic words or both years, so a high score there is lenient. The 4 "why" questions have no key and are not scored; they only feed the invented-reason flag.</li>
       <li><b>Baseline.</b> The same Ollama model and context size, given only the question and the date: no tools, minutes, data, guardrail or citation check. "One agent" is everything we add around the model: the lookups, the point-in-time guardrail and the checks, all handled by one model conversation.</li>
       <li><b>Multi-agent.</b> The same checks, split across specialists as in <code>docs/agents.md</code>: code routes the question, the minutes and market agents each look up and report on their own part (each with its own prompt and only its own tools), the scorer and consumer agents run when the question needs them, the writer reads their reports, and a critic checks the draft (one rewrite at most). It runs on the same model and questions as the one-agent run, so any difference is the architecture. A specialist's report that adds a number or paragraph id its sources lack is replaced by the code's own text.</li>
-      <li><b>Tokens and cost.</b> Tokens are counted by Ollama over every model call in a question (the lookups, the answer and the citation check), averaged over all 50 questions. The models run locally, so the real cost is $0. "API cost" is what those same tokens would cost on a paid cloud model at its list price (Claude Haiku 5.5 and Sonnet 5.5, list prices checked <span id="pricedate"></span> on the Anthropic pricing page), with no caching discount. It is an estimate of the order of magnitude: a cloud model counts tokens with its own tokenizer. Questions the app refuses before calling the model (not public yet) cost $0, and a baseline follow-up counts only its last turn.</li>
-      <li><b>Limits.</b> One run per model per question (the one-agent runs were made earlier than the multi-agent runs), on one 8 GB Apple M1, so run-to-run variation is not measured. Every score is out of 46, so differences of a few points are not meaningful.</li>
+      <li><b>Tokens and cost.</b> Tokens are counted by Ollama over every model call in a question (the lookups, the answer and the citation check), averaged over all 57 questions. The models run locally, so the real cost is $0. "API cost" is what those same tokens would cost on a paid cloud model at its list price (Claude Haiku 5.5 and Sonnet 5.5, list prices checked <span id="pricedate"></span> on the Anthropic pricing page), with no caching discount. It is an estimate of the order of magnitude: a cloud model counts tokens with its own tokenizer. Questions the app refuses before calling the model (not public yet) cost $0, and a baseline follow-up counts only its last turn.</li>
+      <li><b>Limits.</b> One run per model per question, all three structures run on the same day with the same code, on one 8 GB Apple M1, so run-to-run variation is not measured. Every score is out of 53, so differences of a few points are not meaningful.</li>
     </ul>
     </div>
   </details>

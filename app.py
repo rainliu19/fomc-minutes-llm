@@ -75,7 +75,7 @@ async def lifespan(app: FastAPI):
     try:
         runtime.ensure_model(runtime.model_entry(None))
     except RuntimeError as e:
-        raise SystemExit(str(e))
+        raise SystemExit(str(e)) from e
     engine = runtime.start_matlab()
     watchdog = runtime.Watchdog()
     # Ask MATLAB for a few facts to confirm it works, then hand control to the server
@@ -131,10 +131,7 @@ def evaluation_page():
 @app.get("/evals")
 def evals():
     """Every model's saved evaluation (evals/<modelId>.json from tests/bench_live.py), smallest model first."""
-    runs = []
-    for path in sorted((HERE / "evals").glob("*.json")):
-        if path.name != "key.json":
-            runs.append(json.loads(path.read_text(encoding="utf-8")))
+    runs = [json.loads(p.read_text(encoding="utf-8")) for p in sorted((HERE / "evals").glob("*.json")) if p.name != "key.json"]
     runs.sort(key=lambda r: r["summary"].get("params_b") or 0)
     return runs
 

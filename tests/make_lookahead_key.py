@@ -149,7 +149,7 @@ def unemployment_cases():
                 rows.setdefault(r["date"], []).append((r["rtStart"], r["rtEnd"], float(r["value"])))
     first = {d: min(v) for d, v in rows.items()}                     # (rtStart, rtEnd, value) of the first release
     cands = []
-    for d, (rs, _, v) in sorted(first.items()):
+    for d, (rs, _, _v) in sorted(first.items()):
         if not ("2008-09" <= d[:7] <= "2010-12" or "2020-03" <= d[:7] <= "2021-12"):
             continue
         for lag in (0, 90):

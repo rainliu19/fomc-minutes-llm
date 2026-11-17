@@ -7,7 +7,6 @@ shows what the check misses and not only what it catches.
 """
 import json
 import random
-import re
 import sys
 from datetime import date, timedelta
 from pathlib import Path

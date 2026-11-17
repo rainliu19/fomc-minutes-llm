@@ -42,57 +42,33 @@ On 8 GB the model (about 3 GB), the hidden MATLAB (about 1 GB) and macOS leave l
 
 The app checks memory at start (refusing if low), before each question, and every 5 s during one; it stops the model it started only if pressure is critical or swap passes 3.8 GB. The model unloads 3 minutes after the last answer. An open MATLAB shared with `matlab.engine.shareEngine` is reused, saving about 1 GB. Starting MATLAB with `-nojvm` saved nothing (968 against 960 MB).
 
-## Model evaluation (50 questions)
+## Model evaluation (57 questions, three structures)
 
-Every model answers the same 50 questions through the app, on an 8 GB M1. The answer key is built from the decision cards (`tests/make_key.py`), which `tests/testDecisions.m` checks against the actual rate change for all 150 meetings. The 50 questions are 12 decisions, 8 reworded decisions (stability), 6 votes, 3 follow-ups, 5 "not public yet" refusals, 8 topics, 4 year comparisons and 4 "why" questions. The 4 "why" questions have no key, so 46 are scored. The key also has 7 forward-looking cases, fixed by hand rather than drawn from the cards (`outlook_cases` in `tests/make_key.py`): 4 `nextmove` questions about the next decision, each pinned to a date whose latest minutes were read by hand, which must name the direction those minutes lean and cite their Participants' Views, and 3 `outlook` questions about what the rate path means for inflation, borrowing and spending (one asks about interest on federal debt, which is not in the data, so the answer must say so). All 7 forbid saying the Fed "will raise" or "will cut". The 4 `nextmove` cases also fail an answer that denies the right direction ("not likely to cut"), that calls a different move likely ("the Fed is likely to hold" before a cut), or that gives the model's own view ("the Fed should raise"). Their direction is the actual next decision where the data have it (September 2024 cut, July 2022 increase, March 2026 hold) and the minutes' lean for September 2026, whose next meeting is after the data end. The results below predate them, except Qwen3 4B's, rerun on 2026-10-28 with all 57 after the minutes' direction came to be read from the AI's scores (one case per app start, with the 5 High-effort cases): 48 of the 53 scored cases passed (49 with the word rules' direction before), the one change being `nextmove-02`, where the AI's score of the July 2024 minutes is a hold and the answer said a cut was not likely. The 3 "was the vote unanimous?" cases were failed by their own check, which read "no dissenting votes" as a dissent; it now skips a preceding "no". The 3 stability failures and the `guardrail-01` agent error (a crash in the MATLAB LLM add-on's message history) are the same as before. Median time was 18.0 s against 15.2 s, slower in every category alike, since each case started a fresh app. On the 46 cases every model answered it is still 42 of 46, as in the table below; the Evaluation page and `data/model_evaluation_summary.csv` show its 48 of 53 with the forward-looking cases, so its row there is not counted on the same cases as the others until they are rerun. The 7 forward-looking cases were rerun on 2026-10-28 after the lookup fixes (next-meeting questions get the `assessEconomy` lookup alone; the `getOutlook` lookup asks for the staff forecast's ids and its caveats; the Treasury's average rate on its debt was added) and with stricter checks (the next-move cases fail an answer that brings in earlier runs since 1990 or, for September 2026, says the staff saw growth risks tilted up; the first two outlook cases must cite the staff forecast; the federal debt case must give the average rate): 6 of 7 passed, `nextmove-02` failing as before. The checks still miss claims a cited paragraph does not support. In this run: `nextmove-01` said the Committee "is expected to raise ... by 1/4 percentage point" citing the September decision itself; `outlook-03` gave the Treasury's average rate "up from 3.48% six months earlier", which was the reading just before the increase (six months before it was 3.36%); `outlook-02` cited a staff outlook paragraph for what markets expected. After further fixes the same night (see `getOutlook` and `assessEconomy` in agent_interface.md), the demo questions were asked again as of 2026-10-07 through the app, each in a new chat: the mortgage and spending question 5 times (4 without an error, 1 saying spending growth "has slowed"), the federal debt question 3 times and the next-meeting question 3 times (all using the 6-month bill for the next meeting and the right mechanism for debt), plus the 2022 mortgage and February 2026 next-meeting questions twice each. Small slips remain, such as "a few" participants where the minutes say "a couple". These runs predate the rescore of the rate-path scores on 2026-11-05 (agent_interface.md), which now reads the July 2024 minutes behind `nextmove-02` as a lean to cuts (-0.75, a 0.00 hold before); the case has not been rerun. See them on the Evaluation page (`/evaluation`) or in `data/model_evaluation_summary.csv` and `data/model_evaluation_cases.csv`.
+Every model answers the same 57 questions in three structures: **baseline** (the bare model: no tools, minutes or checks, `tests/bench_baseline.py`), **one agent** (the app's tools, lookups and checks, `tests/bench_live.py`) and **multi-agent** (an organizer plus minutes, market, scorer and consumer specialists, `--multi`). All 24 runs were made on 2026-11-16 and 17 with the same code and key, on an 8 GB Apple M1. Scores are out of the 53 questions with a key (the 4 "why" questions have none), so each has a 95% range of about 13 points either way.
 
-| Model | Params | Correct | Bare model | Wrong with no warning | Median answer (s) | Memory when loaded |
+The key (`evals/key.json`): 12 decisions, 8 reworded decisions (stability), 6 votes, 3 follow-ups, 5 "not public yet" refusals, 8 topics, 4 year comparisons, 4 "why", and 7 forward-looking cases written by hand (4 next-decision, 3 outlook). The decision answers are read from the minutes by code and checked against the actual rate change for all 150 meetings (`tests/testDecisions.m`).
+
+| Model | Params | Baseline | One agent | Multi-agent | Median (s) one / multi | Memory loaded |
 |---|---|---|---|---|---|---|
-| IBM Granite 3.3 2B | 2.5B | 42/46 (91%) | 17/46 (37%) | 4 | 9.40 | 1.83 GB (23%) |
-| Qwen3 4B | 4.0B | 42/46 (91%) | 20/46 (43%) | 4 | 14.60 | 3.01 GB (38%) |
-| Qwen2.5 3B | 3.1B | 38/46 (83%) | 17/46 (37%) | 7 | 8.40 | 2.11 GB (26%) |
-| Llama 3.2 3B | 3.2B | 38/46 (83%) | 16/46 (35%) | 5 | 13.80 | 2.43 GB (30%) |
-| Qwen2.5 1.5B | 1.5B | 37/46 (80%) | 13/46 (28%) | 5 | 4.80 | 1.17 GB (15%) |
-| Qwen3 0.6B (thinking build) | 0.6B | 37/46 (80%) | 12/46 (26%) | 5 | 6.90 | 0.83 GB (10%) |
-| Qwen3 1.7B (thinking build) | 1.7B | 29/46 (63%) | 6/46 (13%) | 8 | 16.25 | 1.44 GB (18%) |
-| Qwen2.5 0.5B | 0.5B | 24/46 (52%) | 7/46 (15%) | 5 | 2.60 | 0.50 GB (6%) |
+| IBM Granite 3.3 2B | 2.5B | 16/53 (30%) | 47/53 (89%) | 49/53 (92%) | 10.5 / 12.3 | 2.13 GB (27%) |
+| Qwen3 4B | 4.0B | 21/53 (40%) | 51/53 (96%) | 52/53 (98%) | 15.3 / 17.2 | 3.61 GB (45%) |
+| Qwen2.5 3B | 3.1B | 15/53 (28%) | 44/53 (83%) | 47/53 (89%) | 10.4 / 12.8 | 2.25 GB (28%) |
+| Llama 3.2 3B | 3.2B | 13/53 (24%) | 47/53 (89%) | 47/53 (89%) | 14.8 / 21.9 | 2.90 GB (36%) |
+| Qwen2.5 1.5B | 1.5B | 12/53 (23%) | 46/53 (87%) | 39/53 (74%) | 5.3 / 7.7 | 1.27 GB (16%) |
+| Qwen3 0.6B (thinking build) | 0.6B | 14/53 (26%) | 42/53 (79%) | 48/53 (91%) | 9.4 / 9.6 | 1.26 GB (16%) |
+| Qwen3 1.7B (thinking build) | 1.7B | 5/53 (9%) | 31/53 (58%) | 43/53 (81%) | 18.1 / 21.4 | 1.85 GB (23%) |
+| Qwen2.5 0.5B | 0.5B | 10/53 (19%) | 34/53 (64%) | 19/53 (36%) | 2.7 / 2.1 | 0.54 GB (7%) |
 
-The Qwen3 0.6B and 1.7B rows are "thinking" builds (`qwen3:0.6b`, `qwen3:1.7b`), while Qwen3 4B is the non-thinking `qwen3:4b-instruct`. Their reasoning text uses up the answer budget: 6 of 50 bare Qwen3 0.6B answers came back empty, and in the app the 1.7B writes a median of 450 tokens against 106 for the 4B. Their scores and latency are not comparable with the other rows.
+What the runs show:
 
-With only 46 scored questions, each result has a 95% range of roughly 12 points either side, so gaps of a few points are not real differences. Granite 2B and Qwen3 4B tie. Parameter count is a weak predictor: a 0.6B model matches a 1.5B model.
+- **The app is most of the accuracy.** The bare models score 9 to 40%; one agent lifts every model to 58 to 96%. The lookups and checks, not the model's memory, answer most questions.
+- **Multi-agent helps most models, by 0 to 23 points.** It is highest for Granite 2B, Qwen3 4B, Qwen2.5 3B, Qwen3 0.6B and Qwen3 1.7B, ties for Llama 3.2 3B, and usually takes 10 to 50% longer per answer.
+- **It hurts the two smallest Qwen2.5 models** (1.5B: 87% to 74%; 0.5B: 64% to 36%). The 0.5B multi-agent run has 26 wrong answers with no warning (49% of the questions), against 6 for one agent: a model that small cannot follow the organizer's briefs. Use one agent below about 3B for these models.
+- **Wrong with no warning** is the number a user would not be told about. One agent keeps it at 0 to 3 for every model except Qwen2.5 0.5B (6); multi-agent raises it for Qwen2.5 3B (0 to 5) and Qwen2.5 1.5B (0 to 8), because the critic's warning does not reach errors the specialists introduce.
+- **Qwen3 4B is best** (98% multi-agent, 96% one agent) and also the largest in memory (3.6 GB of 8 GB). Granite 2B is the best small choice (92% and 89% at 2.1 GB).
+- The two Qwen3 thinking builds (0.6B, 1.7B) spend their answer budget on reasoning, so their baseline and latency are not comparable with the other rows.
+- A model's rank by one agent and by multi-agent can differ, so pick the structure per model, not once for all.
 
-**What the app adds.** Each model asked the same questions bare, with no tools, minutes, data, guardrail or citation check (`tests/bench_baseline.py`). The "Bare model" column above is that result. Decisions right, app against bare: Qwen3 4B 12 and 2 (of 12), Qwen2.5 3B 12 and 0, Granite 2B 12 and 2.
+**Memory** is the size Ollama reports for the loaded model with its 8,192-token context (`tests/measure_memory.py`). The hidden MATLAB adds about 1 GB. **Tokens and cost** are on the Evaluation page and in `data/model_evaluation_summary.csv` (what the same tokens would cost on a paid API, from `models/api_prices.json`). After a price change, run `python tests/bench_live.py --rescore`.
 
-Most of the accuracy comes from the app's lookups and checks, not from what the model memorized. The topic and comparison checks are lenient (a topic word or a year), so the bare model scores well there; its decisions, votes and refusals show the real gap.
-
-**Wrong with no warning** counts wrong answers that the page did not flag as unverified, the errors a user would not be told about. The page's warning catches none of the top two models' four mistakes each.
-
-**Memory** is the size Ollama reports for the loaded model with its 8,192-token context (`tests/measure_memory.py`). The hidden MATLAB adds about 1 GB more.
-
-**Tokens and cost.** Tokens are counted by Ollama over every model call in a question and averaged over the questions of each run (50, or 57 for Qwen3 4B's rerun). The app sends about 2,300 to 4,200 input tokens per question (the retrieved minutes) and writes 77 to 420; the bare model sends about 60. Local runs cost $0. The Evaluation page and `data/model_evaluation_summary.csv` also show what the same tokens would cost on a paid cloud API, per 1,000 questions: about $0.38 at Claude Haiku 5.5 prices and about $7.60 at Claude Sonnet 5.5 prices for Qwen3 4B, on its rerun of all 57 questions (`models/api_prices.json`, prices checked 2026-10-06). It is an order-of-magnitude estimate: a cloud model counts tokens its own way, no caching discount is applied, and the 5 "not public yet" questions never reach the model. Saved bare-model follow-ups count only their last turn; new runs count every turn. Change a price in `models/api_prices.json` and run `python tests/bench_live.py --rescore`.
-
-An earlier note said a 1.5B model reached about 70%. On this key Qwen2.5 1.5B scores 80% (37 of 46).
-
-### Found by the evaluation, not fixed here
-
-- Reworded decision questions ("what happened to the federal funds rate target?") skip the decision card, so the model answers from general data and can state the wrong direction. This accounts for most stability misses.
-- One refusal case showed an "Agent error" from the LLM add-on (`messageHistory.m`, `validateRegularAssistant`).
-- The topic check passes when a topic word appears, even in "no mention of trade policy", and the comparison check only needs both years. Both are lenient.
-- The "invented reason" flag is a heuristic (causal wording not found in the retrieved text), not proof.
-
-Rerun with `tests/bench_live.py <modelId> --high` (about 10 to 15 minutes per model; the app must be running), then `tests/bench_live.py --rescore` and `tests/export_evals.py`.
-
-## Models compared (earlier 10-question run)
-
-The same 10 questions (`tests/bench_live.py`), 8 GB M1, after a restart:
-
-| Model | Checks passed | Median answer | Notes |
-|---|---|---|---|
-| Qwen3 4B (default) | 20 of 20 | 15 s | Cites paragraph ids. Swap about 3.2 GB while loaded. |
-| Qwen2.5 1.5B (dropped) | 19 of 20 | 6 s | Rarely cites ids, so the page warns "unverified". Correct on the unreleased-meeting question, but worded differently than the check expects. Swap about 1.3 GB. |
-| Llama 3.2 3B (dropped) | 19 of 20 | 15 s | Never cited ids, made more tool calls, and answered the unreleased June 2022 question with May's decision. |
-| Qwen2.5 0.5B (dropped) | 12 to 14 of 20 (varies run to run) | 3 s | Often wrong: gave a made-up decision for a meeting whose minutes were not public yet, and its High-effort analysis failed its own checks. Not offered. |
-| Qwen2.5 3B (balanced) | 20 of 20 | 11 s | Often does not cite paragraph ids, so the page warns "unverified". Swap about 2.3 GB while loaded. |
-| IBM Granite 3.3 2B (compact) | 20 of 20 | 12 s | 2.5B parameters, Apache 2.0. Not faster than Qwen2.5 3B here (decodes quicker, reads the prompt slower). Often does not cite ids, and its High-effort analysis took 70 s and failed its own checks, so use it for chat. Swap about 2.7 GB. |
-
-The page offers Qwen3 4B (best quality), IBM Granite 3.3 2B (balanced) and Qwen2.5 1.5B (fast). After the 50-question evaluation below, Qwen2.5 3B was replaced: Granite 2B scores higher with less memory. Granite is for Low and Medium effort only, because it failed the High-effort grounding check on all 5 test questions. Questions about a meeting whose minutes are not public yet are answered by the app itself in about 1 second, without asking the model, so no model can invent a decision for them.
+Limits: one run per model per structure, so run-to-run variation is not measured; the answer check is lenient for topics and year comparisons (a topic word or the two years); the "wrong with no warning" count is small, so its differences are rough. Runs from October 2026 on the older 50-question key and code are in `evals/archive-2026-10/`.

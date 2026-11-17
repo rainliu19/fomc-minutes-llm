@@ -4,6 +4,7 @@ On an 8 GB Mac the model, MATLAB and the browser compete for memory, and the mod
 cannot be swapped out. So the app checks memory before it starts, watches it while a question
 runs, and cleans up every process it started.
 """
+import contextlib
 import json
 import os
 import re
@@ -282,11 +283,9 @@ def warm_model(model_id: str | None = None) -> None:
         return
     # An empty prompt makes Ollama load the model without generating anything
     body = json.dumps({"model": model_entry(model_id)["name"], "prompt": "", "keep_alive": OLLAMA_ENV["OLLAMA_KEEP_ALIVE"]}).encode()
-    try:
+    with contextlib.suppress(OSError):
         urllib.request.urlopen(urllib.request.Request(f"{OLLAMA_URL}/api/generate", body,
                                                       {"Content-Type": "application/json"}), timeout=120)
-    except OSError:
-        pass
 
 
 def stop_ollama() -> None:

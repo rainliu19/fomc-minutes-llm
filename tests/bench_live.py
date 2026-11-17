@@ -83,7 +83,7 @@ def unsupported_cause(answer, tool_text):
     verdicts = []
     for sentence in re.split(r"(?<=[.!?])\s+", answer):
         if CAUSAL.search(sentence):
-            words = {w for w in re.findall(r"[a-z]{5,}", sentence.lower())}
+            words = set(re.findall(r"[a-z]{5,}", sentence.lower()))
             if words:
                 verdicts.append(sum(w in haystack for w in words) / len(words) < 0.6)
     return any(verdicts) if verdicts else None
