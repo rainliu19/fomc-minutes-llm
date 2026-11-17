@@ -39,6 +39,8 @@ elseif wrongDirection(text, c)
     problem = "The decision card says the Committee " + c.action + " the target range" + rangeOf(c) + ", but the answer says otherwise.";
 elseif isfield(c, "targetRange") && isempty(regexp(text, "\d", "once"))
     problem = "The answer gives no figure. State the target range from the decision card" + rangeOf(c) + ".";
+elseif wrongRange(text, c)
+    problem = "The answer states a target range that is not the decision card's. The card says" + rangeOf(c) + "; use exactly those figures.";
 else
     problem = voteProblem(text, c, lower(string(message)));
 end
@@ -58,6 +60,35 @@ else
     names = strip(split(string(c.vote.against), ","));
     if ~any(contains(text, names(names ~= ""), IgnoreCase=true))
         problem = "The question is about the vote. The decision card says it was not unanimous: " + c.vote.nFor + " for, " + c.vote.nAgainst + " against (" + c.vote.against + "). Name who voted against, with the name as written there.";
+    end
+end
+end
+
+function tf = wrongRange(text, c)
+% The answer quotes quarter-point figures (1-3/4, 4.25) and none of them is one of the card's range ends. An answer that
+% also names the earlier range ("up from 4-1/2 to 4-3/4") keeps the card's end among its figures, so it passes.
+tf = false;
+if ~isfield(c, "targetRange")
+    return
+end
+want = quarters(c.targetRange);
+said = quarters(text);
+tf = ~isempty(want) && ~isempty(said) && ~any(ismember(said, want));
+end
+
+function v = quarters(t)
+% Figures such as 1-3/4 (en dashes too), 1 3/4, 3/4, 1.75 as numbers; whole numbers are left out (years, counts, "2 percent inflation")
+t = regexprep(string(t), "[" + char(8211) + char(8212) + "]", "-");
+parts = regexp(t, "\d+-\d+/\d+|\d+ \d+/\d+|\d+/\d+|\d+\.(?:25|5|75)(?!\d)", "match");
+v = zeros(1, numel(parts));
+for k = 1:numel(parts)
+    q = str2double(regexp(parts(k), "\d+", "match"));
+    if contains(parts(k), ".")
+        v(k) = str2double(parts(k));
+    elseif numel(q) == 2
+        v(k) = q(1) / q(2);
+    else
+        v(k) = q(1) + q(2) / q(3);
     end
 end
 end
