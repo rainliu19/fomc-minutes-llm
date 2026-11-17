@@ -274,7 +274,7 @@ class ModelList(unittest.TestCase):
 
     def test_the_first_model_is_the_default_and_three_are_offered(self):
         self.assertEqual(self.models[0]["id"], "fast")      # IBM Granite 3.3 2B: the best accuracy for its memory
-        self.assertEqual([m["id"] for m in self.models if m.get("offered", True)], ["fast", "qwen3", "q25-15"])
+        self.assertEqual([m["id"] for m in self.models if m.get("offered", True)], ["fast", "qwen3", "q25-05"])
 
     def test_every_model_has_a_parameter_count_for_the_evaluation(self):
         for m in self.models:

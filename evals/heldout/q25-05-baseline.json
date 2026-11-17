@@ -1,7 +1,7 @@
 {
  "summary": {
   "model": "q25-05-baseline",
-  "label": "Qwen2.5 0.5B, bare model",
+  "label": "Fast: Qwen2.5 0.5B, bare model",
   "params_b": 0.5,
   "ollama_name": "fomc-q25-05",
   "date": "2026-11-17",

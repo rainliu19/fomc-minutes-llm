@@ -1,7 +1,7 @@
 {
  "summary": {
   "model": "q25-05-multi",
-  "label": "Qwen2.5 0.5B, multi-agent",
+  "label": "Fast: Qwen2.5 0.5B, multi-agent",
   "multi": true,
   "params_b": 0.5,
   "ollama_name": "fomc-q25-05",

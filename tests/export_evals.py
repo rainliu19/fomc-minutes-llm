@@ -42,14 +42,15 @@ def summary_rows(runs):
 
 def main():
     runs = [json.loads(p.read_text(encoding="utf-8")) for p in sorted((REPO / "evals").glob("*.json")) if p.name != "key.json"]
-    # Best first, as on the Evaluation page: multi-agent accuracy weighed against the memory the loaded model takes
-    # (accuracy x (1 - share of 8 GB)), then multi-agent accuracy. A model's multi-agent run sorts right before it, its bare-model run right after.
+    # As on the Evaluation page: the three offered builds first (Balanced, Best quality, Fast), then the rest by multi-agent
+    # accuracy. A model's multi-agent run sorts right before it, its bare-model run right after.
     by_model = {r["summary"]["model"]: r["summary"] for r in runs}        # a list being sorted cannot be read, so look up in this
+    tiers = ["Balanced", "Best quality", "Fast"]
     def order(r):
         s = r["summary"]; app = s["model"].removesuffix("-baseline").removesuffix("-multi")
         a = by_model[app]; team = by_model.get(app + "-multi", a)
-        fit = team["accuracy"] * (1 - (a.get("model_memory_pct_of_8gb") or 0) / 100)
-        return (-fit, -team["accuracy"], app, 0 if s.get("multi") else 2 if s.get("baseline") else 1)
+        tier = a["label"].split(": ")[0] if ": " in a["label"] else ""
+        return (tiers.index(tier) if tier in tiers else len(tiers), -team["accuracy"], a.get("model_memory_mb") or 0, app, 0 if s.get("multi") else 2 if s.get("baseline") else 1)
     runs.sort(key=order)
     out = REPO / "data"
     # One row per model
