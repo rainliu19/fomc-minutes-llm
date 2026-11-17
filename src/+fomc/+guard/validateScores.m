@@ -16,7 +16,7 @@ issues = [issues; fomc.guard.checkQuotes(result, minutesText)];
 issues = [issues; fomc.guard.checkRateConsistency(result, meetingDate, D)];
 if isstruct(result) && isscalar(result) && isfield(result, "meeting_date") && ...
         isText(result.meeting_date) && string(result.meeting_date) ~= meetingDate
-    issues(end+1, 1) = "meeting_date does not match the requested meeting " + meetingDate + "."; %#ok<AGROW>
+    issues(end+1, 1) = "meeting_date does not match the requested meeting " + meetingDate + ".";
 end
 
 releaseDate = NaT;

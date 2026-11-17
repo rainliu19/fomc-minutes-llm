@@ -9,21 +9,21 @@ evidenceKeys = ["quote", "paragraph_ref"];
 issues = strings(0, 1);
 
 if ~isstruct(result) || ~isscalar(result)
-    issues(end+1, 1) = "Score output must be one JSON object."; %#ok<AGROW>
+    issues(end+1, 1) = "Score output must be one JSON object.";
     return
 end
 issues = checkKeys(result, rootKeys, rootKeys, "top-level", issues);
 if isfield(result, "meeting_date") && ...
         (~isText(result.meeting_date) || isempty(regexp(char(string(result.meeting_date)), ...
         '^\d{4}-\d{2}-\d{2}$', 'once')))
-    issues(end+1, 1) = "meeting_date must be a date in YYYY-MM-DD format."; %#ok<AGROW>
+    issues(end+1, 1) = "meeting_date must be a date in YYYY-MM-DD format.";
 end
 if isfield(result, "scale") && ...
         (~isText(result.scale) || string(result.scale) ~= "hawkish_positive")
-    issues(end+1, 1) = "scale must be 'hawkish_positive'."; %#ok<AGROW>
+    issues(end+1, 1) = "scale must be 'hawkish_positive'.";
 end
 if ~isfield(result, "dimensions") || ~isstruct(result.dimensions) || ~isscalar(result.dimensions)
-    issues(end+1, 1) = "dimensions must be one object containing all seven dimensions."; %#ok<AGROW>
+    issues(end+1, 1) = "dimensions must be one object containing all seven dimensions.";
     return
 end
 

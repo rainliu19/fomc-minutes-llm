@@ -15,7 +15,7 @@ if endsWith(pwd, "pipeline"), cd(".."); end
 addpath("src");
 
 % Which dimensions, and which model; the tools read the rate path
-dimensions = ["rate_path"];          % or all seven: leave this line out of the call below
+dimensions = "rate_path";          % or all seven: leave this line out of the call below
 cfg = fomc.config(verbose=false);
 model = cfg.model;
 

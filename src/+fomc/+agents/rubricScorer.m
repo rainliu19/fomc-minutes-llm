@@ -126,7 +126,7 @@ for k = 1:numel(tokens)
     yr = str2double(tokens{k}{2});
     named = string(datetime(yr, mo, 1), "MMMM yyyy");
     inMonth = held(year(held) == yr & month(held) == mo);
-    if numel(inMonth) == 1
+    if isscalar(inMonth)
         dates(end+1, 1) = fomc.util.fmtDate(inMonth); %#ok<AGROW>
     elseif isempty(inMonth)
         issue = "I have no FOMC meeting in " + named + " (by " + fomc.util.fmtDate(s.ctx.asOf) + ...
