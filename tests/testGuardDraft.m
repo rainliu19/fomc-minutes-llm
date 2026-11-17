@@ -83,7 +83,7 @@ classdef testGuardDraft < matlab.unittest.TestCase
 
         function aWrongTargetRangeIsFoundAndTheCardsRangeIsNot(t)
             c = t.calls(true);
-            t.verifyNotEqual(fomc.guard.draftProblem("The Committee raised the target range to between 1-1/4 percent and 1-3/4 percent [2022-06-15/policyAction/3].", c, "What happened?"), "");
+            t.verifyNotEqual(fomc.guard.draftProblem("The Committee raised the target range to between 1-1/4 percent and 2 percent [2022-06-15/policyAction/3].", c, "What happened?"), "");
             t.verifyEqual(fomc.guard.draftProblem("The Committee raised the target range to between 1-1/2 percent and 1-3/4 percent [2022-06-15/policyAction/3].", c, "What happened?"), "");
             t.verifyEqual(fomc.guard.draftProblem("The Committee raised the target range to 1.5 to 1.75 percent [2022-06-15/policyAction/3].", c, "What happened?"), "");
             t.verifyEqual(fomc.guard.draftProblem("It raised the range to 1" + char(8211) + "1/2 to 1" + char(8211) + "3/4 percent.", c, "What happened?"), "");

@@ -136,6 +136,12 @@ def evals():
     return runs
 
 
+@app.get("/evals/heldout")
+def evals_heldout():
+    """The held-out check: the same models on evals/heldout/key.json (meetings the main key never uses)."""
+    return [json.loads(p.read_text(encoding="utf-8")) for p in sorted((HERE / "evals" / "heldout").glob("*.json")) if p.name != "key.json"]
+
+
 @app.get("/evals/lookahead")
 def evals_lookahead():
     """The look-ahead key and runs (evals/lookahead/*.json from tests/bench_lookahead.py), and the other sets in

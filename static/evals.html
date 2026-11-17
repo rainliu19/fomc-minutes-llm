@@ -88,6 +88,10 @@
   <div class="card"><table id="table"></table></div>
   <p class="note">One agent = share of the 53 scored questions answered correctly, with its 95% range (the 4 "why" questions have no key). Multi-agent = the same model running as a team (an organizer, and minutes, market, scorer and consumer specialists, each with its own prompt and tools; see the methodology). Baseline = the same model with no agent: no tools, minutes or checks. Median = seconds per answer, multi-agent / one agent. Memory = the loaded model with its 8,192-token context, as a share of 8 GB; the hidden MATLAB adds about 1 GB more. Click a model to see its questions.</p>
 
+  <h2>Held-out check</h2>
+  <div class="card"><table id="held"></table></div>
+  <p class="note">The same models on 36 more questions, all scored, about meetings, topics and wordings the 57-question key never uses (<code>evals/heldout/key.json</code>). The multi-agent checks were built while looking at the first key's mistakes, so this set is the fairer test of them. Wrong with no warning = answers that were wrong and came with no warning on the page.</p>
+
   <details class="sec">
     <summary title="Click to collapse or expand"><h2>Full test results</h2></summary>
     <div class="card"><table id="more"></table></div>
@@ -115,9 +119,9 @@
       <li><b>Who grades the answers.</b> Code, not a person or an AI judge. Each answer is checked with fixed text patterns: the right direction (raised, cut or held), the right rate range, the right dissenters' names, or "not public yet" wording for unreleased meetings. A question counts as correct only if every check matches.</li>
       <li><b>What the grader cannot see.</b> Because it reads text, an unusual but correct phrasing can be marked wrong. Topic and comparison questions only check for the topic words or both years, so a high score there is lenient. The 4 "why" questions have no key and are not scored; they only feed the invented-reason flag.</li>
       <li><b>Baseline.</b> The same Ollama model and context size, given only the question and the date: no tools, minutes, data, guardrail or citation check. "One agent" is everything we add around the model: the lookups, the point-in-time guardrail and the checks, all handled by one model conversation.</li>
-      <li><b>Multi-agent.</b> The same checks, split across specialists as in <code>docs/agents.md</code>: code routes the question, the minutes and market agents each look up and report on their own part (each with its own prompt and only its own tools), the scorer and consumer agents run when the question needs them, the writer reads their reports, and a critic checks the draft (one rewrite at most). It runs on the same model and questions as the one-agent run, so any difference is the architecture. A specialist's report that adds a number or paragraph id its sources lack is replaced by the code's own text.</li>
+      <li><b>Multi-agent.</b> The same checks, split across specialists as in <code>docs/agents.md</code>: code routes the question, the minutes and market agents each look up and report on their own part (each with its own prompt and only its own tools), the scorer and consumer agents run when the question needs them, the writer reads their reports, and a critic checks the draft (one rewrite at most). The critic verifies facts in code against the decision card (the vote, the direction, the target range, a bare paragraph id or an empty reply) and, if the rewrite still fails, the answer is composed from the card itself; the tables count those answers as "from code". One agent has no such critic. It runs on the same model and questions as the one-agent run, so any difference is the architecture. A specialist's report that adds a number or paragraph id its sources lack is replaced by the code's own text.</li>
       <li><b>Tokens and cost.</b> Tokens are counted by Ollama over every model call in a question (the lookups, the answer and the citation check), averaged over all 57 questions. The models run locally, so the real cost is $0. "API cost" is what those same tokens would cost on a paid cloud model at its list price (Claude Haiku 5.5 and Sonnet 5.5, list prices checked <span id="pricedate"></span> on the Anthropic pricing page), with no caching discount. It is an estimate of the order of magnitude: a cloud model counts tokens with its own tokenizer. Questions the app refuses before calling the model (not public yet) cost $0, and a baseline follow-up counts only its last turn.</li>
-      <li><b>Limits.</b> One run per model per question, all three structures run on the same day with the same code, on one 8 GB Apple M1, so run-to-run variation is not measured. Every score is out of 53, so differences of a few points are not meaningful.</li>
+      <li><b>Limits.</b> One run per model per question, all three structures run on the same day with the same code, on one 8 GB Apple M1, so run-to-run variation is not measured. Every main-key score is out of 53 and every held-out score out of 36, so differences of a few points are not meaningful. The held-out key (36 questions on meetings, topics and wordings the first key never uses) was added after the multi-agent checks were built on the first key. Five models' multi-agent runs on the main key predate the critic's target-range check, which can only improve them.</li>
     </ul>
     </div>
   </details>
@@ -199,7 +203,7 @@ function chart(apps, bareOf, multiOf) {
 }
 
 function comparison(apps, bareOf, multiOf) {
-  const head = ["Model", "Parameters", "Multi-agent", "One agent", "Baseline", "Median (s): multi / one", "Memory", "Tokens / question", "API cost / 1,000 questions"];
+  const head = ["Model", "Parameters", "Multi-agent", "One agent", "Baseline", "Median (s): multi / one", "Multi-agent answers from code", "Memory", "Tokens / question", "API cost / 1,000 questions"];
   let h = "<tr>" + head.map(t => `<th>${t}</th>`).join("") + "</tr>";
   for (const r of apps) {
     const s = r.summary, a = s.accuracy_ci, b = bareOf[s.model], m = multiOf[s.model];
@@ -207,12 +211,21 @@ function comparison(apps, bareOf, multiOf) {
       <td>${m ? pct(m.correct, m.n_scored) + ` <span class="note">(${m.correct}/${m.n_scored}${m.complete ? "" : ", partial"})</span>` : "not run"}</td>
       <td>${pct(s.correct, s.n_scored)} <span class="note">(${s.correct}/${s.n_scored}; ${Math.round(a[0] * 100)}% to ${Math.round(a[1] * 100)}%)</span></td>
       <td>${b ? pct(b.correct, b.n_scored) + ` <span class="note">(${b.correct}/${b.n_scored})</span>` : "not run"}</td>
-      <td>${m ? f2(m.seconds_median) : "n/a"} / ${f2(s.seconds_median)}</td><td>${gb(s)}</td>
+      <td>${m ? f2(m.seconds_median) : "n/a"} / ${f2(s.seconds_median)}</td><td>${m ? m.answered_by_code + " of " + m.n_cases : "n/a"}</td><td>${gb(s)}</td>
       <td>${tok(s.tokens.in_per_question + s.tokens.out_per_question)} <span class="note">(${tok(s.tokens.in_per_question)} in, ${tok(s.tokens.out_per_question)} out)</span></td>
       <td>${usd(s.tokens.api_cost_per_1000.haiku)} <span class="note">(local: $0.00)</span></td></tr>`;
   }
   el("table").innerHTML = h;
   document.querySelectorAll("tr.model").forEach(tr => tr.onclick = () => { el("sec-questions").open = true; el("pick").value = tr.dataset.id; el("pick").onchange(); el("pick").scrollIntoView({behavior: "smooth", block: "center"}); });
+}
+
+function heldout(runs, rank) {
+  const by = suffix => Object.fromEntries(runs.filter(r => r.summary.model.endsWith(suffix) || (!suffix && !/-(multi|baseline)$/.test(r.summary.model))).map(r => [r.summary.model.replace(/-(multi|baseline)$/, ""), r.summary]));
+  const mu = by("-multi"), on = by(""), ba = by("-baseline");
+  const ids = rank.filter(i => on[i]);          // the same order as the main table
+  const cell = s => s ? pct(s.correct, s.n_scored) + ` <span class="note">(${s.correct}/${s.n_scored})</span>` : "not run";
+  el("held").innerHTML = "<tr>" + ["Model", "Multi-agent", "One agent", "Baseline", "Wrong with no warning: multi / one", "Multi-agent answers from code"].map(t => `<th>${t}</th>`).join("") + "</tr>" +
+    ids.map(i => `<tr><td>${esc(base(on[i]))}</td><td>${cell(mu[i])}</td><td>${cell(on[i])}</td><td>${cell(ba[i])}</td><td>${mu[i] ? mu[i].silent_errors.count : "n/a"} / ${on[i].silent_errors.count}</td><td>${mu[i] ? mu[i].answered_by_code + " of " + mu[i].n_cases : "n/a"}</td></tr>`).join("");
 }
 
 function more(all) {
@@ -325,6 +338,7 @@ Promise.all([fetch("/evals").then(r => r.json()), fetch("/evals/key").then(r => 
   // Each model's multi-agent and bare-model rows sit right under its one-agent row
   const all = apps.flatMap(r => [...runs.filter(y => y.summary.model === r.summary.model + "-multi"), r, ...runs.filter(y => y.summary.model === r.summary.model + "-baseline")]);
   el("pricedate").textContent = apps[0].summary.tokens.api_prices.checked;
+  fetch("/evals/heldout").then(r => r.json()).then(h => heldout(h, apps.map(r => r.summary.model)));
   chart(apps, bareOf, multiOf); comparison(apps, bareOf, multiOf); more(all); categories(all.filter(r => !r.summary.baseline)); questions(all, key);
 });
 </script>
