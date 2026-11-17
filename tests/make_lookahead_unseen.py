@@ -12,9 +12,9 @@ from datetime import date, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-import make_lookahead_key as mk  # noqa: E402
-import make_lookahead_fresh as fr  # noqa: E402
-from make_key import MONTHS  # noqa: E402
+import make_lookahead_fresh as fr
+import make_lookahead_key as mk
+from make_key import MONTHS
 
 R = random.Random(20261118)
 mk.RNG = R

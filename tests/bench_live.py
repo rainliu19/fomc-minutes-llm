@@ -136,7 +136,7 @@ def run_case(case, effort):
     for q in case["questions"]:
         t0 = time.time()
         r = post("/chat", {"message": q, "session_id": sid, "as_of": case["as_of"], "effort": effort, "model": MODEL,
-                         "agents": "team" if MULTI else "one"})
+                         "agents": "team" if MULTI else "one", "save": False})
         total = time.time() - t0                        # time of the last question in the chat
         answer = r["answer"]
         if answer.startswith("Not enough memory"):      # the app's refusal is no answer: stop, do not record it

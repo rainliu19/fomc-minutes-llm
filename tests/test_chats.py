@@ -2,9 +2,9 @@
 
     uv run python -m unittest tests/test_chats.py
 """
+import contextlib
 import json
 import re
-import contextlib
 import sys
 import tempfile
 import unittest
@@ -13,7 +13,7 @@ from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from server.chats import ChatStore  # noqa: E402
+from server.chats import ChatStore
 
 REPO = Path(__file__).parent.parent
 
@@ -131,6 +131,7 @@ class OwnerCookie(unittest.TestCase):
 
     def test_a_new_browser_gets_a_random_owner_and_a_cookie(self):
         from starlette.responses import Response
+
         import app
         response = Response()
         owner = app.owner_of(self.request(), response)
@@ -140,11 +141,13 @@ class OwnerCookie(unittest.TestCase):
 
     def test_two_new_browsers_get_different_owners(self):
         from starlette.responses import Response
+
         import app
         self.assertNotEqual(app.owner_of(self.request(), Response()), app.owner_of(self.request(), Response()))
 
     def test_a_returning_browser_keeps_its_owner(self):
         from starlette.responses import Response
+
         import app
         response = Response()
         self.assertEqual(app.owner_of(self.request(f"{app.OWNER_COOKIE}={ME}"), response), ME)
@@ -152,6 +155,7 @@ class OwnerCookie(unittest.TestCase):
 
     def test_a_made_up_cookie_is_replaced(self):
         from starlette.responses import Response
+
         import app
         owner = app.owner_of(self.request(f"{app.OWNER_COOKIE}=../../etc"), Response())
         self.assertRegex(owner, r"^[0-9a-f]{32}$")
@@ -244,6 +248,8 @@ class ApiPrivacy(unittest.TestCase):
         saved = app.get_chat(sid, owner=ME)
         self.assertEqual(saved["agents"], "team")
         self.assertEqual([m.get("trace") for m in saved["messages"] if m["role"] == "assistant"], [[1, 3], [3, 5]])
+        app.chat(app.ChatRequest(message="bench", session_id="e" * 32, save=False), owner=ME)
+        self.assertEqual(app.get_chat("e" * 32, owner=ME), {})      # a benchmark question is not kept as a chat
 
     def test_chatting_into_another_browsers_chat_is_refused(self):
         req = self.app.ChatRequest(message="hi", session_id="c" * 32)

@@ -8,8 +8,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from server import runtime  # noqa: E402
-from app import clean_session_id  # noqa: E402
+from app import clean_session_id
+from server import runtime
 
 
 # Helper: a made-up memory reading to feed the checker

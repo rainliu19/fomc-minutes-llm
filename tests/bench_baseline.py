@@ -16,7 +16,7 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-import bench_live as B                         # same scoring, summary and memory helpers
+import bench_live as B  # same scoring, summary and memory helpers
 
 OLLAMA = "http://127.0.0.1:11434"
 MAX_TOKENS = 450                               # the Low effort answer cap in the app

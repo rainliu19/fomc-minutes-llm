@@ -97,6 +97,7 @@ class ChatRequest(BaseModel):
     effort: str = "low"                      # "low", "medium" or "high"
     model: str = ""                          # a model id from models/models.json; "" is the default
     agents: str = "team"                     # "team" (organizer and specialists) or "one" (the writer alone)
+    save: bool = True                        # the benchmarks send false: their questions are not chats to reopen
 
 
 @app.get("/")
@@ -184,14 +185,15 @@ def chat(request: ChatRequest, owner: str = Depends(owner_of)):
         with watchdog:
             result = json.loads(matlab_call("fomc.web.turn", session_id, request.message, request.as_of,
                                             effort, entry["name"], trace, store.seed(session_id, owner), agents))
-    except Exception as e:                   # MATLAB errors come back as a message, not a crash
+    except Exception as e:  # noqa: BLE001  MATLAB errors come back as a message, not a crash
         reason = f" ({runtime.panic_reason})" if runtime.panic_reason else ""
         return {**failed, "answer": f"Agent error{reason}: {str(e)[:300]}"}
     reply = {"answer": result["answer"], "structured": result["structured"], "citations": result["citations"],
              "warning": result["warning"], "tool_calls": result["toolCalls"], "seconds": result["seconds"],
              "anchor": result["anchorDate"], "agents": agents, "trace": [first_line, line_count(trace_path)]}
-    store.append(session_id, owner, {"as_of": result["anchorDate"], "model": entry["id"], "effort": effort, "agents": agents},
-                 request.message, reply)
+    if request.save:
+        store.append(session_id, owner, {"as_of": result["anchorDate"], "model": entry["id"], "effort": effort, "agents": agents},
+                     request.message, reply)
     return {"session_id": session_id, **reply}
 
 

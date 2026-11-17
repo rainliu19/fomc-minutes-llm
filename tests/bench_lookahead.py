@@ -17,7 +17,7 @@ from datetime import date
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-import bench_live as B                         # the app call, memory guard, Wilson interval
+import bench_live as B  # the app call, memory guard, Wilson interval
 import lookahead_score as ls
 
 TAG = sys.argv[sys.argv.index("--tag") + 1] if "--tag" in sys.argv else "v0"
@@ -46,7 +46,7 @@ def ask(case, entry):
     open_ = MODE == "open"                               # no cutoff: anchored today, the as-of date only said in the question
     message = f"Assume today is {case['as_of']}. {case['question']}" if open_ else case["question"]
     r = B.post("/chat", {"message": message, "session_id": sid, "as_of": date.today().isoformat() if open_ else case["as_of"], "effort": "low",
-                         "model": B.MODEL, "agents": "one" if MODE == "one" else "team"})
+                         "model": B.MODEL, "agents": "one" if MODE == "one" else "team", "save": False})
     seconds = time.time() - t0
     stats, _ = B.read_trace(sid)
     return r["answer"], tool_text(sid), stats, seconds, [c["name"] for c in r["tool_calls"]], r.get("warning", "")

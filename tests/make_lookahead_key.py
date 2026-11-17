@@ -16,7 +16,7 @@ from datetime import date, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-from make_key import MONTHS, number_variants  # noqa: E402
+from make_key import MONTHS, number_variants
 
 REPO = Path(__file__).parent.parent
 RNG = random.Random(20261116)

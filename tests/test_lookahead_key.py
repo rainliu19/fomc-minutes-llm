@@ -8,8 +8,8 @@ from datetime import date, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-import lookahead_score as ls  # noqa: E402
-import make_lookahead_key as mk  # noqa: E402
+import lookahead_score as ls
+import make_lookahead_key as mk
 
 KEY = json.loads((Path(__file__).parent.parent / "evals" / "lookahead" / "key.json").read_text())
 SCORED = [c for c in KEY if c["family"] != "control"]
