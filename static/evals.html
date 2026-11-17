@@ -76,7 +76,7 @@
   <section id="tab-acc" role="tabpanel">
   <div id="empty" class="card" hidden>No results yet. Run <code>python tests/bench_live.py &lt;modelId&gt;</code> while the app is running.</div>
 
-  <p class="note" style="margin-top:0">How each local model does on the same 57 questions, scored against an answer key read from the decision cards, with one agent, with a team of specialist agents (multi-agent) and as a baseline with no agent. <a href="/">Back to the chat</a></p>
+  <p class="note" style="margin-top:0">How each local model does on the same 57 questions, scored against an answer key read from the decision cards, with one agent, with a team of specialist agents (multi-agent) and as a baseline with no agent.</p>
   <h2>Accuracy and memory</h2>
   <div class="card">
     <div class="legend"><span><i class="bg-app"></i>One agent (tools, minutes, checks)</span><span><i class="bg-multi"></i>Multi-agent (organizer + minutes, market, scorer, consumer specialists)</span><span><i class="bg-bare"></i>Baseline (same model, no agent)</span><span><i class="bg-mem"></i>Memory</span></div>
@@ -131,7 +131,10 @@
   <h2>All question sets</h2>
   <div class="card"><table id="look-sets"></table></div>
   <p class="note" id="look-note"></p>
-  <div class="card" style="margin-top:10px"><table id="look-fam"></table></div>
+  <details class="sec">
+    <summary title="Click to collapse or expand"><h2>Errors by question type</h2></summary>
+    <div class="card"><table id="look-fam"></table></div>
+  </details>
 
   <details class="sec" id="sec-leaks">
     <summary title="Click to collapse or expand"><h2>Answers that were errors</h2></summary>
