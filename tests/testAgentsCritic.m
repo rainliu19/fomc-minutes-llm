@@ -69,6 +69,26 @@ classdef testAgentsCritic < matlab.unittest.TestCase
             tc.verifyEqual(nothingToCite, "");
         end
 
+        function aBareIdIsRewrittenOnceThenAnsweredFromTheDecisionCard(tc)
+            q = "What did the Fed decide at the latest meeting?";
+            bare = "[2020-01-29/policyAction/1]";
+            [a, m, s] = tc.ask(q, bare, bare);
+            tc.verifyEqual(numel(m.Seen), 2, "one rewrite, then the code answers");
+            tc.verifySubstring(a, "[2020-01-29/policyAction/1]");
+            tc.verifyGreaterThan(strlength(regexprep(a, "\[[^\]]*\]", "")), 40);
+            tc.verifyTrue(s.lastReview.fromCode);
+            tc.verifyFalse(s.lastReview.unverified);
+            tc.verifyEqual(string(s.history.Messages{end}.content), a);
+            [a2, m2] = tc.ask(q, bare, "The Committee held the range at 1-1/2 to 1-3/4 percent [2020-01-29/policyAction/1].");
+            tc.verifyEqual(numel(m2.Seen), 2);
+            tc.verifySubstring(a2, "The Committee held");
+        end
+
+        function aRewriteLosesItsApologyOpening(tc)
+            [a, ~] = tc.ask("Hello there.", "The range is 1-1/2 to 1-3/4 percent.", "Apologies for the oversight. Here's the revised answer: The Committee held the rate.");
+            tc.verifyEqual(a, "The Committee held the rate.");
+        end
+
         function criticRoundsAreCappedInCode(tc)
             cfg = fomc.config(verbose=false, criticRounds=1);
             [~, m, s] = tc.ask("Hello there.", "The range is 1-1/2 to 1-3/4 percent.", "Fine.", cfg);

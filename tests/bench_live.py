@@ -29,6 +29,16 @@ MODEL = ARGS[0] if ARGS else ""                      # a model id; empty is the 
 RUN_HIGH = "--high" in sys.argv
 MULTI = "--multi" in sys.argv                    # save as evals/<id>-multi.json (the app runs the multi-agent organizer)
 LIMIT = int(sys.argv[sys.argv.index("--limit") + 1]) if "--limit" in sys.argv else 0
+
+
+def option(name):
+    """The value after --name, or None."""
+    return sys.argv[sys.argv.index(name) + 1] if name in sys.argv else None
+
+
+ONLY = set((option("--only") or "").split(",")) - {""}        # re-ask just these case ids
+KEY = option("--key") or "evals/key.json"                     # another answer key, relative to the repo
+OUT = option("--out")                                          # save here instead of evals/<id>.json (scratch runs)
 HIGH_CASES = {"decision-01", "decision-02", "decision-03", "why-01", "why-02"}   # the Low vs High subset
 CAUSAL = re.compile(r"(?i)\b(because|due to|in response to|owing to|as a result of|driven by|reflect(?:ing|ed)|so as to|in order to)\b")
 
@@ -109,6 +119,8 @@ def run_case(case, effort):
                          "agents": "team" if MULTI else "one"})
         total = time.time() - t0                        # time of the last question in the chat
         answer = r["answer"]
+        if answer.startswith("Not enough memory"):      # the app's refusal is no answer: stop, do not record it
+            raise FileNotFoundError(answer)
     stats, tool_text = read_trace(sid)
     names = [c["name"] for c in r["tool_calls"]]
     cites = r.get("citations", [])
@@ -200,14 +212,16 @@ def main():
     entry = next((m for m in json.loads((REPO / "models" / "models.json").read_text()) if m["id"] == MODEL), None)
     if entry is None:
         sys.exit(f"Unknown model id '{MODEL}'. Ids are in models/models.json.")
-    key = json.loads((REPO / "evals" / "key.json").read_text())
+    key = json.loads((REPO / KEY).read_text())
+    if ONLY:
+        key = [c for c in key if c["id"] in ONLY]
     if LIMIT:
         key = key[:LIMIT]
     # Opening the page starts loading the model; give it time, as a user typing would
     OPENER.open(BASE + "/", timeout=60).read()
     OPENER.open(BASE + "/info?model=" + MODEL, timeout=60).read()
     time.sleep(25)
-    path = REPO / "evals" / f"{entry['id']}{'-multi' if MULTI else ''}.json"
+    path = Path(OUT) if OUT else REPO / "evals" / f"{entry['id']}{'-multi' if MULTI else ''}.json"
     # A run that stopped early (memory) is continued: finished cases are kept, only the rest are asked
     rows = json.loads(path.read_text())["cases"] if path.exists() else []
     done = {(r["id"], r["effort"]) for r in rows}
