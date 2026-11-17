@@ -34,7 +34,7 @@ Each browser gets a random owner id in a cookie (`fomc_owner`), and every chat i
 
 ## Anchor date
 
-Every session has an anchor date, `asOf`; nothing dated after it may reach the model. A meeting's anchor is its minutes release date, since the minutes are not public before then (`cfg.anchorType`).
+Every session has an anchor date, `asOf`; nothing dated after it may reach the model. A meeting's anchor is its minutes release date, since the minutes are not public before then.
 
 - **Minutes** are visible only if released on or before the anchor.
 - **Revised series** (17) use the real-time vintage history: the value as published by the anchor. A gap in the vintage history keeps the earlier value; an observation with nothing after its window is dropped. Series with no real-time values before their first vintage (e.g. `JTSJOL` before 2010-08) say so instead of guessing.

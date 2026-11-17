@@ -70,7 +70,7 @@ def read_trace(session_id):
     """Token counts and speeds from the model calls in the session's trace, plus the text the tools returned."""
     path = REPO / "logs" / f"web-{session_id}.jsonl"
     # Add up tokens and times over every model call; collect what the tools returned
-    p_tok = o_tok = p_ms = o_ms = rounds = 0
+    p_tok = o_tok = p_ms = o_ms = rounds = code = 0
     tool_text = []
     for line in path.read_text().splitlines():
         e = json.loads(line)
@@ -80,7 +80,9 @@ def read_trace(session_id):
             p_tok += s["promptTokens"]; o_tok += s["outputTokens"]; p_ms += s["promptMs"]; o_ms += s["outputMs"]
         if e["type"] == "tool_call":
             tool_text.append(json.dumps(e, ensure_ascii=False))
-    stats = {"model_calls": rounds, "prompt_tokens": p_tok, "output_tokens": o_tok,
+        if e["type"] == "critic" and e.get("fromCode"):      # the critic answered from the decision card
+            code = 1
+    stats = {"answered_by_code": code, "model_calls": rounds, "prompt_tokens": p_tok, "output_tokens": o_tok,
              "prefill_tok_s": round(p_tok / (p_ms / 1000), 1) if p_ms else None,
              "decode_tok_s": round(o_tok / (o_ms / 1000), 1) if o_ms else None}
     return stats, " ".join(tool_text)
@@ -194,6 +196,7 @@ def summarize(rows, meta):
               "api_prices": {"checked": prices["checked"], "source": prices["source"], "models": prices["models"]}}
     return {**meta, "tokens": tokens, "n_cases": len(low), "correct": k, "n_scored": len(scored), "accuracy": round(k / len(scored), 3) if scored else None,
             "accuracy_ci": wilson(k, len(scored)), "by_category": by_cat,
+            "answered_by_code": sum(r["stats"].get("answered_by_code", 0) for r in low),
             "silent_errors": {"count": silent, "n": len(scored), "rate": round(silent / len(scored), 3) if scored else None,
                               "ci": wilson(silent, len(scored)), "wrong": len(scored) - k,
                               "warned_wrong": sum(1 for r in scored if r["passed"] is False and r["warning"])},

@@ -8,7 +8,6 @@ function cfg = config(nvp)
 %   maxToolRounds      Tool-call rounds per turn.
 %   maxToolChars       Cap on the text one tool returns (about 1.2k tokens).
 %   maxResultChars     Hard cap on any encoded tool result.
-%   anchorType         "release" or "meeting": which date anchors a meeting.
 %   modelCutoff        Model knowledge cutoff (datetime); NaT = unverified.
 %   cutoffBufferDays   Margin after the cutoff before a meeting counts as clean.
 %   focusYears         Default span of minutes a question looks at (see fomc.focus.window).
@@ -43,7 +42,6 @@ arguments
     nvp.maxToolRounds (1,1) double = 8
     nvp.maxToolChars (1,1) double = 4000
     nvp.maxResultChars (1,1) double = 30000
-    nvp.anchorType (1,1) string {mustBeMember(nvp.anchorType,["release","meeting"])} = "release"
     nvp.modelCutoff (1,1) datetime = NaT
     nvp.cutoffBufferDays (1,1) double = 90
     nvp.focusYears (1,1) double = 3
@@ -63,10 +61,9 @@ arguments
     nvp.logDir (1,1) string = ""
 end
 
-% Start from the options given, then add the repo root and default folders
+% Start from the options given, then fill in the default folders
 cfg = nvp;
 root = string(fileparts(fileparts(fileparts(mfilename("fullpath")))));
-cfg.root = root;
 if cfg.dataDir == ""
     cfg.dataDir = fullfile(root, "data");
 end
