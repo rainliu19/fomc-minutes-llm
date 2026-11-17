@@ -7,9 +7,9 @@ function [text, recs] = dataPrefetch(ctx, question, skip)
 %   months earlier. text goes in front of the question; recs is the record for the trace and
 %   the figure check. Questions about no data topic get nothing. skip: series to leave out
 %   (fomc.focus.prefetch passes the ones another lookup already gives).
-%   A question that names months (fomc.focus.monthsNamed) all after the newest value these series show
+%   A question that names periods (fomc.focus.periodsNamed: months, quarters, "3 months from now") all after the newest value these series show
 %   gets a prefetchNotice instead: the harness answers it, since a small model restates the latest value
-%   as the value for the month asked. A month any series shows, or no month named, gets the figures.
+%   as the value for the month asked. A period any series shows, no period named, or a question about forecasts gets the figures.
 
 text = "";
 recs = struct("name", {}, "args", {}, "result", {}, "ok", {}, "ms", {});
@@ -66,8 +66,9 @@ for id = ids.'
     series{end+1, 1} = struct("seriesId", id, "label", name, "rows", {rows}); %#ok<AGROW>
 end
 
-months = fomc.focus.monthsNamed(question);
-if ~isempty(months) && all(months > newest)
+months = fomc.focus.periodsNamed(question, ctx.asOf);
+% A question about what participants or the staff expect asks for a view the minutes hold, not the value itself
+if ~isempty(months) && all(months > newest) && ~contains(lower(question), ["forecast" "project" "expect" "outlook" "predict" "anticipat" "staff" "participants"])
     verb = " is";
     if numel(months) > 1, verb = " are"; end
     reply = strjoin(unique(string(months, "MMMM yyyy"), "stable"), " and ") + verb + " not known as of " + ...

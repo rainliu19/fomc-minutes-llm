@@ -30,6 +30,43 @@ classdef testLaterPeriod < matlab.unittest.TestCase
             tc.verifyEmpty(fomc.focus.monthsNamed("What is the unemployment rate?"));
         end
 
+        function aDayOrAnOfBetweenTheMonthAndTheYearStillNamesTheMonth(tc)
+            tc.verifyEqual(fomc.focus.monthsNamed("the meeting that wrapped up on February 1, 2023"), datetime(2023,2,1));
+            tc.verifyEqual(fomc.focus.monthsNamed("What was it in July of 2020?"), datetime(2020,7,1));
+            tc.verifyEqual(fomc.focus.monthsNamed("on March 15th, 2020 and sept 2019"), datetime([2020 2019], [3 9], 1));
+        end
+
+        function quartersYearPartsAndDistancesFromTheAnchorAreNamedToo(tc)
+            asOf = datetime(2020,3,12);
+            f = @(q) fomc.focus.periodsNamed(q, asOf);
+            tc.verifyEqual(f("the rate in Q2 2021"), datetime(2021,4,1));
+            tc.verifyEqual(f("in the third quarter of 2021 and 2022 Q1"), datetime([2021 2022], [7 1], 1));
+            tc.verifyEqual(f("at the end of 2021"), datetime(2021,10,1));
+            tc.verifyEqual(f("in early 2022, or mid-2022"), datetime([2022 2022], [1 4], 1));
+            tc.verifyEqual(f("what will it be 3 months from now?"), datetime(2020,6,1));
+            tc.verifyEqual(f("where will it be in two years?"), datetime(2022,3,1));
+            tc.verifyEqual(f("what about next month, or next quarter, or next year"), datetime([2020 2020 2021], [4 4 1], 1));
+            tc.verifyEqual(f("March 2019 and 3 months ago"), datetime(2019,3,1));      % a distance back is not a later period
+            tc.verifyEmpty(f("What is the unemployment rate?"));
+        end
+
+        function aDistanceOrQuarterAfterTheNewestValueGetsTheNotice(tc)
+            for q = ["What will the unemployment rate be 4 months from now?", "What was the jobless rate in Q3 2020?", ...
+                     "What is the unemployment rate for the end of 2021?", "How high will unemployment be next quarter?"]
+                [~, recs] = fomc.focus.dataPrefetch(tc.ctx, q);
+                tc.verifyEqual([recs.name], "prefetchNotice", q);
+            end
+        end
+
+        function aQuestionAboutForecastsOrAPastPeriodKeepsTheFigures(tc)
+            for q = ["What does the staff forecast for the unemployment rate in June 2020?", ...
+                     "What do participants expect for unemployment 6 months from now?", ...
+                     "What was the unemployment rate 3 months ago?", "What was the unemployment rate in Q1 2019?"]
+                [~, recs] = fomc.focus.dataPrefetch(tc.ctx, q);
+                tc.verifyEqual([recs.name], "prefetchData", q);
+            end
+        end
+
         function aLaterMonthIsSaidNotKnownWithTheLatestValueAndNoValueForIt(tc)
             [text, recs] = fomc.focus.dataPrefetch(tc.ctx, "What was the unemployment rate in June 2020?");
             tc.verifyEqual([recs.name], "prefetchNotice");
@@ -87,6 +124,11 @@ classdef testLaterPeriod < matlab.unittest.TestCase
 
         function aRateChangeQuestionForAnUnreleasedMeetingGetsTheNotice(tc)
             [~, recs] = fomc.focus.prefetch(tc.ctx, "Did the Fed change interest rates at its March 2020 meeting, and to what range?", false);
+            tc.verifyTrue(any([recs.name] == "prefetchNotice"));
+        end
+
+        function aRateDecisionOnAnIsoDateOfAnUnreleasedMeetingGetsTheNotice(tc)
+            [~, recs] = fomc.focus.prefetch(tc.ctx, "Tell me about the Fed's rate decision on 2020-03-18.", false);
             tc.verifyTrue(any([recs.name] == "prefetchNotice"));
         end
 
