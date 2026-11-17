@@ -47,7 +47,7 @@ panic_reason = None                          # set by the watchdog if it had to 
 def memory_status() -> dict:
     """Pressure level, free memory percentage and swap in use, from macOS. Missing values are None."""
     # Start with unknowns; fill each in from a macOS command, and leave it unknown if the command fails
-    status = {"free_pct": None, "swap_used_mb": None, "swap_total_mb": None, "pressure": None}
+    status = {"free_pct": None, "swap_used_mb": None, "pressure": None}
     try:
         # Pressure level (1 normal, 2 warning, 4 critical)
         out = subprocess.run(["sysctl", "-n", "kern.memorystatus_vm_pressure_level"],
@@ -61,9 +61,9 @@ def memory_status() -> dict:
             status["free_pct"] = int(m.group(1))
         # Swap in use: memory pushed out to disk
         out = subprocess.run(["sysctl", "-n", "vm.swapusage"], capture_output=True, text=True, timeout=5).stdout
-        m = re.search(r"total = ([\d.]+)M\s+used = ([\d.]+)M", out)
+        m = re.search(r"used = ([\d.]+)M", out)
         if m:
-            status["swap_total_mb"], status["swap_used_mb"] = float(m.group(1)), float(m.group(2))
+            status["swap_used_mb"] = float(m.group(1))
     except (OSError, subprocess.SubprocessError):
         pass
     return status
@@ -334,8 +334,7 @@ def shutdown(engine) -> None:
         t = threading.Thread(target=engine.quit, daemon=True)
         t.start()
         t.join(timeout=15)
-    # Any direct child still alive (a stuck hidden MATLAB); matching on parent id cannot hit anything else.
-    # Finish off any child process still alive
+    # Finish off any direct child still alive (a stuck hidden MATLAB); matching on parent id cannot hit anything else
     subprocess.run(["pkill", "-TERM", "-P", str(os.getpid())], capture_output=True)
 
 

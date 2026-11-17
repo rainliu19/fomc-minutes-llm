@@ -413,7 +413,7 @@ end
 
 function t = pct(x, twoDecimals)
 % 3.012 -> "3.0%", or "3.01%" for market rates, which move by hundredths
-if nargin > 1 && twoDecimals
+if twoDecimals
     t = string(sprintf("%.2f%%", x));
 else
     t = string(sprintf("%.1f%%", x));

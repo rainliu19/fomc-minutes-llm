@@ -109,11 +109,6 @@ def index(request: Request):
     return response
 
 
-@app.get("/agents-panel.js")
-def agents_panel_script():
-    return FileResponse(HERE / "static" / "agents-panel.js", headers={"Cache-Control": "no-cache"})
-
-
 @app.get("/info")
 def info(model: str = ""):
     if not engine_lock.locked():             # not while a question is running
@@ -134,31 +129,30 @@ def evaluation_page():
     return FileResponse(HERE / "static" / "evals.html", headers={"Cache-Control": "no-cache"})
 
 
+def saved_runs(folder: Path) -> list[dict]:
+    """Every saved run in a folder (its *.json files except the question key)."""
+    return [json.loads(p.read_text(encoding="utf-8")) for p in sorted(folder.glob("*.json")) if p.name != "key.json"]
+
+
 @app.get("/evals")
 def evals():
-    """Every model's saved evaluation (evals/<modelId>.json from tests/bench_live.py), smallest model first."""
-    runs = [json.loads(p.read_text(encoding="utf-8")) for p in sorted((HERE / "evals").glob("*.json")) if p.name != "key.json"]
-    runs.sort(key=lambda r: r["summary"].get("params_b") or 0)
-    return runs
+    """Every model's saved evaluation (evals/<modelId>.json from tests/bench_live.py); the page orders them."""
+    return saved_runs(HERE / "evals")
 
 
 @app.get("/evals/heldout")
 def evals_heldout():
     """The held-out check: the same models on evals/heldout/key.json (meetings the main key never uses)."""
-    return [json.loads(p.read_text(encoding="utf-8")) for p in sorted((HERE / "evals" / "heldout").glob("*.json")) if p.name != "key.json"]
+    return saved_runs(HERE / "evals" / "heldout")
 
 
 @app.get("/evals/lookahead")
 def evals_lookahead():
-    """The look-ahead key and runs (evals/lookahead/*.json from tests/bench_lookahead.py), and the other sets in
-    sub-folders (fresh, unseen) as sets: {name: {key, runs}}. Retired runs are in evals/lookahead/archive/ and not served."""
+    """The held-out look-ahead sets (evals/lookahead/unseen, fresh: key.json and the runs from tests/bench_lookahead.py),
+    as {name: {key, runs}}. The development key's runs and the retired ones (archive/) are not served."""
     folder = HERE / "evals" / "lookahead"
-
-    def load(path):
-        return {"key": json.loads((path / "key.json").read_text(encoding="utf-8")),
-                "runs": [json.loads(p.read_text(encoding="utf-8")) for p in sorted(path.glob("*.json")) if p.name != "key.json"]}
-    sets = {p.name: load(p) for p in sorted(folder.iterdir()) if p.is_dir() and (p / "key.json").exists()}
-    return {**load(folder), "sets": sets}
+    return {p.name: {"key": json.loads((p / "key.json").read_text(encoding="utf-8")), "runs": saved_runs(p)}
+            for p in sorted(folder.iterdir()) if p.is_dir() and (p / "key.json").exists()}
 
 
 @app.get("/evals/key")
@@ -198,7 +192,7 @@ def chat(request: ChatRequest, owner: str = Depends(owner_of)):
              "anchor": result["anchorDate"], "agents": agents, "trace": [first_line, line_count(trace_path)]}
     store.append(session_id, owner, {"as_of": result["anchorDate"], "model": entry["id"], "effort": effort, "agents": agents},
                  request.message, reply)
-    return {"session_id": session_id, **reply, "memory": message}
+    return {"session_id": session_id, **reply}
 
 
 def line_count(path: Path) -> int:
@@ -208,7 +202,6 @@ def line_count(path: Path) -> int:
 
 @app.get("/chats")
 def list_chats(owner: str = Depends(owner_of)):
-    store.claim_unowned(owner)               # chats saved before owners existed go to the first browser
     return store.list(owner)
 
 
@@ -233,8 +226,7 @@ def delete_chat(chat_id: str, owner: str = Depends(owner_of)):
 
 @app.get("/progress")
 def progress(session_id: str, after: int = 0, before: int | None = None, owner: str = Depends(owner_of)):
-    """Trace events from line `after` (up to line `before`), so the page can draw the agents' work while the
-    model works, and again for an answer already given."""
+    """Trace events from line `after` up to line `before`: one answer's part of the chat's trace, for the agents page."""
     if store.owned_by_other(clean_session_id(session_id), owner):
         return {"events": [], "next": 0}
     # Read the session's trace file and return the lines added since the page last asked
@@ -257,6 +249,5 @@ def progress(session_id: str, after: int = 0, before: int | None = None, owner: 
 
 
 if __name__ == "__main__":
-    # 127.0.0.1 = this machine only; 8787 = the port for this app
     # Run only when started directly. 127.0.0.1 means this machine only; 8787 is the port
     uvicorn.run(app, host="127.0.0.1", port=PORT)

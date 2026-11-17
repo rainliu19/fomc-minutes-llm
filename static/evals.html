@@ -292,10 +292,10 @@ const STAGES = ["baseline", "v0", "v1"];
 const STAGE = {baseline: "Baseline: no guards, the tools can see all the data", v0: "v0: guards (data cutoff and checks, the app as in main)",
   v1: "v1: v0 plus a date check in code and short point-in-time prompt rules"};
 
-function lookahead({key, runs, sets}) {
-  if (!key.length) return;
+function lookahead(sets) {
   // The sets, headline first: unseen (no version was built on it), then the two development sets
   const SETS = [{id: "unseen", label: "Unseen set (held-out)", d: sets.unseen}, {id: "fresh", label: "Fresh set (held-out)", d: sets.fresh}].filter(s => s.d && s.d.key && s.d.key.length);
+  if (!SETS.length) return;
   const head = SETS[0];
   const by = {}; head.d.key.forEach(c => (by[c.family] = by[c.family] || []).push(c));
   const scored = head.d.key.filter(c => c.family !== "control");

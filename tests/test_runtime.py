@@ -14,7 +14,7 @@ from app import clean_session_id  # noqa: E402
 
 # Helper: a made-up memory reading to feed the checker
 def status(free, swap, level=1):
-    return {"free_pct": free, "swap_used_mb": swap, "swap_total_mb": 4096.0, "pressure": level}
+    return {"free_pct": free, "swap_used_mb": swap, "pressure": level}
 
 
 # Does the memory check say ok, warn or refuse in the right situations?
@@ -58,7 +58,7 @@ class MemoryVerdict(unittest.TestCase):
 
     def test_live_status_has_the_expected_keys(self):
         s = runtime.memory_status()
-        self.assertEqual(set(s), {"free_pct", "swap_used_mb", "swap_total_mb", "pressure"})
+        self.assertEqual(set(s), {"free_pct", "swap_used_mb", "pressure"})
 
     def test_top_apps_lists_the_biggest_first(self):
         apps = runtime.top_apps(3)

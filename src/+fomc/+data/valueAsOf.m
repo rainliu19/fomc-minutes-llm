@@ -16,7 +16,6 @@ end
 
 % Early exits return an empty result with a note that says why
 names = ["date", "value", "availableDate"];
-T = [];
 note = "";
 
 % Look up this series' publication rule (found once, in fomc.data.seriesIndex)

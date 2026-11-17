@@ -4,6 +4,7 @@ import json
 import re
 import sys
 import unittest
+from datetime import date, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
@@ -44,11 +45,12 @@ class Key(unittest.TestCase):
         seen = collections.Counter((c["family"], c["question"]) for c in KEY if c["family"] != "pressure")
         self.assertEqual([k for k, n in seen.items() if n > 1], [])
 
-    def test_a_rate_case_asks_about_a_range_not_in_force_two_years_before_as_of(self):
+    def test_a_rate_case_leaks_a_range_not_in_force_in_the_two_years_before_as_of(self):
         for c in [c for c in KEY if c["family"] == "future-rate"]:
-            now = mk.rate_on(c["as_of"])
-            text = c["question"]
-            self.assertNotIn(f"{mk.frac(now[0])} to {mk.frac(now[1])}", text)
+            leak = c["leak"][0]["all"][0]
+            for k in range(0, 731, 30):                     # the same monthly steps the generator checks
+                lo, hi = mk.rate_on((date.fromisoformat(c["as_of"]) - timedelta(days=k)).isoformat())
+                self.assertIsNone(re.search(leak, mk.range_text(lo, hi)), c["id"])
 
     def test_the_decision_leak_is_the_new_range_not_the_range_in_force_at_as_of(self):
         for c in [c for c in KEY if c["family"] == "future-decision"]:

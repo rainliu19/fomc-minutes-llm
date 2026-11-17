@@ -99,7 +99,6 @@
   .fn { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 13px; color: var(--text); font-weight: 600; }
   .kind { display: inline-block; margin-left: 6px; padding: 0 7px; border: 1px solid var(--line); border-radius: 99px;
           font-size: 11px; color: var(--muted); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: normal; }
-  .kind.skill { color: var(--gold); border-color: var(--gold); }
   .ms { margin-left: 6px; font-size: 12px; color: var(--muted); font-weight: normal; }
   .plain { color: var(--text); font-size: 13px; }
   details.tool > summary { list-style: none; }
@@ -305,7 +304,7 @@ function plainCall(name, a) {
 
 // Two lines: the function name (with a tag and its time), then the plain-English sentence
 function stepHtml(name, kind, ms, plain, ok) {
-  const tag = kind ? `<span class="kind${kind === "skill" ? " skill" : ""}">${esc(kind)}</span>` : "";
+  const tag = kind ? `<span class="kind">${esc(kind)}</span>` : "";
   const fn = name ? `<span class="fn">${esc(name)}</span>${tag}<span class="ms">${ms != null ? ms + " ms" : ""}${ok === false ? " (error)" : ""}</span><br>` : "";
   return `${fn}<span class="plain">${esc(plain)}</span>`;
 }
@@ -345,11 +344,6 @@ function citationsHtml(cites, nums) {
     `<span class="badge ${c.ok ? "ok" : "bad"}">${c.ok ? "verified" : "not verified: " + esc(c.reason)}</span>` +
     (c.ok ? `<blockquote>${esc(c.text)}</blockquote>` : "") + `</div>`).join("");
   return `<details open><summary>Sources (${cites.length})</summary>${items}</details>`;
-}
-
-// Every 2 seconds while the agent works: show how long it has been
-function poll(sid, state) {
-  $("actsum").textContent = `Working... ${Math.round((Date.now() - state.t0) / 1000)}s`;
 }
 
 // One finished answer: text, warning, sources, structured analysis, tools used, and its footer
@@ -452,7 +446,7 @@ async function openChat(id) {
   lockSettings(true); renderChats(); $("side").classList.add("closed");
 }
 
-// Sending a question: show it, start polling for progress, wait for the answer, then show it
+// Sending a question: show it, count the seconds, wait for the answer, then show it
 $("form").addEventListener("submit", async (ev) => {
   ev.preventDefault();
   const message = $("input").value.trim();
@@ -462,10 +456,8 @@ $("form").addEventListener("submit", async (ev) => {
   $("activity").hidden = false; $("actsum").textContent = "Working...";
   add("user", esc(message)); $("input").value = "";
   $("send").disabled = true;
-  // Start counting trace lines after the ones already there (a continued chat has older ones)
-  const start = await (await fetch(`/progress?session_id=${sessionId}&after=1000000000`)).json();
-  const state = {after: start.next, t0: Date.now()};
-  const timer = setInterval(() => poll(sessionId, state), 2000);
+  const t0 = Date.now();      // every 2 seconds while the agent works, show how long it has been
+  const timer = setInterval(() => { $("actsum").textContent = `Working... ${Math.round((Date.now() - t0) / 1000)}s`; }, 2000);
   try {
     const res = await fetch("/chat", {method: "POST", headers: {"Content-Type": "application/json"},
       body: JSON.stringify({message, session_id: sessionId, as_of: $("asof").value, effort, model: $("model").value, agents})});

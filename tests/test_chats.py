@@ -114,13 +114,11 @@ class Privacy(unittest.TestCase):
         self.assertEqual([c["id"] for c in self.store.list(ME)], ["mine"])
         self.assertEqual([c["id"] for c in self.store.list(YOU)], ["yours"])
 
-    def test_old_chats_without_an_owner_go_to_the_first_browser_that_asks(self):
-        old = self.store.folder / "old.json"
-        old.write_text(json.dumps({"id": "old", "title": "from before", "created": 1, "updated": 1, "messages": []}))
-        self.store.claim_unowned(YOU)
-        self.store.claim_unowned(ME)                       # too late: already claimed
-        self.assertEqual([c["id"] for c in self.store.list(YOU)], ["old"])
-        self.assertNotIn("old", [c["id"] for c in self.store.list(ME)])
+    def test_a_chat_without_an_owner_is_nobodys(self):
+        (self.store.folder / "old.json").write_text(json.dumps({"id": "old", "title": "x", "created": 1, "updated": 1, "messages": []}))
+        for owner in (ME, YOU):
+            self.assertNotIn("old", [c["id"] for c in self.store.list(owner)])
+            self.assertIsNone(self.store.get("old", owner))
 
 
 class OwnerCookie(unittest.TestCase):
@@ -290,23 +288,15 @@ class Evaluation(unittest.TestCase):
             for rx in c["checks"] + c["forbid"]:
                 re.compile(rx)                       # every pattern is a valid regex
 
-    def test_the_lookahead_route_returns_the_key_and_every_run_with_a_summary(self):
+    def test_the_lookahead_route_returns_each_held_out_set_with_its_key_and_runs(self):
         import app
         got = app.evals_lookahead()
-        self.assertGreaterEqual(len([c for c in got["key"] if c["family"] != "control"]), 100)
-        for r in got["runs"]:
-            self.assertIn("overall", r["summary"])
-            self.assertEqual(len(r["cases"]), r["summary"]["n_done"])
-        for name in ("fresh", "unseen"):                    # the other sets, each with its own key and runs
-            self.assertTrue(got["sets"][name]["key"])
-            for r in got["sets"][name]["runs"]:
+        self.assertEqual(set(got), {"fresh", "unseen"})      # the development key and retired runs (archive) are not served
+        for name, d in got.items():
+            self.assertTrue(d["key"], name)
+            for r in d["runs"]:
+                self.assertIn("overall", r["summary"])
                 self.assertEqual(len(r["cases"]), r["summary"]["n_done"])
-        self.assertNotIn("archive", got["sets"])             # retired runs are not served
-
-    def test_the_evals_route_lists_runs_smallest_model_first(self):
-        import app
-        sizes = [r["summary"]["params_b"] for r in app.evals()]
-        self.assertEqual(sizes, sorted(sizes))
 
     def test_every_run_has_tokens_and_a_cloud_api_cost_that_matches_the_price_table(self):
         import app

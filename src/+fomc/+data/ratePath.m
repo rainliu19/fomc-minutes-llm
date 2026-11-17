@@ -34,7 +34,7 @@ if any(both)
 end
 levels = [table(target.date, target.value, target.value, VariableNames=["date", "lower", "upper"]); ...
     table(top.date(both), bottom.value(at(both)), top.value(both), VariableNames=["date", "lower", "upper"])];
-levels = sortrows(levels(~isnan(levels.upper) & ~isnan(levels.lower), :), "date");
+levels = sortrows(levels, "date");
 
 % A move is any day the target differs from the day before
 changed = [false; diff(levels.upper) ~= 0 | diff(levels.lower) ~= 0];

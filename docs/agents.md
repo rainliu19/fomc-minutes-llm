@@ -70,7 +70,7 @@ Whatever you return passes the date gate (nothing after the anchor).
 
 ## Transparency
 
-The "How the agents worked" page (`/agents`, `static/agents.html`, drawn by `static/agents-panel.js` after the course demo's context
+The "How the agents worked" page (`/agents`, `static/agents.html`, drawn by its own script, after the course demo's context
 panel) shows the trace as a timeline: a column per agent (organizer, minutes, market, scorer, consumer, writer, critic), a row per
 step. "See how the agents worked" under an answer goes to it in the same tab (the reply carries the trace's line range, saved
 with the chat), and "Back to the chat" returns to that conversation.
