@@ -19,7 +19,8 @@ var BOX_STYLES={
   open:{label:'Open question (names who confirms)',cls:'s-open',badge:'?'},
   gap:{label:'Gap, opposed or rejected',cls:'s-gap'},
   unknown:{label:'Unknown or out of scope',cls:'s-unknown'},
-  rule:{label:'Rule or decision',cls:'s-rule'}
+  rule:{label:'Rule or decision',cls:'s-rule'},
+  side:{label:'Supporting, off the main path',cls:'s-side'}
 };
 var ARROW_STYLES={
   exists:{label:'Exists',cls:'a-exists',head:11},
@@ -350,7 +351,8 @@ function buildLeaf(tab,multi){
     var hd=document.createElement('h2'); hd.className='ptitle'; hd.textContent=tab.title; p.appendChild(hd);
     var intro=document.createElement('p'); intro.className='intro'; intro.innerHTML=fmt(tab.intro); p.appendChild(intro);
     if(tab.callout){var c=document.createElement('div'); c.className='callout'; c.innerHTML=fmt(tab.callout); p.appendChild(c);}
-    p.appendChild(buildDiagram(tab));
+    if(tab.html){var pic=document.createElement('div'); pic.className='diagram-scroll'; pic.innerHTML=tab.html; p.appendChild(pic);}   // a picture the grid cannot draw
+    else{p.appendChild(buildDiagram(tab));}
     (tab.tables||[]).forEach(function(k){
       var def=(k==='glossary')?DATA.glossary:DATA.tableDefs[k];
       var d=document.createElement('div'); d.innerHTML=buildTable(def); p.appendChild(d);
@@ -473,7 +475,7 @@ window.addEventListener('afterprint',function(){
 function validateData(){
   DATA.tabs.forEach(function(t){
     if(t.next||t.ref){return;}
-    if(!t.boxes||!t.boxes.length){warn(t.id+': no boxes');}
+    if(!t.html&&(!t.boxes||!t.boxes.length)){warn(t.id+': no boxes');}
     (t.tables||[]).forEach(function(k){if(k!=='glossary'&&!DATA.tableDefs[k]){warn(t.id+': unknown table '+k);}});
   });
   var seen={};

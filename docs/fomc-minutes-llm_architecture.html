@@ -40,6 +40,78 @@
    Every number below comes from the files in evals/ (listed under Reference); change the files, then this page.
    ================================================================ */
 
+/* ---- the two pictures the box grid cannot draw (SVG, theme colours from the engine's CSS variables) ---- */
+function svgEl(tag,attrs,text){
+  var s='<'+tag; for(var k in attrs){s+=' '+k+'="'+attrs[k]+'"';}
+  return s+'>'+(text===undefined?'':text)+'</'+tag+'>';
+}
+function T(x,y,txt,size,fill,weight,anchor){
+  return svgEl('text',{x:x,y:y,style:'font-size:'+size+'px;fill:'+fill+';font-weight:'+(weight||400),'text-anchor':anchor||'start'},txt);
+}
+function R(x,y,w,h,fill,stroke,dash,rx){
+  return svgEl('rect',{x:x,y:y,width:w,height:h,rx:rx===undefined?8:rx,style:'fill:'+fill+';stroke:'+stroke+';stroke-width:1.5'+(dash?';stroke-dasharray:'+dash:'')});
+}
+function L(x1,y1,x2,y2,stroke,w,dash,head){
+  return svgEl('line',{x1:x1,y1:y1,x2:x2,y2:y2,style:'stroke:'+stroke+';stroke-width:'+w+(dash?';stroke-dasharray:'+dash:''),'marker-end':head?'url(#ah)':''});
+}
+var ARROWHEAD='<defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" style="fill:var(--ink)"/></marker></defs>';
+function wrapSvg(w,h,inner,label){
+  return '<svg viewBox="0 0 '+w+' '+h+'" width="'+w+'" height="'+h+'" role="img" aria-label="'+label+'" style="max-width:none;font-family:inherit">'+ARROWHEAD+inner+'</svg>';
+}
+
+function layersSvg(){
+  // [layer, what it adds, main key correct of 53, held-out correct of 36]
+  var layers=[["Team","+ organizer, specialists and critic",50,53,36,36],
+              ["One agent","+ tools, the date gate and checks",47,53,36,36],
+              ["Baseline","the bare model: the question and date only",16,53,6,36]];
+  var fills=["var(--new-bg)","var(--fav-bg)","var(--exists-bg)"], lines=["var(--new-bd)","var(--fav-bd)","var(--exists-bd)"];
+  var s='', i, y0=[10,78,146], h=[260,182,100], x0=[10,30,50], w=[640,600,560];
+  for(i=0;i<3;i++){
+    s+=R(x0[i],y0[i],w[i],h[i],fills[i],lines[i]);
+    s+=T(x0[i]+18,y0[i]+28,layers[i][0],17,'var(--ink)',700);
+    s+=T(x0[i]+18,y0[i]+48,layers[i][1],12.5,'var(--muted)');
+    var by=y0[i]+14, p=layers[i][2]/layers[i][3], q=layers[i][4]/layers[i][5];
+    s+=R(690,by,220,16,'none','var(--line)','',3)+R(690,by,220*p,16,lines[i],lines[i],'',3);
+    s+=T(690+220*p+8,by+13,Math.round(p*100)+'%',13,'var(--ink)',700);
+    s+=R(690,by+22,220,9,'none','var(--line)','',3)+R(690,by+22,220*q,9,lines[i],lines[i],'',3);
+    s+=T(690+220*q+8,by+31,Math.round(q*100)+'%',11,'var(--muted)');
+  }
+  s+=T(690,250,'Long bar: main key, 53 questions.',11.5,'var(--muted)')+T(690,266,'Short bar: held-out key, 36 questions.',11.5,'var(--muted)');
+  var xs=[10,258,506,754], names=[["57-question key","decision cards read by code"],["Code grader","regex checks, no AI judge"],["Metrics","accuracy, errors, citations, speed"],["Evaluation page","one table per model"]];
+  for(i=0;i<4;i++){
+    s+=R(xs[i],318,200,62,'var(--surface)','var(--line)');
+    s+=T(xs[i]+100,344,names[i][0],14,'var(--ink)',700,'middle')+T(xs[i]+100,364,names[i][1],11.5,'var(--muted)','','middle');
+    if(i<3){s+=L(xs[i]+202,349,xs[i+1]-3,349,'var(--ink)',2,'',true);}
+  }
+  s+=T(10,404,'Every structure answers the same key; the held-out key uses meetings the main key never does.',11.5,'var(--muted)');
+  return wrapSvg(960,416,s,'Three layers around the model, with accuracy bars, then the key, grader, metrics and page');
+}
+
+function lanesSvg(){
+  // [name, wrong text, blocker x (null: none), blocker label, extra]
+  var lanes=[["Baseline","55% wrong (34 of 62)",null,"No blocker: the arrow runs into the later facts",""],
+             ["v0: guards","50% wrong (31 of 62)",700,"Date gate: a later date or unreleased minutes is refused",""],
+             ["v1: guards, date check, rules","11% wrong (7 of 62)",160,"Date check in code: a later period is answered before the model is called (36 of 74 questions)","+ as-of rules in the prompt"]];
+  var s='', i, y;
+  for(i=0;i<3;i++){
+    y=10+i*160;
+    s+=T(10,y+16,lanes[i][0],15,'var(--ink)',700)+T(950,y+16,lanes[i][1],14,i===2?'var(--fav-bd)':'var(--gap-bd)',700,'end');
+    s+=R(10,y+34,110,56,'var(--fav-bg)','var(--fav-bd)')+T(65,y+68,'Model',14,'var(--ink)',700,'middle');
+    s+=R(300,y+34,400,56,'var(--fav-bg)','var(--fav-bd)','',0)+T(500,y+54,'data known on the as-of date',12.5,'var(--ink)','','middle');
+    s+=R(700,y+34,240,56,'var(--gap-bg)','var(--gap-bd)','',0)+T(820,y+54,'facts after the as-of date',12.5,'var(--ink)','','middle');
+    var bx=lanes[i][2], endX=bx===null?930:bx-4;
+    s+=L(124,y+62,endX,y+62,'var(--ink)',2.5,'',true);
+    if(bx===null){s+=L(952,y+24,952,y+104,'var(--line)',3,'5 5');}
+    else{s+=L(bx,y+24,bx,y+104,'var(--rule-bd)',5);}
+    if(i===2){   // the v1 lane keeps v0's gate behind its new line
+      s+=L(700,y+24,700,y+104,'var(--rule-bd)',3,'4 4')+T(706,y+118,'v0 gate, still behind',11.5,'var(--muted)');
+      s+=T(10,y+106,lanes[i][4],11.5,'var(--muted)');
+    }
+    s+=T(10,y+130,lanes[i][3],12,'var(--muted)');
+  }
+  return wrapSvg(960,500,s,'Three lanes: the model reaches for the data; a line stops the arrow earlier in each stage');
+}
+
 var DATA = {
 meta:{
   kicker:"FOMC Minutes Analyst - as built",
@@ -94,190 +166,82 @@ groups:[
 ],
 
 tabs:[
-/* ---------------------------------------------------------- 1. ARCHITECTURE */
+/* ---------------------------------------------------------- 1. ARCHITECTURE (a tree) */
 {id:"arch", label:"1. Architecture", title:"The agent team, as it runs today",
- intro:"A question runs left to right through the organizer's stages, then the writer and the critic. Every tool call goes through the date gate. [2][3]",
+ intro:"A question runs down the tree: the organizer picks the agents, the specialists report, the writer answers, the critic checks. Boxes off to the side support the main path. [2][3]",
  boxes:[
-  B("browser",0,0,"exists","Browser pages","chat, evaluation, agents pages",
-   {i:"Three pages served by the same app: the chat ({{static/index.html}}), the Evaluation page ({{/evaluation}}) and the agents page ({{/agents}}). [1]",
-    b:["The browser keeps an owner cookie, so each browser sees only its own saved chats.","\"See how the agents worked\" under an answer opens the agents page in the same tab."]}),
-  B("app",1,0,"exists","app.py server","fastapi, one request at a time",
-   {i:"Thin Python wrapper. It owns the model lifecycle and passes each question to MATLAB. [1][4]",
-    t:[["POST /chat","Runs one turn; {{save: false}} (the benchmarks) skips saving the chat"],["Memory check","Refuses a question when memory is critical ({{server/runtime.py}})"],["Saved chats","One JSON file per chat in logs/chats, kept per owner"],["Trace","Each session writes logs/web-<session>.jsonl, which the agents page reads"]]}),
-  B("org",2,0,"exists","The organizer","routes in code, runs stages",
+  B("q",2,0,"exists","Question and date","from the browser, via app.py",
+   {i:"Every session has an anchor date: the day the question is asked as of. The browser sends the question to {{app.py}} (FastAPI, one request at a time), which passes it to MATLAB through {{fomc.web.turn}}. [1]",
+    t:[["Memory check","{{app.py}} refuses a question when memory is critical ({{server/runtime.py}}) [4]"],["Saved chats","One JSON file per chat in logs/chats, kept per browser owner; the benchmarks send {{save: false}}"],["Trace","Each session writes logs/web-<session>.jsonl, which the agents page draws"]]}),
+  B("org",2,1,"exists","The organizer","routes in code, runs stages",
    {i:"{{fomc.agents.run}} is the entry for every turn. {{fomc.agents.route}} picks the route from the question by code, in the order set by the {{stages}} line of {{agents/organizer.md}}. [2][3]",
-    t:[["Route: score","A question that scores or compares meetings runs the scorer only"],["Route: household","What the minutes or rates mean for households or prices runs all three stages"],["Route: other","Everything else runs stage 1 (minutes and market)"],["One agent","The switch next to Effort in the chat runs the writer alone, with no organizer or critic"]]}),
-  B("gate",4,0,"rule","Date gate","refuses dates after the anchor",
+    t:[["Route: score","A question that scores or compares meetings runs the scorer only"],["Route: household","What the minutes or rates mean for households or prices runs all three stages"],["Route: other","Everything else runs stage 1 (minutes and market)"],["One agent","The switch next to Effort runs the writer alone, with no organizer or critic"]]}),
+  B("gate",4,1,"rule","Date gate","every tool call is checked",
    {i:"Plain code in {{fomc.tools.dispatch}}. It never calls a model, so it cannot be argued with. [7]",
     t:[["checkToolInput","Refuses a call that names a date after the anchor, or a meeting whose minutes were not public yet"],["checkToolOutput","Withholds a result that holds a later date"],["checkReport","Checks each specialist's report: no paragraph id or number its sources lack"]]}),
-  B("minutes",1,1,"favored","Minutes agent","stage 1, summarizes with ids",
-   {i:"Code finds the decision card, the participants' views or the best paragraphs; one short model call summarizes them with their paragraph ids. [3]",
-    t:[["Tools","getDecision, searchMinutes, readMinutes, listMeetings"],["Code","{{minutesRetriever.m}}"],["Falls back","To the code's own text when the report fails the check, or no evidence"]]}),
-  B("market",2,1,"exists","Market agent","stage 1, plain code",
+  B("market",0,2,"exists","Market agent","stage 1, plain code",
    {i:"Dated figures: the rate path, the economy against the Fed's goals, the outlook and series. Code does the arithmetic. By default no model call ({{summarizeOver: 6000}}), because summarizing dropped the writer's instructions in its text. [3]",
     t:[["Tools","getSeries, getSnapshot, getPolicyPath, assessEconomy, getOutlook, describeSeries"],["Code","{{marketData.m}}"]]}),
-  B("scorer",3,1,"favored","Rubric scorer","stage 2, saved scores",
+  B("minutes",1,2,"favored","Minutes agent","stage 1, summarizes with ids",
+   {i:"Code finds the decision card, the participants' views or the best paragraphs; one short model call summarizes them with their paragraph ids. [3]",
+    t:[["Tools","getDecision, searchMinutes, readMinutes, listMeetings"],["Code","{{minutesRetriever.m}}"],["Falls back","To the code's own text when the report fails the check, or there is no evidence"]]}),
+  B("scorer",3,2,"favored","Rubric scorer","stage 2, saved scores",
    {i:"Reads which way a meeting's minutes point from the saved scores. On the score route it runs one model call per rubric dimension, using the {{fomc-score}} skill. [3]",
     t:[["Tool","readSkill"],["Code","{{rubricScorer.m}}, {{fomc.skills.scoreByDimension}}"],["Model","Always the scorer model ({{cfg.scorerModel}}, qwen3), whatever model answers"]]}),
-  B("consumer",4,1,"exists","Consumer view","stage 3, a stub",
+  B("consumer",4,2,"exists","Consumer view","stage 3, a stub",
    {i:"What the direction of the rate means for households. The consumer-impact rubric is a stub today, so this agent passes on the direction and the tool's note with no model call. [3]",
     b:["Runs only on the household route.","Tool: scoreConsumerImpact (placeholder)."]}),
-  B("answer",0,2,"exists","Final answer","short, cited, plain words",
-   {i:"Under 120 words unless asked for more. Each claim about the minutes cites a paragraph id in brackets, marked verified only if a tool returned it. [8]"}),
-  B("critic",1,2,"rule","The critic","checks in code, one rewrite",
+  B("ollama",0,3,"side","Ollama model","one local model",
+   {i:"One loaded model at a time and one request at a time, with an 8,192-token window. The default is IBM Granite 3.3 2B. Every model call goes through {{fomc.trace.llmCall}}, so each is traced and counted. [4]"}),
+  B("writer",2,3,"favored","The writer","one model reads the reports",
+   {i:"{{fomc.runTurn}} reads the specialists' reports as its lookups and writes the answer, calling tools if it needs more (at most {{cfg.maxToolRounds}}, 8). [3]",
+    b:["A failed agent is named in the lookups, so the answer says that part is missing."]}),
+  B("tools",4,3,"side","Tools and data","minutes, series, saved scores",
+   {i:"The tools in {{src/+fomc/+tools}} over the data in data/: 150 meetings (2008 to 2026) with paragraph ids, 56 data series (FRED, Yahoo Finance, Shiller, Treasury) and 150 saved AI scores. Every call goes through {{fomc.tools.dispatch}}, which adds the anchor date and runs the gate. [9]"}),
+  B("trace",0,4,"side","Trace file","every step, saved",
+   {i:"{{fomc.trace.logEvent}} writes each route, hand-off, tool call, model message and critic round to the session's trace file. The agents page draws it as a timeline, one column per agent. [1][3]"}),
+  B("critic",2,4,"rule","The critic","checks in code, one rewrite",
    {i:"{{fomc.agents.critic}} runs {{fomc.guard.review}} and {{draftProblem}} on the draft: paragraph ids, citations, figures, plain words, and the decision card. If it fails, the writer gets one rewrite message. [3]",
     t:[["Rounds","{{cfg.criticRounds}}, default 2: the draft and one rewrite"],["Still fails","Marked unverified on the page; never looped on"]]}),
-  B("writer",2,2,"favored","The writer","one model reads the reports",
-   {i:"{{fomc.runTurn}} reads the specialists' reports as its lookups and writes the answer, calling tools if it needs more (at most {{cfg.maxToolRounds}}, 8). [3]",
-    b:["A failed agent is named in the lookups, so the answer says that part is missing.","The default writer is IBM Granite 3.3 2B; the model list on the page changes it. [4]"]}),
-  B("trace",0,3,"exists","Trace file","every step, saved",
-   {i:"{{fomc.trace.logEvent}} writes each route, hand-off, tool call, model message and critic round to the session's trace file. The agents page draws it as a timeline, one column per agent. [1][3]"}),
-  B("dispatch",2,3,"rule","Tool dispatch","every call passes the gate",
-   {i:"{{fomc.tools.dispatch}} is the one door to the tools. It adds the anchor date, runs the gate before and after, and logs the call. [7]"}),
-  B("tools",3,3,"exists","Tools and data","minutes, 56 series, scores",
-   {i:"The tools in {{src/+fomc/+tools}} over the data in data/: 150 meetings (2008 to 2026) with paragraph ids, 56 data series (FRED, Yahoo Finance, Shiller, Treasury) and 150 saved AI scores. [9]"}),
-  B("ollama",4,3,"favored","Ollama model","one local model",
-   {i:"One loaded model at a time and one request at a time, with an 8,192-token window. Every model call in the app goes through {{fomc.trace.llmCall}}, so each is traced and counted. [4]"})
+  B("answer",2,5,"exists","Final answer","short, cited, plain words",
+   {i:"Under 120 words unless asked for more. Each claim about the minutes cites a paragraph id in brackets, marked verified only if a tool returned it. [8]"})
  ],
- plus:[["minutes","market"]],
+ plus:[["market","minutes"]],
  arrows:[
-  A("browser","right","app","left","exists"),
-  A("app","right","org","left","main"),
-  A("org","bottom","minutes","top","exists"),
+  A("q","bottom","org","top","main"),
+  A("org","right","gate","left","indirect",{label:"checked by"}),
   A("org","bottom","market","top","exists"),
-  A("market","right","scorer","left","main"),
+  A("org","bottom","minutes","top","exists"),
+  A("org","bottom","scorer","top","exists"),
+  A("org","bottom","consumer","top","exists"),
+  A("minutes","right","scorer","left","main",{label:"stage 2"}),
   A("scorer","right","consumer","left","main"),
-  A("market","bottom","writer","top","main"),
-  A("minutes","bottom","writer","top","main",{ta:0.2}),
-  A("consumer","bottom","writer","top","main",{ta:0.85,fa:0.5}),
-  A("writer","left","critic","right","main"),
-  A("critic","left","answer","right","main"),
-  A("critic","bottom","writer","bottom","indirect",{label:"one rewrite if it fails"}),
-  A("answer","top","browser","bottom","main"),
-  A("writer","bottom","dispatch","top","exists"),
-  A("dispatch","right","tools","left","exists"),
-  A("dispatch","left","trace","right","indirect",{label:"logged"}),
-  A("org","right","gate","left","indirect",{label:"every tool call is checked"}),
-  A("writer","right","ollama","top","indirect",{label:"every model call"})
+  A("market","bottom","writer","top","exists",{ta:0.15}),
+  A("minutes","bottom","writer","top","exists",{ta:0.35}),
+  A("scorer","bottom","writer","top","exists",{ta:0.65}),
+  A("consumer","bottom","writer","top","exists",{ta:0.85}),
+  A("writer","bottom","critic","top","main"),
+  A("critic","bottom","answer","top","main"),
+  A("critic","right","writer","right","indirect"),
+  A("ollama","right","writer","left","indirect",{label:"every model call"}),
+  A("writer","right","tools","left","indirect",{label:"through the gate"}),
+  A("critic","left","trace","right","indirect",{label:"every step logged"})
  ],
- padBottom:20,
- maxBoxes:15,
+ maxBoxes:13,
  tables:["routes","switch"]
 },
 
-/* ---------------------------------------------------------- 2. EVALUATION */
+/* ---------------------------------------------------------- 2. EVALUATION (layers) */
 {id:"eval", label:"2. Evaluation", title:"How the evaluation works",
- intro:"One answer key, three structures of the same model, one code grader. No person and no AI judges an answer. [5][10]",
- boxes:[
-  B("cards",0,0,"exists","Decision cards","read from the minutes by code",
-   {i:"Each meeting's decision, target range and vote are read out of the minutes text by code, and checked against the actual change in the federal funds rate for all 150 meetings ({{tests/testDecisions.m}}). [10]"}),
-  B("key",1,0,"exists","57-question key","built by make_key.py",
-   {i:"Code generates 50 questions and 7 forward-looking ones were written by hand, so every model gets the identical set. Each case has regex checks and forbidden patterns. [10]",
-    t:[["Categories","decision 12, stability 8, topic 8, vote 6, guardrail 5, comparison 4, why 4, next move 4, follow-up 3, outlook 3"],["Stability","The same question in several wordings must be answered the same way"],["Why","The 4 \"why\" cases have no key: they only feed the invented-reason flag"]]}),
-  B("held",4,2,"exists","Held-out key","36 other questions",
-   {i:"Meetings, topics and wordings the 57-question key never uses, all scored ({{tests/make_heldout_key.py}}). Added after the first key so a result is not just the key's own questions. [5][10]"}),
-  B("base",1,1,"unknown","Baseline run","bare model, no app",
-   {i:"{{tests/bench_baseline.py}}. The same Ollama model and context size, given only the question and \"Today is <anchor>\": no tools, minutes, data, guardrail or citation check. [10]"}),
-  B("one",2,1,"favored","One agent","the app, one conversation",
-   {i:"{{tests/bench_live.py}} sends each question to the running app at localhost:8787 with {{agents: one}} and {{save: false}}: the lookups, the date gate and the checks, handled by one model conversation. [10]"}),
-  B("team",3,1,"favored","Team run","the app, organizer and specialists",
-   {i:"The same script with {{--multi}}: {{agents: team}}. Code routes, specialists report, the writer answers and the critic checks. [10]"}),
-  B("grade",2,2,"rule","Code grader","regex patterns, all must match",
-   {i:"A question is correct only if every check matches and no forbidden pattern does: the right direction (raised, cut, held), the right range, the right dissenters, or \"not public yet\" wording for unreleased meetings. [10]",
-    b:["Limit: an unusual but correct phrasing can be marked wrong.","Topic and comparison questions only check for topic words or both years, so a high score there is lenient."]}),
-  B("sum",2,3,"exists","Summary table","accuracy, errors, citations, cost",
-   {i:"Per run: accuracy with a Wilson interval, by question type, silent errors, verified citations, stability groups, tokens and API-equivalent cost, median and p90 seconds, memory. [10]",
-    t:[["Silent errors","Wrong answers with no warning on the page"],["Verified citations","Paragraph ids a tool really returned, out of those cited"],["API cost","What the same tokens would cost on a paid cloud model; the real cost is 0"]]}),
-  B("files",1,4,"exists","Result files","one file per structure",
-   {i:"{{<id>.json}} (one agent), {{<id>-multi.json}} (team) and {{<id>-baseline.json}}, plus the held-out files in evals/heldout. {{rescore}} rebuilds the summaries from the saved cases after a scoring rule changes. [5]"}),
-  B("page",3,4,"exists","Evaluation page","reads the saved files",
-   {i:"Reads the files through {{/evals}}: accuracy and memory by model, comparison, held-out check, question-by-question results and the methodology. [1][5]"})
- ],
- arrows:[
-  A("cards","right","key","left","exists"),
-  A("key","bottom","base","top","exists"),
-  A("key","bottom","one","top","exists"),
-  A("key","bottom","team","top","exists"),
-  A("base","bottom","grade","top","exists",{ta:0.2}),
-  A("one","bottom","grade","top","exists"),
-  A("team","bottom","grade","top","exists",{ta:0.8}),
-  A("held","left","grade","right","indirect",{label:"same grader"}),
-  A("grade","bottom","sum","top","main"),
-  A("sum","bottom","files","top","main",{ta:0.7}),
-  A("files","right","page","left","main")
- ],
- tables:["evalnums","evalresults"],
- callout:"**Limits.** One run per model per question, all structures run on the same day with the same code, on one 8 GB Apple M1, so run-to-run variation is not measured. Each main-key score is out of 53 and each held-out score out of 36, so differences of a few points are not meaningful. [10]"
+ intro:"The same model, asked the same questions, in three structures. Each layer adds something around the model, and the bars show what that adds. A code grader marks every answer; no person and no AI judges one. [5][10]",
+ html: layersSvg(),
+ tables:["evalnums","evalresults"]
 },
 
-/* ---------------------------------------------------------- 3. LOOKAHEAD */
+/* ---------------------------------------------------------- 3. LOOKAHEAD (arrows stopped by lines) */
 {id:"look", label:"3. Lookahead bias", title:"How lookahead bias is blocked, stage by stage",
- intro:"The question is about a date. Each lane is one stage of the same app and model. Red lines are paths a later fact can take to the answer; a purple box blocks one. [6][11]",
- boxes:[
-  B("b_q",0,0,"gap","Baseline stage","no guards, 55% wrong",
-   {i:"The app with the data cutoff off. The anchor is today's date, and the as-of date is only said in the question (\"Assume today is ...\"). The tools can return anything. [6][11]",
-    t:[["Unseen set","34 of 62 answers were errors (55%)"],["Control questions","5 of 12 answerable questions passed"]]}),
-  B("b_c",1,0,"unknown","No date check","nothing looks at periods",{i:"Nothing looks at the periods the question names."}),
-  B("b_g",2,0,"unknown","No date gate","nothing is refused",{i:"Tools are not refused and nothing is withheld, whatever its date."}),
-  B("b_a",3,0,"favored","Model and tools","sees later facts",
-   {i:"The model asks the tools and gets later decisions, rates and figures, or answers from what it learned in training."}),
-  B("b_m",3,1,"gap","Training memory","nothing stops it",
-   {i:"A model may know events after the date from its training. No code can read that, so only wording and refusal can reduce it."}),
-  B("b_r",4,0,"gap","Baseline answer","states the later fact",
-   {i:"Scored by {{tests/lookahead_score.py}}: an error is a sentence that presents something after the as-of date as known, or a value given where the answer should be \"not known yet\"."}),
-
-  B("g_q",0,2,"rule","v0: guards","50% wrong on unseen",
-   {i:"The app as it is in main. [6][11]",
-    t:[["Unseen set","31 of 62 answers were errors (50%)"],["Control questions","9 of 12 answerable questions passed"],["Answered by code","9 of 74, no model call"]],
-    b:["Gain over baseline is small here. [Inference] Most remaining errors look like answers from the model's memory, not from the tools: future-data and future-decision stay high."]}),
-  B("g_c",1,2,"unknown","No date check","v1 adds this check",{i:"v0 has no check on the periods a question names; v1 adds it."}),
-  B("g_g",2,2,"rule","Date gate","refuses later dates",
-   {i:"Dated lookups after the anchor are refused ({{checkToolInput}}), results holding a later date are withheld ({{checkToolOutput}}), and a meeting whose minutes are not public yet is answered \"not public\" by code with no model call. [7]"}),
-  B("g_a",3,2,"favored","Model and tools","sees only dated data",
-   {i:"The tools now show only what was known on the anchor date."}),
-  B("g_m",3,3,"gap","Training memory","memory still leaks through",
-   {i:"The model is still free to answer a decision or a figure from memory when no tool is called, and most remaining v0 errors are of this kind (future-data 11 of 14, future-decision 10 of 14 on the unseen set). [6]"}),
-  B("g_r",4,2,"gap","v0 answer","half still leak",
-   {i:"The checks on the answer catch ids and figures the tools did not return, but not every later fact the model states."}),
-
-  B("v_q",0,5,"rule","v1: date check, rules","11% wrong on unseen",
-   {i:"v0 plus two additions. [6][11]",
-    t:[["Unseen set","7 of 62 answers were errors (11%, 95% range 6 to 22)"],["Control questions","8 of 12 answerable questions passed: it refuses a few answerable ones too"],["Answered by code","36 of 74, no model call"]],
-    b:["The unseen set was written after v1 was built, so it is the cleanest test. The main key and the fresh set were used to develop v1, so they flatter it."]}),
-  B("v_c",1,5,"rule","Date check in code","answers without the model",
-   {i:"{{fomc.focus.periodsNamed}} finds the periods a question names (months in words, quarters, parts of a year, \"3 months from now\"). When every one is after what is known, the app answers \"not known as of the anchor date\" itself, with the latest value and its date, and the model is never called ({{prefetchNotice}}). [11]",
-    b:["Not read: a month with no year, a numeric month, a season, a bare year, \"the next meeting\"."]}),
-  B("v_g",2,5,"rule","Date gate","refuses later dates",
-   {i:"The same gate as v0. [7]"}),
-  B("v_a",3,5,"favored","Model and tools","with as-of rules",
-   {i:"The model reads short point-in-time rules ({{agents/shared/asof.md}}) in the writer's prompt, every specialist's prompt and the date line of the first message: know nothing after the anchor, say \"not known yet\", ignore a request to use general knowledge. [11]"}),
-  B("v_m",3,6,"rule","Memory plus rules","told to say 'not known'",
-   {i:"The memory path is still open, but the rules ask the model not to use it, and the date check has already answered the questions that name a later period."}),
-  B("v_r",4,5,"favored","v1 answer","errors fall to 11%",
-   {i:"Most of the fall is the date check: 36 of 74 unseen questions never reach the model. What is left is mostly decision questions worded with no rate or decide word (5 of 14 future-decision answers)."})
- ],
- arrows:[
-  A("b_q","right","b_c","left","gap"),
-  A("b_c","right","b_g","left","gap"),
-  A("b_g","right","b_a","left","gap"),
-  A("b_m","top","b_a","bottom","gap"),
-  A("b_a","right","b_r","left","gap"),
-
-  A("g_q","right","g_c","left","gap"),
-  A("g_c","right","g_g","left","gap"),
-  A("g_g","right","g_a","left","risky"),
-  A("g_m","top","g_a","bottom","gap"),
-  A("g_a","right","g_r","left","gap"),
-
-  A("v_q","right","v_c","left","exists"),
-  A("v_c","top","v_r","top","risky",{label:"later period: answered in code"}),
-  A("v_c","right","v_g","left","exists"),
-  A("v_g","right","v_a","left","risky"),
-  A("v_m","top","v_a","bottom","indirect"),
-  A("v_a","right","v_r","left","exists")
- ],
- padBottom:20,
- maxBoxes:18,
+ intro:"In each lane the model reaches for the data. A later fact is one that happened after the question's as-of date. A purple line stops the arrow; the earlier it stands, the less gets through. [6][11]",
+ html: lanesSvg(),
  tables:["lookresults","lookfamily","lookmiss"]
 },
 
@@ -309,7 +273,7 @@ tableDefs:{
     ["Silent errors, main key","37","1","3"],
     ["Citations verified","none made","39 of 39","105 of 108"],
     ["Median seconds, main key","4.1","10.5","15.6"]
-  ],note:"One run each. 53 scored questions means about 13 points of uncertainty either way."},
+  ],note:"One run per structure per question, all on the same day and code, on one 8 GB Apple M1, so run-to-run variation is not measured. 53 scored questions means about 13 points of uncertainty either way; 36 held-out questions more. A gap of a few points is not a difference. [10]"},
   lookresults:{title:"Error rate by stage (lower is better)",head:["Set","Questions scored","Baseline","v0 guards","v1 date check and rules"],rows:[
     ["**Unseen** (the headline)","62","34 wrong (55%)","31 wrong (50%)","7 wrong (11%)"],
     ["Fresh (a development set)","56","36 wrong (64%)","22 wrong (39%)","1 wrong (2%)"],

@@ -95,7 +95,7 @@ seconds do not compare; the evaluations are being rerun on one machine for all m
 
 ## Lookahead bias
 
-The third tab of `docs/fomc-minutes-llm_architecture.html` draws the stages below: which paths a later fact can take to the answer in the baseline, v0 and v1.
+The third tab of `docs/fomc-minutes-llm_architecture.html` draws the stages below as three lanes: the model reaches for the data, and a line (none in the baseline, the date gate in v0, the date check in code in v1) stops it.
 
 The data are cut off at the as-of date (the date gate above), but a model may have been trained on later events.
 `agents/shared/asof.md` holds the point-in-time rules. It is read by `fomc.asOfRules` into the writer's system

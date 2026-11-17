@@ -103,6 +103,8 @@ svg text{font-family:var(--font);fill:var(--ink)}
 .s-gap .body{fill:var(--gap-bg);stroke:var(--gap-bd)}
 .s-unknown .body{fill:var(--unk-bg);stroke:var(--unk-bd);stroke-dasharray:7 4}
 .s-rule .body{fill:var(--rule-bg);stroke:var(--rule-bd)}
+.s-side .body{fill:none;stroke:var(--line);stroke-width:1.5;stroke-dasharray:3 4}
+.s-side text{fill:var(--muted)}
 .pill rect{fill:var(--new-bd)}
 .pill text{fill:var(--new-ink);font:700 9px var(--font);letter-spacing:.06em}
 .qbadge circle{fill:var(--fav-bd)}
