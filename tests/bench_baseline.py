@@ -59,10 +59,12 @@ def main():
     entry = next((m for m in json.loads((B.REPO / "models" / "models.json").read_text()) if m["id"] == B.MODEL), None)
     if entry is None:
         sys.exit(f"Unknown model id '{B.MODEL}'. Ids are in models/models.json.")
-    key = json.loads((B.REPO / "evals" / "key.json").read_text())
+    key = json.loads((B.REPO / B.KEY).read_text())
+    if B.ONLY:
+        key = [c for c in key if c["id"] in B.ONLY]
     if B.LIMIT:
         key = key[:B.LIMIT]
-    path = B.REPO / "evals" / f"{entry['id']}-baseline.json"
+    path = Path(B.OUT) if B.OUT else B.REPO / "evals" / f"{entry['id']}-baseline.json"
     rows = json.loads(path.read_text())["cases"] if path.exists() else []         # continue a run that stopped early
     done = {r["id"] for r in rows}
     for case in key:
