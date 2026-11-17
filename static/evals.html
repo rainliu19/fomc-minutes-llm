@@ -54,9 +54,9 @@
   svg text { fill: var(--text); font-size: 13px; }
   svg .dim { fill: var(--muted); font-size: 12px; }
   svg .grid { stroke: var(--line); }
-  svg .app { fill: var(--blue); } svg .bare { fill: var(--gold); } svg .mem { fill: var(--mem); } svg .multi { fill: var(--multi); }
+  svg .app { fill: var(--blue); } svg .bare { fill: var(--gold); } svg .mem { fill: var(--mem); } svg .multi { fill: var(--multi); } svg .lk-held { fill: var(--blue); } svg .lk-train { fill: var(--mem); }
   svg.chartsvg { min-width: 760px; }
-  .bg-app { background: var(--blue); } .bg-bare { background: var(--gold); } .bg-mem { background: var(--mem); } .bg-multi { background: var(--multi); }
+  .bg-app { background: var(--blue); } .bg-bare { background: var(--gold); } .bg-mem { background: var(--mem); } .bg-multi { background: var(--multi); } .bg-held { background: var(--blue); } .bg-train { background: var(--mem); }
   .tabs { display: flex; gap: 4px; max-width: 1100px; margin: 0 auto; padding: 12px 20px 0; border-bottom: 1px solid var(--line); }
   .tabs button { font: inherit; background: none; border: 1px solid transparent; border-bottom: none; border-radius: 4px 4px 0 0; padding: 7px 16px; color: var(--muted); cursor: pointer; margin-bottom: -1px; }
   .tabs button[aria-selected="true"] { color: var(--text); background: var(--bg); border-color: var(--line); font-weight: bold; }
@@ -128,13 +128,14 @@
   </section>
 
   <section id="tab-look" role="tabpanel" hidden>
-  <h2>Lookahead error rate: baseline, v0, v1</h2>
+  <h2>Lookahead error rate</h2>
+  <div class="card">
+    <div class="legend"><span><i class="bg-held"></i>Held-out questions (unseen and fresh sets together)</span><span><i class="bg-train"></i>Training questions (the main key v1 was built from)</span></div>
+    <div id="look-chart"></div>
+    <div class="note" id="look-note"></div>
+  </div>
   <div class="card"><table id="look-trend"></table></div>
   <p class="note" id="look-trend-note"></p>
-
-  <h2>All question sets</h2>
-  <div class="card"><table id="look-sets"></table></div>
-  <p class="note" id="look-note"></p>
   <details class="sec">
     <summary title="Click to collapse or expand"><h2>Errors by question type</h2></summary>
     <div class="card"><table id="look-fam"></table></div>
@@ -155,7 +156,7 @@
       <li><b>Baseline.</b> The app with the data cutoff off: the tools can return anything, the date the model is told is today's, and the as-of date is only said in the question. No guards, no prompt rules.</li>
       <li><b>v0: guards.</b> The app as it is in main: data cut off at the as-of date, dated lookups refused, checks on the answer, and a meeting whose minutes are not public yet is answered "not public" by code, without the model.</li>
       <li><b>v1: guards, a date check and prompt rules.</b> v0 plus two additions. (1) A date check in code: when a question names a period the data cannot show yet, the app answers "not known as of the anchor date" itself, with the latest known value and its date, without asking the model. A period is a month in words ("June 2020", "July of 2020", "February 1, 2023"), a quarter ("Q2 2021"), a part of a year ("the end of 2021"), or a distance from the anchor date ("3 months from now", "next quarter"); a period the data shows, a question about forecasts, or no period named goes to the model as before; a question about a rate decision or vote at a meeting whose minutes are not public is answered the same way. (2) Short point-in-time rules from <code>agents/shared/asof.md</code> in the writer's prompt, every specialist's prompt and the date line: nothing after the anchor date, even if the user asks for general knowledge. Most of the drop from v0 to v1 is the date check (see "Answered by code"), not changed model behaviour. It cannot read a month with no year, a numeric month ("9/2019"), a season, a bare year or "the next meeting", and a decision question with no rate or "decide" word may still reach the model.</li>
-      <li><b>The question sets.</b> The <b>unseen set</b> was written after v1 was built and was not used to develop it: it is the one fair test, and the headline numbers come from it. The <b>fresh set</b> was used to find the gaps in v1's date check, and the <b>main key</b> uses three fixed wordings that v1's first date check was designed from, so v1 is not tested fairly on either (they are labelled development sets and show v1 at its best). When v1 is changed after seeing a set's errors, that set becomes a development set and a new unseen set is written. The earlier narrower v1 (month names only) is kept in <code>evals/lookahead/archive/</code>.</li>
+      <li><b>The question sets.</b> The <b>held-out questions</b> are two sets pooled: the <b>unseen set</b>, written after v1 was built and never used to develop it, and the <b>fresh set</b>, the same kinds of facts in wordings the main key never uses. The <b>training questions</b> are the main key, whose three fixed wordings v1's first date check was designed from, so v1's training rate is its best case. The fresh set was also used to find gaps in v1's date check, so the unseen set alone is the cleanest test of v1. The baseline and v0 were fixed before any of the sets existed, so their rates are fair on all of them. When v1 is changed after seeing a set's errors, that set becomes a training set and a new held-out set is written. The earlier narrower v1 (month names only) is kept in <code>evals/lookahead/archive/</code>.</li>
       <li><b>Who decides the right answer.</b> Code. The rate decisions, target ranges and unemployment values come from the data files (the target-range series and the first release of each month); the event questions use a hand-written list of events and the dates they became public. A model is never the judge.</li>
       <li><b>What counts as an error.</b> An answer that presents something after the as-of date as known: it states the later fact (a sentence with the decision and its range, the later range, the later value, or the event's name, not given by a tool in guarded runs), or, for a question about one fact, it gives a value instead of saying it is not known on that date. An invented value counts, because the model ignored the date. Event questions are open, so only stating the event counts there.</li>
       <li><b>Controls.</b> Questions about facts that were public by their as-of date (a decision, an unemployment value, a target range). The answer must give the fact. This catches a model or a guard that refuses everything; a failure is usually the small model garbling a number, not a refusal.</li>
@@ -295,33 +296,60 @@ const STAGE = {baseline: "Baseline: no guards, the tools can see all the data", 
 function lookahead({key, runs, sets}) {
   if (!key.length) return;
   // The sets, headline first: unseen (no version was built on it), then the two development sets
-  const SETS = [{id: "unseen", label: "Unseen set (headline)", d: sets.unseen}, {id: "fresh", label: "Fresh set (development)", d: sets.fresh},
-    {id: "main", label: "Main key (development)", d: {key, runs}}].filter(s => s.d && s.d.key && s.d.key.length);
+  const SETS = [{id: "unseen", label: "Unseen set (held-out)", d: sets.unseen}, {id: "fresh", label: "Fresh set (held-out)", d: sets.fresh},
+    {id: "main", label: "Training set (main key)", d: {key, runs}}].filter(s => s.d && s.d.key && s.d.key.length);
   const head = SETS[0];
   const by = {}; head.d.key.forEach(c => (by[c.family] = by[c.family] || []).push(c));
   const scored = head.d.key.filter(c => c.family !== "control");
-  el("look-intro").innerHTML = `<p style="margin-top:0">The data are cut off at the as-of date, but a model may have been trained on what happened later. Each question asks about a fact that became public <b>after</b> the as-of date (the headline set has ${scored.length}), plus controls that ask about one that was public, to catch a model that refuses everything. An answer is an <b>error</b> when it presents something after the as-of date as known: it states the later fact, or, for a question about one fact, gives a value instead of saying it is not known on that date (an invented value is still the model ignoring the date). <b>The lookahead error rate is errors out of the scored questions.</b></p>
+  el("look-intro").innerHTML = `<p style="margin-top:0">The data are cut off at the as-of date, but a model may have been trained on what happened later. Each question asks about a fact that became public <b>after</b> the as-of date (the unseen set has ${scored.length}), plus controls that ask about one that was public, to catch a model that refuses everything. An answer is an <b>error</b> when it presents something after the as-of date as known: it states the later fact, or, for a question about one fact, gives a value instead of saying it is not known on that date (an invented value is still the model ignoring the date). <b>The lookahead error rate is errors out of the scored questions.</b></p>
     <table>${Object.keys(FAMILIES).map(f => `<tr><td>${esc(FAMILIES[f])}</td><td>${(by[f] || []).length}</td><td style="text-align:left;white-space:normal" class="note">${esc((by[f] || [{question: ""}])[0].question)} <i>(as of ${esc((by[f] || [{as_of: ""}])[0].as_of)})</i></td></tr>`).join("")}</table>`;
+  // Held-out = the unseen and fresh sets pooled; training = the main key v1 was built from
+  const HELD = SETS.filter(x => x.id !== "main"), TRAIN = SETS.filter(x => x.id === "main");
   const runOf = (set, st) => set.d.runs.map(r => r.summary).find(s => stageOf(s) === st);
-  // Headline: baseline, v0, v1 on the unseen set, with the change from the row above
-  let prev = null;
-  el("look-trend").innerHTML = "<tr><th>Model</th><th>Stage</th><th>Lookahead error rate</th><th>Change</th><th>Answered by code</th><th>Controls passed</th></tr>" +
-    STAGES.map(st => {
-      const s = runOf(head, st); if (!s) return "";
-      const r = s.overall.n ? 100 * s.overall.errors / s.overall.n : null;
+  const wilson = (k, n) => { if (!n) return [0, 0]; const z = 1.96, p = k / n, d = 1 + z * z / n, c = p + z * z / (2 * n), m = z * Math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)); return [(c - m) / d, (c + m) / d]; };
+  const pool = (group, st) => {
+    const runs = group.map(g => runOf(g, st)).filter(Boolean); if (!runs.length) return null;
+    const sum = f => runs.reduce((t, s) => t + f(s), 0);
+    const errors = sum(s => s.overall.errors), n = sum(s => s.overall.n);
+    const fam = {}; runs.forEach(s => Object.entries(s.by_family).forEach(([f, v]) => { fam[f] = fam[f] || {errors: 0, n: 0}; fam[f].errors += v.errors; fam[f].n += v.n; }));
+    return {errors, n, ci95: wilson(errors, n), code: sum(s => s.answered_by_code), done: sum(s => s.n_done), controls: {passed: sum(s => s.controls.passed), n: sum(s => s.controls.n)}, fam, partial: runs.some(s => s.partial)};
+  };
+  const P = Object.fromEntries(STAGES.map(st => [st, {held: pool(HELD, st), train: pool(TRAIN, st)}]));
+  const top = Math.max(20, Math.ceil(Math.max(...STAGES.flatMap(st => [P[st].held, P[st].train].filter(Boolean).map(x => 100 * x.ci95[1]))) / 10) * 10);
+  {
+    const W = 900, L = 250, AW = 560, row = 74, T = 28, H = T + row * STAGES.length + 24, x = v => L + AW * v / top;
+    let g = `<svg class="chartsvg" viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Lookahead error rate by stage">`;
+    g += `<text x="${L}" y="14" style="font-weight:600">Lookahead error rate (lower is better)</text>`;
+    for (let t = 0; t <= top; t += top / 4) g += `<line class="grid" x1="${x(t)}" x2="${x(t)}" y1="${T}" y2="${H - 24}"/><text class="dim" x="${x(t)}" y="${H - 8}" text-anchor="middle">${Math.round(t)}%</text>`;
+    STAGES.forEach((st, i) => {
+      const y = T + i * row;
+      g += `<text x="${L - 10}" y="${y + 24}" text-anchor="end">${esc(STAGE[st].split(":")[0])}</text>`;
+      [["held", "lk-held", "Held-out"], ["train", "lk-train", "Training"]].forEach(([k, cls, name], j) => {
+        const v = P[st][k]; if (!v) return; const r = v.n ? 100 * v.errors / v.n : 0, yy = y + 8 + j * 24;
+        g += `<rect class="${cls}" x="${L}" y="${yy}" width="${Math.max(2, x(r) - L)}" height="18" rx="2"><title>${name}: ${v.errors}/${v.n} errors, 95% range ${Math.round(100 * v.ci95[0])}-${Math.round(100 * v.ci95[1])}%</title></rect>`;
+        g += `<text x="${x(r) + 6}" y="${yy + 13}">${Math.round(r)}% <tspan class="dim">(${v.errors}/${v.n})</tspan></text>`;
+      });
+    });
+    el("look-chart").innerHTML = g + "</svg>";
+  }
+  const sel = (g, st) => { const v = P[st][g]; return v ? v : null; };
+  el("look-trend").innerHTML = "<tr><th>Stage</th><th>Held-out error rate</th><th>Training error rate</th><th>Change on held-out</th><th>Answered by code (held-out)</th><th>Controls passed (held-out)</th></tr>" +
+    (() => { let prev = null; return STAGES.map(st => {
+      const h = sel("held", st), t = sel("train", st); if (!h) return "";
+      const r = h.n ? 100 * h.errors / h.n : null;
       const d = prev == null || r == null ? "start" : (r - prev >= 0 ? "+" : "") + (r - prev).toFixed(1) + " pts";
       if (r != null) prev = r;
-      return `<tr><td>${AGENT}</td><td style="text-align:left;white-space:normal">${STAGE[st]}</td><td><b>${rate(s.overall)}</b>${s.partial ? ` <span class="pill">partial ${s.n_done}/${s.n_key}</span>` : ""}</td><td class="${d.startsWith("-") ? "ok" : d.startsWith("+") ? "bad" : ""}">${d}</td><td>${s.answered_by_code} of ${s.n_done}</td><td>${s.controls.passed}/${s.controls.n}</td></tr>`;
-    }).join("");
-  el("look-trend-note").textContent = "Measured on the unseen set: questions v1 was not built or tuned on. Change = points against the row above; negative is better. Answered by code = the app replied without calling the model, which protects the answer but is not the model resisting its memory.";
-  el("look-sets").innerHTML = "<tr><th>Stage</th>" + SETS.map(s => `<th>${s.label}</th>`).join("") + "</tr>" +
-    STAGES.map(st => `<tr><td style="text-align:left">${STAGE[st].split(":")[0]}</td>` + SETS.map(set => { const s = runOf(set, st); return `<td>${s ? rate(s.overall) : "n/a"}</td>`; }).join("") + "</tr>").join("");
-  el("look-note").textContent = "Lower is better. The development sets were used to build v1, so v1's rate there is lower than its fair rate; the baseline and v0 were fixed before any of the sets existed, so their rates are fair on all three.";
+      const fmt = v => v ? `${Math.round(100 * v.errors / v.n)}% <span class="note">(${v.errors}/${v.n}; 95% range ${Math.round(100 * v.ci95[0])}-${Math.round(100 * v.ci95[1])}%)</span>` : "n/a";
+      return `<tr><td style="text-align:left;white-space:nowrap">${STAGE[st].split(":")[0]}</td><td><b>${fmt(h)}</b>${h.partial ? ' <span class="pill">partial</span>' : ""}</td><td>${fmt(t)}</td><td class="${d.startsWith("-") ? "ok" : d.startsWith("+") ? "bad" : ""}">${d}</td><td>${h.code} of ${h.done}</td><td>${h.controls.passed}/${h.controls.n}</td></tr>`;
+    }).join(""); })();
+  const unseenV1 = SETS.find(x => x.id === "unseen") && runOf(SETS.find(x => x.id === "unseen"), "v1");
+  el("look-trend-note").textContent = "Baseline: no guards, the tools can see all the data. v0: guards (data cutoff and checks, the app as in main). v1: v0 plus a date check in code and short point-in-time prompt rules. Held-out = the unseen set (written after v1 was built) and the fresh set (wordings the main key never uses) pooled; training = the main key, which v1's date check was designed from, so v1's training rate is its best case. The fresh set was also used to find gaps in v1's date check" + (unseenV1 ? `, so v1's fair rate is closest to the unseen set alone (${unseenV1.overall.errors}/${unseenV1.overall.n})` : "") + ". Answered by code = the app replied without calling the model, which protects the answer but is not the model resisting its memory.";
+  el("look-note").textContent = "Bars show the share of questions about later facts that were answered as if known; the controls (questions about facts already public) are in the table. Lower is better; each rate has a wide range because of the number of questions.";
   const all = SETS.flatMap(set => set.d.runs.map(r => ({set, r})).sort((a, b) => STAGES.indexOf(stageOf(a.r.summary)) - STAGES.indexOf(stageOf(b.r.summary))));
   el("look-model").textContent = [...new Set(all.map(x => x.r.summary.label.replace(/^[^:]*: /, "") + " (Ollama " + x.r.summary.ollama_name + ")"))].join(", ");
   const fams = Object.keys(FAMILIES).filter(f => f !== "control");
   el("look-fam").innerHTML = "<tr><th>Set and stage</th>" + fams.map(f => `<th title="${esc(FAMILIES[f])}">${f.replace("future-", "")}</th>`).join("") + "</tr>" +
-    all.map(({set, r}) => `<tr><td>${set.label.split(" (")[0]}, ${stageOf(r.summary)}</td>` + fams.map(f => `<td>${r.summary.by_family[f] ? r.summary.by_family[f].errors + "/" + r.summary.by_family[f].n : "n/a"}</td>`).join("") + "</tr>").join("");
+    [["Held-out", "held"], ["Training", "train"]].flatMap(([name, k]) => STAGES.map(st => { const v = P[st][k]; return v ? `<tr><td>${name}, ${st}</td>` + fams.map(f => `<td>${v.fam[f] ? v.fam[f].errors + "/" + v.fam[f].n : "n/a"}</td>`).join("") + "</tr>" : ""; })).join("");
   const pick = el("look-pick");
   pick.innerHTML = all.map((x, i) => `<option value="${i}">${x.set.label.split(" (")[0]}, ${stageOf(x.r.summary)}</option>`).join("");
   pick.onchange = () => {
