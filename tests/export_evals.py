@@ -76,4 +76,5 @@ def main():
     print(f"{len(rows)} models -> data/model_evaluation_summary.csv, {len(cases)} answers -> data/model_evaluation_cases.csv")
 
 
-main()
+if __name__ == "__main__":
+    main()

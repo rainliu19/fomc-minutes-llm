@@ -98,15 +98,11 @@ def rescore():
 
 
 def main():
-    entry = next((m for m in json.loads((B.REPO / "models" / "models.json").read_text()) if m["id"] == B.MODEL), None)
-    if entry is None:
-        sys.exit(f"Unknown model id '{B.MODEL}'. Ids are in models/models.json.")
+    entry = B.model_entry()
     key = json.loads((OUT / "key.json").read_text())
     if B.LIMIT:
         key = key[::max(1, len(key) // B.LIMIT)][:B.LIMIT]
-    B.OPENER.open(B.BASE + "/", timeout=60).read()                  # opening the page starts loading the model
-    B.OPENER.open(B.BASE + "/info?model=" + B.MODEL, timeout=60).read()
-    time.sleep(25)
+    B.warm_up()
     path = OUT / f"{entry['id']}-{MODE}-{TAG}.json"
     rows = json.loads(path.read_text())["cases"] if path.exists() else []
     done = {r["id"] for r in rows}
@@ -114,9 +110,7 @@ def main():
     for case in key:
         if case["id"] in done:
             continue
-        free, swap = B.memory()
-        if B.pressure() == 4 or swap > 3600:
-            print(f"STOP before '{case['id']}': memory critical ({free}% free, {swap:.0f} MB swap)")
+        if B.memory_critical(case["id"]):
             break
         try:
             row = run_case(case, entry)

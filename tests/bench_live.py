@@ -14,7 +14,6 @@ import json
 import math
 import re
 import statistics
-import subprocess
 import sys
 import time
 import urllib.request
@@ -24,6 +23,9 @@ from pathlib import Path
 # Where the running app listens, and the repo folder (for the trace files and the key)
 BASE = "http://127.0.0.1:8787"
 REPO = Path(__file__).parent.parent
+sys.path.insert(0, str(REPO))
+from server import runtime  # the app's own memory reading and model list
+
 ARGS = [a for a in sys.argv[1:] if not a.startswith("--")]
 MODEL = ARGS[0] if ARGS else ""                      # a model id; empty is the default
 RUN_HIGH = "--high" in sys.argv
@@ -52,18 +54,34 @@ def post(path, body, timeout=900):
     return json.load(OPENER.open(req, timeout=timeout))
 
 
-# Helper: macOS memory pressure level (1 normal, 2 warning, 4 critical)
-def pressure():
-    return int(subprocess.run(["sysctl", "-n", "kern.memorystatus_vm_pressure_level"], capture_output=True, text=True).stdout)
-
-
-# Helper: percent of memory free and swap in use (MB)
+# Helper: percent of memory free and swap in use (MB), as the app reads them
 def memory():
-    out = subprocess.run(["memory_pressure"], capture_output=True, text=True).stdout
-    free = int(re.search(r"free percentage:\s*(\d+)%", out).group(1))
-    swap = subprocess.run(["sysctl", "-n", "vm.swapusage"], capture_output=True, text=True).stdout
-    used = float(re.search(r"used = ([\d.]+)M", swap).group(1))
-    return free, used
+    s = runtime.memory_status()
+    return s["free_pct"], s["swap_used_mb"]
+
+
+# Helper: True (after saying so) when memory pressure is critical or swap is deep: stop the run, it continues later
+def memory_critical(case_id):
+    s = runtime.memory_status()
+    if s["pressure"] == 4 or (s["swap_used_mb"] or 0) > 3600:
+        print(f"STOP before '{case_id}': memory critical ({s['free_pct']}% free, {s['swap_used_mb']:.0f} MB swap)")
+        return True
+    return False
+
+
+# Helper: the models/models.json entry for the model id on the command line
+def model_entry():
+    entry = next((m for m in runtime.load_all_models() if m["id"] == MODEL), None)
+    if entry is None:
+        sys.exit(f"Unknown model id '{MODEL}'. Ids are in models/models.json.")
+    return entry
+
+
+# Helper: opening the page starts loading the model; give it time, as a user typing would
+def warm_up():
+    OPENER.open(BASE + "/", timeout=60).read()
+    OPENER.open(BASE + "/info?model=" + MODEL, timeout=60).read()
+    time.sleep(25)
 
 
 def read_trace(session_id):
@@ -212,18 +230,13 @@ def summarize(rows, meta):
 
 
 def main():
-    entry = next((m for m in json.loads((REPO / "models" / "models.json").read_text()) if m["id"] == MODEL), None)
-    if entry is None:
-        sys.exit(f"Unknown model id '{MODEL}'. Ids are in models/models.json.")
+    entry = model_entry()
     key = json.loads((REPO / KEY).read_text())
     if ONLY:
         key = [c for c in key if c["id"] in ONLY]
     if LIMIT:
         key = key[:LIMIT]
-    # Opening the page starts loading the model; give it time, as a user typing would
-    OPENER.open(BASE + "/", timeout=60).read()
-    OPENER.open(BASE + "/info?model=" + MODEL, timeout=60).read()
-    time.sleep(25)
+    warm_up()
     path = Path(OUT) if OUT else REPO / "evals" / f"{entry['id']}{'-multi' if MULTI else ''}.json"
     # A run that stopped early (memory) is continued: finished cases are kept, only the rest are asked
     rows = json.loads(path.read_text())["cases"] if path.exists() else []
@@ -233,9 +246,7 @@ def main():
     for case, effort in todo:
         if (case["id"], effort) in done:
             continue
-        free, swap = memory()
-        if pressure() == 4 or swap > 3600:
-            print(f"STOP before '{case['id']}': memory critical ({free}% free, {swap:.0f} MB swap)")
+        if memory_critical(case["id"]):
             break
         try:
             row = run_case(case, effort)
@@ -270,7 +281,7 @@ def rescore():
         # Labels come from models/models.json, so renaming a model there renames its saved results too
         kind = "baseline" if old.get("baseline") else "multi" if old.get("multi") else ""
         model = path.stem.removesuffix("-baseline").removesuffix("-multi")
-        label = next((e["label"] for e in json.loads((REPO / "models" / "models.json").read_text()) if e["id"] == model), None)
+        label = next((e["label"] for e in runtime.load_all_models() if e["id"] == model), None)
         if label:
             meta["label"] = {"baseline": label.split(": ")[-1] + ", bare model", "multi": label + ", multi-agent", "": label}[kind]
         if kind:

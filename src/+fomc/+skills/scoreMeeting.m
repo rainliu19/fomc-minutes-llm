@@ -89,8 +89,7 @@ output = struct("score", score, "ok", isempty(failures), "issues", failures, ...
 end
 
 function dimensions = dimensionsInFailures(issues)
-allDimensions = ["rate_path", "inflation", "labor_market", "economic_activity", ...
-    "financial_conditions", "balance_sheet", "risk_balance"];
+allDimensions = fomc.skills.dimensions();
 dimensions = strings(0, 1);
 for name = allDimensions
     if any(contains(issues, name))

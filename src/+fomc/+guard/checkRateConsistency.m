@@ -24,7 +24,7 @@ rate = result.dimensions.rate_path;
 if ~isstruct(rate) || ~isscalar(rate)
     return
 end
-if ~isfield(rate, "status") || ~isText(rate.status) || string(rate.status) ~= "scored" || ...
+if ~isfield(rate, "status") || ~fomc.guard.isText(rate.status) || string(rate.status) ~= "scored" || ...
         ~isfield(rate, "score") || ~isnumeric(rate.score) || ~isscalar(rate.score) || ~isfinite(rate.score)
     issues(end+1, 1) = "rate_path must be scored consistently with the meeting's actual " + action + ".";
     return
@@ -50,8 +50,4 @@ switch action
         end
 end
 
-        function tf = isText(value)
-        tf = (ischar(value) && (isrow(value) || isempty(value))) || ...
-            (isstring(value) && isscalar(value));
-        end
 end

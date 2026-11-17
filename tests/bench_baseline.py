@@ -56,9 +56,7 @@ def run_case(entry, case):
 
 
 def main():
-    entry = next((m for m in json.loads((B.REPO / "models" / "models.json").read_text()) if m["id"] == B.MODEL), None)
-    if entry is None:
-        sys.exit(f"Unknown model id '{B.MODEL}'. Ids are in models/models.json.")
+    entry = B.model_entry()
     key = json.loads((B.REPO / B.KEY).read_text())
     if B.ONLY:
         key = [c for c in key if c["id"] in B.ONLY]
@@ -70,9 +68,7 @@ def main():
     for case in key:
         if case["id"] in done:
             continue
-        free, swap = B.memory()
-        if B.pressure() == 4 or swap > 3600:
-            print(f"STOP before '{case['id']}': memory critical ({free}% free, {swap:.0f} MB swap)")
+        if B.memory_critical(case["id"]):
             break
         row = run_case(entry, case)
         free, swap = B.memory()
@@ -87,4 +83,5 @@ def main():
     print(json.dumps(out["summary"]["by_category"]), "accuracy", out["summary"]["accuracy"], "->", path)
 
 
-main()
+if __name__ == "__main__":
+    main()
