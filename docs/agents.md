@@ -1,7 +1,7 @@
 # Agents
 
 One writer model (IBM Granite 3.3 2B by default, local; the model list on the page changes it) and four small specialist agents run by an organizer. The design is
-`docs/subagent_architecture.html`; the patterns are the OpenAI Agents SDK's, in MATLAB.
+`docs/subagent_architecture_plan.html` (the original proposal); `docs/fomc-minutes-llm_architecture.html` shows what is built. The patterns are the OpenAI Agents SDK's, in MATLAB.
 
 ## How a turn runs
 
@@ -94,6 +94,8 @@ The "Measured" table above is from qwen3 and mixes two machines (the one-agent f
 seconds do not compare; the evaluations are being rerun on one machine for all models.
 
 ## Lookahead bias
+
+The third tab of `docs/fomc-minutes-llm_architecture.html` draws the stages below: which paths a later fact can take to the answer in the baseline, v0 and v1.
 
 The data are cut off at the as-of date (the date gate above), but a model may have been trained on later events.
 `agents/shared/asof.md` holds the point-in-time rules. It is read by `fomc.asOfRules` into the writer's system

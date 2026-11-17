@@ -155,7 +155,8 @@ result.attempts    % the most attempts any dimension needed, one to three
 - [docs/data.md](docs/data.md): series, caveats, rebuilding the data
 - [docs/performance.md](docs/performance.md): measured speed, memory, and the model comparison (also at `/evaluation` and in `data/model_evaluation_*.csv`)
 - [docs/MATLAB_GAPS.md](docs/MATLAB_GAPS.md): what MATLAB or its LLM add-on could not do
-- [docs/subagent_architecture.html](docs/subagent_architecture.html): proposal to split the agent into an organizer and subagents, with the planned lookback-bias tests (open in a browser)
+- [docs/fomc-minutes-llm_architecture.html](docs/fomc-minutes-llm_architecture.html): what is built: the agent team, how the evaluation works, and how lookahead bias is blocked at each stage (open in a browser)
+- [docs/subagent_architecture_plan.html](docs/subagent_architecture_plan.html): the original proposal to split the agent into an organizer and subagents, with the planned lookback-bias tests (open in a browser)
 
 ## Limits
 
