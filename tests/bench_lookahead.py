@@ -23,6 +23,8 @@ import lookahead_score as ls
 TAG = sys.argv[sys.argv.index("--tag") + 1] if "--tag" in sys.argv else "v0"
 MODE = "open" if "--open" in sys.argv else "one" if "--one" in sys.argv else "team"
 OUT = B.REPO / "evals" / "lookahead"
+if "--key" in sys.argv:                                  # another key (for example "fresh"): its own folder of runs
+    OUT = OUT / sys.argv[sys.argv.index("--key") + 1]
 
 
 def tool_text(session_id):
