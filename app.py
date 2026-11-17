@@ -249,12 +249,9 @@ def progress(session_id: str, after: int = 0, before: int | None = None, owner: 
                 e = json.loads(line)
             except json.JSONDecodeError:
                 continue
-            events.append({k: e.get(k) for k in ("type", "kind", "series", "name", "args", "ok", "ms", "round",
-                                                 "nToolCalls", "attempt", "stats", "agent", "to", "stage", "agents", "route", "pass",
-                                                 "issues", "error", "reason", "parallel", "role", "text", "from", "reads",
-                                                 "skipped", "fallback", "nIds", "content", "question", "result")})
-            if isinstance(events[-1]["result"], str) and len(events[-1]["result"]) > 1500:
-                events[-1]["result"] = events[-1]["result"][:1500] + "..."
+            if isinstance(e.get("result"), str) and len(e["result"]) > 1500:
+                e["result"] = e["result"][:1500] + "..."
+            events.append(e)
         after = len(lines)
     return {"events": events, "next": after}
 

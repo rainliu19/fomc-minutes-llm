@@ -168,9 +168,12 @@ class ApiPrivacy(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.original = app.store
         app.store = ChatStore(Path(self.tmp.name) / "chats")
+        self.logs = mock.patch.object(app.runtime, "LOGS", Path(self.tmp.name) / "logs")   # never the repo's own logs
+        self.logs.start()
         app.store.append("c" * 32, ME, {"as_of": "2020-04-08", "model": "qwen3", "effort": "low"}, "secret", reply("hidden"))
 
     def tearDown(self):
+        self.logs.stop()
         self.app.store = self.original
         self.tmp.cleanup()
 
@@ -188,17 +191,14 @@ class ApiPrivacy(unittest.TestCase):
 
     def test_progress_passes_the_agent_events_through(self):
         events = [{"type": "route", "route": "household", "agents": ["minutes", "market"]},
-                  {"type": "handoff", "to": "minutes", "stage": 1},
+                  {"type": "handoff", "to": "minutes", "stage": 1, "tools": ["getDecision"]},
                   {"type": "tool_call", "name": "getDecision", "agent": "minutes", "ok": True, "ms": 5},
                   {"type": "handback", "agent": "minutes", "ok": False, "ms": 9, "error": "boom"},
                   {"type": "critic", "round": 1, "pass": True, "issues": ""}]
         path = self.app.runtime.LOGS / ("web-" + "c" * 32 + ".jsonl")
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("\n".join(json.dumps(e) for e in events) + "\n", encoding="utf-8")
-        try:
-            got = self.app.progress("c" * 32, 0, owner=ME)["events"]
-        finally:
-            path.unlink()
+        got = self.app.progress("c" * 32, 0, owner=ME)["events"]
         for want, have in zip(events, got):
             for key, value in want.items():
                 self.assertEqual(have[key], value, key)
@@ -212,10 +212,7 @@ class ApiPrivacy(unittest.TestCase):
         path = self.app.runtime.LOGS / ("web-" + "c" * 32 + ".jsonl")
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text("\n".join(json.dumps(e) for e in events) + "\n", encoding="utf-8")
-        try:
-            got = self.app.progress("c" * 32, 1, before=4, owner=ME)
-        finally:
-            path.unlink()
+        got = self.app.progress("c" * 32, 1, before=4, owner=ME)
         self.assertEqual([e["type"] for e in got["events"]], ["handoff", "agent_model", "tool_call"])
         self.assertEqual(got["events"][0]["reads"], ["minutes", "market"])
         self.assertTrue(got["events"][1]["skipped"])
@@ -237,14 +234,11 @@ class ApiPrivacy(unittest.TestCase):
             return json.dumps({"answer": "A", "structured": None, "citations": [], "warning": "", "toolCalls": [],
                                "seconds": 1, "anchorDate": "2020-04-08"})
 
-        try:
-            with mock.patch.object(app, "matlab_call", fake_matlab), mock.patch.object(app, "watchdog", contextlib.nullcontext()), \
-                    mock.patch.object(app.runtime, "ensure_ollama"), mock.patch.object(app.runtime, "ensure_model"), \
-                    mock.patch.object(app.runtime, "memory_verdict", return_value=("ok", "")):
-                one = app.chat(app.ChatRequest(message="hi", session_id=sid, agents="one"), owner=ME)
-                default = app.chat(app.ChatRequest(message="again", session_id=sid), owner=ME)
-        finally:
-            trace.unlink()
+        with mock.patch.object(app, "matlab_call", fake_matlab), mock.patch.object(app, "watchdog", contextlib.nullcontext()), \
+                mock.patch.object(app.runtime, "ensure_ollama"), mock.patch.object(app.runtime, "ensure_model"), \
+                mock.patch.object(app.runtime, "memory_verdict", return_value=("ok", "")):
+            one = app.chat(app.ChatRequest(message="hi", session_id=sid, agents="one"), owner=ME)
+            default = app.chat(app.ChatRequest(message="again", session_id=sid), owner=ME)
         self.assertEqual(one["trace"], [1, 3])
         self.assertEqual(one["agents"], "one")
         self.assertEqual(seen["args"][-1], "team")           # the default is the team

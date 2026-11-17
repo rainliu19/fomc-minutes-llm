@@ -37,6 +37,9 @@ def loaded_size_mb(name):
 def main():
     for m in json.loads((REPO / "models" / "models.json").read_text()):
         mb = loaded_size_mb(m["name"])
+        if mb is None:
+            print(f"{m['id']:10s} not loaded by Ollama; skipped")
+            continue
         print(f"{m['id']:10s} {m['label']:32s} {mb} MB = {100 * mb / RAM_MB:.0f}% of {RAM_MB // 1024} GB")
         for suffix in ("", "-multi", "-baseline"):                        # every structure uses the same model
             path = REPO / "evals" / f"{m['id']}{suffix}.json"
@@ -47,4 +50,5 @@ def main():
                 path.write_text(json.dumps(d, indent=1))
 
 
-main()
+if __name__ == "__main__":
+    main()
