@@ -16,7 +16,7 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
-import bench_live as B                         # same scoring, summary and memory helpers
+import bench_live as B  # same scoring, summary and memory helpers
 
 OLLAMA = "http://127.0.0.1:11434"
 MAX_TOKENS = 450                               # the Low effort answer cap in the app
@@ -56,21 +56,19 @@ def run_case(entry, case):
 
 
 def main():
-    entry = next((m for m in json.loads((B.REPO / "models" / "models.json").read_text()) if m["id"] == B.MODEL), None)
-    if entry is None:
-        sys.exit(f"Unknown model id '{B.MODEL}'. Ids are in models/models.json.")
-    key = json.loads((B.REPO / "evals" / "key.json").read_text())
+    entry = B.model_entry()
+    key = json.loads((B.REPO / B.KEY).read_text())
+    if B.ONLY:
+        key = [c for c in key if c["id"] in B.ONLY]
     if B.LIMIT:
         key = key[:B.LIMIT]
-    path = B.REPO / "evals" / f"{entry['id']}-baseline.json"
+    path = Path(B.OUT) if B.OUT else B.REPO / "evals" / f"{entry['id']}-baseline.json"
     rows = json.loads(path.read_text())["cases"] if path.exists() else []         # continue a run that stopped early
     done = {r["id"] for r in rows}
     for case in key:
         if case["id"] in done:
             continue
-        free, swap = B.memory()
-        if B.pressure() == 4 or swap > 3600:
-            print(f"STOP before '{case['id']}': memory critical ({free}% free, {swap:.0f} MB swap)")
+        if B.memory_critical(case["id"]):
             break
         row = run_case(entry, case)
         free, swap = B.memory()
@@ -85,4 +83,5 @@ def main():
     print(json.dumps(out["summary"]["by_category"]), "accuracy", out["summary"]["accuracy"], "->", path)
 
 
-main()
+if __name__ == "__main__":
+    main()

@@ -65,7 +65,7 @@ classdef testPathPrefetch < matlab.unittest.TestCase
             result = jsondecode(recs.result);
             tc.verifyGreaterThan(result.span.meetings, 20);
             % Even when the lookup's dates match a "no year" focus window exactly, the tool keeps them
-            ctx.focus = struct("start", ctx.asOf - calyears(3), "end", ctx.asOf, "years", 3, ...
+            ctx.focus = struct("start", ctx.asOf - calyears(3), "end", ctx.asOf, ...
                 "reason", "no year in the question, so the most recent 3 years", "fromQuestion", false);
             [~, recs] = fomc.focus.pathPrefetch(ctx, q);
             result = jsondecode(recs.result);

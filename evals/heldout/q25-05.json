@@ -1,0 +1,1134 @@
+{
+ "summary": {
+  "model": "q25-05",
+  "label": "Fast: Qwen2.5 0.5B",
+  "multi": false,
+  "params_b": 0.5,
+  "ollama_name": "fomc-q25-05",
+  "date": "2026-11-17",
+  "complete": true,
+  "tokens": {
+   "in_per_question": 3317,
+   "out_per_question": 123,
+   "total_in": 119397,
+   "total_out": 4439,
+   "api_cost_per_1000": {
+    "haiku": 0.39,
+    "sonnet": 7.87
+   },
+   "api_prices": {
+    "checked": "2026-10-06",
+    "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+    "models": [
+     {
+      "id": "haiku",
+      "label": "Claude Haiku 5.5",
+      "usd_per_mtok_in": 0.1,
+      "usd_per_mtok_out": 0.5
+     },
+     {
+      "id": "sonnet",
+      "label": "Claude Sonnet 5.5",
+      "usd_per_mtok_in": 2.0,
+      "usd_per_mtok_out": 10.0
+     }
+    ]
+   }
+  },
+  "n_cases": 36,
+  "correct": 26,
+  "n_scored": 36,
+  "accuracy": 0.722,
+  "accuracy_ci": [
+   0.56,
+   0.842
+  ],
+  "by_category": {
+   "comparison": {
+    "correct": 2,
+    "n": 2
+   },
+   "decision": {
+    "correct": 10,
+    "n": 12
+   },
+   "followup": {
+    "correct": 0,
+    "n": 3
+   },
+   "guardrail": {
+    "correct": 3,
+    "n": 3
+   },
+   "stability": {
+    "correct": 4,
+    "n": 6
+   },
+   "topic": {
+    "correct": 3,
+    "n": 4
+   },
+   "vote": {
+    "correct": 4,
+    "n": 6
+   }
+  },
+  "answered_by_code": 0,
+  "silent_errors": {
+   "count": 4,
+   "n": 36,
+   "rate": 0.111,
+   "ci": [
+    0.044,
+    0.253
+   ],
+   "wrong": 10,
+   "warned_wrong": 6
+  },
+  "stability": {
+   "stable_groups": 1,
+   "groups": 3
+  },
+  "tool_accuracy": {
+   "ok": 33,
+   "n": 33
+  },
+  "cases_citing_verified_id": 6,
+  "cases_with_warning": 27,
+  "citations": {
+   "verified": 10,
+   "total": 10
+  },
+  "invented_reason": {
+   "flagged": 0,
+   "n": 0,
+   "note": "heuristic: causal wording not found in tool results"
+  },
+  "seconds_median": 2.1500000000000004,
+  "seconds_p90": 6.3,
+  "decode_tok_s_median": 86.2,
+  "peak_swap_mb": 1067
+ },
+ "cases": [
+  {
+   "id": "decision-01",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 4.9,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 3006,
+    "output_tokens": 38,
+    "prefill_tok_s": 1491.8,
+    "decode_tok_s": 87.0
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2017-06-14]\n\nThe Committee decided to raise the target range for the federal funds rate to 1 to 1-1/4 percent.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 46,
+   "swap_mb": 1067
+  },
+  {
+   "id": "decision-02",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 2.2,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 2849,
+    "output_tokens": 38,
+    "prefill_tok_s": 3359.7,
+    "decode_tok_s": 85.2
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2018-06-13]\n\nThe Committee decided to raise the target range for the federal funds rate to 1-3/4 to 2 percent.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 46,
+   "swap_mb": 1067
+  },
+  {
+   "id": "decision-03",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.9,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 2859,
+    "output_tokens": 38,
+    "prefill_tok_s": 3395.5,
+    "decode_tok_s": 86.2
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2018-09-26]\n\nThe Committee decided to raise the target range for the federal funds rate to 2 to 2-1/4 percent.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 46,
+   "swap_mb": 1067
+  },
+  {
+   "id": "decision-04",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.9,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 2898,
+    "output_tokens": 54,
+    "prefill_tok_s": 3282.0,
+    "decode_tok_s": 86.0
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2022-07-27]\n\nThe Committee decided to raise the target range for the federal funds rate to 2-1/4 to 2-1/2 percent and anticipated that ongoing increases in the target range would be appropriate.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 45,
+   "swap_mb": 1067
+  },
+  {
+   "id": "decision-05",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.6,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 2854,
+    "output_tokens": 38,
+    "prefill_tok_s": 3365.6,
+    "decode_tok_s": 85.4
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2023-03-22]\n\nThe Committee decided to raise the target range for the federal funds rate to 4-3/4 to 5 percent.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 45,
+   "swap_mb": 1067
+  },
+  {
+   "id": "decision-06",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.2,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 2557,
+    "output_tokens": 18,
+    "prefill_tok_s": 4226.4,
+    "decode_tok_s": 82.9
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2008-10-29/policyAction/5]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 45,
+   "swap_mb": 1067
+  },
+  {
+   "id": "decision-07",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.9,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 3008,
+    "output_tokens": 41,
+    "prefill_tok_s": 3091.5,
+    "decode_tok_s": 85.1
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2019-07-31]\n\nThe Committee decided to lower the target range for the federal funds rate to 2 to 2-1/4 percent at this meeting.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 45,
+   "swap_mb": 1067
+  },
+  {
+   "id": "decision-08",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.4,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 3025,
+    "output_tokens": 13,
+    "prefill_tok_s": 3102.6,
+    "decode_tok_s": 82.3
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2019-09-18]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 45,
+   "swap_mb": 1067
+  },
+  {
+   "id": "decision-09",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 2.0,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 3002,
+    "output_tokens": 62,
+    "prefill_tok_s": 3130.3,
+    "decode_tok_s": 87.0
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2025-01-13, the anchor date, is known. No need to call any functions.]\n\nThe Committee decided to lower the target range for the federal funds rate by 25 basis points to 4-1/4 to 4-1/2 percent.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 45,
+   "swap_mb": 1067
+  },
+  {
+   "id": "decision-10",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.5,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 2859,
+    "output_tokens": 38,
+    "prefill_tok_s": 3359.6,
+    "decode_tok_s": 85.6
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2017-02-01]\n\nThe Committee decided to hold the target range for the federal funds rate at 1/2 to 3/4 percent.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 45,
+   "swap_mb": 1067
+  },
+  {
+   "id": "decision-11",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.5,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 2850,
+    "output_tokens": 38,
+    "prefill_tok_s": 3405.0,
+    "decode_tok_s": 85.2
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2017-09-20]\n\nThe Committee decided to maintain the target range for the federal funds rate at 1 to 1-1/4 percent.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 45,
+   "swap_mb": 1067
+  },
+  {
+   "id": "decision-12",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.6,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 2893,
+    "output_tokens": 42,
+    "prefill_tok_s": 3291.2,
+    "decode_tok_s": 85.7
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2023-09-20]\n\nThe Committee decided to hold the target range for the federal funds rate at 5-1/4 to 5-1/2 percent.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 45,
+   "swap_mb": 1067
+  },
+  {
+   "id": "stability-1a",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-1",
+   "seconds": 3.0,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 3196,
+    "output_tokens": 115,
+    "prefill_tok_s": 2884.5,
+    "decode_tok_s": 87.3
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[The FOMC did not raise the federal funds rate in June 2017. It raised the target range for the federal funds rate to 1 to 1-1/4 percent, but the vote was 8 for and 1 against. The dissenting member, Mr. Kashkari, preferred to maintain the existing target range for the federal funds rate at this meeting. He was concerned that raising the federal funds rate target range too soon increased the likelihood that inflation expectations would decline and that inflation would continue to run below 2 percent.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 45,
+   "swap_mb": 1067
+  },
+  {
+   "id": "stability-1b",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-1",
+   "seconds": 6.4,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 3194,
+    "output_tokens": 450,
+    "prefill_tok_s": 4148.1,
+    "decode_tok_s": 87.9
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[The FOMC minutes show that the target range for the federal funds rate was raised from 1 to 1-1/4 percent to 1 to 1-1/4 percent. The vote was 8 for, 1 against. For: Janet L. Yellen, William C. Dudley, Lael Brainard, Charles L. Evans, Stanley Fischer, Patrick Harker, Robert S. Kaplan, and Jerome H. Powell. Against: Neel Kashkari. The dissenting vote was for Mr. Kashkari, who preferred to maintain the existing target range for the federal funds rate at this meeting. He was concerned that raising the federal funds rate target range too soon increased the likelihood that inflation expectations would decline and that inflation would continue to run below 2 percent. The latest figures found by co",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 45,
+   "swap_mb": 1067
+  },
+  {
+   "id": "stability-2a",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-2",
+   "seconds": 2.6,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 2740,
+    "output_tokens": 138,
+    "prefill_tok_s": 3624.3,
+    "decode_tok_s": 88.5
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2008-10-29: The Federal Open Market Committee decided today to lower its target for the federal funds rate 50 basis points to 1 percent. The vote was 10 for, 0 against. For: Messrs. Bernanke and Geithner, Ms. Duke, Messrs. Fisher, Kohn, and Kroszner, Ms. Pianalto, Messrs. Plosser, Stern, and Warsh. Against: None.]\n\nThe FOMC cut the federal funds rate target from 50 basis points to 1 percent, which was the target rate at the end of the previous meeting.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 45,
+   "swap_mb": 1067
+  },
+  {
+   "id": "stability-2b",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-2",
+   "seconds": 2.2,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 2738,
+    "output_tokens": 134,
+    "prefill_tok_s": 6030.8,
+    "decode_tok_s": 88.2
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[The FOMC did not raise, cut or hold rates at the October 2008 meeting. The latest figures found by code, as known on 2008-11-24, show the effective federal funds rate at 0.97% on 2008-10-01, the top of the federal funds target range at 4.76% a year earlier, and the bottom of the federal funds target range at no value was public yet on this date. No observations of the federal funds rate target range were known on 2008-11-24.]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 45,
+   "swap_mb": 1067
+  },
+  {
+   "id": "stability-3a",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-3",
+   "seconds": 4.7,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 3052,
+    "output_tokens": 305,
+    "prefill_tok_s": 3107.9,
+    "decode_tok_s": 88.3
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[The FOMC did not change the federal funds rate in February 2017. The latest figures found by code, as known on 2017-02-27, show the effective federal funds rate at 0.65% on 2017-01-01, 0.4% three months earlier, and 0.34% a year earlier. The top of the federal funds target range is at 0.75% on 2017-02-26, 0.5% three months earlier, and 0.5% a year earlier. The bottom of the federal funds target range is at 0.5% on 2017-02-26, 0.25% three months earlier, and 0.25% a year earlier.]\n\nThe FOMC decided to hold the federal funds rate at 1/2 to 3/4 percent, which is the target range for the federal funds rate. The vote was 10 for, 0 against, with Janet L. Yellen, William C. Dudley, Lael Brainard, ",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 45,
+   "swap_mb": 1067
+  },
+  {
+   "id": "stability-3b",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-3",
+   "seconds": 6.0,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 3050,
+    "output_tokens": 450,
+    "prefill_tok_s": 4721.4,
+    "decode_tok_s": 88.0
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[ANCHOR DATE: 2017-02-27. Today is 2017-02-27; nothing after it is known.]\n\nANCHOR DATE: 2017-02-27. Today is 2017-02-27; nothing after it is known.\n\nANCHOR DATE: 2017-02-27. Today is 2017-02-27; nothing after it is known.\n\nANCHOR DATE: 2017-02-27. Today is 2017-02-27; nothing after it is known.\n\nANCHOR DATE: 2017-02-27. Today is 2017-02-27; nothing after it is known.\n\nANCHOR DATE: 2017-02-27. Today is 2017-02-27; nothing after it is known.\n\nANCHOR DATE: 2017-02-27. Today is 2017-02-27; nothing after it is known.\n\nANCHOR DATE: 2017-02-27. Today is 2017-02-27; nothing after it is known.\n\nANCHOR DATE: 2017-02-27. Today is 2017-02-27; nothing after it is known.\n\nANCHOR DATE: 2017-02-27. Today i",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 45,
+   "swap_mb": 1067
+  },
+  {
+   "id": "vote-01",
+   "category": "vote",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.1,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 2541,
+    "output_tokens": 27,
+    "prefill_tok_s": 4213.9,
+    "decode_tok_s": 84.1
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2008-09-16]\n\nThe vote was unanimous at the September 2008 meeting.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 44,
+   "swap_mb": 1067
+  },
+  {
+   "id": "vote-02",
+   "category": "vote",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.1,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 2666,
+    "output_tokens": 18,
+    "prefill_tok_s": 3797.7,
+    "decode_tok_s": 83.3
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2009-03-18/policyAction/1]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 45,
+   "swap_mb": 1067
+  },
+  {
+   "id": "vote-03",
+   "category": "vote",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.4,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 2847,
+    "output_tokens": 27,
+    "prefill_tok_s": 3413.7,
+    "decode_tok_s": 83.9
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2011-03-15]\n\nThe vote was unanimous at the March 2011 meeting.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 44,
+   "swap_mb": 1067
+  },
+  {
+   "id": "vote-04",
+   "category": "vote",
+   "effort": "low",
+   "group": null,
+   "seconds": 6.3,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 3021,
+    "output_tokens": 450,
+    "prefill_tok_s": 3101.6,
+    "decode_tok_s": 88.3
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2011-11-27]\n\n[2011-11-28]\n\n[2011-11-29]\n\n[2011-11-30]\n\n[2011-11-31]\n\n[2012-01-01]\n\n[2012-01-02]\n\n[2012-01-03]\n\n[2012-01-04]\n\n[2012-01-05]\n\n[2012-01-06]\n\n[2012-01-07]\n\n[2012-01-08]\n\n[2012-01-09]\n\n[2012-01-10]\n\n[2012-01-11]\n\n[2012-01-12]\n\n[2012-01-13]\n\n[2012-01-14]\n\n[2012-01-15]\n\n[2012-01-16]\n\n[2012-01-17]\n\n[2012-01-18]\n\n[2012-01-19]\n\n[2012-01-20]\n\n[2012-01-21]\n\n[2012-01-22]\n\n[2012-01-23]\n\n[2012-01-24]\n\n[2012-01-25]\n\n[2012-01-26]\n\n[2012-01-27]\n\n[2012-01-28]\n\n[2012-01-29]\n\n[2012-01-30]\n\n[2012-01-31]\n\n[2012-02-01]\n\n[2012-",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 44,
+   "swap_mb": 1067
+  },
+  {
+   "id": "vote-05",
+   "category": "vote",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.9,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 2893,
+    "output_tokens": 70,
+    "prefill_tok_s": 3295.0,
+    "decode_tok_s": 86.7
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[The vote was 9 for and 1 against. For: Ben Bernanke, William C. Dudley, Elizabeth Duke, Dennis P. Lockhart, Sandra Pianalto, Sarah Bloom Raskin, Daniel K. Tarullo, John C. Williams, and Janet L. Yellen. Against: Jeffrey M. Lacker.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 43,
+   "swap_mb": 1067
+  },
+  {
+   "id": "vote-06",
+   "category": "vote",
+   "effort": "low",
+   "group": null,
+   "seconds": 2.1,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 2997,
+    "output_tokens": 79,
+    "prefill_tok_s": 3148.1,
+    "decode_tok_s": 86.9
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2013-10-30]\n\nThe vote was 9 for, 1 against. For: Ben Bernanke, William C. Dudley, James Bullard, Charles L. Evans, Jerome H. Powell, Eric Rosengren, Jeremy C. Stein, Daniel K. Tarullo, and Janet L. Yellen. Against: Esther L. George.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 43,
+   "swap_mb": 1067
+  },
+  {
+   "id": "followup-01",
+   "category": "followup",
+   "effort": "low",
+   "group": null,
+   "seconds": 2.3,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 2,
+    "prompt_tokens": 6959,
+    "output_tokens": 220,
+    "prefill_tok_s": 4162.1,
+    "decode_tok_s": 86.5
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2014-03-19]\n\nMr. Kocherlakota dissented, citing the new forward guidance in the fifth paragraph of the statement as a weakness. He believed that the new guidance would act as a drag on economic activity and would generate uncertainty about the extent to which the Committee is willing to use monetary stimulus to foster faster growth. Mr. Kocherlakota strongly endorsed the sixth paragraph of the statement, which suggests that the Committee views inflation persistently below 2 percent as an acceptable outcome.",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 43,
+   "swap_mb": 1067
+  },
+  {
+   "id": "followup-02",
+   "category": "followup",
+   "effort": "low",
+   "group": null,
+   "seconds": 2.8,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 2,
+    "prompt_tokens": 6806,
+    "output_tokens": 193,
+    "prefill_tok_s": 4206.4,
+    "decode_tok_s": 86.3
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": false,
+   "answer": "President Fisher dissented because he believed that the continued strengthening of the real economy, the improved outlook for labor utilization and for general price stability, and continued signs of financial market excess will likely warrant an earlier reduction in monetary accommodation than is suggested by the Committee's stated forward guidance. Mr. Plosser dissented because he objected to the statement's guidance indicating that it likely will be appropriate to maintain the current target range for the federal funds rate for \"a considerable time after the asset purchase program ends.\" In his view, the reference to calendar time should be replaced with language that indicates how moneta",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 43,
+   "swap_mb": 1067
+  },
+  {
+   "id": "followup-03",
+   "category": "followup",
+   "effort": "low",
+   "group": null,
+   "seconds": 2.5,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 2,
+    "prompt_tokens": 6806,
+    "output_tokens": 161,
+    "prefill_tok_s": 4203.8,
+    "decode_tok_s": 85.4
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": false,
+   "answer": "President George dissented because she believed that an unchanged setting of policy was appropriate based on the incoming data and the outlook for economic activity over the medium term. Recognizing risks to the outlook from the crosscurrents emanating from trade policy uncertainty and weaker global activity, President George would be prepared to adjust policy should incoming data point to a materially weaker outlook for the economy. President Rosengren dissented because he did not see a clear and compelling case for additional accommodation at this time given that the unemployment rate stood near 50-year lows, inflation seemed likely to rise toward the Committee's 2 percent target, and fina",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 43,
+   "swap_mb": 1067
+  },
+  {
+   "id": "guardrail-01",
+   "category": "guardrail",
+   "effort": "low",
+   "group": null,
+   "seconds": 0.1,
+   "tools": [
+    "prefetchNotice"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "output_tokens": 0,
+    "prefill_tok_s": null,
+    "decode_tok_s": null
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The minutes of the September 2013 meeting are not public as of 2013-10-04, so there is no decision to report for it. The latest minutes available are for the meeting that ended 2013-07-31.",
+   "passed": true,
+   "tool_ok": null,
+   "expected_tool": null,
+   "free_pct": 44,
+   "swap_mb": 1067
+  },
+  {
+   "id": "guardrail-02",
+   "category": "guardrail",
+   "effort": "low",
+   "group": null,
+   "seconds": 0.2,
+   "tools": [
+    "prefetchNotice"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "output_tokens": 0,
+    "prefill_tok_s": null,
+    "decode_tok_s": null
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The minutes of the March 2017 meeting are not public as of 2017-03-31, so there is no decision to report for it. The latest minutes available are for the meeting that ended 2017-02-01.",
+   "passed": true,
+   "tool_ok": null,
+   "expected_tool": null,
+   "free_pct": 44,
+   "swap_mb": 1067
+  },
+  {
+   "id": "guardrail-03",
+   "category": "guardrail",
+   "effort": "low",
+   "group": null,
+   "seconds": 0.1,
+   "tools": [
+    "prefetchNotice"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "output_tokens": 0,
+    "prefill_tok_s": null,
+    "decode_tok_s": null
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The minutes of the March 2026 meeting are not public as of 2026-04-03, so there is no decision to report for it. The latest minutes available are for the meeting that ended 2026-01-28.",
+   "passed": true,
+   "tool_ok": null,
+   "expected_tool": null,
+   "free_pct": 43,
+   "swap_mb": 1067
+  },
+  {
+   "id": "topic-01",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 6.8,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 3052,
+    "output_tokens": 450,
+    "prefill_tok_s": 3033.8,
+    "decode_tok_s": 85.0
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[The FOMC minutes show that the unemployment rate has been 3.8% over the past year, which is higher than the target range of 3.0% to 3.5%. The nonfarm payrolls (nonfarm payrolls (monthly job gains)) increased by 1.7% in the last quarter, which is above the target range of 1.0% to 2.0%. The gap between the 10-year and 2-year Treasury yields (the gap between 10-year and 2-year Treasury yields) is 0.24%, which is below the target range of 0.5% to 1.0%. The corporate bond spread is 2.14%, which is below the target range of 2.5% to 3.0%. The stock market volatility (the VIX) is 13.12%, which is below the target range of 10.0% to 15.0%. The gap between the 10-year and 2-year Treasury yields (the g",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 38,
+   "swap_mb": 1067
+  },
+  {
+   "id": "topic-02",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 2.5,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 3086,
+    "output_tokens": 88,
+    "prefill_tok_s": 2999.0,
+    "decode_tok_s": 86.5
+   },
+   "citations_ok": 4,
+   "citations_total": 4,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2015-04-29/participantsViews/5]\n[2014-09-17/participantsViews/9]\n[2013-12-18/staffEconomy/11]\n[2012-06-20/participantsViews/8]\n[2015-04-29/participantsViews/5]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 39,
+   "swap_mb": 1067
+  },
+  {
+   "id": "topic-03",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 3.2,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 2907,
+    "output_tokens": 174,
+    "prefill_tok_s": 3292.2,
+    "decode_tok_s": 88.5
+   },
+   "citations_ok": 2,
+   "citations_total": 2,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2023-06-14/participantsViews/4] Participants generally noted that banking stresses had receded and conditions in the banking sector were much improved since early March. Participants generally continued to judge that a tightening in credit conditions spurred by banking-sector stress earlier in the year would likely weigh further on economic activity, but the extent remained uncer...\n[2023-07-26/participantsViews/1] In their discussion of current economic conditions, participants noted that economic activity had been expanding at a moderate pace. Job gains had been robust in recent months, and the unemployment rate remained low. Inflation remained elevated. Participants agreed that the U.S. ",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 39,
+   "swap_mb": 1067
+  },
+  {
+   "id": "topic-04",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 2.3,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 1,
+    "prompt_tokens": 2906,
+    "output_tokens": 103,
+    "prefill_tok_s": 3276.2,
+    "decode_tok_s": 87.7
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": true,
+   "answer": "[2020-07-29/participantsViews/10] Participants also noted several risks to long-term economic performance that were posed by the pandemic. One of these risks was that workers who lose employment as a result of the pandemic may experience a loss of skills, lose access to adequate childcare or eldercare, or become discouraged and exit the labor force. The longer-term behavior of firms and financial institutions could also be affected by the pandemic, leading to increased stress and potential financial instability.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 39,
+   "swap_mb": 1067
+  },
+  {
+   "id": "compare-01",
+   "category": "comparison",
+   "effort": "low",
+   "group": null,
+   "seconds": 5.8,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getSeries"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 2,
+    "prompt_tokens": 8868,
+    "output_tokens": 124,
+    "prefill_tok_s": 2430.3,
+    "decode_tok_s": 81.8
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The Committee's view of the housing market changed between 2010 and 2012. Specifically, the housing sector, including residential construction and home sales, remained depressed. Some participants saw disputes over mortgage and foreclosure documents as likely to delay the sale of homes. The housing market experienced a pickup in household spending and further improvement in housing markets, which were offset to some extent by a slowdown in the business sector.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 39,
+   "swap_mb": 1067
+  },
+  {
+   "id": "compare-02",
+   "category": "comparison",
+   "effort": "low",
+   "group": null,
+   "seconds": 11.3,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "assessEconomy"
+   ],
+   "stats": {
+    "answered_by_code": 0,
+    "model_calls": 2,
+    "prompt_tokens": 8412,
+    "output_tokens": 205,
+    "prefill_tok_s": 2803.1,
+    "decode_tok_s": 82.9
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "The Committee's view of the labor market changed between 2017 and 2019. The AI's reading was -0.75, which is a lean toward cuts. The next meeting cut 3 times, held 2 times (of 5). This is history, not a forecast. In the minutes of the 2019-10-30 meeting (released 2019-11-20), the AI scored the rate path -0.75 on its scale from -1 (dovish) to +1 (hawkish), a lean toward cuts.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 37,
+   "swap_mb": 1067
+  }
+ ]
+}

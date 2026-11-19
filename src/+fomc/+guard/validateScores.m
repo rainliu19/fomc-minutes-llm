@@ -15,8 +15,8 @@ issues = [issues; fomc.guard.checkScoreRange(result)];
 issues = [issues; fomc.guard.checkQuotes(result, minutesText)];
 issues = [issues; fomc.guard.checkRateConsistency(result, meetingDate, D)];
 if isstruct(result) && isscalar(result) && isfield(result, "meeting_date") && ...
-        isText(result.meeting_date) && string(result.meeting_date) ~= meetingDate
-    issues(end+1, 1) = "meeting_date does not match the requested meeting " + meetingDate + "."; %#ok<AGROW>
+        fomc.guard.isText(result.meeting_date) && string(result.meeting_date) ~= meetingDate
+    issues(end+1, 1) = "meeting_date does not match the requested meeting " + meetingDate + ".";
 end
 
 releaseDate = NaT;
@@ -32,9 +32,4 @@ if ~isnat(releaseDate)
 end
 
 issues = unique(issues(strlength(issues) > 0), "stable");
-end
-
-function tf = isText(value)
-tf = (ischar(value) && (isrow(value) || isempty(value))) || ...
-    (isstring(value) && isscalar(value));
 end

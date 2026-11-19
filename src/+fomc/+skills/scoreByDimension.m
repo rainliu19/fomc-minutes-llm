@@ -37,8 +37,7 @@ function output = scoreByDimension(s, meetingDate, nvp)
 arguments
     s (1,1) struct
     meetingDate (1,1) string = ""
-    nvp.Dimensions (1,:) string = ["rate_path", "inflation", "labor_market", "economic_activity", ...
-        "financial_conditions", "balance_sheet", "risk_balance"]
+    nvp.Dimensions (1,:) string = fomc.skills.dimensions()
 end
 
 ctx = s.ctx;
@@ -145,7 +144,7 @@ for i = 1:height(dims)
     history = addUserMessage(messageHistory, prompt);
     for attempt = 1:maxAttempts
         t0 = tic;
-        [reply, ~, stats] = s.llm(history, false, dimSchema);
+        reply = fomc.trace.llmCall(s, history, false, dimSchema, Round=attempt);
         calls = calls + 1;
         content = strtrim(string(reply));
         try
@@ -167,7 +166,7 @@ for i = 1:height(dims)
         fomc.trace.logEvent(ctx, "skill_score_validation", struct("meetingDate", meetingDate, ...
             "releaseDate", releaseDate, "dimension", key, "attempt", attempt, "ok", isempty(failures), ...
             "score", candidateScore(candidate), "reply", extractBefore(content, min(strlength(content), 800) + 1), ...
-            "issues", failures, "passages", ids, "ms", round(toc(t0) * 1000), "stats", stats));
+            "issues", failures, "passages", ids, "ms", round(toc(t0) * 1000)));
         if isstruct(candidate) && ~isempty(fieldnames(candidate))
             score.dimensions.(key) = candidate;
         end
@@ -196,8 +195,7 @@ function T = dimensionList()
 % the sections that state the Committee's view of it (read first). The balance sheet's words are
 % phrases: "balance sheet", "purchases" and "mortgage-backed" alone matched the paragraphs of
 % 2020-03-15 on households' balance sheets, consumers' purchases and mortgage payments.
-key = ["rate_path"; "inflation"; "labor_market"; "economic_activity"; "financial_conditions"; ...
-    "balance_sheet"; "risk_balance"];
+key = fomc.skills.dimensions().';
 rubric = ["ratePath.md"; "inflation.md"; "laborMarket.md"; "economicActivity.md"; ...
     "financialConditions.md"; "balanceSheet.md"; "riskBalance.md"];
 title = ["the expected path of the policy rate"; "inflation and inflation expectations"; ...
@@ -506,8 +504,7 @@ r = strtrim(string(r(1)));
 end
 
 function dimensions = dimensionsInFailures(issues)
-allDimensions = ["rate_path", "inflation", "labor_market", "economic_activity", ...
-    "financial_conditions", "balance_sheet", "risk_balance"];
+allDimensions = fomc.skills.dimensions();
 dimensions = strings(0, 1);
 for name = allDimensions
     if any(contains(issues, name))

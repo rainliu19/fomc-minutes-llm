@@ -21,15 +21,17 @@ def pct_text(s):
 
 
 def summary_rows(runs):
-    """One row per model: with-app score, bare-model score (if it was run), latency and memory."""
+    """One row per model: multi-agent, one-agent and baseline scores, latency and memory (multi-agent runs are the -multi files)."""
     bare = {r["summary"]["model"].removesuffix("-baseline"): r["summary"] for r in runs if r["summary"].get("baseline")}
+    team = {r["summary"]["model"].removesuffix("-multi"): r["summary"] for r in runs if r["summary"].get("multi")}
     rows = []
     for r in runs:
         s = r["summary"]
-        if s.get("baseline"):
+        if s.get("baseline") or s.get("multi"):
             continue
         mem = s.get("model_memory_mb")
-        rows.append({"Model": s["label"].split(": ")[-1], "Params": f"{s['params_b']}B", "Correct": pct_text(s),
+        rows.append({"Model": s["label"].split(": ")[-1], "Params": f"{s['params_b']}B", "Multi-agent": pct_text(team[s["model"]]) if s["model"] in team else "not run",
+                     "One agent": pct_text(s),
                      "Baseline": pct_text(bare[s["model"]]) if s["model"] in bare else "not run",
                      "Median Latency": f"{s['seconds_median']:.2f} s",
                      "Memory": f"{mem / 1024:.2f} GB ({round(s['model_memory_pct_of_8gb'])}%)" if mem else "not measured",
@@ -40,13 +42,15 @@ def summary_rows(runs):
 
 def main():
     runs = [json.loads(p.read_text(encoding="utf-8")) for p in sorted((REPO / "evals").glob("*.json")) if p.name != "key.json"]
-    # Best first, as on the Evaluation page: accuracy, then the same model's bare-model accuracy, then speed.
-    # A bare-model run sorts right after its model.
+    # As on the Evaluation page: the three offered builds first (Balanced, Best quality, Fast), then the rest by multi-agent
+    # accuracy. A model's multi-agent run sorts right before it, its bare-model run right after.
     by_model = {r["summary"]["model"]: r["summary"] for r in runs}        # a list being sorted cannot be read, so look up in this
+    tiers = ["Balanced", "Best quality", "Fast"]
     def order(r):
-        s = r["summary"]; app = s["model"].removesuffix("-baseline")
-        a, bare = by_model[app], by_model.get(app + "-baseline")
-        return (-a["accuracy"], -(bare["accuracy"] if bare else -1), a["seconds_median"], s.get("baseline", False))
+        s = r["summary"]; app = s["model"].removesuffix("-baseline").removesuffix("-multi")
+        a = by_model[app]; team = by_model.get(app + "-multi", a)
+        tier = a["label"].split(": ")[0] if ": " in a["label"] else ""
+        return (tiers.index(tier) if tier in tiers else len(tiers), -team["accuracy"], a.get("model_memory_mb") or 0, app, 0 if s.get("multi") else 2 if s.get("baseline") else 1)
     runs.sort(key=order)
     out = REPO / "data"
     # One row per model
@@ -72,4 +76,5 @@ def main():
     print(f"{len(rows)} models -> data/model_evaluation_summary.csv, {len(cases)} answers -> data/model_evaluation_cases.csv")
 
 
-main()
+if __name__ == "__main__":
+    main()

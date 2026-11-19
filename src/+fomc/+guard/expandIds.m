@@ -14,7 +14,7 @@ chars = char(text);
 for k = numel(tok):-1:1
     suffix = "/" + string(tok{k}{1}) + "/" + string(tok{k}{2});
     match = known(endsWith(known, suffix));
-    if numel(match) == 1
+    if isscalar(match)
         chars = [chars(1:st(k)-1) char(match) chars(en(k)+1:end)];
     end
 end

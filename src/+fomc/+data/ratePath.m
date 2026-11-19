@@ -14,17 +14,27 @@ arguments
     asOf (1,1) datetime
 end
 
+% The same date is asked for several times in one question: keep the last answer
+persistent key moves0 levels0
+stamp = D.id + "|" + posixtime(asOf);
+if ~isempty(key) && key == stamp
+    moves = moves0;
+    levels = levels0;
+    return
+end
+
 % The single target, then the range once it starts, each as known on the anchor date
 [target, ~] = fomc.data.valueAsOf(D, "DFEDTAR", asOf);
 [top, ~] = fomc.data.valueAsOf(D, "DFEDTARU", asOf);
 [bottom, ~] = fomc.data.valueAsOf(D, "DFEDTARL", asOf);
-bounds = innerjoin(top(:, ["date", "value"]), bottom(:, ["date", "value"]), Keys="date");
-if ~isempty(bounds)
-    target = target(target.date < min(bounds.date), :);
+% Days that have both the upper and the lower bound
+[both, at] = ismember(top.date, bottom.date);
+if any(both)
+    target = target(target.date < min(top.date(both)), :);
 end
 levels = [table(target.date, target.value, target.value, VariableNames=["date", "lower", "upper"]); ...
-    table(bounds.date, bounds.value_right, bounds.value_left, VariableNames=["date", "lower", "upper"])];
-levels = sortrows(levels(~isnan(levels.upper) & ~isnan(levels.lower), :), "date");
+    table(top.date(both), bottom.value(at(both)), top.value(both), VariableNames=["date", "lower", "upper"])];
+levels = sortrows(levels, "date");
 
 % A move is any day the target differs from the day before
 changed = [false; diff(levels.upper) ~= 0 | diff(levels.lower) ~= 0];
@@ -35,16 +45,15 @@ moves.change = round(moves.upper - prevUpper(changed), 4);
 % Tie each move to the meeting it came from: the rate data dates it the meeting's last day or the day after
 M = D.meetings;
 moves.meetingIdx = nan(height(moves), 1);
-for i = 1:height(moves)
-    k = find(abs(days(moves.date(i) - M.MeetingDate)) <= 1, 1);
-    if ~isempty(k)
-        moves.meetingIdx(i) = k;
-    end
-end
+[near, first] = max(abs(days(moves.date - M.MeetingDate.')) <= 1, [], 2);   % the first meeting within a day of each move
+moves.meetingIdx(near) = first(near);
 % A move with no meeting was made between meetings, but only where the meetings are known:
 % the data starts with the January 2008 meeting, and scheduled meetings are at least five
 % weeks apart, so a move in the 30 days before it (January 22, 2008) came between meetings.
 % Earlier moves are left unlabeled.
 known = min(M.MeetingDate) - caldays(30);
 moves.betweenMeetings = isnan(moves.meetingIdx) & moves.date >= known;
+key = stamp;
+moves0 = moves;
+levels0 = levels;
 end

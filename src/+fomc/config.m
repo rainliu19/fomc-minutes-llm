@@ -2,13 +2,12 @@ function cfg = config(nvp)
 %CONFIG Default settings for the agent. cfg = fomc.config(Name=Value) overrides any.
 %
 %   backend            "ollama" (local, free); the only one built.
-%   model              Ollama model name; "fomc-qwen3" is built from models/qwen3/Modelfile.
+%   model              Ollama model name; "fomc-fast" (IBM Granite 3.3 2B) is built from models/fast/Modelfile.
 %   endpoint           Ollama address.
 %   timeoutSec         Wait for one model call.
 %   maxToolRounds      Tool-call rounds per turn.
 %   maxToolChars       Cap on the text one tool returns (about 1.2k tokens).
 %   maxResultChars     Hard cap on any encoded tool result.
-%   anchorType         "release" or "meeting": which date anchors a meeting.
 %   modelCutoff        Model knowledge cutoff (datetime); NaT = unverified.
 %   cutoffBufferDays   Margin after the cutoff before a meeting counts as clean.
 %   focusYears         Default span of minutes a question looks at (see fomc.focus.window).
@@ -21,18 +20,28 @@ function cfg = config(nvp)
 %   structuredTemperature  Randomness of the JSON calls (skill scores, the structured analysis);
 %                      0, so the same minutes get the same score (at 0.2 one dimension of the
 %                      June 2022 minutes scored 0.25, 0.5 and 0 in three runs).
-%   scorerModel        Model for the rubric scorer, independent of the agent.
+%   scorerModel        Model for the rubric scorer, independent of the agent. "fomc-qwen3" unless told
+%                      otherwise: the saved scores (data/) and the scorer's checks were made and validated
+%                      with it, and a scorer on another model starts with no saved scores.
 %   verbose            Print each tool call as it runs.
+%   parallel           Run the agents of one stage at the same time on thread workers, when
+%                      memory allows. Off: they run one after another (a stage is mostly
+%                      quick lookups, and the one model answers one call at a time anyway).
+%   agentSummarizeOver Evidence shorter than this many characters goes to the writer as it is,
+%                      with no sub-agent model call (the lookups are 500 to 1,600 characters; a
+%                      summary of a decision card cost 8 to 20 s and dropped what the writer
+%                      cites). 0: every specialist with evidence summarizes it.
+%   criticRounds       Most answers the critic checks per turn: the draft and, if it fails,
+%                      one rewrite.
 
 arguments
     nvp.backend (1,1) string = "ollama"
-    nvp.model (1,1) string = "fomc-qwen3"
+    nvp.model (1,1) string = "fomc-fast"
     nvp.endpoint (1,1) string = "127.0.0.1:11434"
     nvp.timeoutSec (1,1) double = 600
     nvp.maxToolRounds (1,1) double = 8
     nvp.maxToolChars (1,1) double = 4000
     nvp.maxResultChars (1,1) double = 30000
-    nvp.anchorType (1,1) string {mustBeMember(nvp.anchorType,["release","meeting"])} = "release"
     nvp.modelCutoff (1,1) datetime = NaT
     nvp.cutoffBufferDays (1,1) double = 90
     nvp.focusYears (1,1) double = 3
@@ -45,22 +54,24 @@ arguments
     nvp.compactAtTokens (1,1) double = 5500
     nvp.scorerModel (1,1) string = ""
     nvp.verbose (1,1) logical = true
+    nvp.parallel (1,1) logical = false
+    nvp.agentSummarizeOver (1,1) double {mustBeNonnegative} = 1500
+    nvp.criticRounds (1,1) double {mustBeInteger, mustBePositive} = 2
     nvp.dataDir (1,1) string = ""
     nvp.logDir (1,1) string = ""
 end
 
-% Start from the options given, then add the repo root and default folders
+% Start from the options given, then fill in the default folders
 cfg = nvp;
 root = string(fileparts(fileparts(fileparts(mfilename("fullpath")))));
-cfg.root = root;
 if cfg.dataDir == ""
     cfg.dataDir = fullfile(root, "data");
 end
 if cfg.logDir == ""
     cfg.logDir = fullfile(root, "logs");
 end
-% The scorer uses the agent model unless told otherwise
+% The scorer keeps the model its saved scores were made with, whatever the agent's model
 if cfg.scorerModel == ""
-    cfg.scorerModel = cfg.model;
+    cfg.scorerModel = "fomc-qwen3";
 end
 end

@@ -5,7 +5,7 @@ function t = contextBlock(ctx, brief)
 
 anchor = fomc.util.fmtDate(ctx.asOf);
 t = strjoin([
-    "ANCHOR DATE: " + anchor + ". Treat it as today."
+    fomc.anchorLine(ctx.asOf)
     "DATA AS KNOWN ON " + anchor + " (observation dates in brackets):"
     brief
     ], newline);

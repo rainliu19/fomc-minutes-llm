@@ -122,5 +122,5 @@ end
 function ctx = makeCtx(tc, startDate, endDate)
 ctx = fomc.context(datetime(2020,3,1), tc.cfg, tc.D, tracePath=string(tempname)+".jsonl");
 % Set the focus window by hand
-ctx.focus = struct("start", startDate, "end", endDate, "years", 3, "reason", "test");
+ctx.focus = struct("start", startDate, "end", endDate, "reason", "test");
 end

@@ -2,16 +2,18 @@
 
     uv run python -m unittest tests/test_chats.py
 """
+import contextlib
 import json
 import re
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from server.chats import ChatStore  # noqa: E402
+from server.chats import ChatStore
 
 REPO = Path(__file__).parent.parent
 
@@ -112,13 +114,11 @@ class Privacy(unittest.TestCase):
         self.assertEqual([c["id"] for c in self.store.list(ME)], ["mine"])
         self.assertEqual([c["id"] for c in self.store.list(YOU)], ["yours"])
 
-    def test_old_chats_without_an_owner_go_to_the_first_browser_that_asks(self):
-        old = self.store.folder / "old.json"
-        old.write_text(json.dumps({"id": "old", "title": "from before", "created": 1, "updated": 1, "messages": []}))
-        self.store.claim_unowned(YOU)
-        self.store.claim_unowned(ME)                       # too late: already claimed
-        self.assertEqual([c["id"] for c in self.store.list(YOU)], ["old"])
-        self.assertNotIn("old", [c["id"] for c in self.store.list(ME)])
+    def test_a_chat_without_an_owner_is_nobodys(self):
+        (self.store.folder / "old.json").write_text(json.dumps({"id": "old", "title": "x", "created": 1, "updated": 1, "messages": []}))
+        for owner in (ME, YOU):
+            self.assertNotIn("old", [c["id"] for c in self.store.list(owner)])
+            self.assertIsNone(self.store.get("old", owner))
 
 
 class OwnerCookie(unittest.TestCase):
@@ -131,6 +131,7 @@ class OwnerCookie(unittest.TestCase):
 
     def test_a_new_browser_gets_a_random_owner_and_a_cookie(self):
         from starlette.responses import Response
+
         import app
         response = Response()
         owner = app.owner_of(self.request(), response)
@@ -140,11 +141,13 @@ class OwnerCookie(unittest.TestCase):
 
     def test_two_new_browsers_get_different_owners(self):
         from starlette.responses import Response
+
         import app
         self.assertNotEqual(app.owner_of(self.request(), Response()), app.owner_of(self.request(), Response()))
 
     def test_a_returning_browser_keeps_its_owner(self):
         from starlette.responses import Response
+
         import app
         response = Response()
         self.assertEqual(app.owner_of(self.request(f"{app.OWNER_COOKIE}={ME}"), response), ME)
@@ -152,6 +155,7 @@ class OwnerCookie(unittest.TestCase):
 
     def test_a_made_up_cookie_is_replaced(self):
         from starlette.responses import Response
+
         import app
         owner = app.owner_of(self.request(f"{app.OWNER_COOKIE}=../../etc"), Response())
         self.assertRegex(owner, r"^[0-9a-f]{32}$")
@@ -166,9 +170,12 @@ class ApiPrivacy(unittest.TestCase):
         self.tmp = tempfile.TemporaryDirectory()
         self.original = app.store
         app.store = ChatStore(Path(self.tmp.name) / "chats")
+        self.logs = mock.patch.object(app.runtime, "LOGS", Path(self.tmp.name) / "logs")   # never the repo's own logs
+        self.logs.start()
         app.store.append("c" * 32, ME, {"as_of": "2020-04-08", "model": "qwen3", "effort": "low"}, "secret", reply("hidden"))
 
     def tearDown(self):
+        self.logs.stop()
         self.app.store = self.original
         self.tmp.cleanup()
 
@@ -183,6 +190,72 @@ class ApiPrivacy(unittest.TestCase):
 
     def test_progress_of_another_browsers_chat_is_hidden(self):
         self.assertEqual(self.app.progress("c" * 32, 0, owner=YOU), {"events": [], "next": 0})
+
+    def test_progress_of_a_session_that_was_never_saved_is_hidden(self):
+        path = self.app.runtime.LOGS / ("web-" + "d" * 32 + ".jsonl")
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({"type": "route"}) + "\n", encoding="utf-8")
+        self.assertEqual(self.app.progress("d" * 32, 0, owner=ME), {"events": [], "next": 0})
+
+    def test_progress_passes_the_agent_events_through(self):
+        events = [{"type": "route", "route": "household", "agents": ["minutes", "market"]},
+                  {"type": "handoff", "to": "minutes", "stage": 1, "tools": ["getDecision"]},
+                  {"type": "tool_call", "name": "getDecision", "agent": "minutes", "ok": True, "ms": 5},
+                  {"type": "handback", "agent": "minutes", "ok": False, "ms": 9, "error": "boom"},
+                  {"type": "critic", "round": 1, "pass": True, "issues": ""}]
+        path = self.app.runtime.LOGS / ("web-" + "c" * 32 + ".jsonl")
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("\n".join(json.dumps(e) for e in events) + "\n", encoding="utf-8")
+        got = self.app.progress("c" * 32, 0, owner=ME)["events"]
+        for want, have in zip(events, got):
+            for key, value in want.items():
+                self.assertEqual(have[key], value, key)
+
+    def test_progress_passes_the_timeline_fields_clips_results_and_stops_at_before(self):
+        events = [{"type": "message", "agent": "writer", "role": "user", "text": "Q", "from": ["minutes"]},
+                  {"type": "handoff", "to": "consumer", "reads": ["minutes", "market"]},
+                  {"type": "agent_model", "agent": "market", "skipped": True, "reason": "under"},
+                  {"type": "tool_call", "name": "getSnapshot", "result": "x" * 5000, "ok": True},
+                  {"type": "model_response", "content": "later"}]
+        path = self.app.runtime.LOGS / ("web-" + "c" * 32 + ".jsonl")
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text("\n".join(json.dumps(e) for e in events) + "\n", encoding="utf-8")
+        got = self.app.progress("c" * 32, 1, before=4, owner=ME)
+        self.assertEqual([e["type"] for e in got["events"]], ["handoff", "agent_model", "tool_call"])
+        self.assertEqual(got["events"][0]["reads"], ["minutes", "market"])
+        self.assertTrue(got["events"][1]["skipped"])
+        self.assertLessEqual(len(got["events"][2]["result"]), 1503)
+        self.assertEqual(got["next"], 4)
+
+    def test_a_chat_reply_says_which_trace_lines_it_made_and_whether_a_team_answered(self):
+        app = self.app
+        sid = "d" * 32
+        trace = app.runtime.LOGS / f"web-{sid}.jsonl"
+        trace.parent.mkdir(parents=True, exist_ok=True)
+        trace.write_text("old\n", encoding="utf-8")
+        seen = {}
+
+        def fake_matlab(name, *args, nargout=1):
+            seen["args"] = args
+            with trace.open("a", encoding="utf-8") as f:
+                f.write("one\ntwo\n")
+            return json.dumps({"answer": "A", "structured": None, "citations": [], "warning": "", "toolCalls": [],
+                               "seconds": 1, "anchorDate": "2020-04-08"})
+
+        with mock.patch.object(app, "matlab_call", fake_matlab), mock.patch.object(app, "watchdog", contextlib.nullcontext()), \
+                mock.patch.object(app.runtime, "ensure_ollama"), mock.patch.object(app.runtime, "ensure_model"), \
+                mock.patch.object(app.runtime, "memory_verdict", return_value=("ok", "")):
+            one = app.chat(app.ChatRequest(message="hi", session_id=sid, agents="one"), owner=ME)
+            default = app.chat(app.ChatRequest(message="again", session_id=sid), owner=ME)
+        self.assertEqual(one["trace"], [1, 3])
+        self.assertEqual(one["agents"], "one")
+        self.assertEqual(seen["args"][-1], "team")           # the default is the team
+        self.assertEqual(default["trace"], [3, 5])
+        saved = app.get_chat(sid, owner=ME)
+        self.assertEqual(saved["agents"], "team")
+        self.assertEqual([m.get("trace") for m in saved["messages"] if m["role"] == "assistant"], [[1, 3], [3, 5]])
+        app.chat(app.ChatRequest(message="bench", session_id="e" * 32, save=False), owner=ME)
+        self.assertEqual(app.get_chat("e" * 32, owner=ME), {})      # a benchmark question is not kept as a chat
 
     def test_chatting_into_another_browsers_chat_is_refused(self):
         req = self.app.ChatRequest(message="hi", session_id="c" * 32)
@@ -204,8 +277,8 @@ class ModelList(unittest.TestCase):
         self.assertEqual(len({m["name"] for m in self.models}), len(self.models))
 
     def test_the_first_model_is_the_default_and_three_are_offered(self):
-        self.assertEqual(self.models[0]["id"], "qwen3")
-        self.assertEqual([m["id"] for m in self.models if m.get("offered", True)], ["qwen3", "fast", "q25-15"])
+        self.assertEqual(self.models[0]["id"], "fast")      # IBM Granite 3.3 2B: the best accuracy for its memory
+        self.assertEqual([m["id"] for m in self.models if m.get("offered", True)], ["fast", "qwen3", "q25-05"])
 
     def test_every_model_has_a_parameter_count_for_the_evaluation(self):
         for m in self.models:
@@ -227,16 +300,21 @@ class Evaluation(unittest.TestCase):
             for rx in c["checks"] + c["forbid"]:
                 re.compile(rx)                       # every pattern is a valid regex
 
-    def test_the_evals_route_lists_runs_smallest_model_first(self):
+    def test_the_lookahead_route_returns_each_held_out_set_with_its_key_and_runs(self):
         import app
-        sizes = [r["summary"]["params_b"] for r in app.evals()]
-        self.assertEqual(sizes, sorted(sizes))
+        got = app.evals_lookahead()
+        self.assertEqual(set(got), {"fresh", "unseen"})      # the development key and retired runs (archive) are not served
+        for name, d in got.items():
+            self.assertTrue(d["key"], name)
+            for r in d["runs"]:
+                self.assertIn("overall", r["summary"])
+                self.assertEqual(len(r["cases"]), r["summary"]["n_done"])
 
     def test_every_run_has_tokens_and_a_cloud_api_cost_that_matches_the_price_table(self):
         import app
         prices = json.loads((REPO / "models" / "api_prices.json").read_text())["models"]
         runs = app.evals()
-        self.assertEqual(len(runs), 16)                        # the price file is not mistaken for a run
+        self.assertEqual(len(runs), len(list((REPO / "evals").glob("*.json"))) - 1)    # every run but key.json
         for r in runs:
             t = r["summary"]["tokens"]
             self.assertGreaterEqual(t["in_per_question"], 0)

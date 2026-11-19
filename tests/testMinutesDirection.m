@@ -17,7 +17,7 @@ classdef testMinutesDirection < matlab.unittest.TestCase
             tc.applyFixture(matlab.unittest.fixtures.PathFixture(here));
             tc.applyFixture(matlab.unittest.fixtures.PathFixture(fullfile(fileparts(here), "src")));
             tc.D = fomc.data.load();
-            tc.model = fomc.config(verbose=false).model;
+            tc.model = fomc.config(verbose=false).scorerModel;
         end
     end
 

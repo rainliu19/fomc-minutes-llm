@@ -74,7 +74,7 @@ classdef testDataPrefetch < matlab.unittest.TestCase
         end
 
         function aTopicWithNoSeriesInTheDataIsSkipped(tc)
-            tc.verifyEmpty(fomc.focus.dataTopics("mortgage rates", ["UNRATE"]));
+            tc.verifyEmpty(fomc.focus.dataTopics("mortgage rates", "UNRATE"));
         end
 
         function aWideQuestionIsCapped(tc)

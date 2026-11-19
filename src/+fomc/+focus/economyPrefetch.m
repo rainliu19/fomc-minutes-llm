@@ -78,14 +78,9 @@ end
 end
 
 function tf = asksWherePolicyShouldGo(q)
-% The next or future decisions, whether policy is too tight or too loose, the Fed's goals, or
-% what markets expect
+% The next or future decisions (fomc.focus.asksNextMove), whether policy is too tight or too loose,
+% the Fed's goals, or what markets expect
 patterns = [
-    "next (fomc |fed )?(meeting|decision|move|step)"
-    "(future|upcoming|coming) (fomc |fed )?(meetings?|decisions?|rate (moves|decisions))"
-    "(will|could|might|are) (the fed's |interest )?rates (go up|go down|rise|fall|come down|be (raised|cut|lowered))"
-    "(should|will|would|could|might) the (fed|fomc|committee) (raise|cut|lower|hike|hold|increase|tighten|ease|pause|keep|change)"
-    "what (should|will|would|could|might) the (fed|fomc|committee) do"
     "where (should|will) (interest )?rates (go|be|head)"
     "(more|further|another|any) (rate )?(hikes?|cuts?|increases?)"
     "rate (hikes?|cuts?|increases?) (coming|likely|expected|ahead)"
@@ -99,5 +94,5 @@ patterns = [
     "output gap|overheat\w*|(?<![a-z])slack(?![a-z])"
     "(markets?|investors?|traders?) (expect|are pricing|price in|see)"
     ];
-tf = any(~cellfun(@isempty, regexp(q, patterns, "once")));
+tf = fomc.focus.asksNextMove(q) || any(~cellfun(@isempty, regexp(q, patterns, "once")));
 end

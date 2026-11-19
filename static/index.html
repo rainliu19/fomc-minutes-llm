@@ -33,10 +33,10 @@
   .evalbtn:hover { background: #25598c; border-color: #25598c; }
   .controls .col2 { justify-self: end; }
   .blurb { margin: 0; max-width: 760px; color: #d6e0ea; font-size: 14.5px; }
-  .layout { display: flex; flex: 1; min-height: 0; }
+  .layout { display: flex; flex: 1; min-height: 0; overflow-x: auto; }
   aside { width: 270px; flex: none; overflow-y: auto; background: var(--side); border-right: 1px solid var(--line); padding: 12px;
           display: flex; flex-direction: column; gap: 10px; }
-  main { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 12px 20px 0; max-width: 900px; }
+  main { flex: 1 0 24rem; display: flex; flex-direction: column; padding: 12px 20px 0; max-width: 900px; }
   #scroll { flex: 1; overflow-y: auto; min-height: 0; padding: 4px 4px 12px 0; }
   #composer { flex: none; padding: 8px 0 10px; background: var(--bg); }
   #menu { display: none; margin: 0 0 10px; }
@@ -99,7 +99,6 @@
   .fn { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 13px; color: var(--text); font-weight: 600; }
   .kind { display: inline-block; margin-left: 6px; padding: 0 7px; border: 1px solid var(--line); border-radius: 99px;
           font-size: 11px; color: var(--muted); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-weight: normal; }
-  .kind.skill { color: var(--gold); border-color: var(--gold); }
   .ms { margin-left: 6px; font-size: 12px; color: var(--muted); font-weight: normal; }
   .plain { color: var(--text); font-size: 13px; }
   details.tool > summary { list-style: none; }
@@ -112,6 +111,7 @@
   @media (max-width: 760px) {
     .layout { flex-direction: column; }
     aside { max-height: 40vh; }
+    main { flex: 1 1 auto; }
     aside { width: auto; border-right: none; border-bottom: 1px solid var(--line); }
     aside.closed { display: none; }
     #menu { display: inline-block; }
@@ -144,8 +144,14 @@
       </span>
       <span id="efforthint"></span>
     </div>
-    <div class="field col2"><label for="model">Model (runs locally via Ollama)</label><select id="model"></select></div>
-    <a class="evalbtn col2" href="/evaluation" title="Accuracy, speed and memory of every local model, with our agent and as a baseline">Compare model accuracy and speed &rarr;</a>
+    <div class="field col2"><label for="model" title="Runs locally on this computer through Ollama">Model</label><select id="model"></select></div>
+    <div class="field col2">
+      <span class="lab">Agents</span>
+      <span class="seg" id="agentmode">
+        <button type="button" data-v="team" class="on" title="An organizer sends the question to specialist agents (minutes, market, ...), then a writer answers and a critic checks">Team</button><button type="button" data-v="one" title="One agent looks things up, answers and checks, with no specialists">One</button>
+      </span>
+    </div>
+    <a class="evalbtn col2" href="/evaluation" title="Accuracy, speed and memory of every local model, with our agent and as a baseline">Compare models &rarr;</a>
   </div>
 
   <div id="scroll">
@@ -157,10 +163,7 @@
     </div>
 
     <div id="log"></div>
-    <details id="activity" hidden open>
-      <summary id="actsum">Working...</summary>
-      <div id="actlines"></div>
-    </details>
+    <div id="activity" hidden><span id="actsum">Working...</span></div>
   </div>
 
   <div id="composer">
@@ -180,6 +183,7 @@ const $ = (id) => document.getElementById(id);
 // The open chat's id (null until the first message), the chosen effort, and how long each effort takes
 let sessionId = null;
 let effort = "low";
+let agents = "team";
 const EFFORT_HINT = {low: "short answer, about 15 s", medium: "more passages and detail, about 30 s",
                      high: "checked structured analysis, about 1 min"};
 
@@ -300,19 +304,19 @@ function plainCall(name, a) {
 
 // Two lines: the function name (with a tag and its time), then the plain-English sentence
 function stepHtml(name, kind, ms, plain, ok) {
-  const tag = kind ? `<span class="kind${kind === "skill" ? " skill" : ""}">${esc(kind)}</span>` : "";
+  const tag = kind ? `<span class="kind">${esc(kind)}</span>` : "";
   const fn = name ? `<span class="fn">${esc(name)}</span>${tag}<span class="ms">${ms != null ? ms + " ms" : ""}${ok === false ? " (error)" : ""}</span><br>` : "";
   return `${fn}<span class="plain">${esc(plain)}</span>`;
 }
 
 // Tool calls are model-chosen; lookups are run by the harness before the model starts (a lookup can run a
 // tool, such as getOutlook, through the normal tool path, so the turn marks them)
-const kindOf = (name, lookup) => lookup || name.startsWith("prefetch") ? "automatic lookup" : "tool";
+const kindOf = (name, lookup, agent) => (agent ? agent + " agent: " : "") + (lookup || name.startsWith("prefetch") ? "automatic lookup" : "tool");
 
 // A collapsible list of the tool calls the agent made; click one to see its arguments and result
 function toolsHtml(calls) {
   if (!calls || !calls.length) return "";
-  const items = calls.map(c => `<details class="tool step"><summary>${stepHtml(c.name, kindOf(c.name, c.lookup), c.ms, plainCall(c.name, c.args), c.ok)}</summary>` +
+  const items = calls.map(c => `<details class="tool step"><summary>${stepHtml(c.name, kindOf(c.name, c.lookup, c.agent), c.ms, plainCall(c.name, c.args), c.ok)}</summary>` +
     `<pre>${esc(JSON.stringify(c.args))}\n\n${esc(c.result)}</pre></details>`).join("");
   return `<details><summary>Tools used (${calls.length})</summary>${items}</details>`;
 }
@@ -342,40 +346,19 @@ function citationsHtml(cites, nums) {
   return `<details open><summary>Sources (${cites.length})</summary>${items}</details>`;
 }
 
-// The HTML for one live progress step, or null for events that are not shown
-function describe(e) {
-  if (e.type === "tool_call") return stepHtml(e.name, kindOf(e.name), e.ms, plainCall(e.name, e.args), e.ok);
-  if (e.type === "prefetch" && e.kind === "data") return stepHtml("prefetchData", "automatic lookup", null, plainCall("prefetchData", {series: e.series}));
-  if (e.type === "prefetch" && e.kind === "passages") return stepHtml("prefetchPassages", "automatic lookup", null, plainCall("prefetchPassages"));
-  if (e.type === "model_response") return stepHtml("", "", null, e.nToolCalls ? `Model step ${e.round}: chose ${e.nToolCalls} tool call(s)` : `Model step ${e.round}: writing the answer`);
-  if (e.type === "nudge") return stepHtml("", "", null, "Reminded the model to read the minutes first");
-  if (e.type === "grounding_check") return stepHtml("checkGrounding", "check", null, `Checked quotes and figures (attempt ${e.attempt})`);
-  return null;
-}
-
-// Every 2 seconds while the agent works: fetch new progress events and list every step in the activity box
-async function poll(sid, state) {
-  try {
-    const r = await (await fetch(`/progress?session_id=${sid}&after=${state.after}`)).json();
-    state.after = r.next;
-    for (const e of r.events) { const t = describe(e); if (t) state.lines.push(t); }
-    const secs = Math.round((Date.now() - state.t0) / 1000);
-    $("actsum").textContent = `Working... ${secs}s (${state.lines.length} steps)`;
-    $("actlines").innerHTML = state.lines.map(h => `<div class="step">${h}</div>`).join("");
-  } catch (_) {}
-}
-
 // One finished answer: text, warning, sources, structured analysis, tools used, and its footer
 function assistantHtml(r) {
   const nums = citeNumbers(r.answer, r.citations);
   return render(r.answer, nums, r.citations) + (r.warning ? `<div class="warn">${esc(r.warning)}</div>` : "") +
     citationsHtml(r.citations, nums) + structuredHtml(r.structured) + toolsHtml(r.tool_calls) +
-    `<div class="meta">As of ${esc(niceDate(r.anchor))} - ${Math.round(r.seconds)} s</div>`;
+    `<div class="meta">As of ${esc(niceDate(r.anchor))} - ${Math.round(r.seconds)} s` +
+    (r.trace ? ` - <a href="#" class="how" data-trace="${r.trace.join(",")}">See how the agents worked</a>` : "") + `</div>`;
 }
 
 // While a chat has messages its date and model are fixed (they were chosen when it started)
 function lockSettings(locked) {
   $("asof").disabled = locked; $("model").disabled = locked;
+  document.querySelectorAll("#agentmode button").forEach(b => b.disabled = locked);
   $("starters").hidden = locked;
 }
 
@@ -384,6 +367,12 @@ function setEffort(v) {
   effort = v;
   document.querySelectorAll("#effort button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
   $("efforthint").textContent = EFFORT_HINT[v];
+}
+
+// Highlight the chosen agent setting
+function setAgents(v) {
+  agents = v;
+  document.querySelectorAll("#agentmode button").forEach(b => b.classList.toggle("on", b.dataset.v === v));
 }
 
 // Start an empty chat
@@ -453,27 +442,25 @@ async function openChat(id) {
   for (const m of chat.messages) {
     if (m.role === "user") add("user", esc(m.text)); else add("assistant", assistantHtml(m));
   }
-  $("asof").value = chat.as_of; $("model").value = chat.model; setEffort(chat.effort || "low");
+  $("asof").value = chat.as_of; $("model").value = chat.model; setEffort(chat.effort || "low"); setAgents(chat.agents || "team");
   lockSettings(true); renderChats(); $("side").classList.add("closed");
 }
 
-// Sending a question: show it, start polling for progress, wait for the answer, then show it
+// Sending a question: show it, count the seconds, wait for the answer, then show it
 $("form").addEventListener("submit", async (ev) => {
   ev.preventDefault();
   const message = $("input").value.trim();
   if (!message) return;
   if (!sessionId) sessionId = crypto.randomUUID();
   lockSettings(true);
-  $("activity").hidden = false; $("actsum").textContent = "Working..."; $("actlines").innerHTML = "";
+  $("activity").hidden = false; $("actsum").textContent = "Working...";
   add("user", esc(message)); $("input").value = "";
   $("send").disabled = true;
-  // Start counting trace lines after the ones already there (a continued chat has older ones)
-  const start = await (await fetch(`/progress?session_id=${sessionId}&after=1000000000`)).json();
-  const state = {after: start.next, lines: [], t0: Date.now()};
-  const timer = setInterval(() => poll(sessionId, state), 2000);
+  const t0 = Date.now();      // every 2 seconds while the agent works, show how long it has been
+  const timer = setInterval(() => { $("actsum").textContent = `Working... ${Math.round((Date.now() - t0) / 1000)}s`; }, 2000);
   try {
     const res = await fetch("/chat", {method: "POST", headers: {"Content-Type": "application/json"},
-      body: JSON.stringify({message, session_id: sessionId, as_of: $("asof").value, effort, model: $("model").value})});
+      body: JSON.stringify({message, session_id: sessionId, as_of: $("asof").value, effort, model: $("model").value, agents})});
     const r = await res.json();
     sessionId = r.session_id;
     add("assistant", assistantHtml(r));
@@ -496,6 +483,16 @@ $("input").addEventListener("keydown", (e) => {
 });
 
 document.querySelectorAll("#effort button").forEach(b => b.addEventListener("click", () => setEffort(b.dataset.v)));
+document.querySelectorAll("#agentmode button").forEach(b => b.addEventListener("click", () => setAgents(b.dataset.v)));
+// "See how the agents worked" under an answer: go to the page that draws that answer's part of the trace
+$("log").addEventListener("click", (ev) => {
+  const link = ev.target.closest("a.how");
+  if (link) {
+    ev.preventDefault();       // its own page, in this tab like the Evaluation page: one column per agent needs the width
+    const [a, b] = link.dataset.trace.split(",").map(Number);
+    location.href = `/agents?session_id=${encodeURIComponent(sessionId)}&after=${a}&before=${b}`;
+  }
+});
 $("new").addEventListener("click", newChat);
 $("menu").addEventListener("click", () => $("side").classList.toggle("closed"));
 
@@ -510,6 +507,8 @@ $("menu").addEventListener("click", () => $("side").classList.toggle("closed"));
   } catch (e) { /* the date and model boxes simply stay empty */ }
   $("side").classList.add("closed");
   await loadChats();
+  const back = new URLSearchParams(location.search).get("chat");       // "Back to the chat" from the agents page
+  if (back) { history.replaceState(null, "", "/"); openChat(back); }
 })();
 </script>
 </body>

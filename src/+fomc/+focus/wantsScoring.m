@@ -30,8 +30,7 @@ if asksToneOrStance && anyMatch(q, topicPatterns)
     return
 end
 
-patterns = [ ...
-    "(?<![a-z])compare.*?(meetings?|fed|fomc|stance|scores?)(?![a-z])" ];
+patterns = "(?<![a-z])compare.*?(meetings?|fed|fomc|stance|scores?)(?![a-z])";
 if anyMatch(q, patterns)
     tf = true;
     return

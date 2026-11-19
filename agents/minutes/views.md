@@ -1,0 +1,1 @@
+These paragraphs say what participants expected for the coming meetings. Say who held each view ("several participants") and which way it leans, and keep each paragraph's id. Never answer yes or no, and never say what the Fed should do.

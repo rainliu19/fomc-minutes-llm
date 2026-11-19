@@ -36,5 +36,5 @@ else
     reason = "the question mentions " + strjoin(string(years), ", ") + ", so that whole span";
 end
 w = struct("start", dateshift(startDate, "start", "day"), "end", dateshift(endDate, "start", "day"), ...
-    "years", cfg.focusYears, "reason", reason, "fromQuestion", ~isempty(years));
+    "reason", reason, "fromQuestion", ~isempty(years));
 end

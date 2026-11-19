@@ -31,15 +31,19 @@ for c = textCols
 end
 
 % Collect everything into one struct; split the minutes into numbered paragraphs
+D.id = "D" + posixtime(datetime("now")) + "-" + randi(1e9);   % names this data set, for the memos in ratePath and policyViews
 D.wide = wide;
 D.vint = vint;
 D.dict = dict;
 D.avail = avail;
+D.series = fomc.data.seriesIndex(wide, vint, avail);
 D.meetings = minutes;
 D.paras = fomc.data.splitParagraphs(minutes);
 % Paragraph ids like 2020-03-15/policyAction/12: the model cites them, the harness turns them back into text.
 D.paras.id = fomc.util.fmtDate(minutes.MeetingDate(D.paras.meetingIdx)) + "/" + ...
     D.paras.section + "/" + D.paras.paraIdx;
+% What fomc.retrieve.rank needs from every paragraph, worked out once
+D.corpus = struct("low", lower(D.paras.text), "len", strlength(D.paras.text), "avgLen", mean(strlength(D.paras.text)));
 % One decision card per meeting, read from the text by code
 D.cards = fomc.data.decisionCards(minutes, D.paras);
 end

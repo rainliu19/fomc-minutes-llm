@@ -20,7 +20,7 @@ rules = {
     "yield|treasur|curve|bond", ["DGS2", "DGS10", "T10Y2Y"]
     "sentiment|confidence|consumer", ["UMCSENT", "MICH"]
     "gdp|growth|economy|economic activity|spending|retail|recession|expansion|growing", ["A191RL1Q225SBEA", "GDPC1", "PCEC96", "RSAFS"]
-    "fed funds|federal funds|policy rate|interest rate|target range|rate hike|rate cut|rates", ["FEDFUNDS", "DFEDTARU", "DFEDTARL"]
+    "fed funds|federal funds|policy rate|interest rate|target range|targeting|rate hike|rate cut|rates", ["FEDFUNDS", "DFEDTARU", "DFEDTARL"]
     };
 ids = strings(0, 1);
 for i = 1:size(rules, 1)

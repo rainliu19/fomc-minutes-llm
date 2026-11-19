@@ -118,7 +118,7 @@ persistent cachedKey cachedH
 M = D.meetings;
 % The AI's saved scores change the minutes' direction, so a new score means a new history
 key = height(M) + "|" + fomc.util.fmtDate(M.MeetingDate(end)) + "|" + ...
-    numel(fomc.skills.scoreCache("list", fomc.config(verbose=false).model));
+    numel(fomc.skills.scoreCache("list", fomc.config(verbose=false).scorerModel));
 if ~isempty(cachedH) && cachedKey == key
     H = cachedH;
     return

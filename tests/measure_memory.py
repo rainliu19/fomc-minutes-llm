@@ -4,7 +4,7 @@
 
 For each model in models/models.json: load it with a one-word prompt, read the size Ollama reports for
 the loaded model (/api/ps: weights plus the context window set in its Modelfile), then unload it. The
-size goes into evals/<id>.json and evals/<id>-baseline.json as model_memory_mb, which the Evaluation page
+size goes into evals/<id>.json, <id>-multi.json and <id>-baseline.json as model_memory_mb, which the Evaluation page
 and the CSV show. The hidden MATLAB the app also runs adds about 1 GB on top. Run it alone: another model
 loaded at the same time would be counted too.
 """
@@ -37,8 +37,11 @@ def loaded_size_mb(name):
 def main():
     for m in json.loads((REPO / "models" / "models.json").read_text()):
         mb = loaded_size_mb(m["name"])
+        if mb is None:
+            print(f"{m['id']:10s} not loaded by Ollama; skipped")
+            continue
         print(f"{m['id']:10s} {m['label']:32s} {mb} MB = {100 * mb / RAM_MB:.0f}% of {RAM_MB // 1024} GB")
-        for suffix in ("", "-baseline"):                                 # the full app and the bare-model row use the same model
+        for suffix in ("", "-multi", "-baseline"):                        # every structure uses the same model
             path = REPO / "evals" / f"{m['id']}{suffix}.json"
             if path.exists():
                 d = json.loads(path.read_text())
@@ -47,4 +50,5 @@ def main():
                 path.write_text(json.dumps(d, indent=1))
 
 
-main()
+if __name__ == "__main__":
+    main()

@@ -75,7 +75,7 @@ async def lifespan(app: FastAPI):
     try:
         runtime.ensure_model(runtime.model_entry(None))
     except RuntimeError as e:
-        raise SystemExit(str(e))
+        raise SystemExit(str(e)) from e
     engine = runtime.start_matlab()
     watchdog = runtime.Watchdog()
     # Ask MATLAB for a few facts to confirm it works, then hand control to the server
@@ -96,6 +96,8 @@ class ChatRequest(BaseModel):
     as_of: str = ""                          # YYYY-MM-DD; only used when a session starts
     effort: str = "low"                      # "low", "medium" or "high"
     model: str = ""                          # a model id from models/models.json; "" is the default
+    agents: str = "team"                     # "team" (organizer and specialists) or "one" (the writer alone)
+    save: bool = True                        # the benchmarks send false: their questions are not chats to reopen
 
 
 @app.get("/")
@@ -117,20 +119,41 @@ def info(model: str = ""):
     return data
 
 
+@app.get("/agents")
+def agents_page():
+    """How the agents worked for one answer, full width, opened in a new tab from the chat."""
+    return FileResponse(HERE / "static" / "agents.html", headers={"Cache-Control": "no-cache"})
+
+
 @app.get("/evaluation")
 def evaluation_page():
     return FileResponse(HERE / "static" / "evals.html", headers={"Cache-Control": "no-cache"})
 
 
+def saved_runs(folder: Path) -> list[dict]:
+    """Every saved run in a folder (its *.json files except the question key)."""
+    return [json.loads(p.read_text(encoding="utf-8")) for p in sorted(folder.glob("*.json")) if p.name != "key.json"]
+
+
 @app.get("/evals")
 def evals():
-    """Every model's saved evaluation (evals/<modelId>.json from tests/bench_live.py), smallest model first."""
-    runs = []
-    for path in sorted((HERE / "evals").glob("*.json")):
-        if path.name != "key.json":
-            runs.append(json.loads(path.read_text(encoding="utf-8")))
-    runs.sort(key=lambda r: r["summary"].get("params_b") or 0)
-    return runs
+    """Every model's saved evaluation (evals/<modelId>.json from tests/bench_live.py); the page orders them."""
+    return saved_runs(HERE / "evals")
+
+
+@app.get("/evals/heldout")
+def evals_heldout():
+    """The held-out check: the same models on evals/heldout/key.json (meetings the main key never uses)."""
+    return saved_runs(HERE / "evals" / "heldout")
+
+
+@app.get("/evals/lookahead")
+def evals_lookahead():
+    """The held-out look-ahead sets (evals/lookahead/unseen, fresh: key.json and the runs from tests/bench_lookahead.py),
+    as {name: {key, runs}}. The development key's runs and the retired ones (archive/) are not served."""
+    folder = HERE / "evals" / "lookahead"
+    return {p.name: {"key": json.loads((p / "key.json").read_text(encoding="utf-8")), "runs": saved_runs(p)}
+            for p in sorted(folder.iterdir()) if p.is_dir() and (p / "key.json").exists()}
 
 
 @app.get("/evals/key")
@@ -143,6 +166,7 @@ def evals_key():
 def chat(request: ChatRequest, owner: str = Depends(owner_of)):
     session_id = clean_session_id(request.session_id)
     effort = request.effort if request.effort in EFFORTS else "low"
+    agents = request.agents if request.agents in ("team", "one") else "team"
     entry = runtime.model_entry(request.model)
     failed = {"session_id": session_id, "structured": None, "citations": [], "warning": "",
               "tool_calls": [], "seconds": 0, "anchor": request.as_of}
@@ -152,27 +176,34 @@ def chat(request: ChatRequest, owner: str = Depends(owner_of)):
     if verdict == "refuse":
         return {**failed, "answer": message}
     runtime.LOGS.mkdir(exist_ok=True)
-    trace = str(runtime.LOGS / f"web-{session_id}.jsonl")
+    trace_path = runtime.LOGS / f"web-{session_id}.jsonl"
+    trace = str(trace_path)
+    first_line = line_count(trace_path)      # this turn's events are the lines after these
     try:
         runtime.ensure_ollama()              # restarts the model server if the watchdog had to stop it
         runtime.ensure_model(entry)          # builds the chosen model the first time it is used
         with watchdog:
             result = json.loads(matlab_call("fomc.web.turn", session_id, request.message, request.as_of,
-                                            effort, entry["name"], trace, store.seed(session_id, owner)))
-    except Exception as e:                   # MATLAB errors come back as a message, not a crash
+                                            effort, entry["name"], trace, store.seed(session_id, owner), agents))
+    except Exception as e:  # noqa: BLE001  MATLAB errors come back as a message, not a crash
         reason = f" ({runtime.panic_reason})" if runtime.panic_reason else ""
         return {**failed, "answer": f"Agent error{reason}: {str(e)[:300]}"}
     reply = {"answer": result["answer"], "structured": result["structured"], "citations": result["citations"],
              "warning": result["warning"], "tool_calls": result["toolCalls"], "seconds": result["seconds"],
-             "anchor": result["anchorDate"]}
-    store.append(session_id, owner, {"as_of": result["anchorDate"], "model": entry["id"], "effort": effort},
-                 request.message, reply)
-    return {"session_id": session_id, **reply, "memory": message}
+             "anchor": result["anchorDate"], "agents": agents, "trace": [first_line, line_count(trace_path)]}
+    if request.save:
+        store.append(session_id, owner, {"as_of": result["anchorDate"], "model": entry["id"], "effort": effort, "agents": agents},
+                     request.message, reply)
+    return {"session_id": session_id, **reply}
+
+
+def line_count(path: Path) -> int:
+    """How many lines a trace file has so far (0 before its first turn)."""
+    return len(path.read_text(encoding="utf-8").splitlines()) if path.exists() else 0
 
 
 @app.get("/chats")
 def list_chats(owner: str = Depends(owner_of)):
-    store.claim_unowned(owner)               # chats saved before owners existed go to the first browser
     return store.list(owner)
 
 
@@ -196,27 +227,29 @@ def delete_chat(chat_id: str, owner: str = Depends(owner_of)):
 
 
 @app.get("/progress")
-def progress(session_id: str, after: int = 0, owner: str = Depends(owner_of)):
-    """New trace events since line `after`, so the page can show tool calls while the model works."""
-    if store.owned_by_other(clean_session_id(session_id), owner):
+def progress(session_id: str, after: int = 0, before: int | None = None, owner: str = Depends(owner_of)):
+    """Trace events from line `after` up to line `before`: one answer's part of the chat's trace, for the agents page."""
+    if not store.get(clean_session_id(session_id), owner):     # a session never saved has no owner on record: its trace is private too
         return {"events": [], "next": 0}
     # Read the session's trace file and return the lines added since the page last asked
     path = runtime.LOGS / f"web-{clean_session_id(session_id)}.jsonl"
     events = []
     if path.exists():
         lines = path.read_text(encoding="utf-8").splitlines()
+        if before is not None:
+            lines = lines[:before]
         for line in lines[after:]:
             try:
                 e = json.loads(line)
             except json.JSONDecodeError:
                 continue
-            events.append({k: e.get(k) for k in ("type", "kind", "series", "name", "args", "ok", "ms", "round",
-                                                 "nToolCalls", "attempt", "stats")})
+            if isinstance(e.get("result"), str) and len(e["result"]) > 1500:
+                e["result"] = e["result"][:1500] + "..."
+            events.append(e)
         after = len(lines)
     return {"events": events, "next": after}
 
 
 if __name__ == "__main__":
-    # 127.0.0.1 = this machine only; 8787 = the port for this app
     # Run only when started directly. 127.0.0.1 means this machine only; 8787 is the port
     uvicorn.run(app, host="127.0.0.1", port=PORT)

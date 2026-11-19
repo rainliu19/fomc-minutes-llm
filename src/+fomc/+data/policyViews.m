@@ -23,6 +23,16 @@ arguments
     k (1,1) double
 end
 
+% Read once per meeting and data set: the same meeting is read several times for one question
+persistent memo
+if isempty(memo)
+    memo = containers.Map();
+end
+key = D.id + "|" + k;
+if isKey(memo, key)
+    V = memo(key);
+    return
+end
 V = struct("meetingDate", fomc.util.fmtDate(D.meetings.MeetingDate(k)), "lean", "", "leanShare", "", "views", {{}});
 P = D.paras(D.paras.meetingIdx == k & any(D.paras.section == ["participantsViews", "policyAction"], 2), :);
 views = {};
@@ -52,6 +62,7 @@ rank = cellfun(@(v) v.weight + v.onOutlook + 0.25 * v.timed, views);
 views = views(order);
 V.views = views;
 [V.lean, V.leanShare] = leanOf(views);
+memo(key) = V;
 end
 
 function v = readView(s, onOutlook)

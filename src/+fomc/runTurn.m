@@ -9,11 +9,17 @@ function [s, answer, structured, calls] = runTurn(s, userMsg, nvp)
 %   (fomc.analysis.structure); structured is [] in chat mode. calls: one record per tool
 %   call (name, args, result, ok, ms); the first s.lastLookups of them are the harness's own
 %   lookups (fomc.focus.prefetch). A failed turn is rolled back so the session stays valid.
+%   Lookups: the specialist agents' work (fomc.agents.run), a struct of text, recs and structured
+%   (and from: the agents whose reports the text carries), used in place of the harness's own lookups
+%   and, for scoring, in place of the score.
+%   Nudge false: do not push the model to read minutes first (specialist agents without minutes tools).
 
 arguments
     s (1,1) struct
     userMsg (1,1) string
     nvp.Format (1,1) string {mustBeMember(nvp.Format, ["chat", "analysis"])} = "chat"
+    nvp.Lookups = []
+    nvp.Nudge (1,1) logical = true
 end
 
 % Set up: pick the focus window for this question, and keep the history so a failed turn can be undone
@@ -30,7 +36,16 @@ fomc.trace.logEvent(ctx, "user_message", struct("text", userMsg, ...
 
 % Skill-matched scoring requests use the dedicated structured scorer and validation loop.
 if fomc.focus.wantsScoring(userMsg)
-    [s, answer, structured] = scoreWithSkill(s, userMsg);
+    if isempty(nvp.Lookups)
+        r = fomc.agents.rubricScorer(s.ctx, struct("route", "score", "question", userMsg, "session", s));
+        answer = r.text;
+        structured = r.structured;
+    else
+        answer = nvp.Lookups.text;
+        structured = nvp.Lookups.structured;
+    end
+    s.history = addUserMessage(s.history, userMsg);
+    s.history = addResponseMessage(s.history, struct("role", "assistant", "content", answer));
     fomc.trace.logEvent(ctx, "final_answer", struct("text", answer, ...
         "nToolCalls", 0, "finished", isstruct(structured) && isfield(structured, "ok") && structured.ok));
     return
@@ -41,7 +56,12 @@ question = userMsg + newline + newline + fomc.focus.note(ctx);
 % Let the harness look up the decision card or best passages itself, so a small model cannot skip it.
 % After a question about how rates moved, a follow-up that only changes the period gets the rate path too.
 followsRatePath = isfield(s, "lastUsedRatePath") && s.lastUsedRatePath;
-[found, pre] = fomc.focus.prefetch(ctx, userMsg, nvp.Format == "analysis", followsRatePath);
+if isempty(nvp.Lookups)
+    [found, pre] = fomc.focus.prefetch(ctx, userMsg, nvp.Format == "analysis", followsRatePath);
+else
+    found = nvp.Lookups.text;
+    pre = nvp.Lookups.recs;
+end
 % How many of this turn's calls the harness made before the model started (they come first), so
 % the page can tell them from the tools the model chose
 s.lastLookups = 0;
@@ -79,12 +99,17 @@ end
 % Add the message to the conversation
 s.history = addUserMessage(s.history, question);
 
-% Loop state: the final answer, whether the model finished, whether we already pushed back
+% Loop state: the final answer, whether the model finished, whether we already pushed back, and which
+% agents' reports the first question carries (for the page's timeline)
+from = strings(1, 0);
+if isstruct(nvp.Lookups) && isfield(nvp.Lookups, "from")
+    from = nvp.Lookups.from;
+end
 answer = "";
 finished = false;
 nudged = false;
 % Minutes questions need the minutes read, in either mode
-aboutMinutes = nvp.Format == "analysis" || fomc.focus.aboutMinutes(userMsg);
+aboutMinutes = nvp.Nudge && (nvp.Format == "analysis" || fomc.focus.aboutMinutes(userMsg));
 % Main loop: ask the model; if it asks for tools, run them and ask again; stop when it answers
 try
     for iter = 1:ctx.cfg.maxToolRounds
@@ -96,14 +121,11 @@ try
                 fomc.trace.logEvent(ctx, "compact", struct("replaced", nReplaced));
             end
         end
-        % Ask the model, then record what it said and how long it took
-        t0 = tic;
-        [text, out, stats] = s.llm(s.history, true, []);
+        % Ask the model (fomc.trace.llmCall records what it was sent and what it said)
+        [text, out] = fomc.trace.llmCall(s, s.history, true, [], Round=iter, From=from);
+        from = strings(1, 0);    % only the first question carries the specialists' reports
         tcs = toolCallsOf(out);
-        content = cleanText(string(text));
-        fomc.trace.logEvent(ctx, "model_response", struct("round", iter, ...
-            "content", content, "nToolCalls", numel(tcs), ...
-            "thinking", clip(thinkingOf(out), 4000), "ms", round(toc(t0) * 1000), "stats", stats));
+        content = fomc.llm.cleanText(string(text));
 
         % Add the model's reply (text and any tool calls) to the conversation
         msg = struct("role", "assistant", "content", content);
@@ -164,120 +186,6 @@ end
 fomc.trace.logEvent(ctx, "final_answer", struct("text", answer, "nToolCalls", numel(calls), "finished", finished));
 end
 
-function [s, answer, output] = scoreWithSkill(s, userMsg)
-% Route one or more requested meeting dates to the validated score skill. Each meeting is
-% scored one dimension per model call (fomc.skills.scoreByDimension), so every prompt fits
-% the local models' 8,192-token window; the one-call fomc.skills.scoreMeeting sends the full
-% minutes, about 11,000 to 17,000 tokens, which those models refuse or cut.
-text = char(userMsg);
-dateMatches = regexp(text, '\d{4}-\d{2}-\d{2}', 'match');
-[monthDates, monthIssue] = meetingsNamedByMonth(s, text);
-dates = unique([string(dateMatches(:)); monthDates], "stable");
-isComparison = any(contains(lower(userMsg), ["compare", "comparison", "versus", " vs "]));
-asksLatest = ~isempty(regexpi(text, '(?<![a-z])latest(?![a-z])', 'once'));
-if isComparison && asksLatest
-    dates = unique([dates(:); latestReleasedMeetingDate(s)], "stable");
-end
-if monthIssue ~= ""
-    % A month with no meeting or with several: ask, rather than score some other meeting
-    answer = monthIssue;
-    output = struct("skill", "fomc-score", "ok", false, "issues", answer, ...
-        "failedDimensions", strings(0, 1), "attempts", 0);
-elseif isComparison && numel(dates) < 2
-    answer = "To compare FOMC scores, include at least two distinct meeting dates (YYYY-MM-DD), or pair one date with 'latest'.";
-    output = struct("skill", "fomc-score", "ok", false, "issues", answer, ...
-        "failedDimensions", strings(0, 1), "attempts", 0);
-else
-    try
-        if numel(dates) <= 1
-            meetingDate = "";
-            if ~isempty(dates)
-                meetingDate = dates(1);
-            end
-            output = fomc.skills.scoreByDimension(s, meetingDate);
-            output.skill = "fomc-score";
-            answer = string(jsonencode(fomc.skills.forJson(output.score)));
-        else
-            scores = cell(numel(dates), 1);
-            validation = cell(numel(dates), 1);
-            allIssues = strings(0, 1);
-            failedDimensions = strings(0, 1);
-            attempts = 0;
-            ok = true;
-            for i = 1:numel(dates)
-                result = fomc.skills.scoreByDimension(s, dates(i));
-                scores{i} = result.score;
-                validation{i} = struct("meeting_date", string(result.score.meeting_date), ...
-                    "ok", result.ok, "issues", result.issues, ...
-                    "failedDimensions", result.failedDimensions, "attempts", result.attempts);
-                ok = ok && result.ok;
-                attempts = attempts + result.attempts;
-                allIssues = [allIssues; string(result.score.meeting_date) + ": " + result.issues(:)]; %#ok<AGROW>
-                failedDimensions = union(failedDimensions, result.failedDimensions, "stable");
-            end
-            output = struct("skill", "fomc-score", "scores", {scores}, "validation", {validation}, ...
-                "ok", ok, "issues", allIssues, "failedDimensions", failedDimensions, ...
-                "attempts", attempts);
-            encoded = output;
-            encoded.scores = cellfun(@fomc.skills.forJson, scores, UniformOutput=false);
-            answer = string(jsonencode(encoded));
-        end
-    catch ME
-        issue = "Scoring failed: " + fomc.trace.scrub(string(ME.message));
-        output = struct("skill", "fomc-score", "ok", false, "issues", issue, ...
-            "failedDimensions", strings(0, 1), "attempts", 0);
-        answer = string(jsonencode(output));
-        fomc.trace.logEvent(s.ctx, "skill_score_error", struct("message", issue));
-    end
-end
-
-s.history = addUserMessage(s.history, userMsg);
-s.history = addResponseMessage(s.history, struct("role", "assistant", "content", answer));
-end
-
-function [dates, issue] = meetingsNamedByMonth(s, text)
-% Meetings named by month and year ("December 2015", "Dec. 2015"), as YYYY-MM-DD. A month
-% with exactly one meeting held by the anchor date gives that meeting; a month with none or
-% with several gives an issue asking for the date instead. Meetings after the anchor are not
-% listed, so the answer cannot reveal them.
-dates = strings(0, 1);
-issue = "";
-tokens = regexpi(text, ['(?<![a-z])(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|' ...
-    'july?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\.?,?\s+(\d{4})(?!\d)'], ...
-    'tokens');
-abbreviations = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
-held = s.ctx.D.meetings.MeetingDate(s.ctx.D.meetings.MeetingDate <= s.ctx.asOf);
-for k = 1:numel(tokens)
-    mo = find(abbreviations == extractBefore(lower(string(tokens{k}{1})), 4));
-    yr = str2double(tokens{k}{2});
-    named = string(datetime(yr, mo, 1), "MMMM yyyy");
-    inMonth = held(year(held) == yr & month(held) == mo);
-    if numel(inMonth) == 1
-        dates(end+1, 1) = fomc.util.fmtDate(inMonth); %#ok<AGROW>
-    elseif isempty(inMonth)
-        issue = "I have no FOMC meeting in " + named + " (by " + fomc.util.fmtDate(s.ctx.asOf) + ...
-            "). Give the meeting date as YYYY-MM-DD.";
-        return
-    else
-        issue = "There were " + numel(inMonth) + " FOMC meetings in " + named + " (" + ...
-            strjoin(fomc.util.fmtDate(inMonth), ", ") + "). Which one should I score? " + ...
-            "Give the date as YYYY-MM-DD.";
-        return
-    end
-end
-end
-
-function meetingDate = latestReleasedMeetingDate(s)
-% Resolve "latest" using the same release-date rule as the scorers.
-M = s.ctx.D.meetings;
-available = find(M.ReleaseDate <= s.ctx.asOf);
-if isempty(available)
-    error("fomc:skills:noReleasedMeetings", "No meeting minutes were released by the anchor date.");
-end
-[~, order] = sort(M.ReleaseDate(available), "descend");
-meetingDate = fomc.util.fmtDate(M.MeetingDate(available(order(1))));
-end
-
 function tcs = toolCallsOf(out)
 % Tool calls from the add-on's reply, as a struct array with id and function.
 tcs = [];
@@ -295,19 +203,6 @@ for k = 1:numel(tcs)
         tcs(k).id = "call_" + k;
     end
 end
-end
-
-function t = thinkingOf(out)
-% The model's separate 'thinking' text, if it sent any
-t = "";
-if isfield(out, "thinking") && ~isempty(out.thinking)
-    t = string(out.thinking);
-end
-end
-
-function t = cleanText(t)
-% Drop any inline <think>...</think> block.
-t = strtrim(regexprep(t, "<think>.*?</think>", ""));
 end
 
 function t = clip(t, n)

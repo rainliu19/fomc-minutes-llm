@@ -21,6 +21,10 @@ parsed = struct();
 
 if isempty(i)
     json = errorJson("Unknown tool '" + name + "'. Available tools: " + strjoin([reg.name], ", ") + ".");
+elseif isfield(ctx, "allowedTools") && ~ismember(name, ctx.allowedTools)
+    % An agent may call only its own tools (set by fomc.agents.runStage); a limit in code, not in the prompt
+    json = errorJson("Tool '" + name + "' is not allowed for the " + ctx.agent + " agent. Allowed: " + strjoin(ctx.allowedTools, ", ") + ".");
+    fomc.trace.logEvent(ctx, "guardrail_block", struct("stage", "agent_tools", "tool", name, "message", json));
 else
     % Read the arguments the model sent
     [parsed, perr] = parseArgs(args);

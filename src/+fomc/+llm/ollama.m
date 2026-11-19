@@ -1,6 +1,7 @@
-function f = ollama(cfg, systemPrompt)
+function f = ollama(cfg, systemPrompt, nvp)
 %OLLAMA A function that sends a conversation to the local Ollama model.
-%   f = fomc.llm.ollama(cfg, systemPrompt)
+%   f = fomc.llm.ollama(cfg, systemPrompt, Tools=names)
+%   Tools: offer only these tools (a specialist agent's) instead of all exposed ones.
 %   [text, out, stats] = f(history, useTools, format)
 %
 %   history: messageHistory. useTools: offer the tools marked expose in fomc.tools.registry.
@@ -12,12 +13,17 @@ function f = ollama(cfg, systemPrompt)
 arguments
     cfg (1,1) struct
     systemPrompt (1,1) string
+    nvp.Tools (1,:) string = string.empty   % offer only these tools (a specialist agent's), default all exposed
 end
 
 % Three chat objects: one offered the tools, one without, and one for JSON that fits a schema
 % (skill scores, the structured analysis) at cfg.structuredTemperature
 reg = fomc.tools.registry();
-tools = [reg([reg.expose]).tool];
+offered = [reg.expose];
+if ~isempty(nvp.Tools)
+    offered = ismember(string({reg.name}), nvp.Tools);
+end
+tools = [reg(offered).tool];
 withTools = ollamaChat(cfg.model, systemPrompt, Tools=tools, ...
     TimeOut=cfg.timeoutSec, Endpoint=cfg.endpoint, Temperature=cfg.temperature);
 plain = ollamaChat(cfg.model, systemPrompt, TimeOut=cfg.timeoutSec, Endpoint=cfg.endpoint, Temperature=cfg.temperature);

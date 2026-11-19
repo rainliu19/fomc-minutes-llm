@@ -34,7 +34,7 @@ Each browser gets a random owner id in a cookie (`fomc_owner`), and every chat i
 
 ## Anchor date
 
-Every session has an anchor date, `asOf`; nothing dated after it may reach the model. A meeting's anchor is its minutes release date, since the minutes are not public before then (`cfg.anchorType`).
+Every session has an anchor date, `asOf`; nothing dated after it may reach the model. A meeting's anchor is its minutes release date, since the minutes are not public before then.
 
 - **Minutes** are visible only if released on or before the anchor.
 - **Revised series** (17) use the real-time vintage history: the value as published by the anchor. A gap in the vintage history keeps the earlier value; an observation with nothing after its window is dropped. Series with no real-time values before their first vintage (e.g. `JTSJOL` before 2010-08) say so instead of guessing.
@@ -249,3 +249,11 @@ Each run writes `logs/trace-<runId>.jsonl` (web sessions: `logs/web-<session>.js
 - The model is small. It handles lookups and short summaries; decisions and votes come from code, but check other claims against the cited paragraph.
 - Only meetings after the model's training cutoff are clean, and the local model's cutoff is not yet verified.
 - On an 8 GB Mac, close MATLAB and heavy apps before `uv run app.py`. See [MATLAB_GAPS.md](MATLAB_GAPS.md) for MATLAB limits found along the way.
+
+## Multi-agent mode
+
+`cfg.parallel`, `cfg.criticRounds`; see `docs/agents.md`. New trace
+events: `route {route, agents}`, `stage {stage, agents, parallel}`, `handoff {to, stage, tools}`,
+`handback {agent, to, ok, ms, nIds, error}`, `critic {round, pass, issues}`, `parallel_off {reason}`, `agent_model {ms, fallback, reason}` (a specialist's own model call; its `model_response` and tool events carry the agent too). Events inside an
+agent carry `agent`. `fomc.agents.run` is the entry for every turn; `fomc.runTurn` is its writer loop.
+

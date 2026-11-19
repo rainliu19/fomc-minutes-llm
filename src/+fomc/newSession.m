@@ -4,12 +4,15 @@ function s = newSession(asOf, cfg, nvp)
 %   Builds the context, runs the data brief and connects the model. s is a plain struct:
 %   pass it to fomc.runTurn and keep the one it returns. The anchor date and data go in
 %   s.contextBlock, which fomc.runTurn puts before the first question. Llm: a function
-%   f(history, useTools, format) used instead of Ollama, for tests (fomc.llm.Mock).
+%   f(history, useTools, format) used instead of Ollama, for tests (fomc.llm.Mock). AgentLlm: the
+%   same for the specialist agents, a factory f(cfg, prompt, tools) returning such a function
+%   (without it a test's specialists make no model calls).
 
 arguments
     asOf (1,1) datetime
     cfg (1,1) struct = fomc.config()
     nvp.Llm = []
+    nvp.AgentLlm = []
     nvp.Data = []
     nvp.TracePath (1,1) string = ""
 end
@@ -37,7 +40,7 @@ end
 % ids returned by tools so far, for the citation check. lastUsedRatePath: the last answered
 % question used getPolicyPath, so a follow-up that only changes the period gets it too.
 s = struct("ctx", ctx, "history", messageHistory, "llm", llm, "systemPrompt", prompt, "contextBlock", block, ...
-    "known", strings(0, 1), "ownsLlm", isempty(nvp.Llm), "effort", "low", "lastUsedRatePath", false);
+    "known", strings(0, 1), "ownsLlm", isempty(nvp.Llm), "effort", "low", "lastUsedRatePath", false, "agentLlm", {nvp.AgentLlm});
 % Record the start of the session in the trace
 fomc.trace.logEvent(ctx, "session_start", struct("model", cfg.model, "backend", cfg.backend, ...
     "briefChars", strlength(brief), "maxToolRounds", cfg.maxToolRounds));

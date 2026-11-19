@@ -14,7 +14,7 @@ classdef testAnalysisMock < matlab.unittest.TestCase
             tc.applyFixture(matlab.unittest.fixtures.PathFixture(here));
             tc.applyFixture(matlab.unittest.fixtures.PathFixture(fullfile(fileparts(here), "src")));
             tc.D = syntheticData();
-            tc.cfg = fomc.config(verbose=false, prefetch=false);
+            tc.cfg = fomc.config(criticRounds=1, verbose=false, prefetch=false);
         end
     end
 

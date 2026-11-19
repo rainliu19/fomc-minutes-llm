@@ -43,8 +43,9 @@ classdef testBudgets < matlab.unittest.TestCase
                 tokens = (strlength(p) + schemaChars()) / 3.3;
                 % Raised from 1850 for getOutlook (about 83 tokens; it was about 1824 before), then
                 % from 1925 for assessEconomy (about 91 tokens), then from 2025 for readSkill and
-                % the skill list in the system prompt (it is about 2,348 now)
-                tc.verifyLessThanOrEqual(tokens, 2375, "first-turn prompt at " + fomc.util.fmtDate(asOf));
+                % the skill list in the system prompt (it was about 2,348), then to 2625 for the lookahead
+                % rules of agents/shared/asof.md (about 120 tokens)
+                tc.verifyLessThanOrEqual(tokens, 2625, "first-turn prompt at " + fomc.util.fmtDate(asOf));
             end
         end
 
@@ -61,7 +62,7 @@ classdef testBudgets < matlab.unittest.TestCase
             % sessions, the model server can reuse its work.
             a = fomc.systemPrompt(); b = fomc.systemPrompt();
             tc.verifyEqual(a, b);
-            tc.verifyLessThan(strlength(a), 2200);
+            tc.verifyLessThan(strlength(a), 2700);      % was 2200 before the lookahead rules (about 450 characters)
             ctxA = fomc.context(datetime(2020,4,8), tc.cfg, tc.D, tracePath=string(tempname) + ".jsonl");
             ctxB = fomc.context(datetime(2019,4,8), tc.cfg, tc.D, tracePath=string(tempname) + ".jsonl");
             tc.verifyNotEqual(fomc.contextBlock(ctxA, "x"), fomc.contextBlock(ctxB, "x"));

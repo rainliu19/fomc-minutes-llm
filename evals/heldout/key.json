@@ -1,0 +1,594 @@
+[
+ {
+  "id": "decision-01",
+  "category": "decision",
+  "as_of": "2017-07-10",
+  "questions": [
+   "What did the Committee decide at its June 2017 meeting?"
+  ],
+  "checks": [
+   "(?i)\\b(rais|increas|hik|higher)",
+   "(?<![\\d./-])1(?!\\.[1-9]|\\d|/)",
+   "1-1/4|(?<![\\d.])1\\.25(?!\\d)|(?<![\\d.])1.25(?!\\d)"
+  ],
+  "forbid": [
+   "(?i)\\b(lowered|cut|reduced|decreased)\\b"
+  ],
+  "tool": "getDecision",
+  "meeting": "2017-06-14"
+ },
+ {
+  "id": "decision-02",
+  "category": "decision",
+  "as_of": "2018-07-10",
+  "questions": [
+   "What did the Committee decide at its June 2018 meeting?"
+  ],
+  "checks": [
+   "(?i)\\b(rais|increas|hik|higher)",
+   "1-3/4|(?<![\\d.])1\\.75(?!\\d)|(?<![\\d.])1.75(?!\\d)",
+   "(?<![\\d./-])2(?!\\.[1-9]|\\d|/)"
+  ],
+  "forbid": [
+   "(?i)\\b(lowered|cut|reduced|decreased)\\b"
+  ],
+  "tool": "getDecision",
+  "meeting": "2018-06-13"
+ },
+ {
+  "id": "decision-03",
+  "category": "decision",
+  "as_of": "2018-10-22",
+  "questions": [
+   "What did the Committee decide at its September 2018 meeting?"
+  ],
+  "checks": [
+   "(?i)\\b(rais|increas|hik|higher)",
+   "(?<![\\d./-])2(?!\\.[1-9]|\\d|/)",
+   "2-1/4|(?<![\\d.])2\\.25(?!\\d)|(?<![\\d.])2.25(?!\\d)"
+  ],
+  "forbid": [
+   "(?i)\\b(lowered|cut|reduced|decreased)\\b"
+  ],
+  "tool": "getDecision",
+  "meeting": "2018-09-26"
+ },
+ {
+  "id": "decision-04",
+  "category": "decision",
+  "as_of": "2022-08-22",
+  "questions": [
+   "What did the Committee decide at its July 2022 meeting?"
+  ],
+  "checks": [
+   "(?i)\\b(rais|increas|hik|higher)",
+   "2-1/4|(?<![\\d.])2\\.25(?!\\d)|(?<![\\d.])2.25(?!\\d)",
+   "2-1/2|(?<![\\d.])2\\.5(?!\\d)|(?<![\\d.])2.50(?!\\d)"
+  ],
+  "forbid": [
+   "(?i)\\b(lowered|cut|reduced|decreased)\\b"
+  ],
+  "tool": "getDecision",
+  "meeting": "2022-07-27"
+ },
+ {
+  "id": "decision-05",
+  "category": "decision",
+  "as_of": "2023-04-17",
+  "questions": [
+   "What did the Committee decide at its March 2023 meeting?"
+  ],
+  "checks": [
+   "(?i)\\b(rais|increas|hik|higher)",
+   "4-3/4|(?<![\\d.])4\\.75(?!\\d)|(?<![\\d.])4.75(?!\\d)",
+   "(?<![\\d./-])5(?!\\.[1-9]|\\d|/)"
+  ],
+  "forbid": [
+   "(?i)\\b(lowered|cut|reduced|decreased)\\b"
+  ],
+  "tool": "getDecision",
+  "meeting": "2023-03-22"
+ },
+ {
+  "id": "decision-06",
+  "category": "decision",
+  "as_of": "2008-11-24",
+  "questions": [
+   "What did the Committee decide at its October 2008 meeting?"
+  ],
+  "checks": [
+   "(?i)\\b(lower|cut|reduc|decreas)",
+   "(?<![\\d./-])1(?!\\.[1-9]|\\d|/)"
+  ],
+  "forbid": [
+   "(?i)\\b(raised|increased|hiked)\\b"
+  ],
+  "tool": "getDecision",
+  "meeting": "2008-10-29"
+ },
+ {
+  "id": "decision-07",
+  "category": "decision",
+  "as_of": "2019-08-26",
+  "questions": [
+   "What did the Committee decide at its July 2019 meeting?"
+  ],
+  "checks": [
+   "(?i)\\b(lower|cut|reduc|decreas)",
+   "(?<![\\d./-])2(?!\\.[1-9]|\\d|/)",
+   "2-1/4|(?<![\\d.])2\\.25(?!\\d)|(?<![\\d.])2.25(?!\\d)"
+  ],
+  "forbid": [
+   "(?i)\\b(raised|increased|hiked)\\b"
+  ],
+  "tool": "getDecision",
+  "meeting": "2019-07-31"
+ },
+ {
+  "id": "decision-08",
+  "category": "decision",
+  "as_of": "2019-10-14",
+  "questions": [
+   "What did the Committee decide at its September 2019 meeting?"
+  ],
+  "checks": [
+   "(?i)\\b(lower|cut|reduc|decreas)",
+   "1-3/4|(?<![\\d.])1\\.75(?!\\d)|(?<![\\d.])1.75(?!\\d)",
+   "(?<![\\d./-])2(?!\\.[1-9]|\\d|/)"
+  ],
+  "forbid": [
+   "(?i)\\b(raised|increased|hiked)\\b"
+  ],
+  "tool": "getDecision",
+  "meeting": "2019-09-18"
+ },
+ {
+  "id": "decision-09",
+  "category": "decision",
+  "as_of": "2025-01-13",
+  "questions": [
+   "What did the Committee decide at its December 2024 meeting?"
+  ],
+  "checks": [
+   "(?i)\\b(lower|cut|reduc|decreas)",
+   "4-1/4|(?<![\\d.])4\\.25(?!\\d)|(?<![\\d.])4.25(?!\\d)",
+   "4-1/2|(?<![\\d.])4\\.5(?!\\d)|(?<![\\d.])4.50(?!\\d)"
+  ],
+  "forbid": [
+   "(?i)\\b(raised|increased|hiked)\\b"
+  ],
+  "tool": "getDecision",
+  "meeting": "2024-12-18"
+ },
+ {
+  "id": "decision-10",
+  "category": "decision",
+  "as_of": "2017-02-27",
+  "questions": [
+   "What did the Committee decide at its February 2017 meeting?"
+  ],
+  "checks": [
+   "(?i)\\b(maintain|held|hold|keep|kept|unchanged|steady|leave|left|no change)",
+   "(?<![\\d-])1/2|(?<![\\d.])0\\.5(?!\\d)|(?<![\\d.])0.50(?!\\d)",
+   "(?<![\\d-])3/4|(?<![\\d.])0\\.75(?!\\d)|(?<![\\d.])0.75(?!\\d)"
+  ],
+  "forbid": [
+   "(?i)\\b(raised|lowered|increased|cut)\\b"
+  ],
+  "tool": "getDecision",
+  "meeting": "2017-02-01"
+ },
+ {
+  "id": "decision-11",
+  "category": "decision",
+  "as_of": "2017-10-16",
+  "questions": [
+   "What did the Committee decide at its September 2017 meeting?"
+  ],
+  "checks": [
+   "(?i)\\b(maintain|held|hold|keep|kept|unchanged|steady|leave|left|no change)",
+   "(?<![\\d./-])1(?!\\.[1-9]|\\d|/)",
+   "1-1/4|(?<![\\d.])1\\.25(?!\\d)|(?<![\\d.])1.25(?!\\d)"
+  ],
+  "forbid": [
+   "(?i)\\b(raised|lowered|increased|cut)\\b"
+  ],
+  "tool": "getDecision",
+  "meeting": "2017-09-20"
+ },
+ {
+  "id": "decision-12",
+  "category": "decision",
+  "as_of": "2023-10-16",
+  "questions": [
+   "What did the Committee decide at its September 2023 meeting?"
+  ],
+  "checks": [
+   "(?i)\\b(maintain|held|hold|keep|kept|unchanged|steady|leave|left|no change)",
+   "5-1/4|(?<![\\d.])5\\.25(?!\\d)|(?<![\\d.])5.25(?!\\d)",
+   "5-1/2|(?<![\\d.])5\\.5(?!\\d)|(?<![\\d.])5.50(?!\\d)"
+  ],
+  "forbid": [
+   "(?i)\\b(raised|lowered|increased|cut)\\b"
+  ],
+  "tool": "getDecision",
+  "meeting": "2023-09-20"
+ },
+ {
+  "id": "stability-1a",
+  "category": "stability",
+  "as_of": "2017-07-10",
+  "questions": [
+   "What did the FOMC do with the federal funds rate in June 2017?"
+  ],
+  "checks": [
+   "(?i)\\b(rais|increas|hik|higher)",
+   "(?<![\\d./-])1(?!\\.[1-9]|\\d|/)",
+   "1-1/4|(?<![\\d.])1\\.25(?!\\d)|(?<![\\d.])1.25(?!\\d)"
+  ],
+  "forbid": [
+   "(?i)\\b(lowered|cut|reduced|decreased)\\b"
+  ],
+  "tool": "getDecision",
+  "meeting": "2017-06-14",
+  "group": "stability-1"
+ },
+ {
+  "id": "stability-1b",
+  "category": "stability",
+  "as_of": "2017-07-10",
+  "questions": [
+   "June 2017 meeting: did the Fed raise, cut or hold rates?"
+  ],
+  "checks": [
+   "(?i)\\b(rais|increas|hik|higher)",
+   "(?<![\\d./-])1(?!\\.[1-9]|\\d|/)",
+   "1-1/4|(?<![\\d.])1\\.25(?!\\d)|(?<![\\d.])1.25(?!\\d)"
+  ],
+  "forbid": [
+   "(?i)\\b(lowered|cut|reduced|decreased)\\b"
+  ],
+  "tool": "getDecision",
+  "meeting": "2017-06-14",
+  "group": "stability-1"
+ },
+ {
+  "id": "stability-2a",
+  "category": "stability",
+  "as_of": "2008-11-24",
+  "questions": [
+   "What did the FOMC do with the federal funds rate in October 2008?"
+  ],
+  "checks": [
+   "(?i)\\b(lower|cut|reduc|decreas)",
+   "(?<![\\d./-])1(?!\\.[1-9]|\\d|/)"
+  ],
+  "forbid": [
+   "(?i)\\b(raised|increased|hiked)\\b"
+  ],
+  "tool": "getDecision",
+  "meeting": "2008-10-29",
+  "group": "stability-2"
+ },
+ {
+  "id": "stability-2b",
+  "category": "stability",
+  "as_of": "2008-11-24",
+  "questions": [
+   "October 2008 meeting: did the Fed raise, cut or hold rates?"
+  ],
+  "checks": [
+   "(?i)\\b(lower|cut|reduc|decreas)",
+   "(?<![\\d./-])1(?!\\.[1-9]|\\d|/)"
+  ],
+  "forbid": [
+   "(?i)\\b(raised|increased|hiked)\\b"
+  ],
+  "tool": "getDecision",
+  "meeting": "2008-10-29",
+  "group": "stability-2"
+ },
+ {
+  "id": "stability-3a",
+  "category": "stability",
+  "as_of": "2017-02-27",
+  "questions": [
+   "What did the FOMC do with the federal funds rate in February 2017?"
+  ],
+  "checks": [
+   "(?i)\\b(maintain|held|hold|keep|kept|unchanged|steady|leave|left|no change)",
+   "(?<![\\d-])1/2|(?<![\\d.])0\\.5(?!\\d)|(?<![\\d.])0.50(?!\\d)",
+   "(?<![\\d-])3/4|(?<![\\d.])0\\.75(?!\\d)|(?<![\\d.])0.75(?!\\d)"
+  ],
+  "forbid": [
+   "(?i)\\b(raised|lowered|increased|cut)\\b"
+  ],
+  "tool": "getDecision",
+  "meeting": "2017-02-01",
+  "group": "stability-3"
+ },
+ {
+  "id": "stability-3b",
+  "category": "stability",
+  "as_of": "2017-02-27",
+  "questions": [
+   "February 2017 meeting: did the Fed raise, cut or hold rates?"
+  ],
+  "checks": [
+   "(?i)\\b(maintain|held|hold|keep|kept|unchanged|steady|leave|left|no change)",
+   "(?<![\\d-])1/2|(?<![\\d.])0\\.5(?!\\d)|(?<![\\d.])0.50(?!\\d)",
+   "(?<![\\d-])3/4|(?<![\\d.])0\\.75(?!\\d)|(?<![\\d.])0.75(?!\\d)"
+  ],
+  "forbid": [
+   "(?i)\\b(raised|lowered|increased|cut)\\b"
+  ],
+  "tool": "getDecision",
+  "meeting": "2017-02-01",
+  "group": "stability-3"
+ },
+ {
+  "id": "vote-01",
+  "category": "vote",
+  "as_of": "2008-10-12",
+  "meeting": "2008-09-16",
+  "questions": [
+   "Was the vote unanimous at the September 2008 meeting?"
+  ],
+  "checks": [
+   "(?i)unanimous|no (one )?dissent|none (voted|dissent)|all (voted|members)"
+  ],
+  "forbid": [
+   "(?i)not unanimous|(?<!\\bno )dissent(ed|ing) votes?|(?<!\\bno one )(?<!\\bnobody )voted against"
+  ],
+  "tool": "getDecision"
+ },
+ {
+  "id": "vote-02",
+  "category": "vote",
+  "as_of": "2009-04-13",
+  "meeting": "2009-03-18",
+  "questions": [
+   "Was the vote unanimous at the March 2009 meeting?"
+  ],
+  "checks": [
+   "(?i)unanimous|no (one )?dissent|none (voted|dissent)|all (voted|members)"
+  ],
+  "forbid": [
+   "(?i)not unanimous|(?<!\\bno )dissent(ed|ing) votes?|(?<!\\bno one )(?<!\\bnobody )voted against"
+  ],
+  "tool": "getDecision"
+ },
+ {
+  "id": "vote-03",
+  "category": "vote",
+  "as_of": "2011-04-10",
+  "meeting": "2011-03-15",
+  "questions": [
+   "Was the vote unanimous at the March 2011 meeting?"
+  ],
+  "checks": [
+   "(?i)unanimous|no (one )?dissent|none (voted|dissent)|all (voted|members)"
+  ],
+  "forbid": [
+   "(?i)not unanimous|(?<!\\bno )dissent(ed|ing) votes?|(?<!\\bno one )(?<!\\bnobody )voted against"
+  ],
+  "tool": "getDecision"
+ },
+ {
+  "id": "vote-04",
+  "category": "vote",
+  "as_of": "2011-11-27",
+  "meeting": "2011-11-02",
+  "questions": [
+   "Was the vote unanimous at the November 2011 meeting? If not, who voted against?"
+  ],
+  "checks": [
+   "(?i)\\bCharles\\ L\\.\\ Evans\\b"
+  ],
+  "forbid": [],
+  "tool": "getDecision"
+ },
+ {
+  "id": "vote-05",
+  "category": "vote",
+  "as_of": "2012-05-21",
+  "meeting": "2012-04-25",
+  "questions": [
+   "Was the vote unanimous at the April 2012 meeting? If not, who voted against?"
+  ],
+  "checks": [
+   "(?i)\\bJeffrey\\ M\\.\\ Lacker\\b"
+  ],
+  "forbid": [],
+  "tool": "getDecision"
+ },
+ {
+  "id": "vote-06",
+  "category": "vote",
+  "as_of": "2013-11-25",
+  "meeting": "2013-10-30",
+  "questions": [
+   "Was the vote unanimous at the October 2013 meeting? If not, who voted against?"
+  ],
+  "checks": [
+   "(?i)\\bEsther\\ L\\.\\ George\\b"
+  ],
+  "forbid": [],
+  "tool": "getDecision"
+ },
+ {
+  "id": "followup-01",
+  "category": "followup",
+  "as_of": "2014-04-14",
+  "meeting": "2014-03-19",
+  "questions": [
+   "What did the Committee decide at its March 2014 meeting?",
+   "Who dissented and why?"
+  ],
+  "checks": [
+   "(?i)\\bNarayana\\ Kocherlakota\\b"
+  ],
+  "forbid": [],
+  "tool": "getDecision"
+ },
+ {
+  "id": "followup-02",
+  "category": "followup",
+  "as_of": "2014-10-13",
+  "meeting": "2014-09-17",
+  "questions": [
+   "What did the Committee decide at its September 2014 meeting?",
+   "Who dissented and why?"
+  ],
+  "checks": [
+   "(?i)\\bRichard\\ W\\.\\ Fisher\\b",
+   "(?i)\\bCharles\\ I\\.\\ Plosser\\b"
+  ],
+  "forbid": [],
+  "tool": "getDecision"
+ },
+ {
+  "id": "followup-03",
+  "category": "followup",
+  "as_of": "2019-08-26",
+  "meeting": "2019-07-31",
+  "questions": [
+   "What did the Committee decide at its July 2019 meeting?",
+   "Who dissented and why?"
+  ],
+  "checks": [
+   "(?i)\\bEsther\\ L\\.\\ George\\b",
+   "(?i)\\bEric\\ Rosengren\\b"
+  ],
+  "forbid": [],
+  "tool": "getDecision"
+ },
+ {
+  "id": "guardrail-01",
+  "category": "guardrail",
+  "as_of": "2013-10-04",
+  "meeting": "2013-09-18",
+  "questions": [
+   "What did the Committee decide at its September 2013 meeting?"
+  ],
+  "checks": [
+   "(?i)not (yet )?(been )?(public|released|available)|unavailable|no minutes|not published"
+  ],
+  "forbid": [],
+  "tool": null
+ },
+ {
+  "id": "guardrail-02",
+  "category": "guardrail",
+  "as_of": "2017-03-31",
+  "meeting": "2017-03-15",
+  "questions": [
+   "What did the Committee decide at its March 2017 meeting?"
+  ],
+  "checks": [
+   "(?i)not (yet )?(been )?(public|released|available)|unavailable|no minutes|not published"
+  ],
+  "forbid": [],
+  "tool": null
+ },
+ {
+  "id": "guardrail-03",
+  "category": "guardrail",
+  "as_of": "2026-04-03",
+  "meeting": "2026-03-18",
+  "questions": [
+   "What did the Committee decide at its March 2026 meeting?"
+  ],
+  "checks": [
+   "(?i)not (yet )?(been )?(public|released|available)|unavailable|no minutes|not published"
+  ],
+  "forbid": [],
+  "tool": null
+ },
+ {
+  "id": "topic-01",
+  "category": "topic",
+  "as_of": "2019-05-01",
+  "meeting": "",
+  "questions": [
+   "What did participants say about wages and compensation?"
+  ],
+  "checks": [
+   "(?i)wage|compensation|pay"
+  ],
+  "forbid": [],
+  "tool": "searchMinutes"
+ },
+ {
+  "id": "topic-02",
+  "category": "topic",
+  "as_of": "2015-06-01",
+  "meeting": "",
+  "questions": [
+   "What did participants say about the dollar and foreign exchange?"
+  ],
+  "checks": [
+   "(?i)dollar|exchange|foreign"
+  ],
+  "forbid": [],
+  "tool": "searchMinutes"
+ },
+ {
+  "id": "topic-03",
+  "category": "topic",
+  "as_of": "2023-09-01",
+  "meeting": "",
+  "questions": [
+   "What did participants say about banking and credit conditions?"
+  ],
+  "checks": [
+   "(?i)bank|credit|lending|loan"
+  ],
+  "forbid": [],
+  "tool": "searchMinutes"
+ },
+ {
+  "id": "topic-04",
+  "category": "topic",
+  "as_of": "2020-09-01",
+  "meeting": "",
+  "questions": [
+   "What did participants say about the pandemic?"
+  ],
+  "checks": [
+   "(?i)pandemic|covid|virus|public health"
+  ],
+  "forbid": [],
+  "tool": "searchMinutes"
+ },
+ {
+  "id": "compare-01",
+  "category": "comparison",
+  "as_of": "2012-12-31",
+  "meeting": "",
+  "questions": [
+   "How did the Committee's view of the housing market change between 2010 and 2012?"
+  ],
+  "checks": [
+   "2010",
+   "2012"
+  ],
+  "forbid": [],
+  "tool": "searchMinutes"
+ },
+ {
+  "id": "compare-02",
+  "category": "comparison",
+  "as_of": "2019-12-31",
+  "meeting": "",
+  "questions": [
+   "How did the Committee's view of the labor market change between 2017 and 2019?"
+  ],
+  "checks": [
+   "2017",
+   "2019"
+  ],
+  "forbid": [],
+  "tool": "searchMinutes"
+ }
+]

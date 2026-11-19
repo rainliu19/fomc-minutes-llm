@@ -8,7 +8,7 @@ Ask questions about FOMC minutes and the economy around them. The agent answers 
 
 1. MATLAB R2026b with the "Large Language Models (LLMs) with MATLAB" add-on and the Text Analytics Toolbox.
 2. [Ollama](https://ollama.com/download) and [uv](https://docs.astral.sh/uv/): `brew install ollama uv`
-3. The default model (about 2.5 GB): `ollama pull qwen3:4b-instruct`. The other models on the page download the same way (see `models/`); the app builds each one the first time you pick it.
+3. The default model (about 1.5 GB): `ollama pull granite3.3:2b`. The other models on the page download the same way (see `models/`); the app builds each one the first time you pick it.
 
 **Start the chat page**
 
@@ -114,11 +114,12 @@ result.attempts    % the most attempts any dimension needed, one to three
 | `server/` | Python helpers behind `app.py`: start Ollama and MATLAB, check memory, save chats, shut everything down. |
 | `static/` | The web pages: the chat (`index.html`: chat history on the left, model and effort pickers) and the Evaluation page (`evals.html`). |
 | `src/` | The agent, written in MATLAB (`src/+fomc`, below). |
+| `agents/` | The prompts of the multi-agent team: the organizer, the minutes, market, scorer and consumer specialists, and `shared/asof.md`, the point-in-time rules every agent gets. |
 | `skills/` | Model-readable skill instructions, rubrics and output schemas. |
 | `pipeline/` | MATLAB scripts that download and clean the data (FRED, Yahoo, Shiller, Treasury, the minutes). Run them only to refresh data. `score_minutes.m` has the model score the rate path of new minutes (Ollama must be running). |
 | `data/` | The collected data: CSVs, one text file per set of minutes in `data/minutes/`, and the AI's saved scores of each set in `data/scores/<model>/`. The agent reads these. |
-| `tests/` | Automated checks: MATLAB tests (`buildtool test`), Python tests, and the live model evaluation (`bench_live.py`, `bench_baseline.py`, `make_key.py`, `measure_memory.py`, `export_evals.py`). |
-| `evals/` | The answer key (50 questions drawn from the decision cards and 7 forward-looking ones written by hand) and each model's saved results. The Evaluation page (`/evaluation`) reads them. |
+| `tests/` | Automated checks: MATLAB tests (`buildtool test`), Python tests, and the live model evaluation (`bench_live.py` for one agent or `--multi`, `bench_baseline.py` for the bare model, `make_key.py`, `measure_memory.py`, `export_evals.py`) and the lookahead-bias evaluation (`bench_lookahead.py`, `make_lookahead_*.py`, `lookahead_score.py`). |
+| `evals/` | The answer key (57 questions: 50 drawn from the decision cards, 7 forward-looking written by hand), a held-out key of 36 more questions (`heldout/`), and the saved runs of every model as multi-agent, one agent and bare model. `lookahead/` holds the lookahead-bias key, runs and extra question sets; `archive-2026-10/`, `archive-2026-11-multi-v1/`, `-v2/` and `lookahead/archive/` hold retired runs. The Evaluation page (`/evaluation`) reads them. |
 | `docs/` | Guides: agent interface, how the policy tools work, data, performance, MATLAB gaps. |
 | `models/` | The local models you can pick on the page: one folder per model with its Ollama `Modelfile`, plus `models.json`, the list the page shows. |
 | `logs/` | Created when you run the agent: one trace file per session, and your saved chats in `logs/chats/` (private to each browser). Not in git. |
@@ -130,6 +131,7 @@ result.attempts    % the most attempts any dimension needed, one to three
 | Folder / file | What it is |
 |---|---|
 | `chat.m`, `runAgent.m`, `runTurn.m`, `effort.m` | Entry points, the main loop (ask the model, run its tools, repeat), and what Low, Medium and High effort change. |
+| `+agents/` | The multi-agent team: the organizer's routing and stages, the specialists (minutes retriever, market data, rubric scorer, consumer view) and the critic. See `agents/organizer.md` and `docs/agents.md`. |
 | `+tools/` | The tools the model can call: list meetings, decisions, the path of rates over several meetings, where policy may go next, what recent rate moves may mean ahead, search, read minutes, data series, the consumer-impact score (a stub), and `readSkill` for loading skill instructions or references. |
 | `+data/` | Loads the data, works out what was known on a given date, and reads each meeting's decision, the staff's forecast revisions, participants' views on future meetings, and which way the minutes point (the AI's saved score, else word rules). |
 | `+focus/` | Picks which minutes a question is about and looks up the first facts before the model starts, including the path of rates, how the economy compares with the Fed's goals and what the latest minutes say about future meetings, and the evidence on what the rate path may mean ahead. |
@@ -147,12 +149,14 @@ result.attempts    % the most attempts any dimension needed, one to three
 
 ## Docs
 
+- [docs/agents.md](docs/agents.md): the multi-agent team, the agent contract and the lookahead-bias evaluation
 - [docs/agent_interface.md](docs/agent_interface.md): tools, trace format, plugging in the scorer and consumer agent
 - [docs/how_the_tools_work.md](docs/how_the_tools_work.md): how `getPolicyPath`, `assessEconomy` and `getOutlook` reach their answers, in plain terms
 - [docs/data.md](docs/data.md): series, caveats, rebuilding the data
 - [docs/performance.md](docs/performance.md): measured speed, memory, and the model comparison (also at `/evaluation` and in `data/model_evaluation_*.csv`)
 - [docs/MATLAB_GAPS.md](docs/MATLAB_GAPS.md): what MATLAB or its LLM add-on could not do
-- [docs/subagent_architecture.html](docs/subagent_architecture.html): proposal to split the agent into an organizer and subagents, with the planned lookback-bias tests (open in a browser)
+- [docs/fomc-minutes-llm_architecture.html](docs/fomc-minutes-llm_architecture.html): what is built: the agent team, how the evaluation works, and how lookahead bias is blocked at each stage (open in a browser)
+- [docs/subagent_architecture_plan.html](docs/subagent_architecture_plan.html): the original proposal to split the agent into an organizer and subagents, with the planned lookback-bias tests (open in a browser)
 
 ## Limits
 

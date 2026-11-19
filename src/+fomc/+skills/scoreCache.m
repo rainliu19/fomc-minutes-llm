@@ -86,8 +86,7 @@ function issues = ownIssues(issues, scored)
 % from JSON as a char row, so make strings before making a column
 issues = string(issues);
 issues = issues(:);
-all = ["rate_path", "inflation", "labor_market", "economic_activity", ...
-    "financial_conditions", "balance_sheet", "risk_balance"];
+all = fomc.skills.dimensions();
 others = setdiff(all, string(scored));
 aboutOthers = ~contains(issues, string(scored)) & contains(issues, others);
 issues = issues(~aboutOthers);

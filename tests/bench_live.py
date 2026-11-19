@@ -14,7 +14,6 @@ import json
 import math
 import re
 import statistics
-import subprocess
 import sys
 import time
 import urllib.request
@@ -24,10 +23,24 @@ from pathlib import Path
 # Where the running app listens, and the repo folder (for the trace files and the key)
 BASE = "http://127.0.0.1:8787"
 REPO = Path(__file__).parent.parent
+sys.path.insert(0, str(REPO))
+from server import runtime  # the app's own memory reading and model list
+
 ARGS = [a for a in sys.argv[1:] if not a.startswith("--")]
 MODEL = ARGS[0] if ARGS else ""                      # a model id; empty is the default
 RUN_HIGH = "--high" in sys.argv
+MULTI = "--multi" in sys.argv                    # save as evals/<id>-multi.json (the app runs the multi-agent organizer)
 LIMIT = int(sys.argv[sys.argv.index("--limit") + 1]) if "--limit" in sys.argv else 0
+
+
+def option(name):
+    """The value after --name, or None."""
+    return sys.argv[sys.argv.index(name) + 1] if name in sys.argv else None
+
+
+ONLY = set((option("--only") or "").split(",")) - {""}        # re-ask just these case ids
+KEY = option("--key") or "evals/key.json"                     # another answer key, relative to the repo
+OUT = option("--out")                                          # save here instead of evals/<id>.json (scratch runs)
 HIGH_CASES = {"decision-01", "decision-02", "decision-03", "why-01", "why-02"}   # the Low vs High subset
 CAUSAL = re.compile(r"(?i)\b(because|due to|in response to|owing to|as a result of|driven by|reflect(?:ing|ed)|so as to|in order to)\b")
 
@@ -41,35 +54,53 @@ def post(path, body, timeout=900):
     return json.load(OPENER.open(req, timeout=timeout))
 
 
-# Helper: macOS memory pressure level (1 normal, 2 warning, 4 critical)
-def pressure():
-    return int(subprocess.run(["sysctl", "-n", "kern.memorystatus_vm_pressure_level"], capture_output=True, text=True).stdout)
-
-
-# Helper: percent of memory free and swap in use (MB)
+# Helper: percent of memory free and swap in use (MB), as the app reads them
 def memory():
-    out = subprocess.run(["memory_pressure"], capture_output=True, text=True).stdout
-    free = int(re.search(r"free percentage:\s*(\d+)%", out).group(1))
-    swap = subprocess.run(["sysctl", "-n", "vm.swapusage"], capture_output=True, text=True).stdout
-    used = float(re.search(r"used = ([\d.]+)M", swap).group(1))
-    return free, used
+    s = runtime.memory_status()
+    return s["free_pct"], s["swap_used_mb"]
+
+
+# Helper: True (after saying so) when memory pressure is critical or swap is deep: stop the run, it continues later
+def memory_critical(case_id):
+    s = runtime.memory_status()
+    if s["pressure"] == 4 or (s["swap_used_mb"] or 0) > 3600:
+        print(f"STOP before '{case_id}': memory critical ({s['free_pct']}% free, {s['swap_used_mb']:.0f} MB swap)")
+        return True
+    return False
+
+
+# Helper: the models/models.json entry for the model id on the command line
+def model_entry():
+    entry = next((m for m in runtime.load_all_models() if m["id"] == MODEL), None)
+    if entry is None:
+        sys.exit(f"Unknown model id '{MODEL}'. Ids are in models/models.json.")
+    return entry
+
+
+# Helper: opening the page starts loading the model; give it time, as a user typing would
+def warm_up():
+    OPENER.open(BASE + "/", timeout=60).read()
+    OPENER.open(BASE + "/info?model=" + MODEL, timeout=60).read()
+    time.sleep(25)
 
 
 def read_trace(session_id):
     """Token counts and speeds from the model calls in the session's trace, plus the text the tools returned."""
     path = REPO / "logs" / f"web-{session_id}.jsonl"
     # Add up tokens and times over every model call; collect what the tools returned
-    p_tok = o_tok = p_ms = o_ms = rounds = 0
+    p_tok = o_tok = p_ms = o_ms = rounds = code = 0
     tool_text = []
     for line in path.read_text().splitlines():
         e = json.loads(line)
         s = e.get("stats")
-        if e["type"] in ("model_response", "grounding_check") and s:
+        if e["type"] == "model_response" and s:      # every model call logs one
             rounds += 1
             p_tok += s["promptTokens"]; o_tok += s["outputTokens"]; p_ms += s["promptMs"]; o_ms += s["outputMs"]
         if e["type"] == "tool_call":
             tool_text.append(json.dumps(e, ensure_ascii=False))
-    stats = {"model_calls": rounds, "prompt_tokens": p_tok, "output_tokens": o_tok,
+        if e["type"] == "critic" and e.get("fromCode"):      # the critic answered from the decision card
+            code = 1
+    stats = {"answered_by_code": code, "model_calls": rounds, "prompt_tokens": p_tok, "output_tokens": o_tok,
              "prefill_tok_s": round(p_tok / (p_ms / 1000), 1) if p_ms else None,
              "decode_tok_s": round(o_tok / (o_ms / 1000), 1) if o_ms else None}
     return stats, " ".join(tool_text)
@@ -82,7 +113,7 @@ def unsupported_cause(answer, tool_text):
     verdicts = []
     for sentence in re.split(r"(?<=[.!?])\s+", answer):
         if CAUSAL.search(sentence):
-            words = {w for w in re.findall(r"[a-z]{5,}", sentence.lower())}
+            words = set(re.findall(r"[a-z]{5,}", sentence.lower()))
             if words:
                 verdicts.append(sum(w in haystack for w in words) / len(words) < 0.6)
     return any(verdicts) if verdicts else None
@@ -104,9 +135,12 @@ def run_case(case, effort):
     answer, total, r = "", 0.0, {}
     for q in case["questions"]:
         t0 = time.time()
-        r = post("/chat", {"message": q, "session_id": sid, "as_of": case["as_of"], "effort": effort, "model": MODEL})
+        r = post("/chat", {"message": q, "session_id": sid, "as_of": case["as_of"], "effort": effort, "model": MODEL,
+                         "agents": "team" if MULTI else "one", "save": False})
         total = time.time() - t0                        # time of the last question in the chat
         answer = r["answer"]
+        if answer.startswith("Not enough memory"):      # the app's refusal is no answer: stop, do not record it
+            raise FileNotFoundError(answer)
     stats, tool_text = read_trace(sid)
     names = [c["name"] for c in r["tool_calls"]]
     cites = r.get("citations", [])
@@ -180,6 +214,7 @@ def summarize(rows, meta):
               "api_prices": {"checked": prices["checked"], "source": prices["source"], "models": prices["models"]}}
     return {**meta, "tokens": tokens, "n_cases": len(low), "correct": k, "n_scored": len(scored), "accuracy": round(k / len(scored), 3) if scored else None,
             "accuracy_ci": wilson(k, len(scored)), "by_category": by_cat,
+            "answered_by_code": sum(r["stats"].get("answered_by_code", 0) for r in low),
             "silent_errors": {"count": silent, "n": len(scored), "rate": round(silent / len(scored), 3) if scored else None,
                               "ci": wilson(silent, len(scored)), "wrong": len(scored) - k,
                               "warned_wrong": sum(1 for r in scored if r["passed"] is False and r["warning"])},
@@ -195,17 +230,14 @@ def summarize(rows, meta):
 
 
 def main():
-    entry = next((m for m in json.loads((REPO / "models" / "models.json").read_text()) if m["id"] == MODEL), None)
-    if entry is None:
-        sys.exit(f"Unknown model id '{MODEL}'. Ids are in models/models.json.")
-    key = json.loads((REPO / "evals" / "key.json").read_text())
+    entry = model_entry()
+    key = json.loads((REPO / KEY).read_text())
+    if ONLY:
+        key = [c for c in key if c["id"] in ONLY]
     if LIMIT:
         key = key[:LIMIT]
-    # Opening the page starts loading the model; give it time, as a user typing would
-    OPENER.open(BASE + "/", timeout=60).read()
-    OPENER.open(BASE + "/info?model=" + MODEL, timeout=60).read()
-    time.sleep(25)
-    path = REPO / "evals" / f"{entry['id']}.json"
+    warm_up()
+    path = Path(OUT) if OUT else REPO / "evals" / f"{entry['id']}{'-multi' if MULTI else ''}.json"
     # A run that stopped early (memory) is continued: finished cases are kept, only the rest are asked
     rows = json.loads(path.read_text())["cases"] if path.exists() else []
     done = {(r["id"], r["effort"]) for r in rows}
@@ -214,9 +246,7 @@ def main():
     for case, effort in todo:
         if (case["id"], effort) in done:
             continue
-        free, swap = memory()
-        if pressure() == 4 or swap > 3600:
-            print(f"STOP before '{case['id']}': memory critical ({free}% free, {swap:.0f} MB swap)")
+        if memory_critical(case["id"]):
             break
         try:
             row = run_case(case, effort)
@@ -228,7 +258,7 @@ def main():
         rows.append(row)
         print(json.dumps({k: row[k] for k in ("id", "effort", "seconds", "passed", "tool_ok", "swap_mb")}))
         sys.stdout.flush()
-    meta = {"model": entry["id"], "label": entry["label"], "params_b": entry.get("params_b"), "ollama_name": entry["name"],
+    meta = {"model": entry["id"] + ("-multi" if MULTI else ""), "label": entry["label"] + (", multi-agent" if MULTI else ""), "multi": MULTI, "params_b": entry.get("params_b"), "ollama_name": entry["name"],
             "date": time.strftime("%Y-%m-%d"), "complete": len([r for r in rows if r["effort"] == "low"]) == len(key)
             and (not RUN_HIGH or len([r for r in rows if r["effort"] == "high"]) == len([c for c in key if c["id"] in HIGH_CASES]))}
     out = {"summary": summarize(rows, meta), "cases": rows}
@@ -249,21 +279,22 @@ def rescore():
         old = d["summary"]
         meta = {k: old[k] for k in ("model", "label", "params_b", "ollama_name", "date", "complete") if k in old}
         # Labels come from models/models.json, so renaming a model there renames its saved results too
-        label = next((e["label"] for e in json.loads((REPO / "models" / "models.json").read_text()) if e["id"] == path.stem.replace("-baseline", "")), None)
+        kind = "baseline" if old.get("baseline") else "multi" if old.get("multi") else ""
+        model = path.stem.removesuffix("-baseline").removesuffix("-multi")
+        label = next((e["label"] for e in runtime.load_all_models() if e["id"] == model), None)
         if label:
-            meta["label"] = label.split(": ")[-1] + ", bare model" if old.get("baseline") else label
-        if old.get("baseline"):
-            meta["baseline"] = True
+            meta["label"] = {"baseline": label.split(": ")[-1] + ", bare model", "multi": label + ", multi-agent", "": label}[kind]
+        if kind:
+            meta[kind] = True
         d["summary"] = summarize(d["cases"], meta)
         for extra in ("high_effort", "model_memory_mb", "model_memory_pct_of_8gb"):    # measured separately; keep them
             if extra in old:
                 d["summary"][extra] = old[extra]
-        base = path.with_name(path.name.replace("-baseline", ""))          # a bare-model row has the same model's memory
-        if old.get("baseline") and base.exists() and "model_memory_mb" not in d["summary"]:
-            app = json.loads(base.read_text())["summary"]
+        app = path.with_name(model + ".json")              # a bare-model or multi-agent row has the same model's memory
+        if kind and app.exists() and "model_memory_mb" not in d["summary"]:
             for extra in ("model_memory_mb", "model_memory_pct_of_8gb"):
-                if extra in app:
-                    d["summary"][extra] = app[extra]
+                if extra in (m := json.loads(app.read_text())["summary"]):
+                    d["summary"][extra] = m[extra]
         path.write_text(json.dumps(d, indent=1))
         print("rescored", path.name, d["summary"]["accuracy"], d["summary"]["silent_errors"])
 

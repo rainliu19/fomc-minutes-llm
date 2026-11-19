@@ -14,40 +14,40 @@ arguments
     asOf (1,1) datetime
 end
 
-% Start with an empty result and a note that explains why, if it stays empty
-T = table(datetime.empty(0,1), zeros(0,1), datetime.empty(0,1), ...
-    VariableNames=["date","value","availableDate"]);
+% Early exits return an empty result with a note that says why
+names = ["date", "value", "availableDate"];
 note = "";
 
-% Look up this series' publication rule
-k = D.avail.series_id == seriesId;
-if ~any(k)
+% Look up this series' publication rule (found once, in fomc.data.seriesIndex)
+if ~isfield(D.series, seriesId)
     note = "Unknown series '" + seriesId + "'.";
+    T = emptyResult(names);
     return
 end
-rule = D.avail.rule(k);
-param = D.avail.param(k);
+e = D.series.(seriesId);
 
 % Three cases: excluded series, revised series (vintages), all other series (publication lag)
-switch rule
+switch e.rule
     case "exclude"
-        note = seriesId + " is excluded: " + D.avail.note(k);
+        note = seriesId + " is excluded: " + e.note;
+        T = emptyResult(names);
         return
 
     case "vintage"
-        v = D.vint;
-        mine = v.series_id == seriesId;
-        if ~any(mine)
+        v = e.rows;
+        if isempty(v)
             note = "No vintage history is stored for " + seriesId + ".";
+            T = emptyResult(names);
             return
         end
         % Keep only vintage rows that existed by the anchor date
-        first = min(v.rtStart(mine));
-        s = v(mine & v.rtStart <= asOf & v.date <= asOf, :);
+        first = min(v.rtStart);
+        s = v(v.rtStart <= asOf & v.date <= asOf, :);
         if isempty(s)
             note = "No real-time values of " + seriesId + " exist before " + ...
                 fomc.util.fmtDate(first) + ", so none are known on " + ...
                 fomc.util.fmtDate(asOf) + ".";
+            T = emptyResult(names);
             return
         end
         % s is sorted by date then rtStart, so the last row per date is the latest
@@ -56,7 +56,7 @@ switch rule
         s = s(ia, :);
         keep = s.rtEnd >= asOf | s.hasNext;
         s = s(keep, :);
-        T = table(s.date, s.value, s.rtStart, VariableNames=T.Properties.VariableNames);
+        T = table(s.date, s.value, s.rtStart, VariableNames=names);
         if asOf < first + years(1)
             note = "Real-time history of " + seriesId + " starts " + ...
                 fomc.util.fmtDate(first) + "; earlier observations may be missing.";
@@ -64,22 +64,21 @@ switch rule
 
     otherwise
         % Other series: a value is known once its publication lag has passed
-        if ~ismember(seriesId, string(D.wide.Properties.VariableNames))
+        if ~e.stored
             note = "No data is stored for " + seriesId + ".";
+            T = emptyResult(names);
             return
         end
-        col = D.wide.(seriesId);
-        has = ~isnan(col);
-        obs = D.wide.date(has);
-        val = col(has);
-        av = fomc.data.availableDate(rule, param, obs);
-        keep = av <= asOf & obs <= asOf;
-        T = table(obs(keep), val(keep), av(keep), VariableNames=T.Properties.VariableNames);
+        keep = e.avail <= asOf & e.obs <= asOf;
+        T = table(e.obs(keep), e.val(keep), e.avail(keep), VariableNames=names);
         if isempty(T)
             note = "No observations of " + seriesId + " were known on " + ...
                 fomc.util.fmtDate(asOf) + ".";
         end
 end
-% Oldest first
-T = sortrows(T, "date");
+% T is already oldest first: the vintage rows come out of unique(date) and the other series are sorted in the index
+end
+
+function T = emptyResult(names)
+T = table(datetime.empty(0,1), zeros(0,1), datetime.empty(0,1), VariableNames=names);
 end

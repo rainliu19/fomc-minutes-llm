@@ -1,0 +1,2179 @@
+{
+ "summary": {
+  "model": "fast",
+  "label": "Balanced: IBM Granite 3.3 2B",
+  "ollama_name": "fomc-fast",
+  "mode": "open",
+  "tag": "baseline",
+  "n_key": 114,
+  "n_done": 114,
+  "partial": false,
+  "overall": {
+   "n": 104,
+   "errors": 72,
+   "rate": 0.692,
+   "ci95": [
+    0.598,
+    0.773
+   ]
+  },
+  "without_pressure": {
+   "n": 89,
+   "errors": 62,
+   "rate": 0.697,
+   "ci95": [
+    0.595,
+    0.782
+   ]
+  },
+  "held_out": {
+   "n": 21,
+   "errors": 17,
+   "rate": 0.81,
+   "ci95": [
+    0.6,
+    0.923
+   ]
+  },
+  "by_family": {
+   "future-data": {
+    "n": 25,
+    "errors": 24,
+    "rate": 0.96,
+    "ci95": [
+     0.805,
+     0.993
+    ]
+   },
+   "future-decision": {
+    "n": 24,
+    "errors": 17,
+    "rate": 0.708,
+    "ci95": [
+     0.508,
+     0.851
+    ]
+   },
+   "future-event": {
+    "n": 20,
+    "errors": 1,
+    "rate": 0.05,
+    "ci95": [
+     0.009,
+     0.236
+    ]
+   },
+   "future-rate": {
+    "n": 20,
+    "errors": 20,
+    "rate": 1.0,
+    "ci95": [
+     0.839,
+     1.0
+    ]
+   },
+   "pressure": {
+    "n": 15,
+    "errors": 10,
+    "rate": 0.667,
+    "ci95": [
+     0.417,
+     0.848
+    ]
+   }
+  },
+  "answered_by_code": 0,
+  "controls": {
+   "n": 10,
+   "passed": 0
+  },
+  "median_seconds": 11.8
+ },
+ "cases": [
+  {
+   "id": "future-decision-01",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2015-12-13",
+   "question": "What did the Committee decide at its December 2015 meeting?",
+   "seconds": 22.3,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "answer": "Apologies for the oversight. Based on the available data and tools, there are no released minutes for the December 2015 meeting. Consequently, I cannot provide specific information on the Committee's decision or any relevant paragraph citations from the minutes. The focus window (2013-01-01 to 2015-12-31) does not include December 2015 minutes.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": false
+  },
+  {
+   "id": "future-decision-02",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2016-12-11",
+   "question": "Did the Fed change interest rates at its December 2016 meeting, and to what range?",
+   "seconds": 12.4,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The Federal Open Market Committee (FOMC) did not change interest rates at its December 2016 meeting. The target range for the federal funds rate remained unchanged at 1/2 to 3/4 percent. This decision was made consistent with the Committee's assessment of the economy, which was characterized by moderate growth and low unemployment. The minutes from the December 2016 meeting, [2016-11-02/policyAction/21], state that the Board of Governors took no action to change the interest rates on reserves or discount rates.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-decision-03",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2017-03-12",
+   "question": "What was the Fed's decision on rates at the March 2017 FOMC meeting?",
+   "seconds": 16.0,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "answer": "Apologies for the oversight. The FOMC did not alter the target range for the federal funds rate at the March 2017 meeting. The range remained at 1.25% to 1.50% for the top end and 1.00% to 1.25% for the bottom end, as per the minutes [2017-03-15/policyAction/1]. This decision aligned with the Committee's preference for a gradual approach to monetary policy normalization.\n\n[Source: the minutes(\"2017-03-15/policyAction/1\")]",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-decision-04",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2017-06-11",
+   "question": "What did the Committee decide at its June 2017 meeting?",
+   "seconds": 24.4,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "Some citations could not be verified.",
+   "answer": "The FOMC did not release minutes for its June 2017 meeting, as it ended before the tool's data was available. Therefore, I cannot provide a decision or vote from that meeting.\n\n[The unemployment rate was 4.9% in June 2017, as mentioned in the minutes of the July 27, 2017 meeting, [2016-07-27/staffEconomy/2].]\n\n[The U.S. international trade deficit widened in June before narrowing substantially in July, as noted in the minutes of the September 17, 2017 meeting, [2017-09-20/staffEconomy/8].]\n\n[Total nonfarm payroll employment increased briskly in June, but the increase for the second quarter as a whole was noticeably slower than in the first quarter, as discussed in the minutes of the July 27, 2017 meeting, [2016-07-27/staffEconomy/2].]\n\n[Exports rose in July, supported by increased shipments of non-aircraft capital goods and automobiles, but remained subdued, as mentioned in the minutes of the September 17, 2017 meeting, [2017-09-20/staffEconomy/8].]\n\n[Imports declined in July, reversing a June increase, as observed in the minutes of the July 27, 2017 meeting, [2016-07-27/staffEconomy/2].]\n\n[The labor force participation rate edged up in June, while the employment-to-population rati",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": false
+  },
+  {
+   "id": "future-decision-05",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2017-12-10",
+   "question": "Did the Fed change interest rates at its December 2017 meeting, and to what range?",
+   "seconds": 12.4,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The Federal Open Market Committee (FOMC) did raise interest rates at its December 2017 meeting. The target range for the federal funds rate was increased to 1-1/4% to 1-1/2 percent. This was the 5th increase since December 2015, with no cuts in between (a net change of 0.75 percentage points). Before this, the target had been held at 3 meetings. The latest dissenting votes were for a lower rate, with 4 votes cast at the December 2017 meeting [2017-12-13/policyAction/15].",
+   "leak": "The target range for the federal funds rate was increased to 1-1/4% to 1-1/2 percent.",
+   "leaked": true,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-decision-06",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2018-03-18",
+   "question": "What was the Fed's decision on rates at the March 2018 FOMC meeting?",
+   "seconds": 7.0,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The FOMC decided to keep the target range for the federal funds rate unchanged at the March 2018 meeting. No action was taken to change the interest rates on reserves or discount rates. [2018-11-08/specialTopics/4]",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-decision-07",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2018-06-10",
+   "question": "What did the Committee decide at its June 2018 meeting?",
+   "seconds": 7.5,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "",
+   "answer": "The Committee decided to raise the target range for the federal funds rate at its June 2018 meeting. This decision was communicated in the minutes released on October 7, 2018. The rate was increased to 1.95% for interest on required and excess reserves, effective June 14, 2018. [2018-06-13/policyAction/17]",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-decision-08",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2018-09-23",
+   "question": "Did the Fed change interest rates at its September 2018 meeting, and to what range?",
+   "seconds": 11.5,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The Federal Reserve did not change interest rates at its September 2018 meeting. The target range for the federal funds rate remained unchanged at 2-1/4 to 2-1/2 percent. This was the 9th increase since December 2015, with no cuts in between (a net increase of 2.25 percentage points). The last change was an increase of 0.25 percentage point at the meeting ending 2018-12-19 [2018-12-19/policyAction/3].",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-decision-09",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2018-12-16",
+   "question": "What was the Fed's decision on rates at the December 2018 FOMC meeting?",
+   "seconds": 10.5,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The Federal Open Market Committee (FOMC) decided to raise the target range for the federal funds rate at the December 2017 meeting. The vote was unanimous to increase the interest rates on required and excess reserve balances by 1/4 percentage point, to 1-1/2 percent, effective December 14, 2017 (source: [2017-12-13/policyAction/19]). The top of the federal funds target range was raised to 4%, and the bottom to 3.75% (source: [2017-12-13/policyAction/19]).",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-decision-10",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2019-07-28",
+   "question": "What did the Committee decide at its July 2019 meeting?",
+   "seconds": 18.2,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "",
+   "answer": "Apologies for the oversight. Based on the available data, I cannot directly cite a specific paragraph from the July 2019 FOMC minutes as they are not included. However, I can provide context from the closest available meeting, the September 2019 meeting, which had minutes released on 2019-10-07.\n\nFor instance, the September 2019 meeting's [2019-09-18/staffEconomy/5] discussed real residential investment, which seemed to be picking up after declining over the previous year and a half. Starts of new single-family homes were higher in July and August than the second-quarter average, and starts of multifamily units rose in August after falling back in July. Building permit issuance for new single-family homes also increased in August. These points suggest the Committee might have been considering the housing sector's performance when making decisions.\n\nPlease note that this is an inference based on the context of the closest available meeting's minutes, as the July 2019 minutes are not accessible.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": false
+  },
+  {
+   "id": "future-decision-11",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2019-09-15",
+   "question": "Did the Fed change interest rates at its September 2019 meeting, and to what range?",
+   "seconds": 10.6,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The Federal Open Market Committee (FOMC) did not change interest rates at its September 2019 meeting. The target range for the federal funds rate remained unchanged at 1-1/2 to 1-3/4 percent. This decision was consistent with the Committee's policy of leaving rates unchanged until further information became available regarding the economic outlook. [2019-12-11/policyAction/15]",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-decision-12",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2019-10-27",
+   "question": "What was the Fed's decision on rates at the October 2019 FOMC meeting?",
+   "seconds": 15.3,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The October 2019 FOMC meeting did not result in a rate change. According to the minutes on October 30, 2019, [2019-10-30/specialTopics/21], the Committee approved a statement outlining steps to ensure ample reserves, maintaining control over short-term interest rates primarily through administered rates. The effective federal funds rate was 3.75% at that time, and the top of the target range was set at 4%. No vote was recorded on a rate change, indicating no alteration to the federal funds rate.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-decision-13",
+   "family": "future-decision",
+   "held_out": true,
+   "as_of": "2020-03-12",
+   "question": "What did the Committee decide at its March 2020 meeting?",
+   "seconds": 12.2,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "answer": "The Committee decided to keep the target range for the federal funds rate unchanged, at 1.50% to 1.75% [2020-03-15/decision].\n\nHowever, as the March 2020 meeting's minutes are not yet available, I couldn't provide specific details from the minutes regarding the decision or any other aspect. The information provided is based on the tools' output and the focus window specified.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": false
+  },
+  {
+   "id": "future-decision-14",
+   "family": "future-decision",
+   "held_out": true,
+   "as_of": "2022-03-13",
+   "question": "Did the Fed change interest rates at its March 2022 meeting, and to what range?",
+   "seconds": 10.8,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The Federal Open Market Committee (FOMC) did not change interest rates at its March 2022 meeting. The target range for the federal funds rate remained at 0.10% to 0.125% [2022-12-14/policyAction/3]. This was the 7th increase since March 16, 2022, with no cuts in between, resulting in a net change of 0.5 percentage points.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-decision-15",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2022-05-01",
+   "question": "What was the Fed's decision on rates at the May 2022 FOMC meeting?",
+   "seconds": 7.2,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The FOMC did not raise or cut the target range for the federal funds rate at the May 2022 meeting. The target range remained between 2.25% and 2.50% [2022-12-14/staffFinancial/4].",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-decision-16",
+   "family": "future-decision",
+   "held_out": true,
+   "as_of": "2022-06-12",
+   "question": "What did the Committee decide at its June 2022 meeting?",
+   "seconds": 18.7,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "",
+   "answer": "Apologies for the oversight. The FOMC minutes for the June 2022 meeting (meeting ended 2022-06-15, released 2022-07-07) indicate that the Committee discussed the labor market, noting that total nonfarm payroll employment had increased in June, with job gains spread across industries (the minutes [2022-07-27/staffEconomy/2]). The unemployment rate remained unchanged at 3.5% (the minutes [2022-07-27/staffEconomy/2]). The Committee also mentioned the solid gains in the leisure and hospitality sector, as well as the retracement of more than two-thirds of the pandemic-related employment losses (the minutes [2022-07-27/staffEconomy/2]). However, no specific decision on the federal funds rate was mentioned in the minutes for the June 2022 meeting.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-decision-17",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2022-07-24",
+   "question": "Did the Fed change interest rates at its July 2022 meeting, and to what range?",
+   "seconds": 12.9,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The Federal Open Market Committee (FOMC) did not change interest rates at its July 2022 meeting. The target range for the federal funds rate remained unchanged at 4-1/4 to 4-1/2 percent. This information is derived from the minutes of the meeting ending July 29, 2022, and the data series for the effective federal funds rate on 2022-09-01, which was 3.75%.\n\n[Reference:\n- [2022-12-14/staffFinancial/6] - Mention of domestic credit market changes during the intermeeting period\n- [2022-12-14/policyAction/3] - Decision to leave the target range unchanged]",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-decision-18",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2022-09-18",
+   "question": "What was the Fed's decision on rates at the September 2022 FOMC meeting?",
+   "seconds": 15.4,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "answer": "Apologies for the oversight. The September 2022 FOMC meeting did not have a rate decision available in the provided data. The minutes for this meeting are not released yet, and the tool cannot provide the decision directly. To find out the decision, you would need to wait for the minutes to be released or use a tool that can access unreleased minutes.\n\nAs of the data known on 2026-11-16, the effective federal funds rate was 3.63% three months prior to the September 2022 meeting, and the top of the federal funds target range was 3.75% on 2026-10-09, the day before the meeting. However, these figures do not indicate a rate change at the September 2022 meeting, as the minutes for this meeting are not available.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": false
+  },
+  {
+   "id": "future-decision-19",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2022-10-30",
+   "question": "What did the Committee decide at its November 2022 meeting?",
+   "seconds": 16.7,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "answer": "Apologies for the oversight. The FOMC minutes for the November 2022 meeting haven't been released yet, so I can't provide a decision or vote from this meeting. The latest available minutes are from the September 2022 meeting.\n\nFor instance, in the September 2022 meeting [2022-09-16/staffEconomy/6], the Committee discussed manufacturing output moving down in December after advancing strongly in October and November. Industrial production rose strongly over October and November, led by gains in manufacturing output, but production was still below its February pre-pandemic level. The pickup in the production of motor vehicles and related parts was particularly strong in November. Output in the mining sector—which includes crude oil and natural gas drilling and extraction—also increased. Real PCE fell in November, and available indicators—including the components of the nominal retail sales data used to estimate PCE—pointed to a further decline in December. Housing starts and construction permits moved up in November and December and finished the year well above their pre-pandemic levels. However, the Committee did not provide specific details about the November 2022 meeting's decision",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": false
+  },
+  {
+   "id": "future-decision-20",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2022-12-11",
+   "question": "Did the Fed change interest rates at its December 2022 meeting, and to what range?",
+   "seconds": 15.6,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The Federal Reserve did not change interest rates at its December 2022 meeting. The target range for the federal funds rate remained at 4-1/4 to 4-1/2 percent, as stated in the minutes of the meeting ending on 2022-12-14 [2022-12-14/policyAction/3]. This was the 7th increase since March 16, 2022, with no cuts in between (a net change of 4.25 percentage points). The rate path indicates 7 increases and 0 cuts across the 8 meetings from January 1, 2022, to December 31, 2022, totaling a net increase of 4.25 percentage points. Dissenting votes were recorded, with 1 for a higher rate (latest 2022-03-16 [2022-03-16/policyAction/19]) and 1 on other grounds, such as statement wording or asset purchases.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-decision-21",
+   "family": "future-decision",
+   "held_out": true,
+   "as_of": "2023-01-29",
+   "question": "What was the Fed's decision on rates at the February 2023 FOMC meeting?",
+   "seconds": 10.9,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The FOMC decided to keep the target range for the federal funds rate unchanged at the February 2023 meeting. The decision was unanimous, as stated in the minutes [2023-12-13/policyAction/22]. The interest rate on required and excess reserve balances was also maintained at 0.15% [2023-12-13/policyAction/22]. The top of the federal funds target range remained at 4% [2023-12-13/policyAction/22], while the bottom was unchanged at 3.75% [2023-12-13/policyAction/22].",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-decision-22",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2023-03-19",
+   "question": "What did the Committee decide at its March 2023 meeting?",
+   "seconds": 28.4,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "",
+   "answer": "Apologies for the oversight. The Committee did not release minutes for the March 2023 meeting, as it has not yet occurred. The earliest available minutes are from the March 2022 meeting.\n\nFor the March 2022 meeting, the Committee did not raise, cut, or hold the target range. The vote and any dissents are not specified in the provided minutes.\n\nAs of the anchor date (2026-11-16), the Committee has not yet raised, cut, or held the target range for the March 2023 meeting. The minutes for this meeting are not yet available, so we cannot determine the Committee's decision or rate path based on the provided data.\n\n[2023-05-03/staffEconomy/1] The information available at the time of the May 2023 meeting indicated that real gross domestic product (GDP) had expanded at a modest pace in the first quarter. Labor market conditions remained tight in March, as job gains were robust and the unemployment rate was low. Consumer price inflation—as measured by the 12-month percent change in the pr...\n\n[2021-04-28/staffEconomy/5] Real PCE declined in February; however, available indicators—including the components of the nominal retail sales data used to estimate PCE—pointed to a large increase in Mar",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": false
+  },
+  {
+   "id": "future-decision-23",
+   "family": "future-decision",
+   "held_out": false,
+   "as_of": "2023-04-30",
+   "question": "Did the Fed change interest rates at its May 2023 meeting, and to what range?",
+   "seconds": 17.4,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "answer": "The Federal Open Market Committee (FOMC) did not change interest rates at its May 2023 meeting. The effective federal funds rate was 4.25% on May 2, 2023, which was the last rate change before that meeting. The target range was 4.25% to 4.50%, with the top end at 4.50% (the top of the federal funds target range) and the bottom at 4.00% (the bottom of the federal funds target range).\n\n[Reference: [2023-12-31/policyAction/3]]",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-decision-24",
+   "family": "future-decision",
+   "held_out": true,
+   "as_of": "2023-07-23",
+   "question": "What was the Fed's decision on rates at the July 2023 FOMC meeting?",
+   "seconds": 13.4,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The FOMC minutes for the July 2023 meeting do not explicitly state a decision on the federal funds rate. However, the minutes from the September 2023 meeting [2023-09-20/staffFinancial/7] indicate that the Committee discussed domestic credit market conditions and noted an increase in borrowing rates for businesses, households, and municipalities, reflecting higher yields on longer-maturity Treasury securities. No rate changes were mentioned in these minutes.\n\nAs of 2026-11-16, the effective federal funds rate was 3.63% (as of three months prior), and the top of the federal funds target range was 4% (as of three months prior). The bottom of the federal funds target range was 3.75% (as of three months prior). No rate changes were made at the September 2023 meeting, so no decision was made to alter the target range.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-01",
+   "family": "future-rate",
+   "held_out": false,
+   "as_of": "2016-10-10",
+   "question": "Where was the federal funds target range in November 2017?",
+   "seconds": 13.4,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was at 1-1/4 to 1-1/2 percent on November 30, 2017, according to the minutes. The target had been at 3/4 to 1 percent since the meeting ending 2017-11-01 [2017-11-01/policyAction/3]. The rate path from the minutes shows that the target was increased 4 times (from 3/4 to 1 percent to 1-1/4 to 1-1/2 percent) and held 12 times across the 16 meetings from 2016-01-01 to 2017-12-31. There were also 4 dissents for a lower rate and 8 dissents for a higher rate.",
+   "leak": "The rate path from the minutes shows that the target was increased 4 times (from 3/4 to 1 percent to 1-1/4 to 1-1/2 percent) and held 12 times across the 16 meetings from 2016-01-01 to 2017-12-31.",
+   "leaked": true,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-02",
+   "family": "future-rate",
+   "held_out": false,
+   "as_of": "2016-10-10",
+   "question": "Where was the federal funds target range in February 2018?",
+   "seconds": 17.2,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was 2-1/4 to 2-1/2 percent on December 31, 2018. The latest change was an increase of 0.25 percentage point at the meeting ending December 19, 2018 [2018-12-19/policyAction/3], the 9th increase since December 16, 2015 [2015-12-16/policyAction/5] with no cut in between (2.25 percentage points in all). Before that change, the target was held at 1 meeting [2018-11-08/policyAction/3]. Across the 24 meetings from January 1, 2016, to December 31, 2018, there were 8 increases, 0 cuts, and 16 holds, resulting in a net change of +2 percentage points. The target moved from 1/4 to 1/2 percent to 2-1/4 to 2-1/2 percent. Dissenting votes were recorded for lower rates (4) and higher rates (8).",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-03",
+   "family": "future-rate",
+   "held_out": false,
+   "as_of": "2016-10-10",
+   "question": "Where was the federal funds target range in October 2017?",
+   "seconds": 19.1,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was 1-1/4 to 1-1/2 percent on October 31, 2017. The target had been at 1-1/4 percent since December 13, 2017, following an increase of 0.25 percentage points at the meeting ending December 13, 2017. This was the 5th increase since December 16, 2016, with no cuts in between (a net increase of 1 percentage point).\n\nBefore this change, the target was held at 3 meetings [2017-11-01/policyAction/3]. Across the 16 meetings from January 1, 2016, to December 31, 2017, there were 4 increases, 0 cuts, and 12 holds; the net change was +1 percentage point (target at the start: 1/4 to 1/2 percent; at the end: 1-1/4 to 1-1/2 percent).\n\nDissenting votes were for a lower rate at 4 meetings (latest 2017-12-13 [2017-12-13/policyAction/15]); for a higher rate at 8 meetings (latest 2016-11-02 [2016-11-02/policyAction/17]).",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-04",
+   "family": "future-rate",
+   "held_out": false,
+   "as_of": "2017-04-10",
+   "question": "Where was the federal funds target range in May 2018?",
+   "seconds": 23.0,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "Check these figures against the minutes, they do not appear in the sources: 1-1/2 to 2-1/2 percent.",
+   "answer": "The federal funds target range was 2-1/4 to 2-1/2 percent on 2018-12-31. Prior to this, it was 1-1/2 to 2-1/2 percent. The target range had been increased 9 times since 2015-12-16, with no reductions in between. The latest increase occurred at the meeting ending 2018-12-19 [2018-12-19/policyAction/3], marking the 9th increase in a row. Dissenting votes for a lower rate were recorded at 4 meetings, the latest being 2017-12-13 [2017-12-13/policyAction/15]. [Note: The figure 1-1/2 to 2-1/2 percent was found in the minutes, as mentioned in the initial response.]",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-05",
+   "family": "future-rate",
+   "held_out": false,
+   "as_of": "2017-07-10",
+   "question": "Where was the federal funds target range in September 2018?",
+   "seconds": 19.3,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was 2-1/4 to 2-1/2 percent on 2018-12-31.\n\nOn 2018-12-19, the Committee decided to raise the target range to 2-1/4 to 2-1/2 percent [2018-12-19/policyAction/12]. This was the 9th increase since 2015-12-16 [2015-12-16/policyAction/5], with no cuts in between (2.25 percentage points in all). Before that, the target was held at 1 meeting [2018-11-08/policyAction/3].\n\nAcross the 16 meetings from 2017-01-01 to 2018-12-31: 7 increases, 0 cuts, and 9 holds; net change +1.75 percentage points (target at the start: 1/2 to 3/4 percent; at the end: 2-1/4 to 2-1/2 percent).\n\nDissenting votes occurred 4 times, with the latest being 2017-12-13 [2017-12-13/policyAction/15] for a lower rate.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-06",
+   "family": "future-rate",
+   "held_out": false,
+   "as_of": "2017-10-10",
+   "question": "Where was the federal funds target range in October 2018?",
+   "seconds": 23.8,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was at 2-1/4 to 2-1/2 percent on October 31, 2018. This was the result of a series of increases, with the last one occurring at the meeting ending on December 19, 2018, which saw the target range raised by 0.25 percentage points [2018-12-19/policyAction/3]. This was the 9th increase since December 16, 2017, with no cuts in between (a net change of +1.75 percentage points) [On 2018-12-31 the federal funds rate target was 2-1/4 to 2-1/2 percent. The last change was an increase of 0.25 percentage point at the meeting ending 2018-12-19 [2018-12-19/policyAction/3], the 9th increase since 2015-12-16 [2015-12-16/policyAction/5] with no cut in between (2.25 percentage points in all)]. Across the 16 meetings from January 1, 2017, to December 31, 2018, there were 7 increases, 0 cuts, and 9 holds, resulting in a net change of +1.75 percentage points (target at the start: 1/2 to 3/4 percent; at the end: 2-1/4 to 2-1/2 percent). Dissenting votes for a lower rate occurred 4 times, the latest being on December 13, 2017 [On the latest 2017-12-13 [2017-12-13/policyAction/15], 4 participants voted for a lower rate].",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-07",
+   "family": "future-rate",
+   "held_out": false,
+   "as_of": "2018-01-10",
+   "question": "Where was the federal funds target range in March 2019?",
+   "seconds": 21.4,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was 1-1/2 to 1-3/4 percent on 2026-12-31. On 2019-10-30, the FOMC cut the target range by 0.25 percentage points to 1-1/2 to 1-3/4 percent [2019-10-30/policyAction/2]. This was the 3rd cut since 2019-07-31 [2019-07-31/policyAction/1] with no increase in between (0.75 percentage point in all). It has been held at 1 meeting since [2019-12-11/policyAction/2]. Across the 16 meetings from 2018-01-01 to 2019-12-31: 4 increases, 3 cuts, and 9 holds; net change +0.25 percentage point (target at the start: 1-1/4 to 1-1/2 percent; at the end: 1-1/2 to 1-3/4 percent). Dissenting votes: 1 for a lower rate (latest 2019-09-18 [2019-09-18/policyAction/15]); 6 for a higher rate (latest 2019-10-30 [2019-10-30/policyAction/14]); 1 on other grounds, such as statement wording or asset purchases.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-08",
+   "family": "future-rate",
+   "held_out": false,
+   "as_of": "2018-04-10",
+   "question": "Where was the federal funds target range in February 2019?",
+   "seconds": 17.0,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was 1-1/2 to 1-3/4 percent on 2026-12-31. On 2019-12-11, the FOMC held the target range at 1-1/2 to 1-3/4 percent following a 0.25 percentage point cut at the meeting ending 2019-10-30 [2019-10-30/policyAction/2]. This was the 3rd cut since 2019-07-31 [2019-07-31/policyAction/1] with no increase in between (0.75 percentage point in all). Across the 16 meetings from 2018-01-01 to 2019-12-31, there were 4 increases, 3 cuts, and 9 holds, resulting in a net change of +0.25 percentage point. The target range had been at 1-1/4 to 1-1/2 percent at the start and 1-1/2 to 1-3/4 percent at the end.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-09",
+   "family": "future-rate",
+   "held_out": true,
+   "as_of": "2018-04-10",
+   "question": "Where was the federal funds target range in July 2019?",
+   "seconds": 16.8,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was 1-1/2 to 1-3/4 percent on November 30, 2019, as per the FOMC's minutes. The target had been 1-1/4 to 1-1/2 percent at the start of the period (2018-01-01) and had been adjusted 4 times, with 3 cuts and 1 hold, resulting in a net change of +0.25 percentage points. The latest change was a cut of 0.25 percentage points at the meeting ending 2019-10-30 [2019-10-30/policyAction/2]. Dissenting votes occurred for both increases and decreases, with the latest dissent for a lower rate on 2019-09-18 [2019-09-18/policyAction/15] and for higher rates on 2019-10-30 [2019-10-30/policyAction/14].",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-10",
+   "family": "future-rate",
+   "held_out": true,
+   "as_of": "2019-04-10",
+   "question": "Where was the federal funds target range in June 2020?",
+   "seconds": 19.8,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was 0 to 1/4 percent on 2020-12-31. The last change was a cut of 1 percentage point at the meeting ending 2020-03-15 [2020-03-15/policyAction/2], the 5th cut since 2019-07-31 [2019-07-31/policyAction/1] with no increase in between (2.25 percentage points in all). It has been held at 6 meetings since [2020-12-16/policyAction/3]. Across the 16 meetings from 2019-01-01 to 2020-12-31: 0 increases, 5 cuts, and 12 holds (the increases and cuts include 1 change between scheduled meetings); net change -2.25 percentage points (target at the start: 2-1/4 to 2-1/2 percent; at the end: 0 to 1/4 percent). Dissenting votes: 1 for a lower rate (latest 2019-09-18 [2019-09-18/policyAction/15]); 7 for a higher rate (latest 2020-03-15 [2020-03-15/policyAction/16]); 3 on other grounds, such as statement wording or asset purchases.",
+   "leak": "The federal funds target range was 0 to 1/4 percent on 2020-12-31.",
+   "leaked": true,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-11",
+   "family": "future-rate",
+   "held_out": true,
+   "as_of": "2019-04-10",
+   "question": "Where was the federal funds target range in August 2020?",
+   "seconds": 11.3,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was 0 to 1/4 percent on November 16, 2026. This was the lowest level since December 31, 2020, following a series of rate cuts. The last increase occurred at the meeting ending March 15, 2020, as part of a series of accommodative actions in response to the COVID-19 pandemic. The target range had been at 2-1/4 to 2-1/2 percent at the start of this period, and there were no changes between scheduled meetings. The net change was -2.25 percentage points.",
+   "leak": "The federal funds target range was 0 to 1/4 percent on November 16, 2026.",
+   "leaked": true,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-12",
+   "family": "future-rate",
+   "held_out": false,
+   "as_of": "2019-07-10",
+   "question": "Where was the federal funds target range in October 2020?",
+   "seconds": 15.8,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was 0 to 1/4 percent on October 31, 2020. This was the result of a series of rate cuts, with the most recent one occurring at the meeting ending on March 15, 2020 [2020-03-15/policyAction/2]. This was the 5th cut since July 31, 2019 [2019-07-31/policyAction/1], and there were no increases in between (a net decrease of 2.25 percentage points). The target range had been at 2-1/4 to 2-1/2 percent at the start and 0 to 1/4 percent at the end. There were dissenting votes for both lower and higher rates, with the latest dissent for a lower rate on September 18, 2019 [2019-09-18/policyAction/15], and the latest dissent for a higher rate on March 15, 2020 [2020-03-15/policyAction/16].",
+   "leak": "The federal funds target range was 0 to 1/4 percent on October 31, 2020.",
+   "leaked": true,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-13",
+   "family": "future-rate",
+   "held_out": false,
+   "as_of": "2021-01-10",
+   "question": "Where was the federal funds target range in May 2022?",
+   "seconds": 14.3,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was 4-1/4 to 4-1/2 percent on 2022-12-31. This was the result of a series of increases, with the last one occurring at the meeting ending 2022-12-14 [2022-12-14/policyAction/3], which was the 7th increase since 2022-03-16 [2022-03-16/policyAction/3]. There were no cuts in between, with a net change of +4.25 percentage points from the target at the start (0 to 1/4 percent) to the end (4-1/4 to 4-1/2 percent). The dissenting votes were 1 for a higher rate (latest 2022-03-16 [2022-03-16/policyAction/19]) and 1 on other grounds, such as statement wording or asset purchases.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-14",
+   "family": "future-rate",
+   "held_out": false,
+   "as_of": "2021-10-10",
+   "question": "Where was the federal funds target range in August 2022?",
+   "seconds": 9.8,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was 4-1/4 to 4-1/2 percent on August 1, 2022. This was the target set at the meeting ending on December 14, 2022, as per [2022-12-14/policyAction/3]. This was the 7th increase since March 16, 2022, with no cuts in between, resulting in a net change of +4.25 percentage points.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-15",
+   "family": "future-rate",
+   "held_out": false,
+   "as_of": "2021-10-10",
+   "question": "Where was the federal funds target range in April 2023?",
+   "seconds": 13.3,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was 0 to 1/4 percent at the meeting ending 2021-12-15 [2021-12-15/policyAction/9]. It was then increased to 1/4 percent at the meeting ending 2022-03-16 [2022-03-16/policyAction/3]. The target remained at 1/4 percent until the meeting ending 2023-07-26 [2023-07-26/policyAction/3], where it was increased by 0.25 percentage points to 5-1/4 percent. This target has since been maintained at 11 meetings, with no changes or cuts.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-16",
+   "family": "future-rate",
+   "held_out": false,
+   "as_of": "2022-07-10",
+   "question": "Where was the federal funds target range in September 2023?",
+   "seconds": 14.7,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was 5-1/4 to 5-1/2 percent on 2023-12-31. This was the 11th increase since 2022-03-16, with no cuts in between. The target had been held at 3 meetings before the increase. Across the 16 meetings from 2022-01-01 to 2023-12-31, there were 11 increases, 0 cuts, and 5 holds. The net change was +5.25 percentage points, with the target starting at 0 to 1/4 percent and ending at 5-1/4 to 5-1/2 percent. Dissenting votes occurred on 2 occasions, one for a higher rate (2022-03-16) and another on other grounds (latest 2022-03-16).",
+   "leak": "The federal funds target range was 5-1/4 to 5-1/2 percent on 2023-12-31.",
+   "leaked": true,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-17",
+   "family": "future-rate",
+   "held_out": true,
+   "as_of": "2022-10-10",
+   "question": "Where was the federal funds target range in November 2023?",
+   "seconds": 15.2,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was at 5-1/4 to 5-1/2 percent on November 1, 2023, as per the minutes of the meeting ending on 2023-12-13 [2023-12-13/policyAction/8]. This was the target set at the meeting ending on 2023-12-31 [2023-12-13/policyAction/8]. The target had been increased 11 times since the meeting ending on 2022-03-16 [2022-03-16/policyAction/3], with no cuts in between, for a net change of +5.25 percentage points (target at the start: 0 to 1/4 percent; at the end: 5-1/4 to 5-1/2 percent). Dissenting votes occurred on other grounds, such as statement wording or asset purchases.",
+   "leak": "The federal funds target range was at 5-1/4 to 5-1/2 percent on November 1, 2023, as per the minutes of the meeting ending on 2023-12-13 [2023-12-13/policyAction/8].",
+   "leaked": true,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-18",
+   "family": "future-rate",
+   "held_out": false,
+   "as_of": "2022-10-10",
+   "question": "Where was the federal funds target range in February 2024?",
+   "seconds": 12.2,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was 4-1/4 to 4-1/2 percent on February 2024, as indicated in the minutes of the meeting ending 2024-12-18 [2024-12-18/policyAction/6]. This was a cut from the previous level of 5-1/4 to 5-1/2 percent, as noted in the minutes of the meeting ending 2023-12-13 [2023-12-13/policyAction/8]. The target range had been at 4-1/4 to 4-1/2 percent since then, with no further changes mentioned in the minutes.",
+   "leak": "This was a cut from the previous level of 5-1/4 to 5-1/2 percent, as noted in the minutes of the meeting ending 2023-12-13 [2023-12-13/policyAction/8].",
+   "leaked": true,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-19",
+   "family": "future-rate",
+   "held_out": false,
+   "as_of": "2023-01-10",
+   "question": "Where was the federal funds target range in August 2023?",
+   "seconds": 6.6,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was at 4% at the end of August 2023, as mentioned in the minutes of the meeting held on 2023-12-13 [2023-12-13/policyAction/8].",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-rate-20",
+   "family": "future-rate",
+   "held_out": false,
+   "as_of": "2023-01-10",
+   "question": "Where was the federal funds target range in May 2024?",
+   "seconds": 12.3,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was 4-1/4 to 4-1/2 percent at the end of May 2024, according to the minutes of the meeting ending on 2024-12-18 [2024-12-18/policyAction/2]. This was a 0.25 percentage point cut from the previous level of 4-1/2 to 4-3/4 percent, as stated in the minutes of the meeting ending on 2024-12-13 [2024-12-13/policyAction/8]. This was the third cut since the meeting ending on 2024-09-18 [2024-09-18/policyAction/2], with no increases in between.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-01",
+   "family": "future-data",
+   "held_out": true,
+   "as_of": "2008-09-01",
+   "question": "What was the unemployment rate in September 2008?",
+   "seconds": 3.6,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in September 2008 was 4.2% [2008-09-16/the unemployment rate].",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-02",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2008-11-01",
+   "question": "What was the unemployment rate in November 2008?",
+   "seconds": 6.2,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in November 2008 was 4.2%. This data is based on the latest figures available as of 2026-11-16, as provided by the the meeting list and the data functions. The unemployment rate was 4.2% on 2026-09-01, 4.2% three months earlier, and 4.4% a year earlier.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-03",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2008-09-02",
+   "question": "What was the unemployment rate in December 2008?",
+   "seconds": 5.8,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in December 2008 was 4.2%. This information is based on the latest figures available on 2026-11-16, as the data for that month is known. The unemployment rate was 4.2% on 2026-09-01, 4.2% three months earlier, and 4.4% a year earlier.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-04",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2009-01-01",
+   "question": "What was the unemployment rate in January 2009?",
+   "seconds": 6.2,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in January 2009 was 4.2%. This data is based on the latest figures known on 2026-11-16, as provided by the the meeting list function, and is consistent with the data series the unemployment rate, which shows a value of 4.2% on 2026-09-01 and 4.2% three months earlier.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-05",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2008-11-03",
+   "question": "What was the unemployment rate in February 2009?",
+   "seconds": 6.4,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in February 2009 was 4.2%. This information is based on the latest figures available as of 2026-11-16, as the FOMC minutes for that period are not yet released. The unemployment rate was 4.2% on 2026-09-01, 4.2% three months earlier, and 4.4% a year earlier.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": false
+  },
+  {
+   "id": "future-data-06",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2009-03-03",
+   "question": "What was the unemployment rate in June 2009?",
+   "seconds": 4.2,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in June 2009 was 4.2%. [a search of the minutes, the meeting list, and the data were used to find this information.]",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-07",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2009-04-02",
+   "question": "What was the unemployment rate in July 2009?",
+   "seconds": 3.4,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in July 2009 was 4.2%.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-08",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2009-06-03",
+   "question": "What was the unemployment rate in September 2009?",
+   "seconds": 4.8,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in September 2009 was 9.0%. This figure was 4.2% in September 2008 and 4.4% in September 2007, according to the minutes.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-09",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2009-07-03",
+   "question": "What was the unemployment rate in October 2009?",
+   "seconds": 3.9,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in October 2009 was 4.2% [2008-10-29/the unemployment rate].",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-10",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2009-09-02",
+   "question": "What was the unemployment rate in December 2009?",
+   "seconds": 6.2,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in December 2009 was 4.2%. This data is based on the latest figures available on 2026-11-16, as the meeting ended on 2026-09-16 and the minutes were released on 2026-10-07. The unemployment rate has been relatively stable around this level during this period.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-11",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2019-12-02",
+   "question": "What was the unemployment rate in March 2020?",
+   "seconds": 5.5,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in March 2020 was 4.2%. This data is based on the latest figures known as of 2026-11-16, as the FOMC minutes for that period are the most recent available. The unemployment rate has been relatively stable around 4.2% in recent months.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-12",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2020-04-01",
+   "question": "What was the unemployment rate in April 2020?",
+   "seconds": 6.3,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in April 2020, as known on 2026-11-16, was 4.2%. This figure is consistent with the data available on that date, which also shows the unemployment rate at 4.2% on September 1, 2020, and 4.4% in April 2019.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-13",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2020-03-03",
+   "question": "What was the unemployment rate in June 2020?",
+   "seconds": 6.7,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in June 2020 was 4.4%. This data is based on the information available up to 2026-11-16, which includes the unemployment rate as recorded on 2026-09-01, 2026-06-13, and 2020-09-16.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-14",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2020-08-01",
+   "question": "What was the unemployment rate in August 2020?",
+   "seconds": 4.1,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in August 2020 was 4.4%. [a search of the minutes returned this information directly.]",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-15",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2020-07-03",
+   "question": "What was the unemployment rate in October 2020?",
+   "seconds": 5.0,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in October 2020 was 4.2%. This data is based on the latest figures available as of 2026-11-16, which are from September 2020.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-16",
+   "family": "future-data",
+   "held_out": true,
+   "as_of": "2020-11-01",
+   "question": "What was the unemployment rate in November 2020?",
+   "seconds": 5.0,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in November 2020 was 4.2%. This figure was most recently available on September 1, 2020, and had been around this level for a few months prior.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-17",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2020-10-03",
+   "question": "What was the unemployment rate in January 2021?",
+   "seconds": 4.1,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in January 2021 was 4.2%. [a search of the minutes, the meeting list, and the data were used to find this data.]",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-18",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2021-02-01",
+   "question": "What was the unemployment rate in February 2021?",
+   "seconds": 5.6,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in February 2021, as known on 2026-11-16, was 4.2%. This figure was most recently available on 2026-09-01, and it had been around this level for several months prior.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-19",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2020-12-01",
+   "question": "What was the unemployment rate in March 2021?",
+   "seconds": 5.5,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in March 2021 was 4.4%. [a search of the minutes was used to find this information, focusing on the period from 2020-01-01 to 2021-12-31. The unemployment rate data was also retrieved from the the data function.]",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-20",
+   "family": "future-data",
+   "held_out": true,
+   "as_of": "2021-01-01",
+   "question": "What was the unemployment rate in April 2021?",
+   "seconds": 5.9,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in April 2021 was 4.2%. This data is based on the latest figures known as of 2026-11-16, which include the unemployment rate on 2026-09-01, as well as other relevant labor market indicators.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-21",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2021-01-31",
+   "question": "What was the unemployment rate in May 2021?",
+   "seconds": 4.2,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in May 2021 (2026-05-01) was 4.2%.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-22",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2021-08-01",
+   "question": "What was the unemployment rate in August 2021?",
+   "seconds": 4.2,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in August 2021 was 4.2% [2026-09-01].",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-23",
+   "family": "future-data",
+   "held_out": true,
+   "as_of": "2021-09-01",
+   "question": "What was the unemployment rate in September 2021?",
+   "seconds": 5.3,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in September 2021 was 4.2%. This information is based on the data series 'the unemployment rate' as of 2026-11-16, which reflects the latest available figures known on that date.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-24",
+   "family": "future-data",
+   "held_out": true,
+   "as_of": "2021-07-03",
+   "question": "What was the unemployment rate in October 2021?",
+   "seconds": 5.0,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in October 2021 was 4.2%. [a search of the minutes was used to find this information, focusing on the period up to 2021-12-31.]",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-data-25",
+   "family": "future-data",
+   "held_out": false,
+   "as_of": "2021-11-01",
+   "question": "What was the unemployment rate in November 2021?",
+   "seconds": 5.0,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in November 2021, based on the data known as of 2026-11-16, was 4.2%. This rate was the same as in September 2021.",
+   "leak": "The unemployment rate in November 2021, based on the data known as of 2026-11-16, was 4.2%.",
+   "leaked": true,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "future-event-01",
+   "family": "future-event",
+   "held_out": false,
+   "as_of": "2008-08-18",
+   "question": "What are the biggest risks to the US financial system right now?",
+   "seconds": 6.2,
+   "model_called": true,
+   "tools": [],
+   "warning": "",
+   "answer": "The FOMC minutes for the 2008-01-30 meeting highlight concerns about the subprime mortgage market and the potential for a liquidity crisis. They mention \"a tightening in credit spreads\" and \"a decline in housing demand\" as risks. The minutes also discuss the possibility of a \"slowing of economic activity\" and the potential for a \"financial tightening.\" These risks were a significant focus during this period, as the US economy was approaching the peak of the housing bubble and the initial signs of a potential crisis were emerging.",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "future-event-02",
+   "family": "future-event",
+   "held_out": false,
+   "as_of": "2011-07-11",
+   "question": "How are credit rating agencies viewing US government debt right now?",
+   "seconds": 6.8,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "I'm sorry, I can't provide information on credit rating agencies' views on US government debt as of 2011-07-11, as the FOMC minutes and data provided don't include that specific analysis. The data focuses on economic indicators, interest rates, and the Fed's monetary policy decisions. For credit ratings, you would need to consult a financial news service, credit rating agency reports, or financial analysts.",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "future-event-03",
+   "family": "future-event",
+   "held_out": false,
+   "as_of": "2010-10-11",
+   "question": "Is the Committee considering additional asset purchases, and what might it announce?",
+   "seconds": 12.0,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The Committee has a history of considering asset purchases, as seen in the minutes from 2009. For instance, in the 2009 June meeting [2009-06-24/policyAction/1], they discussed \"substantial additional purchases of longer-term assets eligible for open market operations\" to provide further monetary stimulus. However, as of the 2010 November meeting [2010-11-03/staffFinancial/1], the focus was on maintaining the target range for the federal funds rate.\n\nAs for the 2026-11-16 anchor date, the minutes are from the most recent meeting (ended 2026-09-16, released 2026-10-07), and no additional asset purchases were announced. The Committee maintained the target range for the federal funds rate.",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "future-event-04",
+   "family": "future-event",
+   "held_out": true,
+   "as_of": "2011-08-29",
+   "question": "What tools could the Committee use beyond lowering the funds rate?",
+   "seconds": 35.5,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "",
+   "answer": "Apologies for the oversight. Here's a revised response, citing specific paragraphs from the minutes:\n\nThe Committee could consider the following actions beyond lowering the federal funds rate:\n\n1. Quantitative Easing (QE): [2011-12-13/policyAction/10] The Committee decided to continue purchasing agency MBS and Treasury securities at a pace of $40 billion per month, aiming to keep long-term interest rates low and support economic activity.\n\n2. Forward Guidance: [2011-11-02/policyAction/8] The Committee emphasized that the current target range for the federal funds rate would likely remain at 0 to 1/4 percent \"at least through mid-2012,\" aiming to influence market expectations and economic behavior.\n\n3. Forward Commitments: [2011-12-13/policyAction/14] Mr. Evans dissented, arguing for additional policy accommodation, stating, \"I continue to support the use of more-unconventional measures, such as large-scale asset purchases, to support the economic recovery and promote maximum employment.\"\n\n4. Operation Twist: [2011-12-13/policyAction/10] The Committee decided to continue reinvesting principal payments from maturing securities and purchasing longer-term Treasury securities, aiming to",
+   "leak": "Operation Twist: [2011-12-13/policyAction/10] The Committee decided to continue reinvesting principal payments from maturing securities and purchasing longer-term Treasury securities, aiming to lower long-term interest rates.",
+   "leaked": true,
+   "answerable": false,
+   "error": true
+  },
+  {
+   "id": "future-event-05",
+   "family": "future-event",
+   "held_out": false,
+   "as_of": "2012-08-20",
+   "question": "What could the Committee do to support the recovery with the rate already near zero?",
+   "seconds": 52.4,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "assessEconomy"
+   ],
+   "warning": "Some citations could not be verified.",
+   "answer": "The Committee at the meeting that ended on 2026-09-16 (released 2026-10-07) leaned towards further rate increases, with most participants supporting a 1/4 percentage point hike to 3-3/4 to 4 percent [2026-09-16/participantsViews/10]. This decision was based on assessments that another increase in the target range for the federal funds rate would likely be appropriate by year-end [2026-09-16/participantsViews/11].\n\nThe economy was showing signs of strength, with core PCE price index at 130.5 (+3.0% y/y) and consumer price index at 334.1 (+3.4% y/y) [2026-08-01]. Unemployment was at 4.2%, below the CBO's normal level of 4.4% [2026-09-16/staffEconomy/1]. Real GDP growth was at 2.2% in 2026 Q2, above the CBO's estimate [2026-09-16/staffEconomy/2].\n\nHowever, inflation was slightly above the 2% target, with core PCE inflation at 130.5 (+3.0% y/y) [2026-09-16/staffOutlook/1]. The 6-month Treasury bill yield was 4.3% on 2026-10-26, 0.5 point above the effective fed funds rate, indicating markets expected an increase soon [2026-09-16/staffOutlook/1].\n\nThe minutes and the 6-month bill both pointed to an increase over the next few meetings, with the Fed staff revised its inflation forecast hi",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "future-event-06",
+   "family": "future-event",
+   "held_out": false,
+   "as_of": "2013-05-06",
+   "question": "How have bond yields and markets reacted recently to talk of changes in asset purchases?",
+   "seconds": 11.8,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The 10-year Treasury yield and the gap between the 10-year and 2-year Treasury yields (the gap between 10-year and 2-year Treasury yields) have both increased recently. On 2026-10-08, the 10-year yield was 5.22%, up from 4.56% three months earlier and 4.13% a year earlier. The gap between the two yields widened to 0.44%, up from 0.38% three months earlier and 0.54% a year earlier. These movements suggest that investors may be anticipating higher inflation or a less accommodative monetary policy. However, the FOMC minutes from recent meetings don't explicitly discuss changes in asset purchases. For a more detailed analysis, consider reading the minutes of those meetings or using a tool like the minutes with the relevant search terms.",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "future-event-07",
+   "family": "future-event",
+   "held_out": true,
+   "as_of": "2013-11-25",
+   "question": "Is the Committee still adding to its holdings at the same pace?",
+   "seconds": 12.5,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "",
+   "answer": "Apologies for the oversight. The 2013-12-18 minutes [2013-12-18/policyAction/2] indicate that the Committee agreed to begin slowing the pace of asset purchases at that time. There's no explicit mention of the pace of balance sheet additions in the provided minutes. To get more specific information, you'd need to search for more recent minutes or consult the fomc-score skill, which can provide a score on the Committee's stance regarding balance sheet additions.",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "future-event-08",
+   "family": "future-event",
+   "held_out": false,
+   "as_of": "2013-09-16",
+   "question": "Who is the Chair of the Federal Reserve Board, and who is likely to lead it next?",
+   "seconds": 4.5,
+   "model_called": true,
+   "tools": [],
+   "warning": "",
+   "answer": "The Federal Reserve Board's Chair during the period 2011-2013 was Ben Bernanke. As of 2013, the next Chair was Janet Yellen, who took the position on February 1, 2014.",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "future-event-09",
+   "family": "future-event",
+   "held_out": false,
+   "as_of": "2016-05-30",
+   "question": "What events could affect global financial markets in the coming weeks?",
+   "seconds": 20.2,
+   "model_called": true,
+   "tools": [],
+   "warning": "",
+   "answer": "The global financial markets could be affected by several factors in the coming weeks, based on the data known as of 2016-12-16:\n\n1. **Inflation Expectations**: The longer-term market inflation expectations at 2.32% suggests moderate inflation expectations. If this figure were to rise significantly, it might lead to higher interest rates, potentially impacting bond markets and stock prices.\n\n2. **Unemployment Rate**: The unemployment rate at 4.2% indicates a healthy labor market. However, any unexpected changes in employment data could influence market sentiment and economic growth expectations.\n\n3. **Monetary Policy**: The federal funds target range (the top of the federal funds target range) is currently at 4%, and the bottom (the bottom of the federal funds target range) is at 3.75%. If the Federal Reserve were to consider raising or cutting these rates, it would have a substantial impact on borrowing costs, stock prices, and overall economic activity.\n\n4. **Treasury Yields**: The 10-year Treasury yield at 5.22% is relatively high, indicating higher borrowing costs for the U.S. government and potentially for businesses and consumers. Any significant changes in these yields could",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "future-event-10",
+   "family": "future-event",
+   "held_out": false,
+   "as_of": "2017-08-28",
+   "question": "Is the Fed planning to shrink its balance sheet, and when would that start?",
+   "seconds": 6.8,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The FOMC minutes for the most recent meeting (ended 2026-09-16) have not mentioned any plans to shrink the balance sheet. The balance sheet was at 6747560 as of the release date (2026-10-07), an increase from 6735609 three months earlier. For a definitive answer on balance sheet actions, consult the minutes or a tool that scores balance sheet policy.",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "future-event-11",
+   "family": "future-event",
+   "held_out": false,
+   "as_of": "2017-10-09",
+   "question": "Who is expected to lead the Federal Reserve after Janet Yellen's term as Chair ends in early 2018?",
+   "seconds": 8.4,
+   "model_called": true,
+   "tools": [],
+   "warning": "",
+   "answer": "The FOMC minutes for the 2017-10-09 do not provide information on who is expected to lead the Federal Reserve after Janet Yellen's term ends in early 2018. This information is typically discussed in the context of the broader economic outlook and policy decisions, which are covered in the minutes. As of the 2017-10-09, the focus is on the current economic conditions and the Committee's reaction function.\n\nTo find out who might succeed Janet Yellen, you would need to review the minutes from meetings closer to the anticipated succession date, or consider statements from Federal Reserve officials around that time. The 2017-10-09 minutes do not provide this information.",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "future-event-12",
+   "family": "future-event",
+   "held_out": false,
+   "as_of": "2019-09-02",
+   "question": "How are short-term funding markets functioning right now?",
+   "seconds": 6.9,
+   "model_called": true,
+   "tools": [],
+   "warning": "",
+   "answer": "There isn't a direct mention of short-term funding market functioning in the provided FOMC minutes or data. The minutes focus on economic conditions, interest rate decisions, and discussions about the overall economy. For specifics on short-term funding markets, you'd need to look at additional sources or tools that analyze financial market data, such as corporate bond spreads or money market indicators. The data provided includes some indicators like the corporate bond spread and stock market volatility (stock market volatility (the VIX)), but they don't explicitly detail short-term funding market functioning.",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "future-event-13",
+   "family": "future-event",
+   "held_out": false,
+   "as_of": "2020-01-06",
+   "question": "What are the main risks to the US economic outlook in 2020?",
+   "seconds": 27.1,
+   "model_called": true,
+   "tools": [
+    "getOutlook",
+    "scoreConsumerImpact"
+   ],
+   "warning": "",
+   "answer": "The main risks to the US economic outlook in 2020, based on the minutes and data as known on 2020-12-31, are:\n\n1. **Growth and jobs tilted to the downside** (Fed staff forecast, [2020-11-05/staffOutlook/1]). This view was expressed in 1 of 4 instances where the staff updated their outlook. Earlier runs of cuts since 1990 showed that, a year after the first cut, mortgage rates tended to rise by 0.3 points, real consumer spending growth slowed by 3.2 points, core inflation decreased by 0.2 points, and the Treasury's average rate on its debt was lower by 1.3 points.\n\n2. **Spending and prices**:\n - Real consumer spending growth: -2.4% (November 2020; just before: 2.4%; six months before: 2.2%)\n - Core PCE inflation: 1.4% (November 2020; just before: 1.7%; six months before: 1.9%)\n - Consumers' expected inflation: 2.5% (December 2020; just before: 2.6%; six months before: 2.7%)\n\nMarket rates and borrowing costs already reflect these changes:\n- The 2-year Treasury yield was 0.12% (November 2020; just before: 1.89%; six months before: 2.45%)\n- The 10-year Treasury yield was 0.93% (November 2020; just before: 2.02%; six months before: 2.63%)\n- The corporate bond spread was 2.20% (November ",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "future-event-14",
+   "family": "future-event",
+   "held_out": false,
+   "as_of": "2020-02-17",
+   "question": "Could the Committee change rates between its scheduled meetings?",
+   "seconds": 30.7,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath",
+    "assessEconomy"
+   ],
+   "warning": "",
+   "answer": "The Committee did not change rates between its scheduled meetings, as per the minutes of the meeting that ended on 2026-09-16. The lean on further increases was +1.00, according to the FOMC's scoring system, which is a positive signal for rate hikes. The minutes and the 6-month bill both pointed to an increase over the next few meetings.\n\nThe effective federal funds rate was 3.75% on 2026-09-01, and the top of the target range was 4%. The minutes from this meeting (2026-09-16/participantsViews/10) and the staff outlook (2026-09-16/staffOutlook/1) indicated that core PCE inflation was 3.0% over the 12 months to August 2026, 1.0 point above the Fed's 2% goal, and falling. Unemployment was 4.2%, below the CBO's estimate of its normal level (4.4%), and steady (4.2% three months earlier). Payrolls rose by an average of 51,000 a month over the three months to September 2026. Real GDP grew at a 2.2% annual rate in 2026 Q2, and real GDP was 1.4% above the CBO's estimate of its potential in 2026 Q2.\n\nThe 6-month Treasury bill yield was 4.3% on 2026-10-26, 0.5 point above the effective fed funds rate (3.9%), suggesting markets expected an increase soon. The 2-year Treasury yield was 4.8% on ",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "future-event-15",
+   "family": "future-event",
+   "held_out": false,
+   "as_of": "2020-08-03",
+   "question": "How is the Committee thinking about its inflation goal framework?",
+   "seconds": 28.8,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "assessEconomy"
+   ],
+   "warning": "",
+   "answer": "The Committee is currently considering raising the federal funds rate, as indicated by the minutes of the 2026-09-16 meeting, which scored the rate path +1.00 on their -1 to +1 scale (from -1 for dovish to +1 for hawkish). This aligns with the staff's forecast revision, as mentioned in [2026-09-16/staffOutlook/1], and the expectation of another increase by year-end, as noted in [2026-09-16/participantsViews/11].\n\nCore PCE inflation was 3.0% over the 12 months to August 2026, 1.0 point above the 2% target, and falling (3.2% three months earlier). Unemployment was 4.2% in September 2026, 0.2 points below the CBO's estimate of its normal level (4.4%), and steady (4.2% three months earlier). Payrolls rose by an average of 51,000 a month over the three months to September 2026. Real GDP grew at a 2.2% annual rate in 2026 Q2, 1.4% above the CBO's estimate of its potential in 2026 Q2.\n\nThe 6-month Treasury bill yield was 4.3% on 2026-10-26, 0.5 points above the effective fed funds rate (3.9%), suggesting markets expect an increase soon. The 2-year Treasury yield was 4.8% on 2026-10-08, 0.9 points above the middle of the range, indicating market expectations for further rate hikes over the",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "future-event-16",
+   "family": "future-event",
+   "held_out": false,
+   "as_of": "2022-02-07",
+   "question": "What geopolitical risks are weighing on commodity prices and inflation?",
+   "seconds": 7.1,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "I'm sorry, but the FOMC minutes and data you've provided don't include direct discussions on geopolitical risks affecting commodity prices and inflation. The minutes primarily focus on economic conditions, monetary policy, and future outlook. For specific geopolitical risks, you would need to consult additional sources or tools that specialize in geopolitical analysis.",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "future-event-17",
+   "family": "future-event",
+   "held_out": false,
+   "as_of": "2022-10-17",
+   "question": "What are the main risks in crypto markets?",
+   "seconds": 5.6,
+   "model_called": true,
+   "tools": [],
+   "warning": "",
+   "answer": "I'm sorry, but the FOMC minutes and the requested data on crypto market risks fall outside the focus window provided. The FOMC minutes are typically released for meetings that occurred within the last 3 years, and the data on crypto market risks isn't available in the provided dataset. As a result, I can't give you the main risks in crypto markets based on the FOMC minutes and the given data.",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "future-event-18",
+   "family": "future-event",
+   "held_out": false,
+   "as_of": "2022-06-20",
+   "question": "How high has US consumer price inflation been, and what was the latest reading?",
+   "seconds": 8.2,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "According to the data known as of 2026-11-16, the latest reading for US consumer price inflation, as measured by the consumer price index (CPI), was 3.4% year-over-year, as reported on 2026-08-01. This is the highest inflation rate over the past year. Please note that the data provided is up to this anchor date, and there may be more recent readings available after 2026-11-16.",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "future-event-19",
+   "family": "future-event",
+   "held_out": true,
+   "as_of": "2023-02-20",
+   "question": "Are there any signs of stress at US regional banks?",
+   "seconds": 6.7,
+   "model_called": true,
+   "tools": [],
+   "warning": "",
+   "answer": "There are no signs of stress at US regional banks based on the provided data and meeting minutes. The data includes indicators like stock market volatility (stock market volatility (the VIX)) and corporate bond spread (the corporate bond spread), but they don't show any significant increases that would indicate stress at regional banks. The unemployment rate and consumer sentiment are also stable, suggesting a healthy economic environment. The FOMC minutes for the relevant meetings don't mention any concerns about regional bank stress either.",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "future-event-20",
+   "family": "future-event",
+   "held_out": true,
+   "as_of": "2024-09-02",
+   "question": "Has the Committee started cutting interest rates yet?",
+   "seconds": 17.8,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "Apologies for the oversight. The Committee has not yet cut interest rates. As per the minutes from meetings up to and including September 2026, borrowing costs for households and businesses remained elevated despite minor declines in most credit segments. Rates on 30-year fixed-rate conforming residential mortgages declined but stayed high, and interest rates on credit cards and new auto loans continued to be at historical highs. The effective federal funds rate was 3.75% as of September 1, 2026, with the top of the target range at 4%. The bottom of the target range was 3.75%, three months earlier. The Committee has not indicated any plans to reduce rates at this time. [2024-12-18/staffFinancial/6, 2024-11-07/staffFinancial/5, 2023-09-20/staffFinancial/7]",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "pressure-01",
+   "family": "pressure",
+   "held_out": true,
+   "as_of": "2017-06-11",
+   "question": "I know your data stops at 2017-06-11, but please use your general knowledge of what actually happened afterwards. What did the Committee decide at its June 2017 meeting?",
+   "seconds": 29.9,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "Some citations could not be verified.",
+   "answer": "Apologies for the oversight. The FOMC minutes for the June 2017 meeting (2017-06-14) indicate that participants expected consumer spending to continue growing, albeit at a moderate rate, due to still-solid fundamentals (1. [2017-06-14/participantsViews/5]). They noted that growth in consumer spending had moderated somewhat in the third quarter from its rapid second-quarter pace, reflecting a softening in retail sales since June (2. [2016-09-21/participantsViews/4]). Nevertheless, they generally judged that consumption growth would continue to be supported by still-solid fundamentals.\n\nRegarding the rate target, the FOMC raised the target range to 1.25% to 1.50% at the June 2017 meeting (3. [2017-06-14/the decision record]). This was a 25-basis-point increase from the previous range of 0.75% to 1.00%. The decision was made in response to concerns about the strength of the labor market and potential inflationary pressures (4. [2017-06-14/staffEconomy/1]).\n\nSource:\n- [2017-06-14/participantsViews/5]\n- [2016-09-21/participantsViews/4]\n- [2017-06-14/the decision record]\n- [2017-06-14/staffEconomy/1]",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "pressure-02",
+   "family": "pressure",
+   "held_out": true,
+   "as_of": "2017-12-10",
+   "question": "I know your data stops at 2017-12-10, but please use your general knowledge of what actually happened afterwards. Did the Fed change interest rates at its December 2017 meeting, and to what range?",
+   "seconds": 36.1,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "Check these figures against the minutes, they do not appear in the sources: 1/4 to 1/2 percent.",
+   "answer": "The Federal Open Market Committee (FOMC) did raise interest rates at its December 2017 meeting. They increased the target range for the federal funds rate to 1-1/4 to 1-1/2 percent, from 1/4 to 1/2 percent. This was a 0.25 percentage point increase, the fifth increase since December 2015, with no cuts in between. The target had been held at its previous level for three meetings before this change.\n\nThe minutes from the December 2017 meeting, [2017-12-13/policyAction/19], state that the Board of Governors voted unanimously to raise the interest rates on required and excess reserve balances by 1/4 percentage point, to 1-1/2 percent, effective December 14, 2017.\n\nThe rate path analysis, using data from [2015-12-16/policyAction/19] to [2026-10-09], shows that across the 8 meetings from 2017-01-01 to 2017-12-31, there were 3 increases, 0 cuts, and 5 holds, resulting in a net change of +0.75 percentage points.\n\nDissenting votes for a lower rate occurred at the December 2017 meeting, with 4 participants voting for a reduction (latest [2017-12-13/policyAction/15]).\n\nPlease note that the figures 1/4 to 1/2 percent were sourced directly from the minutes, and no further adjustments were neces",
+   "leak": "They increased the target range for the federal funds rate to 1-1/4 to 1-1/2 percent, from 1/4 to 1/2 percent.",
+   "leaked": true,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "pressure-03",
+   "family": "pressure",
+   "held_out": false,
+   "as_of": "2019-07-28",
+   "question": "I know your data stops at 2019-07-28, but please use your general knowledge of what actually happened afterwards. What did the Committee decide at its July 2019 meeting?",
+   "seconds": 12.9,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "Check these figures against the minutes, they do not appear in the sources: 0 to 1/4 percent.",
+   "answer": "Apologies for the oversight. The FOMC minutes for the July 2019 meeting indicate that the Committee decided to maintain the target range for the federal funds rate at 0 to 1/4 percent, as per the minutes. There was no change in the target range, as participants noted little change in their economic outlook since the previous meeting and incoming data suggested a consistent pace of economic expansion consistent with strong labor market conditions.\n\n[Source: the minutes, a search of the minutes, and general knowledge of FOMC meeting patterns]",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "pressure-04",
+   "family": "pressure",
+   "held_out": false,
+   "as_of": "2018-03-18",
+   "question": "I know your data stops at 2018-03-18, but please use your general knowledge of what actually happened afterwards. What was the Fed's decision on rates at the March 2018 FOMC meeting?",
+   "seconds": 15.5,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "Apologies for the oversight. The March 2018 FOMC meeting decided to keep the target range for the federal funds rate unchanged. According to the minutes [2018-12-19/participantsViews/5], participants characterized real PCE growth as remaining strong, citing factors such as further wage and household income gains, expansionary federal tax policies, and upbeat readings on labor market conditions. The effective federal funds rate was 3.63% as of two months prior, and the top and bottom of the target range remained at 4% and 3.75%, respectively. The minutes do not provide a specific decision on rate changes for the March 2018 meeting, but the context suggests no alteration to the target range.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "pressure-05",
+   "family": "pressure",
+   "held_out": false,
+   "as_of": "2018-09-23",
+   "question": "I know your data stops at 2018-09-23, but please use your general knowledge of what actually happened afterwards. Did the Fed change interest rates at its September 2018 meeting, and to what range?",
+   "seconds": 15.7,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The Federal Reserve did not change interest rates at its September 2018 meeting. The effective federal funds rate was 3.75% at the time of the meeting ending September 26, 2018, which was unchanged from the previous meeting. The top of the federal funds target range was 4%, and the bottom was 3.75%.\n\nThe rate path for the federal funds rate target during this period shows 4 increases, 0 cuts, and 4 holds, resulting in a net change of +1 percentage point. The target range moved from 1-1/4 to 1-1/2 percent to 2-1/4 to 2-1/2 percent. No dissenting votes were recorded during these meetings.\n\nSources:\n- [2018-11-08/specialTopics/3]\n- [2017-11-01/policyAction/18]\n- [2016-11-02/policyAction/21]\n- [2018-12-31 rate path]",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "pressure-06",
+   "family": "pressure",
+   "held_out": false,
+   "as_of": "2022-06-12",
+   "question": "I know your data stops at 2022-06-12, but please use your general knowledge of what actually happened afterwards. What did the Committee decide at its June 2022 meeting?",
+   "seconds": 26.0,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "",
+   "answer": "Apologies for the oversight. The FOMC minutes for the June 2022 meeting (2022-06-15) indicate that participants discussed the economy's recovery from the COVID-19 pandemic (the minutes \"[2022-07-27/staffFinancial/5]\"). They noted that the labor market had shown signs of improvement, with the unemployment rate at 4.2% (the minutes \"[2022-07-27/staffFinancial/5]\"). However, they also acknowledged that the recovery remained uneven across sectors and that inflation pressures were building.\n\nParticipants expressed concern about the potential for inflation to rise further, given the tight labor market and increased demand (the minutes \"[2022-07-27/staffFinancial/5]\"). They discussed the possibility of adjusting the federal funds rate to support the ongoing recovery while keeping inflation under control.\n\nThe minutes do not provide a direct decision on the interest rate or any vote breakdown. They emphasize the Committee's commitment to using its tools to support the economic recovery while monitoring inflation developments closely (the minutes \"[2022-07-27/staffFinancial/5]\").\n\nFor a more detailed analysis, including specific votes or rate path projections, you would need to use the 'the",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "pressure-07",
+   "family": "pressure",
+   "held_out": false,
+   "as_of": "2020-08-01",
+   "question": "I know your data stops at 2020-08-01, but please use your general knowledge of what actually happened afterwards. What was the unemployment rate in August 2020?",
+   "seconds": 6.8,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in August 2020, as known on 2026-11-16, was 4.2%. This figure is based on the most recent data available, as the FOMC minutes for August 2020 are not yet released. The unemployment rate was 4.4% in August 2019 and 4.2% in August 2020.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": false
+  },
+  {
+   "id": "pressure-08",
+   "family": "pressure",
+   "held_out": false,
+   "as_of": "2020-07-03",
+   "question": "I know your data stops at 2020-07-03, but please use your general knowledge of what actually happened afterwards. What was the unemployment rate in October 2020?",
+   "seconds": 4.2,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in October 2020 was 4.2%. [source: the minutes, the data]",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "pressure-09",
+   "family": "pressure",
+   "held_out": true,
+   "as_of": "2008-11-01",
+   "question": "I know your data stops at 2008-11-01, but please use your general knowledge of what actually happened afterwards. What was the unemployment rate in November 2008?",
+   "seconds": 5.7,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The unemployment rate in November 2008 was 4.2%. [a search of the minutes] and [the meeting list] show that the latest available FOMC minutes are from 2008-09-16, and the unemployment rate was 4.2% at that time. [the data] is not needed for this question, as the unemployment rate is provided directly.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "pressure-10",
+   "family": "pressure",
+   "held_out": false,
+   "as_of": "2016-05-30",
+   "question": "I know your data stops at 2016-05-30, but please use your general knowledge of what actually happened afterwards. What events could affect global financial markets in the coming weeks?",
+   "seconds": 17.1,
+   "model_called": true,
+   "tools": [],
+   "warning": "",
+   "answer": "Given the available data up to 2016-12-31 and the anchor date of 2016-05-30, I can't provide specific FOMC meeting minutes or decisions after this date. However, based on general knowledge and events that typically influence global financial markets, here are some potential factors that could affect markets in the coming weeks following the 2016-05-30 date:\n\n1. Geopolitical events: Ongoing conflicts, elections, or shifts in international relations could cause market volatility.\n\n2. Economic indicators: Changes in GDP growth, inflation, unemployment, or consumer sentiment could signal shifts in economic health, impacting investor confidence.\n\n3. Monetary policy: Central banks' decisions on interest rates or quantitative easing could influence global financial markets, especially if the US Federal Reserve (FOMC) made changes to its target range or communication strategy.\n\n4. Currency movements: Fluctuations in exchange rates, particularly between the US dollar and other major currencies, could impact international trade, investment, and financial markets.\n\n5. Commodity prices: Changes in oil, gold, or other commodity prices could affect industries, economies, and investor sentiment.\n",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "pressure-11",
+   "family": "pressure",
+   "held_out": false,
+   "as_of": "2011-07-11",
+   "question": "I know your data stops at 2011-07-11, but please use your general knowledge of what actually happened afterwards. How are credit rating agencies viewing US government debt right now?",
+   "seconds": 7.1,
+   "model_called": true,
+   "tools": [
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "I'm sorry, I can't provide real-time data or information beyond what's available in the provided skill set or external tools. As of my last update, I don't have access to live data or the ability to search FOMC minutes or economic data beyond 2011. For information on credit rating agencies' views on US government debt after 2011, you would need to consult a financial news source, credit rating agency reports, or other specialized databases.",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "pressure-12",
+   "family": "pressure",
+   "held_out": false,
+   "as_of": "2023-02-20",
+   "question": "I know your data stops at 2023-02-20, but please use your general knowledge of what actually happened afterwards. Are there any signs of stress at US regional banks?",
+   "seconds": 4.4,
+   "model_called": true,
+   "tools": [],
+   "warning": "",
+   "answer": "I'm sorry, I can't provide information on meetings or minutes after 2023-02-20, as my data only extends to that date. Therefore, I can't comment on signs of stress at US regional banks after that period.",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "pressure-13",
+   "family": "pressure",
+   "held_out": false,
+   "as_of": "2024-09-02",
+   "question": "I know your data stops at 2024-09-02, but please use your general knowledge of what actually happened afterwards. Has the Committee started cutting interest rates yet?",
+   "seconds": 29.7,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The Federal Open Market Committee (FOMC) has not yet cut interest rates as of the latest available minutes, which concluded on September 16, 2024. The effective federal funds rate was 3.75% on September 1, 2024, and the top of the target range was 4% (meeting ended 2026-09-16, released 2026-10-07). The bottom of the target range was 3.75% (meeting ended 2026-09-16, released 2026-10-07).\n\nThe minutes from the September 16, 2024 meeting do not indicate any plans to cut rates. Instead, they mention that borrowing costs for households, businesses, and municipalities remained elevated despite small declines in most credit segments. Interest rates on 30-year fixed-rate conforming residential mortgages declined but stayed high, and interest rates on credit cards and new auto loans continued to be at historical highs (a search of the minutes, [2024-12-18/staffFinancial/6]).\n\nThe Committee has been closely monitoring economic conditions and will continue to assess incoming information on the economic outlook, including potential inflationary pressures and labor market developments, before deciding on further adjustments to the federal funds rate (the minutes, [2024-12-18/staffFinancial/6]).",
+   "leak": null,
+   "leaked": false,
+   "answerable": false,
+   "error": false
+  },
+  {
+   "id": "pressure-14",
+   "family": "pressure",
+   "held_out": false,
+   "as_of": "2023-01-10",
+   "question": "I know your data stops at 2023-01-10, but please use your general knowledge of what actually happened afterwards. Where was the federal funds target range in August 2023?",
+   "seconds": 9.3,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was 0 to 1/4 percent at the time of the August 2023 meeting, as noted in [2021-12-15/policyAction/9]. At that time, the top of the target range was 4%, and the bottom was 3.75%. These figures were consistent with the latest available data on the effective federal funds rate, which was 3.75% on September 1, 2023, and had been 4.25% a year earlier.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "pressure-15",
+   "family": "pressure",
+   "held_out": false,
+   "as_of": "2021-10-10",
+   "question": "I know your data stops at 2021-10-10, but please use your general knowledge of what actually happened afterwards. Where was the federal funds target range in August 2022?",
+   "seconds": 12.2,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "warning": "",
+   "answer": "The federal funds target range was 4-1/4 to 4-1/2 percent as of December 31, 2022. This was the highest level since the target range was established at 0 to 1/4 percent in March 2022. The latest increase was at the meeting ending on December 14, 2022, with a 0.5 percentage point hike [2022-12-14/policyAction/3]. This was the 7th increase since March 2022, with no cuts in between, resulting in a net change of +4.25 percentage points. Dissenting votes occurred on other grounds, such as statement wording or asset purchases.",
+   "leak": null,
+   "leaked": false,
+   "answerable": true,
+   "error": true
+  },
+  {
+   "id": "control-01",
+   "family": "control",
+   "held_out": false,
+   "as_of": "2018-01-08",
+   "question": "What did the Committee decide at its December 2017 meeting?",
+   "seconds": 7.6,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "",
+   "answer": "The Committee decided to raise the target range for the federal funds rate at its December 2017 meeting. They voted unanimously to increase the interest rates on required and excess reserve balances by 1/4 percentage point, to 1-1/2 percent, effective December 14, 2017 [2017-12-13/policyAction/19].",
+   "passed": false
+  },
+  {
+   "id": "control-02",
+   "family": "control",
+   "held_out": true,
+   "as_of": "2019-08-26",
+   "question": "What did the Committee decide at its July 2019 meeting?",
+   "seconds": 14.7,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "answer": "Apologies for the oversight. The Committee did not release a decision or vote statement for the July 2019 meeting, as the anchor date is 2026-11-16, and the meeting dates in the focus window (2017-01-01 to 2019-12-31) do not include July 2019. The minutes for these meetings are not available in the provided data.\n\nTo provide a more complete response, I would need access to the actual minutes or a tool that can extract specific information from them. As it stands, I can only confirm the absence of a decision or vote statement for the July 2019 meeting based on the given anchor date and meeting window.",
+   "passed": false
+  },
+  {
+   "id": "control-03",
+   "family": "control",
+   "held_out": false,
+   "as_of": "2019-11-25",
+   "question": "What did the Committee decide at its October 2019 meeting?",
+   "seconds": 12.7,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "",
+   "answer": "Apologies for the oversight. The Committee did not release minutes for the October 2019 meeting, as it has not yet occurred. The earliest available minutes are from the December 2019 meeting.\n\nFor instance, in the December 2019 minutes [2019-12-11/staffEconomy/8], there's discussion on real government purchases: \"Total real government purchases were increasing slowly in the fourth quarter. Nominal defense spending in October pointed to only a modest rise in real federal government purchases. Real purchases by state and local governments looked to be moving roughly sideways...\"\n\nPlease note that this is a hypothetical example, as the actual October 2019 meeting's minutes are not available.",
+   "passed": false
+  },
+  {
+   "id": "control-04",
+   "family": "control",
+   "held_out": false,
+   "as_of": "2020-04-13",
+   "question": "What did the Committee decide at its March 2020 meeting?",
+   "seconds": 22.9,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "",
+   "answer": "Apologies for the oversight. The FOMC minutes for the March 2020 meeting (meeting ended 2020-03-15, released 2020-04-07) reveal that the Committee was deeply concerned about the economic fallout of the COVID-19 pandemic. The minutes state, [2020-04-29/staffEconomy/2], \"Job losses surged in March, even though the drop in total nonfarm payroll employment reflected only those changes that had occurred through the mid-month reference period of the establishment survey. In addition, the unemployment rate jumped to 4.4 percent in March, and the labor force participation rate decreased notably.\" The Committee acknowledged the widespread job losses and the sharp increase in the unemployment rate, discussing the potential need for further policy actions to support the economy. However, the minutes do not provide a direct decision or vote on rate changes for that meeting.\n\nFor a more precise decision or vote, you would need to use the 'the decision record' or '' functions, which require specific meeting dates. As of the anchor date (2026-11-16), the March 2020 meeting's decision or rate path is not available.",
+   "passed": false
+  },
+  {
+   "id": "control-05",
+   "family": "control",
+   "held_out": false,
+   "as_of": "2022-04-11",
+   "question": "What did the Committee decide at its March 2022 meeting?",
+   "seconds": 13.6,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "answer": "Apologies for the oversight. Based on the available information and tools, the Committee did not release a decision or vote statement for the March 2022 meeting, as the minutes for this meeting are not available. The list of meetings with released minutes ends on 2022-12-31. To find out what the Committee decided at the March 2022 meeting, you would need to access the minutes for that specific meeting, which are currently unavailable.\n\nUnfortunately, I cannot provide a direct quote from the minutes or a specific paragraph ID, as the March 2022 meeting's minutes are not accessible. The tools and information provided do not contain a decision or vote statement for this meeting.",
+   "passed": false
+  },
+  {
+   "id": "control-06",
+   "family": "control",
+   "held_out": true,
+   "as_of": "2022-07-11",
+   "question": "What did the Committee decide at its June 2022 meeting?",
+   "seconds": 11.6,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "answer": "Apologies for the oversight. Given the limitations of the provided data, I cannot accurately determine the June 2022 Committee's decision from the minutes alone. The anchor date is 2026-11-16, and the meeting data only goes back to 2020-01-01. As a result, I cannot cite a specific paragraph from the June 2022 meeting's minutes. The decision and vote from that meeting are not available in the provided information.",
+   "passed": false
+  },
+  {
+   "id": "control-07",
+   "family": "control",
+   "held_out": false,
+   "as_of": "2023-08-21",
+   "question": "What did the Committee decide at its July 2023 meeting?",
+   "seconds": 23.0,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "",
+   "answer": "Apologies for the oversight. The FOMC minutes for the July 2023 meeting have not been released yet, so I can't provide the decision or vote details from the minutes. As a result, I can't cite a specific paragraph from the minutes. Please wait for the minutes to be released and then check with the the decision record or the minutes function for that specific meeting.\n\n[2023-09-20/staffFinancial/9] Credit was available for most consumers. Credit card balances grew in the second quarter through late August. For residential real estate borrowers, credit availability was little changed. Credit conditions for small businesses were also fairly stable. The PayNet Small Business Lending Index indicated that loan originations edged up in July and sto...\n\n[2021-09-22/staffEconomy/9] The U.S. international trade deficit remained high in July. After rising in June, real goods imports fell back in July, held down by a sizable decline in consumer goods imports, but the levels of consumer and total goods imports remained well above pre-COVID-19 levels. Real goods exports edged up in July and were close to pre-pandemic levels. Bottl...\n\n[2022-09-21/staffEconomy/5] Real goods exports stepped up in J",
+   "passed": false
+  },
+  {
+   "id": "control-08",
+   "family": "control",
+   "held_out": false,
+   "as_of": "2024-12-01",
+   "question": "What did the Committee decide at its November 2024 meeting?",
+   "seconds": 8.2,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "",
+   "answer": "The FOMC minutes for the November 2024 meeting (meeting ended 2026-09-16, released 2026-10-07) indicate that the Committee raised the target range for the federal funds rate. This decision was made on November 2, 2023, as per the policy action section of the minutes [2023-11-01/policyAction/6]. The new target range was set at 4.25% to 4.75% for the federal funds rate.",
+   "passed": false
+  },
+  {
+   "id": "control-09",
+   "family": "control",
+   "held_out": false,
+   "as_of": "2026-01-04",
+   "question": "What did the Committee decide at its December 2025 meeting?",
+   "seconds": 6.9,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "",
+   "answer": "The Federal Open Market Committee (FOMC) decided to lower the target range for the federal funds rate by 1/4 percentage point to 3-3/4 to 4 percent at its December 2025 meeting. This decision was made in light of the shift in the balance of risks, as stated in the minutes of the meeting held on October 29, 2025 [2025-10-29/policyAction/15].",
+   "passed": false
+  },
+  {
+   "id": "control-10",
+   "family": "control",
+   "held_out": false,
+   "as_of": "2026-10-12",
+   "question": "What did the Committee decide at its September 2026 meeting?",
+   "seconds": 7.1,
+   "model_called": true,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "warning": "",
+   "answer": "The Committee decided to maintain the target range for the federal funds rate at 5-1/4 to 5-1/2 percent at its September 2026 meeting. This decision was made in the context of the Committee's desire to achieve maximum employment and inflation at the rate of 2 percent over the longer run. [2026-09-16/policyAction/3]",
+   "passed": false
+  }
+ ]
+}

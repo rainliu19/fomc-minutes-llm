@@ -20,12 +20,10 @@ function b = billSignal(D, asOf, rangeNow)
 
 b = struct();
 [B, ~] = fomc.data.valueAsOf(D, "DGS6MO", asOf);
-B = B(~isnan(B.value), :);
 if isempty(B)
     return
 end
 [F, ~] = fomc.data.valueAsOf(D, "DFF", asOf);
-F = F(~isnan(F.value), :);
 if isempty(F)
     base = (rangeNow.lower + rangeNow.upper) / 2;
     baseDate = "";

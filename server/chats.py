@@ -35,14 +35,6 @@ class ChatStore:
         chat = self._read(chat_id)
         return bool(chat) and chat.get("owner") != owner
 
-    def claim_unowned(self, owner: str) -> None:
-        """Give chats saved before owners existed to this owner (the first browser to ask)."""
-        for path in self.folder.glob("*.json") if self.folder.exists() else []:
-            chat = self._read(path.stem)
-            if chat and "owner" not in chat:
-                chat["owner"] = owner
-                self._save(chat)
-
     def _save(self, chat: dict) -> None:
         # Write to a temporary file first, so a crash never leaves a half-written chat
         self.folder.mkdir(parents=True, exist_ok=True)

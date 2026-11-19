@@ -2,8 +2,7 @@ function issues = checkScoreRange(result)
 %CHECKSCORERANGE Check statuses, score increments, confidence and evidence presence.
 
 issues = strings(0, 1);
-dimensions = ["rate_path", "inflation", "labor_market", "economic_activity", ...
-    "financial_conditions", "balance_sheet", "risk_balance"];
+dimensions = fomc.skills.dimensions();
 if ~isstruct(result) || ~isscalar(result) || ~isfield(result, "dimensions") || ...
         ~isstruct(result.dimensions) || ~isscalar(result.dimensions)
     return
@@ -20,7 +19,7 @@ for name = dimensions
     if ~all(isfield(dim, cellstr(["status", "score", "confidence", "evidence"])))
         continue
     end
-    if ~isText(dim.status)
+    if ~fomc.guard.isText(dim.status)
         issues(end+1, 1) = name + ".status must be 'scored' or 'not_discussed'."; %#ok<AGROW>
         continue
     end
@@ -32,7 +31,7 @@ for name = dimensions
                 score < -1 || score > 1 || abs(score * 4 - round(score * 4)) > 1e-9
             issues(end+1, 1) = name + ".score must be numeric, within [-1, 1], in steps of 0.25."; %#ok<AGROW>
         end
-        if ~isText(dim.confidence) || ~any(string(dim.confidence) == ["high", "medium", "low"])
+        if ~fomc.guard.isText(dim.confidence) || ~any(string(dim.confidence) == ["high", "medium", "low"])
             issues(end+1, 1) = name + ".confidence must be 'high', 'medium' or 'low'."; %#ok<AGROW>
         end
         if isempty(evidence)
@@ -50,9 +49,4 @@ for name = dimensions
         end
     end
 end
-end
-
-function tf = isText(value)
-tf = (ischar(value) && (isrow(value) || isempty(value))) || ...
-    (isstring(value) && isscalar(value));
 end

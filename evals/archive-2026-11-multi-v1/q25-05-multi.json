@@ -1,0 +1,1699 @@
+{
+ "summary": {
+  "model": "q25-05-multi",
+  "label": "Qwen2.5 0.5B, multi-agent",
+  "multi": true,
+  "params_b": 0.5,
+  "ollama_name": "fomc-q25-05",
+  "date": "2026-11-17",
+  "complete": true,
+  "tokens": {
+   "in_per_question": 4571,
+   "out_per_question": 176,
+   "total_in": 260541,
+   "total_out": 10030,
+   "api_cost_per_1000": {
+    "haiku": 0.55,
+    "sonnet": 10.9
+   },
+   "api_prices": {
+    "checked": "2026-10-06",
+    "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+    "models": [
+     {
+      "id": "haiku",
+      "label": "Claude Haiku 5.5",
+      "usd_per_mtok_in": 0.1,
+      "usd_per_mtok_out": 0.5
+     },
+     {
+      "id": "sonnet",
+      "label": "Claude Sonnet 5.5",
+      "usd_per_mtok_in": 2.0,
+      "usd_per_mtok_out": 10.0
+     }
+    ]
+   }
+  },
+  "n_cases": 57,
+  "correct": 19,
+  "n_scored": 53,
+  "accuracy": 0.358,
+  "accuracy_ci": [
+   0.243,
+   0.493
+  ],
+  "by_category": {
+   "comparison": {
+    "correct": 3,
+    "n": 4
+   },
+   "decision": {
+    "correct": 1,
+    "n": 12
+   },
+   "followup": {
+    "correct": 0,
+    "n": 3
+   },
+   "guardrail": {
+    "correct": 5,
+    "n": 5
+   },
+   "nextmove": {
+    "correct": 1,
+    "n": 4
+   },
+   "outlook": {
+    "correct": 1,
+    "n": 3
+   },
+   "stability": {
+    "correct": 1,
+    "n": 8
+   },
+   "topic": {
+    "correct": 7,
+    "n": 8
+   },
+   "vote": {
+    "correct": 0,
+    "n": 6
+   }
+  },
+  "silent_errors": {
+   "count": 26,
+   "n": 53,
+   "rate": 0.491,
+   "ci": [
+    0.361,
+    0.621
+   ],
+   "wrong": 34,
+   "warned_wrong": 8
+  },
+  "stability": {
+   "stable_groups": 0,
+   "groups": 4
+  },
+  "tool_accuracy": {
+   "ok": 52,
+   "n": 52
+  },
+  "cases_citing_verified_id": 34,
+  "cases_with_warning": 17,
+  "citations": {
+   "verified": 40,
+   "total": 44
+  },
+  "invented_reason": {
+   "flagged": 0,
+   "n": 0,
+   "note": "heuristic: causal wording not found in tool results"
+  },
+  "seconds_median": 2.1,
+  "seconds_p90": 10.6,
+  "decode_tok_s_median": 87.5,
+  "peak_swap_mb": 1180,
+  "model_memory_mb": 557,
+  "model_memory_pct_of_8gb": 6.8
+ },
+ "cases": [
+  {
+   "id": "decision-01",
+   "category": "decision",
+   "effort": "low",
+   "group": "stability-1",
+   "seconds": 5.4,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2916,
+    "output_tokens": 18,
+    "prefill_tok_s": 1294.3,
+    "decode_tok_s": 67.4
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2015-12-16/policyAction/5]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1180
+  },
+  {
+   "id": "decision-02",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 2.2,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3040,
+    "output_tokens": 18,
+    "prefill_tok_s": 3064.5,
+    "decode_tok_s": 87.8
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2022-06-15/policyAction/3]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1180
+  },
+  {
+   "id": "decision-03",
+   "category": "decision",
+   "effort": "low",
+   "group": "stability-4",
+   "seconds": 1.7,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2909,
+    "output_tokens": 18,
+    "prefill_tok_s": 3309.4,
+    "decode_tok_s": 86.1
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2022-11-02/policyAction/3]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1180
+  },
+  {
+   "id": "decision-04",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 2.1,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 5895,
+    "output_tokens": 36,
+    "prefill_tok_s": 6264.6,
+    "decode_tok_s": 90.5
+   },
+   "citations_ok": 0,
+   "citations_total": 1,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2023-05-03/policyAction/5]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1180
+  },
+  {
+   "id": "decision-05",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.6,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2936,
+    "output_tokens": 18,
+    "prefill_tok_s": 3240.6,
+    "decode_tok_s": 86.5
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2023-07-26/policyAction/3]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1180
+  },
+  {
+   "id": "decision-06",
+   "category": "decision",
+   "effort": "low",
+   "group": "stability-2",
+   "seconds": 1.3,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2737,
+    "output_tokens": 18,
+    "prefill_tok_s": 3649.3,
+    "decode_tok_s": 87.0
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2008-01-30/policyAction/6]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1180
+  },
+  {
+   "id": "decision-07",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 4.0,
+   "tools": [
+    "getDecision",
+    "searchMinutes"
+   ],
+   "stats": {
+    "model_calls": 3,
+    "prompt_tokens": 6465,
+    "output_tokens": 103,
+    "prefill_tok_s": 3081.5,
+    "decode_tok_s": 87.7
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2019-10-30/policyAction/14]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1180
+  },
+  {
+   "id": "decision-08",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.6,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3049,
+    "output_tokens": 19,
+    "prefill_tok_s": 3058.2,
+    "decode_tok_s": 86.0
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2024-09-18/policyAction/19]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1180
+  },
+  {
+   "id": "decision-09",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.5,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2981,
+    "output_tokens": 19,
+    "prefill_tok_s": 3147.8,
+    "decode_tok_s": 86.0
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2025-12-10/policyAction/19]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1180
+  },
+  {
+   "id": "decision-10",
+   "category": "decision",
+   "effort": "low",
+   "group": "stability-3",
+   "seconds": 1.4,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2902,
+    "output_tokens": 18,
+    "prefill_tok_s": 3343.3,
+    "decode_tok_s": 88.2
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2011-01-26/policyAction/8]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1180
+  },
+  {
+   "id": "decision-11",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 6.8,
+   "tools": [
+    "getDecision",
+    "searchMinutes"
+   ],
+   "stats": {
+    "model_calls": 4,
+    "prompt_tokens": 10005,
+    "output_tokens": 383,
+    "prefill_tok_s": 5649.4,
+    "decode_tok_s": 89.5
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2015-01-12] The Committee decided to hold the target range for the federal funds rate at 0 to 1/4 percent and reaffirmed the indication that the Committee's decision about how long to maintain the current target range for the federal funds rate would depend on its assessment of actual and expected progress toward its objectives of maximum employment and 2 percent inflation. The vote was 7 for, 3 against. For: Janet L. Yellen, William C. Dudley, Lael Brainard, Stanley Fischer, Loretta J. Mester, Jerome H. Powell, and Daniel K. Tarullo. Against: Richard W. Fisher, Narayana Kocherlakota, and Charles I. Plosser.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1180
+  },
+  {
+   "id": "decision-12",
+   "category": "decision",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.4,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2928,
+    "output_tokens": 19,
+    "prefill_tok_s": 3224.7,
+    "decode_tok_s": 86.8
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2025-05-07/policyAction/18]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1172
+  },
+  {
+   "id": "stability-1a",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-1",
+   "seconds": 2.8,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6321,
+    "output_tokens": 88,
+    "prefill_tok_s": 5618.7,
+    "decode_tok_s": 89.6
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[ANCHOR DATE: 2016-01-11. Today is 2016-01-11; nothing after it is known.]\n\n[SEARCH MEETINGS]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1172
+  },
+  {
+   "id": "stability-1b",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-1",
+   "seconds": 1.6,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3104,
+    "output_tokens": 47,
+    "prefill_tok_s": 4492.0,
+    "decode_tok_s": 88.3
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2016-01-11 is not known yet. The minutes for the meeting that ended 2015-12-16 are not available. The latest minutes are not yet released.",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1172
+  },
+  {
+   "id": "stability-2a",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-2",
+   "seconds": 1.4,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2921,
+    "output_tokens": 18,
+    "prefill_tok_s": 3263.7,
+    "decode_tok_s": 87.0
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2008-01-30/policyAction/6]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1172
+  },
+  {
+   "id": "stability-2b",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-2",
+   "seconds": 1.1,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2918,
+    "output_tokens": 18,
+    "prefill_tok_s": 4996.6,
+    "decode_tok_s": 87.0
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2008-01-30/policyAction/6]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1172
+  },
+  {
+   "id": "stability-3a",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-3",
+   "seconds": 1.5,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3091,
+    "output_tokens": 18,
+    "prefill_tok_s": 3012.7,
+    "decode_tok_s": 87.4
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2011-01-26/policyAction/8]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1172
+  },
+  {
+   "id": "stability-3b",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-3",
+   "seconds": 6.1,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3088,
+    "output_tokens": 450,
+    "prefill_tok_s": 4456.0,
+    "decode_tok_s": 88.8
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2011-01-26: The Committee will maintain the target range for the federal funds rate at 0 to 1/4 percent and continues to anticipate that economic conditions, including low rates of resource utilization, subdued inflation trends, and stable inflation expectations, are likely to warrant exceptionally low levels for the federal funds rate for an extended period. The latest figures found by code, as known on 2011-02-21, are: effective federal funds rate (the effective federal funds rate): 0.17% on 2011-01-01; 0.19% three months earlier; 0.11% a year earlier. The top of the federal funds target range: 0.25% on 2011-02-20; 0.25% three months earlier; 0.25% a year earlier. The bottom of the federa",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1172
+  },
+  {
+   "id": "stability-4a",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-4",
+   "seconds": 1.6,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3100,
+    "output_tokens": 18,
+    "prefill_tok_s": 3006.8,
+    "decode_tok_s": 87.0
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2022-11-02/policyAction/3]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1172
+  },
+  {
+   "id": "stability-4b",
+   "category": "stability",
+   "effort": "low",
+   "group": "stability-4",
+   "seconds": 1.2,
+   "tools": [
+    "getDecision",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3097,
+    "output_tokens": 18,
+    "prefill_tok_s": 4521.2,
+    "decode_tok_s": 87.8
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2022-11-02/policyAction/3]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1172
+  },
+  {
+   "id": "vote-01",
+   "category": "vote",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.4,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2934,
+    "output_tokens": 18,
+    "prefill_tok_s": 3263.6,
+    "decode_tok_s": 87.4
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2015-06-17/policyAction/6]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1172
+  },
+  {
+   "id": "vote-02",
+   "category": "vote",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.7,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 5883,
+    "output_tokens": 36,
+    "prefill_tok_s": 6245.2,
+    "decode_tok_s": 91.1
+   },
+   "citations_ok": 0,
+   "citations_total": 1,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2020-07-29/policyAction/1]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1172
+  },
+  {
+   "id": "vote-03",
+   "category": "vote",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.4,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2944,
+    "output_tokens": 18,
+    "prefill_tok_s": 3249.4,
+    "decode_tok_s": 87.0
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2024-01-31/policyAction/2]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1172
+  },
+  {
+   "id": "vote-04",
+   "category": "vote",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.2,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2741,
+    "output_tokens": 18,
+    "prefill_tok_s": 3704.1,
+    "decode_tok_s": 87.4
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2008-08-05/policyAction/5]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1172
+  },
+  {
+   "id": "vote-05",
+   "category": "vote",
+   "effort": "low",
+   "group": null,
+   "seconds": 3.1,
+   "tools": [
+    "getDecision",
+    "searchMinutes"
+   ],
+   "stats": {
+    "model_calls": 3,
+    "prompt_tokens": 6710,
+    "output_tokens": 84,
+    "prefill_tok_s": 3874.1,
+    "decode_tok_s": 90.8
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2013-06-19/policyAction/13]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1172
+  },
+  {
+   "id": "vote-06",
+   "category": "vote",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.4,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2996,
+    "output_tokens": 18,
+    "prefill_tok_s": 3157.0,
+    "decode_tok_s": 87.0
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2016-11-02/policyAction/4]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1172
+  },
+  {
+   "id": "followup-01",
+   "category": "followup",
+   "effort": "low",
+   "group": null,
+   "seconds": 2.8,
+   "tools": [
+    "getDecision",
+    "searchMinutes"
+   ],
+   "stats": {
+    "model_calls": 6,
+    "prompt_tokens": 13880,
+    "output_tokens": 288,
+    "prefill_tok_s": 4649.9,
+    "decode_tok_s": 91.8
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2010-12-14/policyAction/11]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1172
+  },
+  {
+   "id": "followup-02",
+   "category": "followup",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.9,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 3,
+    "prompt_tokens": 10683,
+    "output_tokens": 103,
+    "prefill_tok_s": 6408.5,
+    "decode_tok_s": 87.7
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2020-03-15/policyAction/16]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1172
+  },
+  {
+   "id": "followup-03",
+   "category": "followup",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.1,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6931,
+    "output_tokens": 38,
+    "prefill_tok_s": 4053.2,
+    "decode_tok_s": 84.1
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2024-09-18/policyAction/20]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1140
+  },
+  {
+   "id": "guardrail-01",
+   "category": "guardrail",
+   "effort": "low",
+   "group": null,
+   "seconds": 0.2,
+   "tools": [
+    "prefetchNotice"
+   ],
+   "stats": {
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "output_tokens": 0,
+    "prefill_tok_s": null,
+    "decode_tok_s": null
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The minutes of the January 2008 meeting are not public as of 2008-02-15, so there is no decision to report for it. No minutes have been released yet.",
+   "passed": true,
+   "tool_ok": null,
+   "expected_tool": null,
+   "free_pct": 59,
+   "swap_mb": 1140
+  },
+  {
+   "id": "guardrail-02",
+   "category": "guardrail",
+   "effort": "low",
+   "group": null,
+   "seconds": 0.2,
+   "tools": [
+    "prefetchNotice"
+   ],
+   "stats": {
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "output_tokens": 0,
+    "prefill_tok_s": null,
+    "decode_tok_s": null
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The minutes of the January 2011 meeting are not public as of 2011-02-11, so there is no decision to report for it. The latest minutes available are for the meeting that ended 2010-12-14.",
+   "passed": true,
+   "tool_ok": null,
+   "expected_tool": null,
+   "free_pct": 59,
+   "swap_mb": 1140
+  },
+  {
+   "id": "guardrail-03",
+   "category": "guardrail",
+   "effort": "low",
+   "group": null,
+   "seconds": 0.1,
+   "tools": [
+    "prefetchNotice"
+   ],
+   "stats": {
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "output_tokens": 0,
+    "prefill_tok_s": null,
+    "decode_tok_s": null
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The minutes of the December 2013 meeting are not public as of 2014-01-03, so there is no decision to report for it. The latest minutes available are for the meeting that ended 2013-10-30.",
+   "passed": true,
+   "tool_ok": null,
+   "expected_tool": null,
+   "free_pct": 59,
+   "swap_mb": 1140
+  },
+  {
+   "id": "guardrail-04",
+   "category": "guardrail",
+   "effort": "low",
+   "group": null,
+   "seconds": 0.1,
+   "tools": [
+    "prefetchNotice"
+   ],
+   "stats": {
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "output_tokens": 0,
+    "prefill_tok_s": null,
+    "decode_tok_s": null
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The minutes of the March 2024 meeting are not public as of 2024-04-05, so there is no decision to report for it. The latest minutes available are for the meeting that ended 2024-01-31.",
+   "passed": true,
+   "tool_ok": null,
+   "expected_tool": null,
+   "free_pct": 59,
+   "swap_mb": 1140
+  },
+  {
+   "id": "guardrail-05",
+   "category": "guardrail",
+   "effort": "low",
+   "group": null,
+   "seconds": 0.2,
+   "tools": [
+    "prefetchNotice"
+   ],
+   "stats": {
+    "model_calls": 0,
+    "prompt_tokens": 0,
+    "output_tokens": 0,
+    "prefill_tok_s": null,
+    "decode_tok_s": null
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "The minutes of the March 2025 meeting are not public as of 2025-04-04, so there is no decision to report for it. The latest minutes available are for the meeting that ended 2025-01-29.",
+   "passed": true,
+   "tool_ok": null,
+   "expected_tool": null,
+   "free_pct": 59,
+   "swap_mb": 1140
+  },
+  {
+   "id": "topic-01",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 4.2,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6589,
+    "output_tokens": 200,
+    "prefill_tok_s": 5555.6,
+    "decode_tok_s": 87.6
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2020-04-08: Participants judged that conditions in the labor market remained strong, with the unemployment rate at a 50-year low and continued solid job gains, on average. Although the upcoming annual benchmark revision was expected to reduce estimates of recent payroll growth, participants expected payroll employment to expand at a healthy pace this year. The unemployment rate was likely to remain low going forward, and various participants remarked that there were some indications that the labor market was strong.]",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 59,
+   "swap_mb": 1140
+  },
+  {
+   "id": "topic-02",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 3.3,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3215,
+    "output_tokens": 139,
+    "prefill_tok_s": 2852.7,
+    "decode_tok_s": 88.3
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2019-07-31/participantsViews/9] In their discussion of the outlook for inflation, participants generally anticipated that with appropriate policy, inflation would move up to the Committee's 2 percent objective over the medium term. However, market-based measures of inflation compensation and some survey measures of consumers' inflation expectations remained low, although they had declined or stood at historically low levels. Many participants observed that overall inflation had continued to run below the Committee's 2 percent objective, as had inflation for items other than food and energy. Several participants commented that the fact that wage pressures had remained only moderate despite t",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 59,
+   "swap_mb": 1140
+  },
+  {
+   "id": "topic-03",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 2.4,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2762,
+    "output_tokens": 91,
+    "prefill_tok_s": 2829.9,
+    "decode_tok_s": 90.5
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2008-06-25/participantsViews/5] Participants judged that the outlook for the housing market remained bleak, with falling prices, slow sales, high inventories of unsold homes, and further declines in construction activity over coming months. Although a few participants saw tentative signs that the housing market might be bottoming out in some parts of the country, most aggregate indicators indicated that the housing market was continuing to weaken.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 59,
+   "swap_mb": 1140
+  },
+  {
+   "id": "topic-04",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 3.2,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3288,
+    "output_tokens": 152,
+    "prefill_tok_s": 2777.0,
+    "decode_tok_s": 88.8
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2021-04-28/participantsViews/3] In their discussion of the household sector, participants remarked that indicators of consumer spending surged in March and expected that further gains in consumer spending would contribute significantly to the economic recovery. Many participants commented that fiscal stimulus, accommodative financial conditions, the release of pent-up demand, progress on vaccinations, and the ongoing economic recovery were key factors driving consumer spending growth. Participants noted that the overall consumer sentiment was at its highest level since the beginning of the year, with a score of 85.5. They also highlighted the continued positive outlook for the economy, with",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 59,
+   "swap_mb": 1140
+  },
+  {
+   "id": "topic-05",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 2.9,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 5649,
+    "output_tokens": 136,
+    "prefill_tok_s": 5872.1,
+    "decode_tok_s": 90.7
+   },
+   "citations_ok": 0,
+   "citations_total": 1,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2008-04-30/financialMarkets/2] Participants noted that the data received since the March FOMC meeting, while pointing to continued weakness in economic activity, had been broadly consistent with their expectations. Conditions across a number of financial markets were judged to have improved over the intermeeting period.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 58,
+   "swap_mb": 1140
+  },
+  {
+   "id": "topic-06",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 3.6,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6328,
+    "output_tokens": 190,
+    "prefill_tok_s": 5826.9,
+    "decode_tok_s": 89.2
+   },
+   "citations_ok": 0,
+   "citations_total": 1,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2022-07-06/financialMarkets/2] Participants mentioned that they expected inflation to move above 2 percent in the near term, as the drop in prices from early in the pandemic fell out of the calculation and past increases in oil prices passed through to consumer energy prices. They also anticipated that inflation as measured by the 12-month change of the PCE price index would move above 2 percent in the near term.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 59,
+   "swap_mb": 1140
+  },
+  {
+   "id": "topic-07",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 4.2,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2963,
+    "output_tokens": 264,
+    "prefill_tok_s": 3199.8,
+    "decode_tok_s": 88.9
+   },
+   "citations_ok": 3,
+   "citations_total": 3,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2019-01-30/participantsViews/8] Participants commented on a number of risks associated with their outlook for economic activity, the labor market, and inflation over the medium term. Participants noted that some risks to the downside had increased, including the possibilities of a sharper-than-expected slowdown in global economic growth, particularly in China and Europe, a rapid...\n\n[2019-01-30/participantsViews/13] Participants pointed to a variety of considerations that supported a patient approach to monetary policy at this juncture as an appropriate step in managing various risks and uncertainties in the outlook. With regard to the domestic economic picture, additional data would help p",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 59,
+   "swap_mb": 1140
+  },
+  {
+   "id": "topic-08",
+   "category": "topic",
+   "effort": "low",
+   "group": null,
+   "seconds": 2.4,
+   "tools": [
+    "prefetchPassages"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2934,
+    "output_tokens": 110,
+    "prefill_tok_s": 3245.6,
+    "decode_tok_s": 89.2
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2021-09-22/participantsViews/10] Participants remarked that supply chain challenges and limited labor availability continued to be major constraints on manufacturing activity and the business sector more broadly. Bottleneck pressures faced by businesses were accompanied by global supply chain disruptions associated with major backlogs in shipments and transportation as well as surges in labor shortages. Many participants judged that the uncertain course of the virus, supply chain disruptions, and labor shortages complicated the task of interpreting incoming economic data and assessing progress toward the Committee's goals.",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 58,
+   "swap_mb": 1140
+  },
+  {
+   "id": "compare-01",
+   "category": "comparison",
+   "effort": "low",
+   "group": null,
+   "seconds": 2.8,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3184,
+    "output_tokens": 110,
+    "prefill_tok_s": 2899.8,
+    "decode_tok_s": 88.2
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2021-12-15/participantsViews/9] Consumer price inflation remained elevated. Total PCE price inflation was 6.3 percent over the 12 months ending in July, and core PCE price inflation, which excludes changes in consumer energy prices and many consumer food prices, was 4.6 percent over the same period. The trimmed mean measure of 12-month PCE price inflation constructed by the Federal Reserve was 6.2 percent over the 12 months ending in September.",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 58,
+   "swap_mb": 1140
+  },
+  {
+   "id": "compare-02",
+   "category": "comparison",
+   "effort": "low",
+   "group": null,
+   "seconds": 3.9,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3130,
+    "output_tokens": 226,
+    "prefill_tok_s": 2958.4,
+    "decode_tok_s": 88.4
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2009-11-04/staffEconomy/4] For the third quarter as a whole, real personal consumption expenditures (PCE) rose at a solid rate, with noticeable increases in motor vehicles, furniture, electronics, and other durable goods. However, real outlays declined in September after a sharp increase in August. The monthly pattern in expenditures was significantly affected by swings in m...\n\nThe Committee's view of the labor market changed between 2008 and 2009. According to the latest minutes, the labor market continued to worsen. According to the November employment report, payroll employment fell at a rapid pace over the preceding three months, with substantial losses across a wide range of industry ",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 58,
+   "swap_mb": 1140
+  },
+  {
+   "id": "compare-03",
+   "category": "comparison",
+   "effort": "low",
+   "group": null,
+   "seconds": 14.5,
+   "tools": [
+    "prefetchPassages",
+    "getOutlook",
+    "scoreConsumerImpact"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 8422,
+    "output_tokens": 900,
+    "prefill_tok_s": 4518.2,
+    "decode_tok_s": 84.0
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[The Committee's view of the economic outlook changed between 2019 and 2020. The Fed staff forecast the economy with a negative outlook, with growth and jobs tilted to the downside. The current run began with a cut on 2019-08-01 (5 cuts, -2.25 percentage points in all). Rates: the 2-year Treasury yield 0.12% (2020-12-30; just before: 1.89%; six months before: 2.45%); the 10-year Treasury yield 0.93% (2020-12-30; just before: 2.02%; six months before: 2.63%); the 30-year mortgage rate 2.66% (2020-12-24; just before: 3.75%; six months before: 4.46%); the corporate bond spread (Baa) 2.20% (2020-12-30; just before: 2.13%; six months before: 2.38%). Spending and prices: real consumer spending gro",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 59,
+   "swap_mb": 1140
+  },
+  {
+   "id": "compare-04",
+   "category": "comparison",
+   "effort": "low",
+   "group": null,
+   "seconds": 16.3,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getPolicyPath"
+   ],
+   "stats": {
+    "model_calls": 3,
+    "prompt_tokens": 9656,
+    "output_tokens": 1012,
+    "prefill_tok_s": 3607.0,
+    "decode_tok_s": 85.9
+   },
+   "citations_ok": 4,
+   "citations_total": 4,
+   "warning": "Check these figures against the minutes, they do not appear in the sources: 1-1/4 to 2-1/2 percent.",
+   "invented_reason": null,
+   "answer": "[The Committee's view of interest rate policy changed between 2015 and 2018. The rate target moved from 1-1/4 to 2-1/2 percent over the 31 meetings from 2015-12-16 to 2018-12-31. The last change was an increase of 0.25 percentage points at the meeting ending 2018-12-19 (its minutes were not public yet), the 9th increase since 2015-12-16 [2015-12-16/policyAction/5] with no cut in between (2.25 percentage points in all). Before that change, the target was held at 1 meeting [2018-11-08/policyAction/3]. Across the 31 meetings from 2015-01-01 to 2018-12-31: 9 increases, 0 cuts and 23 holds (the increases and cuts include 1 change at a meeting whose minutes were not public yet); net change +2.25 p",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "searchMinutes",
+   "free_pct": 60,
+   "swap_mb": 1140
+  },
+  {
+   "id": "why-01",
+   "category": "why",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.6,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 2935,
+    "output_tokens": 18,
+    "prefill_tok_s": 3253.9,
+    "decode_tok_s": 87.0
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[2015-03-18 2015-03-18/policyAction/14]",
+   "passed": null,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1140
+  },
+  {
+   "id": "why-02",
+   "category": "why",
+   "effort": "low",
+   "group": null,
+   "seconds": 11.6,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6384,
+    "output_tokens": 900,
+    "prefill_tok_s": 6494.4,
+    "decode_tok_s": 88.5
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2015-04-29, the April 2015 meeting, is the focus window given with the question. The minutes for this meeting are not known yet. The minutes for the meeting that ended on April 29, 2015, are not available yet. The minutes for the meeting that ended on April 29, 2015, are not available yet. The minutes for the meeting that ended on April 29, 2015, are not available yet. The minutes for the meeting that ended on April 29, 2015, are not available yet. The minutes for the meeting that ended on April 29, 2015, are not available yet. The minutes for the meeting that ended on April 29, 2015, are not available yet. The minutes for the meeting that ended on April 29, 2015, are not available yet. The",
+   "passed": null,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 59,
+   "swap_mb": 1132
+  },
+  {
+   "id": "why-03",
+   "category": "why",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.6,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 5882,
+    "output_tokens": 26,
+    "prefill_tok_s": 6237.5,
+    "decode_tok_s": 90.0
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2017-11-01]",
+   "passed": null,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 58,
+   "swap_mb": 1132
+  },
+  {
+   "id": "why-04",
+   "category": "why",
+   "effort": "low",
+   "group": null,
+   "seconds": 1.6,
+   "tools": [
+    "getDecision"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 6056,
+    "output_tokens": 26,
+    "prefill_tok_s": 6002.0,
+    "decode_tok_s": 90.3
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[2026-01-28]",
+   "passed": null,
+   "tool_ok": true,
+   "expected_tool": "getDecision",
+   "free_pct": 58,
+   "swap_mb": 1132
+  },
+  {
+   "id": "nextmove-01",
+   "category": "nextmove",
+   "effort": "low",
+   "group": null,
+   "seconds": 19.4,
+   "tools": [
+    "prefetchPassages",
+    "assessEconomy",
+    "scoreConsumerImpact"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 8186,
+    "output_tokens": 900,
+    "prefill_tok_s": 4664.4,
+    "decode_tok_s": 85.0
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[ANCHOR DATE: 2026-10-27. Today is 2026-10-27; nothing after it is known.]\n\nANCHOR DATE: 2026-10-27. Today is 2026-10-27; nothing after it is known.\n\nANCHOR DATE: 2026-10-27. Today is 2026-10-27; nothing after it is known.\n\nANCHOR DATE: 2026-10-27. Today is 2026-10-27; nothing after it is known.\n\nANCHOR DATE: 2026-10-27. Today is 2026-10-27; nothing after it is known.\n\nANCHOR DATE: 2026-10-27. Today is 2026-10-27; nothing after it is known.\n\nANCHOR DATE: 2026-10-27. Today is 2026-10-27; nothing after it is known.\n\nANCHOR DATE: 2026-10-27. Today is 2026-10-27; nothing after it is known.\n\nANCHOR DATE: 2026-10-27. Today is 2026-10-27; nothing after it is known.\n\nANCHOR DATE: 2026-10-27. Today i",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "assessEconomy",
+   "free_pct": 59,
+   "swap_mb": 1132
+  },
+  {
+   "id": "nextmove-02",
+   "category": "nextmove",
+   "effort": "low",
+   "group": null,
+   "seconds": 10.6,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "assessEconomy"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 8184,
+    "output_tokens": 638,
+    "prefill_tok_s": 4636.8,
+    "decode_tok_s": 82.4
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[The FOMC minutes for the next meeting show a lean toward cuts, with the AI scoring the rate path -0.75 on its scale from -1 (dovish) to +1 (hawkish). The minutes indicate that the Fed staff revised its inflation forecast lower, with core PCE inflation at 2.6% over the 12 months to June 2024, 0.6 point above the Fed's 2% goal, and falling (2.8% three months earlier). Unemployment was 4.3% in July 2024, 0.1 point below the CBO's estimate of its normal level (4.4%), and rising (3.9% three months earlier). Payrolls rose by an average of 170,000 a month over the three months to July 2024. Real GDP grew at a 2.8% annual rate in 2024 Q2. Real GDP was 1.0% above the CBO's estimate of its potential ",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "assessEconomy",
+   "free_pct": 51,
+   "swap_mb": 1084
+  },
+  {
+   "id": "nextmove-03",
+   "category": "nextmove",
+   "effort": "low",
+   "group": null,
+   "seconds": 12.9,
+   "tools": [
+    "prefetchPassages",
+    "assessEconomy"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 7927,
+    "output_tokens": 900,
+    "prefill_tok_s": 4908.4,
+    "decode_tok_s": 84.3
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[ANCHOR DATE: 2026-02-23. Today is 2026-02-23; nothing after it is known.]\n\n[ANCHOR DATE: 2026-02-23. Today is 2026-02-23; nothing after it is known.]\n\n[ANCHOR DATE: 2026-02-23. Today is 2026-02-23; nothing after it is known.]\n\n[ANCHOR DATE: 2026-02-23. Today is 2026-02-23; nothing after it is known.]\n\n[ANCHOR DATE: 2026-02-23. Today is 2026-02-23; nothing after it is known.]\n\n[ANCHOR DATE: 2026-02-23. Today is 2026-02-23; nothing after it is known.]\n\n[ANCHOR DATE: 2026-02-23. Today is 2026-02-23; nothing after it is known.]\n\n[ANCHOR DATE: 2026-02-23. Today is 2026-02-23; nothing after it is known.]\n\n[ANCHOR DATE: 2026-02-23. Today is 2026-02-23; nothing after it is known.]\n\n[ANCHOR DATE: 20",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "assessEconomy",
+   "free_pct": 49,
+   "swap_mb": 1084
+  },
+  {
+   "id": "nextmove-04",
+   "category": "nextmove",
+   "effort": "low",
+   "group": null,
+   "seconds": 7.7,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "assessEconomy"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 3979,
+    "output_tokens": 450,
+    "prefill_tok_s": 2226.6,
+    "decode_tok_s": 84.4
+   },
+   "citations_ok": 2,
+   "citations_total": 2,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[ANCHOR DATE: 2022-07-11. Today is 2022-07-11; nothing after it is known. The minutes for the meeting that ended 2022-06-15 are listed below. The latest minutes are from the focus window of 2019-07-12 to 2022-07-11. The latest minutes are not known yet, so we cannot determine the exact content. The latest minutes are not available yet, so we cannot determine the exact content.]\n\n[Participants' statements about future rate moves at the meeting that ended 2022-06-15 are as follows:\n- Held by participants (leans: increases): In discussing potential policy actions at upcoming meetings, participants continued to anticipate that ongoing increases in the target range for the federal funds rate woul",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "assessEconomy",
+   "free_pct": 49,
+   "swap_mb": 1084
+  },
+  {
+   "id": "outlook-01",
+   "category": "outlook",
+   "effort": "low",
+   "group": null,
+   "seconds": 6.2,
+   "tools": [
+    "prefetchPassages",
+    "prefetchData",
+    "getOutlook",
+    "scoreConsumerImpact"
+   ],
+   "stats": {
+    "model_calls": 1,
+    "prompt_tokens": 4334,
+    "output_tokens": 317,
+    "prefill_tok_s": 2475.2,
+    "decode_tok_s": 83.1
+   },
+   "citations_ok": 1,
+   "citations_total": 1,
+   "warning": "",
+   "invented_reason": null,
+   "answer": "[The path of the past few FOMC meetings suggests that inflation is likely to remain higher than the target range, with a slight upward revision in the core CPI inflation. The staff's forecast indicates that the current rate path is likely to continue with a slight upward revision in the core CPI inflation. The consumer-impact rubric is not implemented yet, but the minutes point to a consumer spending resilience, with a slight upward revision in the consumer sentiment. The current run began with an increase on 2026-09-17. The 2-year Treasury yield is 4.75% (2026-10-08; just before: 4.74%; six months before: 3.68%), the 10-year Treasury yield is 5.22% (2026-10-08; just before: 5.01%; six month",
+   "passed": true,
+   "tool_ok": true,
+   "expected_tool": "getOutlook",
+   "free_pct": 50,
+   "swap_mb": 1084
+  },
+  {
+   "id": "outlook-02",
+   "category": "outlook",
+   "effort": "low",
+   "group": null,
+   "seconds": 3.5,
+   "tools": [
+    "prefetchData",
+    "getOutlook",
+    "scoreConsumerImpact"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 8104,
+    "output_tokens": 70,
+    "prefill_tok_s": 4315.2,
+    "decode_tok_s": 86.7
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[The minutes of the meeting that ended 2022-11-02 point for the rate, by code from the saved AI score: up.",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getOutlook",
+   "free_pct": 49,
+   "swap_mb": 1084
+  },
+  {
+   "id": "outlook-03",
+   "category": "outlook",
+   "effort": "low",
+   "group": null,
+   "seconds": 5.5,
+   "tools": [
+    "prefetchData",
+    "getOutlook",
+    "scoreConsumerImpact"
+   ],
+   "stats": {
+    "model_calls": 2,
+    "prompt_tokens": 8345,
+    "output_tokens": 272,
+    "prefill_tok_s": 5315.3,
+    "decode_tok_s": 84.6
+   },
+   "citations_ok": 0,
+   "citations_total": 0,
+   "warning": "This answer cites no paragraph from the minutes. Treat it as unverified.",
+   "invented_reason": null,
+   "answer": "[The recent rate increases mean that the federal debt will likely rise in the coming years. The Treasury's average rate on its debt is currently 3.52%, which is higher than the target range of 3-3/4 to 4 percent. The staff's forecast shows that the federal debt will rise by 0.1 point in the next two years, with core inflation higher by 0.1 point. Markets expect further increases over the next two years, with the 2-year yield being 0.9 points above the middle of the target range. The consumer-impact rubric is not implemented yet, but the current direction is up.]",
+   "passed": false,
+   "tool_ok": true,
+   "expected_tool": "getOutlook",
+   "free_pct": 50,
+   "swap_mb": 1084
+  }
+ ]
+}

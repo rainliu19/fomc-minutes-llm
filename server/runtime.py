@@ -4,6 +4,7 @@ On an 8 GB Mac the model, MATLAB and the browser compete for memory, and the mod
 cannot be swapped out. So the app checks memory before it starts, watches it while a question
 runs, and cleans up every process it started.
 """
+import contextlib
 import json
 import os
 import re
@@ -46,23 +47,23 @@ panic_reason = None                          # set by the watchdog if it had to 
 def memory_status() -> dict:
     """Pressure level, free memory percentage and swap in use, from macOS. Missing values are None."""
     # Start with unknowns; fill each in from a macOS command, and leave it unknown if the command fails
-    status = {"free_pct": None, "swap_used_mb": None, "swap_total_mb": None, "pressure": None}
+    status = {"free_pct": None, "swap_used_mb": None, "pressure": None}
     try:
         # Pressure level (1 normal, 2 warning, 4 critical)
         out = subprocess.run(["sysctl", "-n", "kern.memorystatus_vm_pressure_level"],
-                             capture_output=True, text=True, timeout=5).stdout.strip()
+                             capture_output=True, check=False, text=True, timeout=5).stdout.strip()
         if out.isdigit():
             status["pressure"] = int(out)
         # Percentage of memory free
-        out = subprocess.run(["memory_pressure"], capture_output=True, text=True, timeout=10).stdout
+        out = subprocess.run(["memory_pressure"], capture_output=True, check=False, text=True, timeout=10).stdout
         m = re.search(r"free percentage:\s*(\d+)%", out)
         if m:
             status["free_pct"] = int(m.group(1))
         # Swap in use: memory pushed out to disk
-        out = subprocess.run(["sysctl", "-n", "vm.swapusage"], capture_output=True, text=True, timeout=5).stdout
-        m = re.search(r"total = ([\d.]+)M\s+used = ([\d.]+)M", out)
+        out = subprocess.run(["sysctl", "-n", "vm.swapusage"], capture_output=True, check=False, text=True, timeout=5).stdout
+        m = re.search(r"used = ([\d.]+)M", out)
         if m:
-            status["swap_total_mb"], status["swap_used_mb"] = float(m.group(1)), float(m.group(2))
+            status["swap_used_mb"] = float(m.group(1))
     except (OSError, subprocess.SubprocessError):
         pass
     return status
@@ -72,7 +73,7 @@ def top_apps(n: int = 6) -> list[tuple[int, str]]:
     """The apps using the most memory, as (MB, name), so the user knows what to close."""
     try:
         # List every process with its memory use (in KB), then keep the biggest
-        out = subprocess.run(["ps", "-axo", "rss=,comm="], capture_output=True, text=True, timeout=10).stdout
+        out = subprocess.run(["ps", "-axo", "rss=,comm="], capture_output=True, check=False, text=True, timeout=10).stdout
     except (OSError, subprocess.SubprocessError):
         return []
     rows = []
@@ -119,7 +120,7 @@ def check_matlab_at_start() -> None:
     runs out of memory. If it has shared its session (matlab.engine.shareEngine), the app reuses it.
     """
     try:
-        out = subprocess.run(["ps", "-axo", "comm="], capture_output=True, text=True, timeout=10).stdout
+        out = subprocess.run(["ps", "-axo", "comm="], capture_output=True, check=False, text=True, timeout=10).stdout
     except (OSError, subprocess.SubprocessError):
         return
     # No MATLAB open: nothing to worry about
@@ -220,7 +221,7 @@ def base_model(entry: dict) -> str:
 
 def ensure_model(entry: dict) -> None:
     """Build the project model from its Modelfile if Ollama does not have it yet."""
-    installed = subprocess.run([ollama_bin(), "list"], capture_output=True, text=True).stdout
+    installed = subprocess.run([ollama_bin(), "list"], capture_output=True, check=False, text=True).stdout
     if re.search(rf"^{re.escape(entry['name'])}(:latest)?\s", installed, re.MULTILINE):
         return
     base = base_model(entry)
@@ -261,7 +262,7 @@ def ensure_ollama() -> None:
         LOGS.mkdir(exist_ok=True)
         ollama_process = subprocess.Popen(
             [ollama_bin(), "serve"], env={**os.environ, **OLLAMA_ENV},
-            stdout=open(LOGS / "ollama-serve.log", "ab"), stderr=subprocess.STDOUT)
+            stdout=open(LOGS / "ollama-serve.log", "ab"), stderr=subprocess.STDOUT)  # noqa: SIM115  the child keeps this log open
         for _ in range(60):
             if ollama_up():
                 break
@@ -282,11 +283,9 @@ def warm_model(model_id: str | None = None) -> None:
         return
     # An empty prompt makes Ollama load the model without generating anything
     body = json.dumps({"model": model_entry(model_id)["name"], "prompt": "", "keep_alive": OLLAMA_ENV["OLLAMA_KEEP_ALIVE"]}).encode()
-    try:
+    with contextlib.suppress(OSError):
         urllib.request.urlopen(urllib.request.Request(f"{OLLAMA_URL}/api/generate", body,
                                                       {"Content-Type": "application/json"}), timeout=120)
-    except OSError:
-        pass
 
 
 def stop_ollama() -> None:
@@ -335,9 +334,8 @@ def shutdown(engine) -> None:
         t = threading.Thread(target=engine.quit, daemon=True)
         t.start()
         t.join(timeout=15)
-    # Any direct child still alive (a stuck hidden MATLAB); matching on parent id cannot hit anything else.
-    # Finish off any child process still alive
-    subprocess.run(["pkill", "-TERM", "-P", str(os.getpid())], capture_output=True)
+    # Finish off any direct child still alive (a stuck hidden MATLAB); matching on parent id cannot hit anything else
+    subprocess.run(["pkill", "-TERM", "-P", str(os.getpid())], capture_output=True, check=False)
 
 
 sys.stdout.reconfigure(line_buffering=True)  # show startup messages straight away
