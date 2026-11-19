@@ -33,6 +33,14 @@ classdef testGuardDraft < matlab.unittest.TestCase
             tc.verifyEqual(fomc.guard.draftProblem("The Committee raised the range to 1-1/2 to 1-3/4 percent today.", tc.calls(true), ""), "");
         end
 
+        function aHoldAnswerMayUseKeptOrLeftAndTheLowerBound(tc)
+            hold = tc.calls(true);
+            hold.result = replace(replace(hold.result, '"raise"', '"hold"'), "1-1/2 to 1-3/4", "2-1/4 to 2-1/2");
+            tc.verifyEqual(fomc.guard.draftProblem("The Committee left the range at 2-1/4 to 2-1/2 percent after the December increase.", hold, ""), "");
+            tc.verifyEqual(fomc.guard.draftProblem("It kept the lower bound at 2-1/4 and the upper at 2-1/2 percent.", hold, ""), "");
+            tc.verifySubstring(fomc.guard.draftProblem("The Committee raised the range to 2-1/4 to 2-1/2 percent.", hold, ""), "says otherwise");
+        end
+
         function aDecisionAnswerNeedsAFigure(tc)
             tc.verifySubstring(fomc.guard.draftProblem("The Committee raised the federal funds rate at that meeting.", tc.calls(true), ""), "no figure");
         end
@@ -50,6 +58,7 @@ classdef testGuardDraft < matlab.unittest.TestCase
         function aCardMeansTheMinutesAreAvailable(tc)
             tc.verifySubstring(fomc.guard.draftProblem("The minutes for the December meeting are not available yet.", tc.calls(true), ""), "decision card has its facts");
             tc.verifyEqual(fomc.guard.draftProblem("The minutes for the December meeting are not available yet.", [], ""), "");
+            tc.verifyEqual(fomc.guard.draftProblem("The range was not publicly known in 2008, but it was 1-1/2 to 1-3/4 percent here.", tc.calls(true), ""), "");
             q = "Was the vote unanimous?";
             tc.verifySubstring(fomc.guard.draftProblem("The vote was 10 for, 0 against, with Powell and others voting in favor. Against: None.", tc.calls(true), q), "unanimous");
         end

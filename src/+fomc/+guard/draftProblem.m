@@ -33,7 +33,7 @@ if isfield(c, "vote") && c.vote.unanimous && claimsSplit
     problem = "The decision card says the vote was unanimous (" + c.vote.nFor + " for, 0 against), but the answer says it was not.";
 elseif isfield(c, "vote") && ~c.vote.unanimous && claimsUnanimous
     problem = "The decision card says the vote was not unanimous (" + c.vote.nFor + " for, " + c.vote.nAgainst + " against), but the answer says it was unanimous.";
-elseif ~isempty(regexp(text, "(?i)(are|is|were) not (yet )?(available|public|known|released)|not (available|public|known) yet", "once"))
+elseif ~isempty(regexp(text, "(?i)minutes[^.]*(not (yet )?(publicly )?(available|public|known|released)|not (available|public|known) yet)", "once"))
     problem = "The minutes for this meeting are available: the decision card has its facts. Answer from the decision card" + rangeOf(c) + ".";
 elseif wrongDirection(text, c)
     problem = "The decision card says the Committee " + c.action + " the target range" + rangeOf(c) + ", but the answer says otherwise.";
@@ -95,9 +95,10 @@ end
 
 function tf = wrongDirection(text, c)
 % The answer names a direction and none of them is the card's
-words = struct("raise", "(?<![a-z])(rais|increas|hik)", "cut", "(?<![a-z])(lower|cut|reduc|decreas)", "hold", "(?<![a-z])(maintain|held|hold|unchanged|no change|steady)");
+words = struct("raise", "(?<![a-z])(rais|increas|hik)", "cut", "(?<![a-z])(lower|cut|reduc|decreas)", "hold", "(?<![a-z])(maintain|held|hold|kept|left|remain|unchanged|no change|steady)");
 names = fieldnames(words);
 named = false(size(names));
+text = regexprep(text, "(?i)lower bound", "");    % the range's lower bound is not a cut
 for k = 1:numel(names)
     named(k) = ~isempty(regexp(text, words.(names{k}), "once", "ignorecase"));
 end

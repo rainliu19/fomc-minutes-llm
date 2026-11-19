@@ -191,6 +191,12 @@ class ApiPrivacy(unittest.TestCase):
     def test_progress_of_another_browsers_chat_is_hidden(self):
         self.assertEqual(self.app.progress("c" * 32, 0, owner=YOU), {"events": [], "next": 0})
 
+    def test_progress_of_a_session_that_was_never_saved_is_hidden(self):
+        path = self.app.runtime.LOGS / ("web-" + "d" * 32 + ".jsonl")
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps({"type": "route"}) + "\n", encoding="utf-8")
+        self.assertEqual(self.app.progress("d" * 32, 0, owner=ME), {"events": [], "next": 0})
+
     def test_progress_passes_the_agent_events_through(self):
         events = [{"type": "route", "route": "household", "agents": ["minutes", "market"]},
                   {"type": "handoff", "to": "minutes", "stage": 1, "tools": ["getDecision"]},

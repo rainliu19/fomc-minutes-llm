@@ -41,6 +41,12 @@ classdef testAgentsModel < matlab.unittest.TestCase
             tc.verifySubstring(fileread(tc.ctx.tracePath), '"fallback":true');
         end
 
+        function aNumberThatOnlyAppearsInsideAnotherNumberFallsBack(tc)
+            evidence = "UNRATE: 3.5% on 2020-02-07, up from 15% in 2020-04";
+            r = tc.specialist("market", evidence + tc.Pad, {struct("content", "Unemployment was 5%.")});
+            tc.verifyEqual(strip(r.text), evidence);
+        end
+
         function aReplyWithAnUnknownParagraphIdFallsBack(tc)
             evidence = "Rates held [2020-01-29/policyAction/1].";
             r = tc.specialist("minutes", evidence, {struct("content", "Rates held [2020-01-29/policyAction/9].")});

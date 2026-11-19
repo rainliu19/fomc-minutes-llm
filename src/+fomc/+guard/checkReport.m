@@ -12,5 +12,7 @@ missing = @(tokens) tokens(~arrayfun(@(t) contains(src, t), tokens));
 ids = fomc.guard.idsIn(reply);
 nums = unique(string(regexp(reply, "\d+(?:\.\d+)?", "match")));
 nums = nums(~arrayfun(@(t) contains(join(ids, " "), t), nums));   % digits inside an id were checked with the id
-bad = [missing(ids(:)); missing(nums(:))].';
+% a number counts as found only as a whole number: a 5 is not in 15 or 2.5
+wholeIn = @(t) ~isempty(regexp(src, "(?<![\d.])" + t + "(?!\d|\.\d)", "once"));
+bad = [missing(ids(:)); nums(~arrayfun(wholeIn, nums(:)))].';
 end

@@ -229,7 +229,7 @@ def delete_chat(chat_id: str, owner: str = Depends(owner_of)):
 @app.get("/progress")
 def progress(session_id: str, after: int = 0, before: int | None = None, owner: str = Depends(owner_of)):
     """Trace events from line `after` up to line `before`: one answer's part of the chat's trace, for the agents page."""
-    if store.owned_by_other(clean_session_id(session_id), owner):
+    if not store.get(clean_session_id(session_id), owner):     # a session never saved has no owner on record: its trace is private too
         return {"events": [], "next": 0}
     # Read the session's trace file and return the lines added since the page last asked
     path = runtime.LOGS / f"web-{clean_session_id(session_id)}.jsonl"
