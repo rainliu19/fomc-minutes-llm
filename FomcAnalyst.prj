@@ -1,0 +1,68 @@
+<deployment-project plugin="plugin.apptool" plugin-version="1.0">
+  <configuration build-checksum="863704071" file="/Users/aaryadharm/Documents/CS_Classes/IEOR4511/fomc-minutes-llm/FomcAnalyst.prj" location="/Users/aaryadharm/Documents/CS_Classes/IEOR4511/fomc-minutes-llm" name="FomcAnalyst" target="target.mlapps" target-name="Package App">
+    <param.appname>FomcAnalyst</param.appname>
+    <param.authnamewatermark>Aarya Dharm</param.authnamewatermark>
+    <param.email />
+    <param.company>Columbia IEOR 4511</param.company>
+    <param.icon />
+    <param.icons />
+    <param.summary>Ask questions about FOMC minutes as of a date you choose, answered by a local model with cited paragraphs.</param.summary>
+    <param.description>A chat window for the FOMC minutes agent. Pick an anchor date; the agent sees only minutes and data public by then, runs on a local Ollama model, and cites the paragraphs it used. Needs Ollama and the Large Language Models (LLMs) with MATLAB add-on.</param.description>
+    <param.screenshot />
+    <param.version>1.0</param.version>
+    <param.products.name />
+    <param.products.id />
+    <param.products.version />
+    <param.platforms />
+    <param.output>${PROJECT_ROOT}</param.output>
+    <param.guid>82978b74-31ea-499f-91ec-982566c2e3ee</param.guid>
+    <unset>
+      <param.email />
+      <param.icon />
+      <param.icons />
+      <param.screenshot />
+      <param.version />
+      <param.products.name />
+      <param.products.id />
+      <param.products.version />
+      <param.platforms />
+      <param.output />
+    </unset>
+    <fileset.main>
+      <file>${PROJECT_ROOT}/FomcAnalyst.m</file>
+    </fileset.main>
+    <fileset.depfun />
+    <fileset.resources>
+      <file>${PROJECT_ROOT}/agents</file>
+      <file>${PROJECT_ROOT}/data</file>
+      <file>${PROJECT_ROOT}/models</file>
+      <file>${PROJECT_ROOT}/setup.m</file>
+      <file>${PROJECT_ROOT}/skills</file>
+      <file>${PROJECT_ROOT}/src</file>
+    </fileset.resources>
+    <fileset.package />
+    <build-deliverables>
+      <file location="/Users/aaryadharm/Documents/CS_Classes/IEOR4511" name="fomc-minutes-llm" optional="false">/Users/aaryadharm/Documents/CS_Classes/IEOR4511/fomc-minutes-llm</file>
+    </build-deliverables>
+    <workflow />
+    <matlab>
+      <root>/Applications/MATLAB_R2026a.app</root>
+      <toolboxes />
+    </matlab>
+    <platform>
+      <unix>true</unix>
+      <mac>true</mac>
+      <windows>false</windows>
+      <win2k>false</win2k>
+      <winxp>false</winxp>
+      <vista>false</vista>
+      <linux>false</linux>
+      <solaris>false</solaris>
+      <osver>27.2</osver>
+      <os32>true</os32>
+      <os64>false</os64>
+      <arch>maci64</arch>
+      <matlab>true</matlab>
+    </platform>
+  </configuration>
+</deployment-project>

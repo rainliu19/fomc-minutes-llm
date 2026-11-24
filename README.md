@@ -22,6 +22,8 @@ Open http://localhost:8787. It starts Ollama and MATLAB, checks memory first, an
 
 **Without the browser:** in MATLAB, from the repo root, run `setup` then `fomc.chat()`.
 
+**As a MATLAB desktop app:** run `FomcAnalyst` from the repo root, or install it: open `FomcAnalyst.prj` (double-click, or Apps → Package App → Open Project), click Package, then double-click the `FomcAnalyst.mlappinstall` it writes. The app shows up in the Apps gallery. It still needs Ollama running and the LLMs with MATLAB add-on, and offers to build the model if Ollama does not have it. Keep `FomcAnalyst.m` in the repo root: the code finds `data/`, `skills/` and `agents/` relative to `src/`.
+
 **Test it:** `buildtool test` in MATLAB (about 2 minutes, no model needed) and `uv run python -m unittest tests/test_runtime.py tests/test_chats.py`. The scoring tests against the real model are opt-in and slow (about 35 minutes, Ollama running): `setenv("FOMC_LIVE", "1"); runtests("tests/testSkillScoreLive.m")`.
 
 ## What it does
